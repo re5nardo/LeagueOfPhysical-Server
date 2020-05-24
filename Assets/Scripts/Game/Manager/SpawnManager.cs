@@ -19,16 +19,16 @@ public class SpawnManager : MonoSingleton<SpawnManager>, ISubscriber, ITickable
     {
         base.Awake();
 
-        RoomPubSubService.Instance.AddSubscriber(MessageKey.EntityDestroy, this);
+        GamePubSubService.Instance.AddSubscriber(GameMessageKey.EntityDestroy, this);
 
-		m_dicMessageHandler.Add(MessageKey.EntityDestroy, OnEntityDestroy);
+		m_dicMessageHandler.Add(GameMessageKey.EntityDestroy, OnEntityDestroy);
 	}
 
     private void OnDestroy()
     {
-        if (RoomPubSubService.IsInstantiated())
+        if (GamePubSubService.IsInstantiated())
         {
-            RoomPubSubService.Instance.RemoveSubscriber(MessageKey.EntityDestroy, this);
+            GamePubSubService.Instance.RemoveSubscriber(GameMessageKey.EntityDestroy, this);
         }
 
 		m_dicMessageHandler.Clear();

@@ -10,18 +10,18 @@ public class CharacterAbilityController : MonoControllerComponentBase, ISubscrib
 	{
 		base.OnAttached(entity);
 
-        RoomPubSubService.Instance.AddSubscriber(MessageKey.LevelUp, this);
+        GamePubSubService.Instance.AddSubscriber(GameMessageKey.LevelUp, this);
 
-		m_dicMessageHandler.Add(MessageKey.LevelUp, OnLevelUp);
+		m_dicMessageHandler.Add(GameMessageKey.LevelUp, OnLevelUp);
 	}
 
 	public override void OnDetached()
 	{
 		base.OnDetached();
 
-		if (RoomPubSubService.IsInstantiated())
+		if (GamePubSubService.IsInstantiated())
 		{
-            RoomPubSubService.Instance.RemoveSubscriber(MessageKey.LevelUp, this);
+            GamePubSubService.Instance.RemoveSubscriber(GameMessageKey.LevelUp, this);
 		}
 
 		m_dicMessageHandler.Clear();

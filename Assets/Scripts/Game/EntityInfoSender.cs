@@ -15,16 +15,16 @@ public class EntityInfoSender : MonoSingleton<EntityInfoSender>, ISubscriber, IT
     {
         base.Awake();
 
-        RoomPubSubService.Instance.AddSubscriber(MessageKey.EntityDestroy, this);
+        GamePubSubService.Instance.AddSubscriber(GameMessageKey.EntityDestroy, this);
 
-        m_dicMessageHandler.Add(MessageKey.EntityDestroy, OnEntityDestroy);
+        m_dicMessageHandler.Add(GameMessageKey.EntityDestroy, OnEntityDestroy);
     }
 
     private void OnDestroy()
     {
-        if (RoomPubSubService.IsInstantiated())
+        if (GamePubSubService.IsInstantiated())
         {
-            RoomPubSubService.Instance.RemoveSubscriber(MessageKey.EntityDestroy, this);
+            GamePubSubService.Instance.RemoveSubscriber(GameMessageKey.EntityDestroy, this);
         }
 
 		m_dicMessageHandler.Clear();
@@ -44,7 +44,7 @@ public class EntityInfoSender : MonoSingleton<EntityInfoSender>, ISubscriber, IT
 
     private void SendNearEntityTransformInfos()
     {
-        foreach (KeyValuePair<string, WeakReference> kv in LOP.Room.Instance.dicPlayerUserIDPhotonPlayer)
+        foreach (KeyValuePair<string, WeakReference> kv in LOP.Game.Current.PlayerUserIDPhotonPlayer)
         {
             if (!kv.Value.IsAlive)
             {
@@ -53,7 +53,6 @@ public class EntityInfoSender : MonoSingleton<EntityInfoSender>, ISubscriber, IT
 
             string strPlayerUserID = kv.Key;
             PhotonPlayer photonPlayer = kv.Value.Target as PhotonPlayer;
-			int nEntityID = LOP.Room.Instance.dicPlayerUserIDEntityID[strPlayerUserID];
 
             Vector3 vec3Center = m_dicPlayerUserIDLookAtPosition.ContainsKey(strPlayerUserID) ? m_dicPlayerUserIDLookAtPosition[strPlayerUserID] : Vector3.zero;
 
@@ -99,7 +98,7 @@ public class EntityInfoSender : MonoSingleton<EntityInfoSender>, ISubscriber, IT
 
     private void SendPlayerSkillInfos()
     {
-        foreach (KeyValuePair<string, WeakReference> kv in LOP.Room.Instance.dicPlayerUserIDPhotonPlayer)
+        foreach (KeyValuePair<string, WeakReference> kv in LOP.Game.Current.PlayerUserIDPhotonPlayer)
         {
             if (!kv.Value.IsAlive)
             {
@@ -108,7 +107,7 @@ public class EntityInfoSender : MonoSingleton<EntityInfoSender>, ISubscriber, IT
 
             string strPlayerUserID = kv.Key;
             PhotonPlayer photonPlayer = kv.Value.Target as PhotonPlayer;
-            IEntity entity = EntityManager.Instance.GetEntity(LOP.Room.Instance.dicPlayerUserIDEntityID[strPlayerUserID]);
+            IEntity entity = EntityManager.Instance.GetEntity(LOP.Game.Current.PlayerUserIDEntityID[strPlayerUserID]);
 			if(entity == null)
 			{
 				//	Already removed
@@ -146,7 +145,7 @@ public class EntityInfoSender : MonoSingleton<EntityInfoSender>, ISubscriber, IT
         //	Player's entity
         if (entity.EntityRole == EntityRole.Player)
         {
-            string playerUserID = LOP.Room.Instance.dicEntityIDPlayerUserID[nEntityID];
+            string playerUserID = LOP.Game.Current.EntityIDPlayerUserID[nEntityID];
 
             m_dicPlayerUserIDLookAtPosition.Remove(playerUserID);
         }

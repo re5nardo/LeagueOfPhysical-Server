@@ -20,11 +20,11 @@ public class PlayerMoveInputManager : MonoBehaviour, ISubscriber
 
 		RoomNetwork.Instance.onMessage += OnNetworkMessage;
 
-		dicPubSubMessageHandler.Add(MessageKey.PlayerEnter, OnPlayerEnter);
-		dicPubSubMessageHandler.Add(MessageKey.PlayerLeave, OnPlayerLeave);
+		dicPubSubMessageHandler.Add(RoomMessageKey.PlayerEnter, OnPlayerEnter);
+		dicPubSubMessageHandler.Add(RoomMessageKey.PlayerLeave, OnPlayerLeave);
 
-        RoomPubSubService.Instance.AddSubscriber(MessageKey.PlayerEnter, this);
-        RoomPubSubService.Instance.AddSubscriber(MessageKey.PlayerLeave, this);
+        RoomPubSubService.Instance.AddSubscriber(RoomMessageKey.PlayerEnter, this);
+        RoomPubSubService.Instance.AddSubscriber(RoomMessageKey.PlayerLeave, this);
 	}
 
 	private void OnDestroy()
@@ -38,8 +38,8 @@ public class PlayerMoveInputManager : MonoBehaviour, ISubscriber
 
 		if (RoomPubSubService.IsInstantiated())
 		{
-            RoomPubSubService.Instance.RemoveSubscriber(MessageKey.PlayerEnter, this);
-            RoomPubSubService.Instance.RemoveSubscriber(MessageKey.PlayerLeave, this);
+            RoomPubSubService.Instance.RemoveSubscriber(RoomMessageKey.PlayerEnter, this);
+            RoomPubSubService.Instance.RemoveSubscriber(RoomMessageKey.PlayerLeave, this);
 		}
 
 		dicPubSubMessageHandler.Clear();

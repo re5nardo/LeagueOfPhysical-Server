@@ -44,13 +44,13 @@ public class NearEntityAgent : MonoModelComponentBase, ISubscriber
 		//	m_hashLastSubscribeCellPosition.Add(cell.m_vec2Position);
 		//}
 
-		GridPubSubService.Instance.AddSubscriber(MessageKey.EntityAddedToGrid, this);
-		GridPubSubService.Instance.AddSubscriber(MessageKey.EntityRemovedFromGrid, this);
-		GridPubSubService.Instance.AddSubscriber(MessageKey.EntityMoveCell, this);
+		GridPubSubService.Instance.AddSubscriber(GameMessageKey.EntityAddedToGrid, this);
+		GridPubSubService.Instance.AddSubscriber(GameMessageKey.EntityRemovedFromGrid, this);
+		GridPubSubService.Instance.AddSubscriber(GameMessageKey.EntityMoveCell, this);
 
-		m_dicMessageHandler.Add(MessageKey.EntityAddedToGrid, OnEntityAddedToGrid);
-		m_dicMessageHandler.Add(MessageKey.EntityRemovedFromGrid, OnEntityRemovedFromGrid);
-		m_dicMessageHandler.Add(MessageKey.EntityMoveCell, OnEntityMoveCell);
+		m_dicMessageHandler.Add(GameMessageKey.EntityAddedToGrid, OnEntityAddedToGrid);
+		m_dicMessageHandler.Add(GameMessageKey.EntityRemovedFromGrid, OnEntityRemovedFromGrid);
+		m_dicMessageHandler.Add(GameMessageKey.EntityMoveCell, OnEntityMoveCell);
 
 		UpdateMyEntityCellPosition(vec2CellPosition);
 	}
@@ -61,9 +61,9 @@ public class NearEntityAgent : MonoModelComponentBase, ISubscriber
 
         if (GridPubSubService.IsInstantiated())
         {
-            GridPubSubService.Instance.RemoveSubscriber(MessageKey.EntityAddedToGrid, this);
-            GridPubSubService.Instance.RemoveSubscriber(MessageKey.EntityRemovedFromGrid, this);
-            GridPubSubService.Instance.RemoveSubscriber(MessageKey.EntityMoveCell, this);
+            GridPubSubService.Instance.RemoveSubscriber(GameMessageKey.EntityAddedToGrid, this);
+            GridPubSubService.Instance.RemoveSubscriber(GameMessageKey.EntityRemovedFromGrid, this);
+            GridPubSubService.Instance.RemoveSubscriber(GameMessageKey.EntityMoveCell, this);
         }
 
         m_dicMessageHandler.Clear();

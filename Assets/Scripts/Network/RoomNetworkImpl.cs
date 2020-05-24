@@ -49,10 +49,10 @@ public class RoomNetworkImpl : MonoBehaviour, INetworkImpl
 		foreach (IEntity entity in EntityManager.Instance.GetEntities(vec3Center, fRadius, EntityRole.Player))
 		{
 			string strPlayerUserID = "";
-			if (LOP.Room.Instance.dicEntityIDPlayerUserID.TryGetValue(entity.EntityID, out strPlayerUserID))
+			if (LOP.Game.Current.EntityIDPlayerUserID.TryGetValue(entity.EntityID, out strPlayerUserID))
 			{
 				WeakReference target = null;
-				if (LOP.Room.Instance.dicPlayerUserIDPhotonPlayer.TryGetValue(strPlayerUserID, out target))
+				if (LOP.Game.Current.PlayerUserIDPhotonPlayer.TryGetValue(strPlayerUserID, out target))
 				{
 					if (!target.IsAlive)
 					{

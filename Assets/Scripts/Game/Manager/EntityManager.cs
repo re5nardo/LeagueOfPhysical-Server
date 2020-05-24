@@ -37,16 +37,16 @@ public class EntityManager : GameFramework.EntityManager, ISubscriber
 
         m_PositionGrid.SetGrid(10);
 
-        RoomPubSubService.Instance.AddSubscriber(MessageKey.EntityMove, this);
+        GamePubSubService.Instance.AddSubscriber(GameMessageKey.EntityMove, this);
 
-        m_dicMessageHandler.Add(MessageKey.EntityMove, OnEntityMove);
+        m_dicMessageHandler.Add(GameMessageKey.EntityMove, OnEntityMove);
     }
 
     private void OnDestroy()
     {
-        if (RoomPubSubService.IsInstantiated())
+        if (GamePubSubService.IsInstantiated())
         {
-            RoomPubSubService.Instance.RemoveSubscriber(MessageKey.EntityMove, this);
+            GamePubSubService.Instance.RemoveSubscriber(GameMessageKey.EntityMove, this);
         }
 
         m_dicMessageHandler.Clear();
@@ -58,9 +58,9 @@ public class EntityManager : GameFramework.EntityManager, ISubscriber
 
         m_PositionGrid = null;
 
-        if (RoomPubSubService.IsInstantiated())
+        if (GamePubSubService.IsInstantiated())
         {
-            RoomPubSubService.Instance.RemoveSubscriber(MessageKey.EntityMove, this);
+            GamePubSubService.Instance.RemoveSubscriber(GameMessageKey.EntityMove, this);
         }
       
         m_dicMessageHandler.Clear();

@@ -1,5 +1,5 @@
 ﻿
-public enum MessageKey
+public enum GameMessageKey
 {
 	EntityDestroy = 0,
 	EntityMove = 1,
@@ -7,6 +7,10 @@ public enum MessageKey
 	EntityAddedToGrid = 3,
 	EntityRemovedFromGrid = 4,
 	LevelUp = 5,
-	PlayerEnter = 6,
-	PlayerLeave = 7,
+}
+
+public enum RoomMessageKey
+{
+    PlayerEnter = 0,
+    PlayerLeave = 1,
 }

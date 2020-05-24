@@ -93,7 +93,7 @@ namespace Entity
             {
                 position = value;
 
-                RoomPubSubService.Instance.Publish(MessageKey.EntityMove, EntityID);
+                GamePubSubService.Instance.Publish(GameMessageKey.EntityMove, EntityID);
 
                 SendCommandToViews(new PositionChanged());
             }

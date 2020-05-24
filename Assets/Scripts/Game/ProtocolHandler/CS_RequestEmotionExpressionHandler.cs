@@ -12,7 +12,7 @@ public class CS_RequestEmotionExpressionHandler : IHandler<IPhotonEventMessage>
 
         PhotonPlayer photonPlayer = PhotonNetwork.playerList.ToList().Find(x => x.ID == msg.senderID);
 
-        IEntity senderEntity = EntityManager.Instance.GetEntity(LOP.Room.Instance.dicPlayerUserIDEntityID[photonPlayer.UserId]);
+        IEntity senderEntity = EntityManager.Instance.GetEntity(LOP.Game.Current.PlayerUserIDEntityID[photonPlayer.UserId]);
 
         EmotionExpressionData emotionExpressionData = senderEntity.GetComponent<EmotionExpressionData>();
         if (!emotionExpressionData.m_listEmotionExpressionID.Exists(x => x == requestEmotionExpression.m_nEmotionExpressionID))

@@ -219,7 +219,16 @@ namespace LOP
 
             entity.SendCommandToAll(new Destroying());
 
-            RoomPubSubService.Instance.Publish(MessageKey.EntityDestroy, nEntityID);
+            GamePubSubService.Instance.Publish(GameMessageKey.EntityDestroy, nEntityID);
+
+            if (entity.EntityRole == EntityRole.Player)
+            {
+                string strPlayerUserID = entityIDPlayerUserID[entity.EntityID];
+
+                playerUserIDEntityID.Remove(strPlayerUserID);
+                entityIDPlayerUserID.Remove(entity.EntityID);
+                playerUserIDPhotonPlayer.Remove(strPlayerUserID);
+            }
 
             EntityManager.Instance.UnregisterEntity(nEntityID);
 

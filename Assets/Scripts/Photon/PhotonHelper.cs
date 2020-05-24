@@ -11,12 +11,12 @@ public class PhotonHelper
         foreach (IEntity entity in EntityManager.Instance.GetEntities(vec3Position, fRadius, EntityRole.Player))
         {
             
-            if (LOP.Room.Instance.dicEntityIDPlayerUserID.ContainsKey(entity.EntityID))
+            if (LOP.Game.Current.EntityIDPlayerUserID.ContainsKey(entity.EntityID))
             {
-                string strPlayerUserID = LOP.Room.Instance.dicEntityIDPlayerUserID[entity.EntityID];
-                if (LOP.Room.Instance.dicPlayerUserIDPhotonPlayer.ContainsKey(strPlayerUserID))
+                string strPlayerUserID = LOP.Game.Current.EntityIDPlayerUserID[entity.EntityID];
+                if (LOP.Game.Current.PlayerUserIDPhotonPlayer.ContainsKey(strPlayerUserID))
                 {
-                    var player = LOP.Room.Instance.dicPlayerUserIDPhotonPlayer[strPlayerUserID];
+                    var player = LOP.Game.Current.PlayerUserIDPhotonPlayer[strPlayerUserID];
                     if (player.IsAlive)
                     {
                         int actorID = (player.Target as PhotonPlayer).ID;
@@ -32,10 +32,10 @@ public class PhotonHelper
     public static int GetActorID(int nEntityID)
     {
         string strPlayerUserID = "";
-        if (LOP.Room.Instance.dicEntityIDPlayerUserID.TryGetValue(nEntityID, out strPlayerUserID))
+        if (LOP.Game.Current.EntityIDPlayerUserID.TryGetValue(nEntityID, out strPlayerUserID))
         {
             WeakReference target = null;
-            if (LOP.Room.Instance.dicPlayerUserIDPhotonPlayer.TryGetValue(strPlayerUserID, out target))
+            if (LOP.Game.Current.PlayerUserIDPhotonPlayer.TryGetValue(strPlayerUserID, out target))
             {
                 if (target.IsAlive)
                 {
@@ -49,6 +49,6 @@ public class PhotonHelper
 
     public static PhotonPlayer GetPhotonPlayer(int nEntityID)
     {
-        return LOP.Room.Instance.dicPlayerUserIDPhotonPlayer[LOP.Room.Instance.dicEntityIDPlayerUserID[nEntityID]].Target as PhotonPlayer;
+        return LOP.Game.Current.PlayerUserIDPhotonPlayer[LOP.Game.Current.EntityIDPlayerUserID[nEntityID]].Target as PhotonPlayer;
     }
 }
