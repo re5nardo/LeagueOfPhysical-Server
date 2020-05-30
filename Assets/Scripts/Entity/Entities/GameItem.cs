@@ -13,26 +13,25 @@ namespace Entity
 		}
 		#endregion
 
-		//	Model
-		private GameItemModel m_GameItemModel = null;
+		private GameItemBasicData gameItemBasicData = null;
 
-		//	View
-		private GameItemView m_GameItemView = null;
+		private GameItemView gameItemView = null;
 
-		//	Controller
-		private BasicController m_BasicController = null;
+        private BehaviorController behaviorController = null;
+        private StateController stateController = null;
+        private GameItemPhysicsController gameItemPhysicsController = null;
 
-		private MasterData.GameItem m_MasterData__ = null;
-		public MasterData.GameItem m_MasterData
+        private MasterData.GameItem masterData = null;
+		public MasterData.GameItem MasterData
 		{
 			get
 			{
-				if (m_MasterData__ == null)
+				if (masterData == null)
 				{
-					m_MasterData__ = MasterDataManager.Instance.GetMasterData<MasterData.GameItem>(m_GameItemModel.MasterDataID);
+                    masterData = MasterDataManager.Instance.GetMasterData<MasterData.GameItem>(gameItemBasicData.MasterDataID);
 				}
 
-				return m_MasterData__;
+				return masterData;
 			}
 		}
 
@@ -41,15 +40,14 @@ namespace Entity
 		{
 			base.InitComponents();
 
-			//	Model
-			m_GameItemModel = AttachComponent(gameObject.AddComponent<GameItemModel>());
+            gameItemBasicData = AttachComponent(gameObject.AddComponent<GameItemBasicData>());
 
-			//	View
-			m_GameItemView = AttachComponent(gameObject.AddComponent<GameItemView>());
+            gameItemView = AttachComponent(gameObject.AddComponent<GameItemView>());
 
-			//	Controller
-			m_BasicController = AttachComponent(gameObject.AddComponent<BasicController>());
-		}
+            behaviorController = AttachComponent(gameObject.AddComponent<BehaviorController>());
+            stateController = AttachComponent(gameObject.AddComponent<StateController>());
+            gameItemPhysicsController = AttachComponent(gameObject.AddComponent<GameItemPhysicsController>());
+        }
 
 		public override void Initialize(params object[] param)
 		{
@@ -57,18 +55,18 @@ namespace Entity
 			EntityType = EntityType.GameItem;
             EntityRole = (EntityRole)param[2];
 
-			m_GameItemModel.Initialize(param);
+            gameItemBasicData.Initialize(param);
 		}
         #endregion
 
         #region Interface For Convenience
-        public bool IsAlive { get { return m_GameItemModel.CurrentHP > 0; } }
+        public bool IsAlive { get { return gameItemBasicData.CurrentHP > 0; } }
 	
-		public override float MovementSpeed { get { return m_GameItemModel.MovementSpeed; } }
+		public override float MovementSpeed { get { return gameItemBasicData.MovementSpeed; } }
 	
 		public override void Move(Vector3 vec3Destination)
 		{
-			m_BasicController.Move(vec3Destination);
+            behaviorController.Move(vec3Destination);
 		}
 
 		public override EntitySnapInfo GetEntitySnapInfo()
@@ -77,22 +75,22 @@ namespace Entity
 
 			entitySnapInfo.m_nEntityID = EntityID;
 			entitySnapInfo.m_EntityType = EntityType;
-			entitySnapInfo.m_nMasterDataID = m_GameItemModel.MasterDataID;
+			entitySnapInfo.m_nMasterDataID = gameItemBasicData.MasterDataID;
 			entitySnapInfo.m_Position = Position;
 			entitySnapInfo.m_Rotation = Rotation;
 			entitySnapInfo.m_Velocity = Velocity;
 			entitySnapInfo.m_AngularVelocity = AngularVelocity;
-			entitySnapInfo.m_strModel = m_GameItemModel.ModelName;
-			entitySnapInfo.m_nHP = m_GameItemModel.CurrentHP;
-			entitySnapInfo.m_nMaximumHP = m_GameItemModel.MaximumHP;
+			entitySnapInfo.m_strModel = gameItemBasicData.ModelName;
+			entitySnapInfo.m_nHP = gameItemBasicData.CurrentHP;
+			entitySnapInfo.m_nMaximumHP = gameItemBasicData.MaximumHP;
 
 			return entitySnapInfo;
 		}
 
 		public int CurrentHP
 		{
-			get { return m_GameItemModel.CurrentHP; }
-			set { m_GameItemModel.CurrentHP = value; }
+			get { return gameItemBasicData.CurrentHP; }
+			set { gameItemBasicData.CurrentHP = value; }
 		}
 		#endregion
 	}

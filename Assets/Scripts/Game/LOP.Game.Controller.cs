@@ -26,7 +26,7 @@ namespace LOP
                 return;
             }
 
-            if (gameItem.m_MasterData.ID == MasterDataDefine.GameItem.RED_POTION)
+            if (gameItem.MasterData.ID == MasterDataDefine.GameItem.RED_POTION)
             {
                 int heal = UnityEngine.Random.Range(50, 150);
 
@@ -52,15 +52,15 @@ namespace LOP
         {
             MonoEntityBase entity = EntityManager.Instance.GetEntity(entityID) as MonoEntityBase;
 
-            EntityInventoryData inventoryData = entity.GetComponent<EntityInventoryData>();
-            if (inventoryData != null)
+            EntityInventory entityInventory = entity.GetComponent<EntityInventory>();
+            if (entityInventory != null)
             {
-                inventoryData.m_nMoney += money;
+                entityInventory.m_nMoney += money;
             }
 
             if (entity.EntityRole == EntityRole.Player)
             {
-                LOP.Game.Current.GameEventManager.Send(new EntityGetMoney(entityID, position, money, inventoryData.m_nMoney), PhotonHelper.GetPhotonPlayer(entityID).ID);
+                LOP.Game.Current.GameEventManager.Send(new EntityGetMoney(entityID, position, money, entityInventory.m_nMoney), PhotonHelper.GetPhotonPlayer(entityID).ID);
             }
         }
 
@@ -149,7 +149,7 @@ namespace LOP
         public void AttackGameItem(int nAttackerID, int nAttackedID, int nDamage)
         {
             GameItem gameItem = EntityManager.Instance.GetEntity(nAttackedID) as GameItem;
-            if (!gameItem.IsAlive || gameItem.m_MasterData.ID != MasterDataDefine.GameItem.TREASURE_BOX)
+            if (!gameItem.IsAlive || gameItem.MasterData.ID != MasterDataDefine.GameItem.TREASURE_BOX)
                 return;
 
             gameItem.CurrentHP = gameItem.CurrentHP - nDamage;
@@ -182,8 +182,8 @@ namespace LOP
             Character attacker = EntityManager.Instance.GetEntity(nAttackerID) as Character;
             Character died = EntityManager.Instance.GetEntity(nDiedID) as Character;
 
-            BasicController controller = died.GetComponent<BasicController>();
-            controller.Die();
+            BehaviorController behaviorController = died.GetComponent<BehaviorController>();
+            behaviorController.Die();
 
             if (died.EntityRole == EntityRole.Monster)
             {

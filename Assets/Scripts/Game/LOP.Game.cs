@@ -227,8 +227,8 @@ namespace LOP
                     EmotionExpressionData emotionExpressionData = EntityAdditionalDataInitializer.Instance.Initialize(new EmotionExpressionData(), character.EntityID);
                     character.AttachComponent(emotionExpressionData);
 
-                    EntityInventoryData entityInventoryData = EntityAdditionalDataInitializer.Instance.Initialize(new EntityInventoryData(), character.EntityID);
-                    character.AttachComponent(entityInventoryData);
+                    EntityInventory entityInventory = EntityAdditionalDataInitializer.Instance.Initialize(new EntityInventory(), character.EntityID);
+                    character.AttachComponent(entityInventory);
 
                     character.AttachComponent(character.gameObject.AddComponent<NearEntityAgent>());
 
@@ -237,7 +237,7 @@ namespace LOP
                     //  Entity Skill Info
                     //  (should receive data from server db?)
                     SkillController controller = character.GetComponent<SkillController>();
-                    foreach (int nSkillID in character.m_MasterData.SkillIDs)
+                    foreach (int nSkillID in character.MasterData.SkillIDs)
                     {
                         controller.AddSkill(nSkillID);
                     }

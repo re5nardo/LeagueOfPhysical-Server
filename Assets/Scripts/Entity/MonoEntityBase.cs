@@ -17,8 +17,6 @@ namespace Entity
             get { return EntityManager.Instance.IsRegistered(EntityID); }
         }
 
-        //	Controller
-        protected PhysicsController m_PhysicsController = null;
         protected TransformAgent m_TransformAgent = null;
 
         private List<IComponent> m_listComponent = new List<IComponent>();
@@ -30,8 +28,6 @@ namespace Entity
 
 		protected virtual void InitComponents()
 		{
-            //	Controller
-            m_PhysicsController = AttachComponent(gameObject.AddComponent<PhysicsController>());
             m_TransformAgent = AttachComponent(gameObject.AddComponent<TransformAgent>());
         }
 
@@ -106,6 +102,7 @@ namespace Entity
             set
             {
                 rotation = value;
+
                 SendCommandToViews(new RotationChanged());
             }
         }
@@ -164,21 +161,6 @@ namespace Entity
             }
         }
 
-        public void SendCommandToViews(ICommand command)
-        {
-            SendCommand(command, new List<Type> { typeof(IViewComponent) });
-        }
-
-        public void SendCommandToModels(ICommand command)
-        {
-            SendCommand(command, new List<Type> { typeof(IModelComponent) });
-        }
-
-        public void SendCommandToControllers(ICommand command)
-        {
-            SendCommand(command, new List<Type> { typeof(IControllerComponent) });
-        }
-
         public void SendCommand(ICommand command, List<Type> cullings)
         {
             List<IComponent> components = new List<IComponent>(m_listComponent);
@@ -194,35 +176,40 @@ namespace Entity
                 }
             }
         }
+
+        public void SendCommandToViews(ICommand command)
+        {
+            SendCommand(command, new List<Type> { typeof(ViewComponentBase), typeof(MonoViewComponentBase) });
+        }
         #endregion
 
         #region PhysicsSimulation
         public virtual void OnBeforePhysicsSimulation(int tick)
         {
-            BasicView basicView = GetComponent<BasicView>();
+            EntityBasicView entityBasicView = GetComponent<EntityBasicView>();
 
-            basicView.ModelTransform.hasChanged = false;
-            basicView.ModelTransform.GetComponent<Rigidbody>().isKinematic = false;
+            entityBasicView.ModelTransform.hasChanged = false;
+            entityBasicView.ModelTransform.GetComponent<Rigidbody>().isKinematic = false;
         }
 
         public virtual void OnAfterPhysicsSimulation(int tick)
         {
-            BasicView basicView = GetComponent<BasicView>();
+            EntityBasicView entityBasicView = GetComponent<EntityBasicView>();
 
-            if (basicView.ModelTransform.hasChanged)
+            if (entityBasicView.ModelTransform.hasChanged)
             {
-                if (Position != basicView.Position)
+                if (Position != entityBasicView.Position)
                 {
-                    Position = basicView.Position;
+                    Position = entityBasicView.Position;
                 }
 
-                if (Rotation != basicView.Rotation)
+                if (Rotation != entityBasicView.Rotation)
                 {
-                    Rotation = basicView.Rotation;
+                    Rotation = entityBasicView.Rotation;
                 }
             }
 
-            basicView.ModelTransform.GetComponent<Rigidbody>().isKinematic = true;
+            entityBasicView.ModelTransform.GetComponent<Rigidbody>().isKinematic = true;
         }
         #endregion
     }

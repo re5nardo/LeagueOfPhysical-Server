@@ -4,7 +4,7 @@ using System;
 using GameFramework;
 using Entity;
 
-public class NearEntityAgent : MonoModelComponentBase, ISubscriber
+public class NearEntityAgent : MonoComponentBase, ISubscriber
 {
 	public enum CellSeenState
 	{

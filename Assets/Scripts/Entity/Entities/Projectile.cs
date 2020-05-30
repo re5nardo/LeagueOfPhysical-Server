@@ -13,26 +13,25 @@ namespace Entity
 		}
 		#endregion
 
-		//	Model
-		private ProjectileModel m_ProjectileModel = null;
+		private ProjectileBasicData projectileBasicData = null;
 
-		//	View
-		private ProjectileView m_ProjectileView = null;
+		private ProjectileView projectileView = null;
 
-		//	Controller
-		private BasicController m_BasicController = null;
+		private BehaviorController behaviorController = null;
+        private StateController stateController = null;
+        private ProjectilePhysicsController projectilePhysicsController = null;
 
-		private MasterData.Projectile m_MasterData__ = null;
-		public MasterData.Projectile m_MasterData
+        private MasterData.Projectile masterData = null;
+		public MasterData.Projectile MasterData
 		{
 			get
 			{
-				if (m_MasterData__ == null)
+				if (masterData == null)
 				{
-					m_MasterData__ = MasterDataManager.Instance.GetMasterData<MasterData.Projectile>(m_ProjectileModel.MasterDataID);
+                    masterData = MasterDataManager.Instance.GetMasterData<MasterData.Projectile>(projectileBasicData.MasterDataID);
 				}
 
-				return m_MasterData__;
+				return masterData;
 			}
 		}
 
@@ -41,15 +40,14 @@ namespace Entity
 		{
 			base.InitComponents();
 
-			//	Model
-			m_ProjectileModel = AttachComponent(gameObject.AddComponent<ProjectileModel>());
+            projectileBasicData = AttachComponent(gameObject.AddComponent<ProjectileBasicData>());
 
-			//	View
-			m_ProjectileView = AttachComponent(gameObject.AddComponent<ProjectileView>());
+            projectileView = AttachComponent(gameObject.AddComponent<ProjectileView>());
 
-			//	Controller
-			m_BasicController = AttachComponent(gameObject.AddComponent<BasicController>());
-		}
+            behaviorController = AttachComponent(gameObject.AddComponent<BehaviorController>());
+            stateController = AttachComponent(gameObject.AddComponent<StateController>());
+            projectilePhysicsController = AttachComponent(gameObject.AddComponent<ProjectilePhysicsController>());
+        }
 
 		public override void Initialize(params object[] param)
 		{
@@ -57,16 +55,16 @@ namespace Entity
 			EntityType = EntityType.Projectile;
             EntityRole = (EntityRole)param[4];
 
-			m_ProjectileModel.Initialize(param);
+            projectileBasicData.Initialize(param);
 		}
 		#endregion
 
 		#region Interface For Convenience
-		public override float MovementSpeed { get { return m_ProjectileModel.MovementSpeed; } }
+		public override float MovementSpeed { get { return projectileBasicData.MovementSpeed; } }
 	
 		public override void Move(Vector3 vec3Destination)
 		{
-			m_BasicController.Move(vec3Destination);
+            behaviorController.Move(vec3Destination);
 		}
 
 		public override EntitySnapInfo GetEntitySnapInfo()
@@ -75,13 +73,13 @@ namespace Entity
 
 			entitySnapInfo.m_nEntityID = EntityID;
 			entitySnapInfo.m_EntityType = EntityType;
-			entitySnapInfo.m_nMasterDataID = m_ProjectileModel.MasterDataID;
+			entitySnapInfo.m_nMasterDataID = projectileBasicData.MasterDataID;
 			entitySnapInfo.m_Position = Position;
 			entitySnapInfo.m_Rotation = Rotation;
 			entitySnapInfo.m_Velocity = Velocity;
 			entitySnapInfo.m_AngularVelocity = AngularVelocity;
-			entitySnapInfo.m_strModel = m_ProjectileModel.ModelName;
-			entitySnapInfo.m_fMovementSpeed = m_ProjectileModel.MovementSpeed;
+			entitySnapInfo.m_strModel = projectileBasicData.ModelName;
+			entitySnapInfo.m_fMovementSpeed = projectileBasicData.MovementSpeed;
 
 			return entitySnapInfo;
 		}

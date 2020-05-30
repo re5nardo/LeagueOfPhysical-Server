@@ -14,31 +14,29 @@ namespace Entity
 		}
 		#endregion
 
-		//	Model
-		private CharacterModel m_CharacterModel = null;
-		private CharacterStatusModel m_CharacterStatusModel = null;
-		private CharacterAbilityModel m_CharacterAbilityModel = null;
+		private CharacterBasicData characterBasicData = null;
+		private CharacterStatusData characterStatusData = null;
+		private CharacterAbilityData characterAbilityData = null;
 
-		//	View
-		private CharacterView m_CharacterView = null;
+		private CharacterView characterView = null;
 
-		//	Controller
-		private BasicController m_BasicController = null;
-		private SkillController m_SkillController = null;
-		private CharacterStatusController m_CharacterStatusController = null;
-		private CharacterAbilityController m_CharacterAbilityController = null;
+        private BehaviorController behaviorController = null;
+        private StateController stateController = null;
+        private SkillController skillController = null;
+		private CharacterStatusController characterStatusController = null;
+		private CharacterAbilityController characterAbilityController = null;
 
-		private MasterData.Character m_MasterData__ = null;
-		public MasterData.Character m_MasterData
+		private MasterData.Character masterData = null;
+		public MasterData.Character MasterData
 		{
 			get
 			{
-				if (m_MasterData__ == null)
+				if (masterData == null)
 				{
-					m_MasterData__ = MasterDataManager.Instance.GetMasterData<MasterData.Character>(m_CharacterModel.MasterDataID);
+                    masterData = MasterDataManager.Instance.GetMasterData<MasterData.Character>(characterBasicData.MasterDataID);
 				}
 
-				return m_MasterData__;
+				return masterData;
 			}
 		}
 
@@ -47,19 +45,17 @@ namespace Entity
 		{
 			base.InitComponents();
 
-			//	Model
-			m_CharacterModel = AttachComponent(gameObject.AddComponent<CharacterModel>());
-			m_CharacterStatusModel = AttachComponent(gameObject.AddComponent<CharacterStatusModel>());
-			m_CharacterAbilityModel = AttachComponent(gameObject.AddComponent<CharacterAbilityModel>());
+            characterBasicData = AttachComponent(gameObject.AddComponent<CharacterBasicData>());
+            characterStatusData = AttachComponent(gameObject.AddComponent<CharacterStatusData>());
+            characterAbilityData = AttachComponent(gameObject.AddComponent<CharacterAbilityData>());
 
-			//	View
-			m_CharacterView = AttachComponent(gameObject.AddComponent<CharacterView>());
+            characterView = AttachComponent(gameObject.AddComponent<CharacterView>());
 
-			//	Controller
-			m_BasicController = AttachComponent(gameObject.AddComponent<BasicController>());
-			m_SkillController = AttachComponent(gameObject.AddComponent<SkillController>());
-			m_CharacterStatusController = AttachComponent(gameObject.AddComponent<CharacterStatusController>());
-			m_CharacterAbilityController = AttachComponent(gameObject.AddComponent<CharacterAbilityController>());
+            behaviorController = AttachComponent(gameObject.AddComponent<BehaviorController>());
+            stateController = AttachComponent(gameObject.AddComponent<StateController>());
+            skillController = AttachComponent(gameObject.AddComponent<SkillController>());
+            characterStatusController = AttachComponent(gameObject.AddComponent<CharacterStatusController>());
+            characterAbilityController = AttachComponent(gameObject.AddComponent<CharacterAbilityController>());
 		}
 
 		public override void Initialize(params object[] param)
@@ -68,33 +64,33 @@ namespace Entity
 			EntityType = EntityType.Character;
             EntityRole = (EntityRole)param[5];
 
-			m_CharacterModel.Initialize(param[0], param[1]);
-			m_CharacterStatusModel.Initialize(param[2], param[3], param[4]);
+            characterBasicData.Initialize(param[0], param[1]);
+            characterStatusData.Initialize(param[2], param[3], param[4]);
 		}
 		#endregion
 
 		#region Interface For Convenience
 		public int CurrentHP
 		{
-			get { return m_CharacterStatusModel.CurrentHP; }
-			set { m_CharacterStatusModel.CurrentHP = value; }
+			get { return characterStatusData.CurrentHP; }
+			set { characterStatusData.CurrentHP = value; }
 		}
 
-		public bool IsAlive { get { return m_CharacterStatusModel.CurrentHP > 0; } }
+		public bool IsAlive { get { return characterStatusData.CurrentHP > 0; } }
 
-		public bool IsSelectableFirstStatus { get { return m_CharacterStatusModel.SelectableFirstStatusCount > 0; } }
+		public bool IsSelectableFirstStatus { get { return characterStatusData.SelectableFirstStatusCount > 0; } }
 
-		public Transform ModelTransform { get { return m_CharacterView.ModelTransform; } }
+		public Transform ModelTransform { get { return characterView.ModelTransform; } }
 
-		public override float MovementSpeed { get { return m_CharacterStatusModel.MovementSpeed; } }
+		public override float MovementSpeed { get { return characterStatusData.MovementSpeed; } }
 
-		public FirstStatus FirstStatus { get { return m_CharacterStatusModel.FirstStatus; } }
+		public FirstStatus FirstStatus { get { return characterStatusData.FirstStatus; } }
 
-		public SecondStatus SecondStatus { get { return m_CharacterStatusModel.SecondStatus; } }
+		public SecondStatus SecondStatus { get { return characterStatusData.SecondStatus; } }
 
 		public override void Move(Vector3 vec3Destination)
 		{
-			m_BasicController.Move(vec3Destination);
+			behaviorController.Move(vec3Destination);
 		}
 
 		public override EntitySnapInfo GetEntitySnapInfo()
@@ -103,15 +99,15 @@ namespace Entity
 
 			entitySnapInfo.m_nEntityID = EntityID;
 			entitySnapInfo.m_EntityType = EntityType;
-			entitySnapInfo.m_nMasterDataID = m_CharacterModel.MasterDataID;
+			entitySnapInfo.m_nMasterDataID = characterBasicData.MasterDataID;
 			entitySnapInfo.m_Position = Position;
 			entitySnapInfo.m_Rotation = Rotation;
 			entitySnapInfo.m_Velocity = Velocity;
 			entitySnapInfo.m_AngularVelocity = AngularVelocity;
-			entitySnapInfo.m_strModel = m_CharacterModel.ModelName;
-			entitySnapInfo.m_FirstStatus = m_CharacterStatusModel.FirstStatus;
-			entitySnapInfo.m_SecondStatus = m_CharacterStatusModel.SecondStatus;
-			entitySnapInfo.m_nSelectableFirstStatusCount = m_CharacterStatusModel.SelectableFirstStatusCount;
+			entitySnapInfo.m_strModel = characterBasicData.ModelName;
+			entitySnapInfo.m_FirstStatus = characterStatusData.FirstStatus;
+			entitySnapInfo.m_SecondStatus = characterStatusData.SecondStatus;
+			entitySnapInfo.m_nSelectableFirstStatusCount = characterStatusData.SelectableFirstStatusCount;
 
 			return entitySnapInfo;
 		}

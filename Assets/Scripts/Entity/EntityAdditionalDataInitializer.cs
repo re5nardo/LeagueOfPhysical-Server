@@ -23,7 +23,7 @@ public class EntityAdditionalDataInitializer : MonoSingleton<EntityAdditionalDat
         return data;
     }
 
-    public EntityInventoryData Initialize(EntityInventoryData data, int nEntityID)
+    public EntityInventory Initialize(EntityInventory data, int nEntityID)
     {
         //  Get data from server db
         //  ...
