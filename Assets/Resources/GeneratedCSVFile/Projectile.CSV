@@ -1,0 +1,4 @@
+ID,Name,ClassName,ModelResID
+int,string,string,string
+0,Arrow,Projectile,ProjectileModel/Arrow Blue
+1,Plasma1,Projectile,ProjectileModel/Arrow Blue

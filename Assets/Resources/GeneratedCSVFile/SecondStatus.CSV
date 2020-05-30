@@ -1,0 +1,11 @@
+ID,Name,MaximumHP,HPRegen,AttackDamage,ArmorPenetration,HPSteal,AttackSpeed,CriticalChance,Range,MovementSpeed,MaximumMP,MPRegen,AbilityPower,MagicPenetration,SpellVamp,CooldownReduction,Armor,MagicResist,Tenacity,HIT,Dodge,Block
+int,string,int,int,int,float,float,float,float,int,float,int,int,int,float,float,float,int,int,float,float,float,float
+0,KnightDefault,500,5,70,0,0,5,0,1,5,50,2,10,0,0,0,50,20,0,90,0,0
+1,NecromancerDefault,250,2,40,0,0,3,0,5,3,350,5,60,0,0,0,20,50,0,90,0,0
+2,ArcherDefault,350,3,55,0,0,5,0,5,6,200,3,30,0,0,0,30,30,0,90,0,0
+3,EvelynnDefault,350,3,55,0,0,4,0,1,5,200,3,30,0,0,0,30,30,0,90,0,0
+4,GarenDefault,500,5,70,0,0,5,0,1,5,50,2,10,0,0,0,50,20,0,90,0,0
+5,VeigarDefault,250,2,40,0,0,3,0,5,3,350,5,60,0,0,0,20,50,0,90,0,0
+6,AsheDefault,350,3,55,0,0,5,0,5,6,200,3,30,0,0,0,30,30,0,90,0,0
+7,SorakaDefault,250,2,40,0,0,3,0,5,3,350,5,60,0,0,0,20,50,0,90,0,0
+8,MalphiteDefault,500,5,70,0,0,5,0,1,5,50,2,10,0,0,0,50,20,0,90,0,0

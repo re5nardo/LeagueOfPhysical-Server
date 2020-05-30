@@ -1,0 +1,5 @@
+ID,Name,ClassName,Price,Lifespan,Properties,HP,ModelResID,IconResID
+int,string,string,int,float,List<string>,int,string,string
+0,RedPotion,Potion,50,-1,,1,GameItemModel/RedPotion,Dummy/EmotionImages/4fb137544b692e53
+1,HourGlass,HourGlass,500,-1,,1,GameItemModel/HourGlass,Dummy/EmotionImages/4fb137544b692e53
+2,TreasureBox,TreasureBox,999999,-1,Breakable,1,GameItemModel/TreasureBox,Dummy/EmotionImages/4fb137544b692e53

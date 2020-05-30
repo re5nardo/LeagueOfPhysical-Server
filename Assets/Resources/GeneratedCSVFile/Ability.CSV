@@ -1,0 +1,9 @@
+ID,Name,ClassName,Rarity,IconResID
+int,string,string,int,string
+0,AllStatus,Ability,3,Dummy/StatusIcon/allstatus
+1,STRStatus,Ability,1,Dummy/StatusIcon/str
+2,DEXStatus,Ability,1,Dummy/StatusIcon/dex
+3,CONStatus,Ability,1,Dummy/StatusIcon/con_
+4,INTStatus,Ability,1,Dummy/StatusIcon/int
+5,WISStatus,Ability,1,Dummy/StatusIcon/wis
+6,CHAStatus,Ability,1,Dummy/StatusIcon/cha

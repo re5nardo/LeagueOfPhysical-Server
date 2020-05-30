@@ -1,0 +1,4 @@
+ID,Name,RewardType,FixedQuantity,Min,Max
+int,string,string,bool,int,int
+0,ExpNecromancer,Exp,true,50,50
+1,MoneyNecromancer,Money,true,50,50
