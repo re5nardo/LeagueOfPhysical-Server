@@ -15,7 +15,7 @@ namespace LOP
         public const float BROADCAST_SCOPE = 80f;
         public const float BROADCAST_SCOPE_RADIUS = BROADCAST_SCOPE * 0.5f;
 
-        public new static Game Current { get { return Current as Game; } }
+        public new static Game Current { get { return GameFramework.Game.Current as Game; } }
 
         private Dictionary<string, int> playerUserIDEntityID = new Dictionary<string, int>();                                  //  key : Player UserID, vlue : EntityID
         private Dictionary<int, string> entityIDPlayerUserID = new Dictionary<int, string>();                                  //  key : EntityID, vlue : Player UserID
