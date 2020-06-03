@@ -114,16 +114,20 @@ public class PlayerMoveInputManager : MonoBehaviour, ISubscriber
 
 	public void OnPlayerEnter(params object[] param)
 	{
-		int entityID = (int)param[0];
+        PhotonPlayer photonPlayer = (PhotonPlayer)param[0];
 
-		//dicPlayerMoveInputData.Add(entityID, null);
+        var entityID = LOP.Game.Current.PlayerUserIDEntityID[photonPlayer.UserId];
+
+		dicPlayerMoveInputData.Add(entityID, null);
 	}
 
 	public void OnPlayerLeave(params object[] param)
 	{
-		int entityID = (int)param[0];
+        PhotonPlayer photonPlayer = (PhotonPlayer)param[0];
 
-		//dicPlayerMoveInputData.Remove(entityID);
-	}
+        var entityID = LOP.Game.Current.PlayerUserIDEntityID[photonPlayer.UserId];
+
+        dicPlayerMoveInputData.Remove(entityID);
+    }
 	#endregion
 }
