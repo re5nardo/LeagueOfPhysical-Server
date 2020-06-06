@@ -1,7 +1,5 @@
-﻿
-namespace GameFramework
+﻿using GameFramework;
+
+public class ViewComponentBase : ComponentBase
 {
-    public class ViewComponentBase : ComponentBase
-    {
-    }
 }

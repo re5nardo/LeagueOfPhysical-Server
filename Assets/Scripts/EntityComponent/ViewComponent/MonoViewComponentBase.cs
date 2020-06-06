@@ -1,8 +1,7 @@
 ﻿using UnityEngine;
+using GameFramework;
 
-namespace GameFramework
+public class MonoViewComponentBase : MonoComponentBase
 {
-    public class MonoViewComponentBase : MonoComponentBase
-    {
-    }
 }
+
