@@ -34,6 +34,8 @@ namespace LOP
 
         public override IEnumerator Initialize()
         {
+            GameFramework.Game.Current = this;
+
             yield return SceneManager.LoadSceneAsync("RiftOfSummoner", LoadSceneMode.Additive);
 
             Physics.autoSimulation = false;

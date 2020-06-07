@@ -17,10 +17,13 @@ namespace LOP
         }
 
         #region MonoBehaviour
-        private IEnumerator Start()
+        private void Awake()
         {
             Instance = this;
+        }
 
+        private IEnumerator Start()
+        {
             yield return StartCoroutine(Initialize());
 
             PhotonNetwork.isMessageQueueRunning = true;
