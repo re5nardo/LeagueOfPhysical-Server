@@ -116,9 +116,16 @@ public class PlayerMoveInputManager : MonoBehaviour, ISubscriber
 	{
         PhotonPlayer photonPlayer = (PhotonPlayer)param[0];
 
-        var entityID = LOP.Game.Current.PlayerUserIDEntityID[photonPlayer.UserId];
+        GlobalMonoBehavior.WaitUntil(() =>
+        {
+            return LOP.Game.Current.PlayerUserIDEntityID.ContainsKey(photonPlayer.UserId);
+        },
+        () =>
+        {
+            var entityID = LOP.Game.Current.PlayerUserIDEntityID[photonPlayer.UserId];
 
-		dicPlayerMoveInputData.Add(entityID, null);
+            dicPlayerMoveInputData.Add(entityID, new List<CS_NotifyMoveInputData>());
+        });
 	}
 
 	public void OnPlayerLeave(params object[] param)

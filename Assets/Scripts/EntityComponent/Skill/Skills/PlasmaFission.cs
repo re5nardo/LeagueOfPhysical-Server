@@ -32,7 +32,7 @@ namespace Skill
 
 		private void Awake()
         {
-            m_nSkillMasterID = MasterDataDefine.SkillID.PLASMA_FISSION;
+            m_nSkillMasterID = Define.MasterData.SkillID.PLASMA_FISSION;
             m_fCoolTime = 0f;
             m_State = State.Ready;
 
@@ -155,7 +155,7 @@ namespace Skill
 
         private Entity.Projectile CreateProjectile(bool split = false)
         {
-            MasterData.Projectile masterData = MasterDataManager.Instance.GetMasterData<MasterData.Projectile>(MasterDataDefine.ProjectileID.PLASMA_1);
+            MasterData.Projectile masterData = MasterDataManager.Instance.GetMasterData<MasterData.Projectile>(Define.MasterData.ProjectileID.PLASMA_1);
 
             IEntity firstProjectile = EntityManager.Instance.GetEntity(m_nFirstProjectileEntityID);
 
@@ -166,7 +166,7 @@ namespace Skill
 			Vector3 vec3Velocity = Entity.Forward * fMovementSpeed;
 
             return Projectile.Builder()
-                .SetMasterDataID(MasterDataDefine.ProjectileID.PLASMA_1)
+                .SetMasterDataID(Define.MasterData.ProjectileID.PLASMA_1)
                 .SetPosition(vec3StartPosition)
                 .SetRotation(vec3StartRotation)
                 .SetVelocity(vec3Velocity)

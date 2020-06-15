@@ -26,7 +26,7 @@ namespace LOP
                 return;
             }
 
-            if (gameItem.MasterData.ID == MasterDataDefine.GameItem.RED_POTION)
+            if (gameItem.MasterData.ID == Define.MasterData.GameItemID.RED_POTION)
             {
                 int heal = UnityEngine.Random.Range(50, 150);
 
@@ -149,7 +149,7 @@ namespace LOP
         public void AttackGameItem(int nAttackerID, int nAttackedID, int nDamage)
         {
             GameItem gameItem = EntityManager.Instance.GetEntity(nAttackedID) as GameItem;
-            if (!gameItem.IsAlive || gameItem.MasterData.ID != MasterDataDefine.GameItem.TREASURE_BOX)
+            if (!gameItem.IsAlive || gameItem.MasterData.ID != Define.MasterData.GameItemID.TREASURE_BOX)
                 return;
 
             gameItem.CurrentHP = gameItem.CurrentHP - nDamage;
@@ -162,10 +162,10 @@ namespace LOP
                 DestroyEntity(nAttackedID);
 
                 //	Create reward
-                MasterData.GameItem masterData = MasterDataManager.Instance.GetMasterData<MasterData.GameItem>(MasterDataDefine.GameItem.RED_POTION);
+                MasterData.GameItem masterData = MasterDataManager.Instance.GetMasterData<MasterData.GameItem>(Define.MasterData.GameItemID.RED_POTION);
 
                 var item = GameItem.Builder()
-                    .SetMasterDataID(MasterDataDefine.GameItem.RED_POTION)
+                    .SetMasterDataID(Define.MasterData.GameItemID.RED_POTION)
                     .SetPosition(gameItem.Position)
                     .SetRotation(Vector3.zero)
                     .SetVelocity(Vector3.zero)

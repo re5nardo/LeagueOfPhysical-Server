@@ -76,7 +76,7 @@ public class SpawnManager : MonoSingleton<SpawnManager>, ISubscriber, ITickable
 
     private Character CreateMonster()
     {
-		int characterID = UnityEngine.Random.Range(MasterDataDefine.CharacterID.EVELYNN, MasterDataDefine.CharacterID.MALPHITE + 1);
+		int characterID = UnityEngine.Random.Range(Define.MasterData.CharacterID.EVELYNN, Define.MasterData.CharacterID.MALPHITE + 1);
 		MasterData.Character characterMasterData = MasterDataManager.Instance.GetMasterData<MasterData.Character>(characterID);
 		MasterData.FirstStatus firstStatusMasterData = MasterDataManager.Instance.GetMasterData<MasterData.FirstStatus>(characterMasterData.FirstStatusID);
 		MasterData.SecondStatus secondStatusMasterData = MasterDataManager.Instance.GetMasterData<MasterData.SecondStatus>(characterMasterData.SecondStatusID);
@@ -105,14 +105,14 @@ public class SpawnManager : MonoSingleton<SpawnManager>, ISubscriber, ITickable
 
 	private GameItem CreateTreasureBox()
 	{
-		MasterData.GameItem masterData = MasterDataManager.Instance.GetMasterData<MasterData.GameItem>(MasterDataDefine.GameItem.TREASURE_BOX);
+		MasterData.GameItem masterData = MasterDataManager.Instance.GetMasterData<MasterData.GameItem>(Define.MasterData.GameItemID.TREASURE_BOX);
 
 		Rect mapRect = LOP.Game.Current.GetMapRect();
 		Vector3 vec3StartPosition = new Vector3(UnityEngine.Random.Range(mapRect.xMin + 5, mapRect.xMax - 5), 0, UnityEngine.Random.Range(mapRect.yMin + 5, mapRect.yMax - 5));
 		Vector3 vec3StartRotation = new Vector3(0, UnityEngine.Random.Range(0, 360), 0);
 
 		var treasureBox = GameItem.Builder()
-			.SetMasterDataID(MasterDataDefine.GameItem.TREASURE_BOX)
+			.SetMasterDataID(Define.MasterData.GameItemID.TREASURE_BOX)
 			.SetPosition(vec3StartPosition)
 			.SetRotation(vec3StartRotation)
 			.SetVelocity(Vector3.zero)

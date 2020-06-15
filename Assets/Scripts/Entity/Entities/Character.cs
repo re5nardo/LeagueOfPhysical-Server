@@ -99,7 +99,8 @@ namespace Entity
 
 			entitySnapInfo.m_nEntityID = EntityID;
 			entitySnapInfo.m_EntityType = EntityType;
-			entitySnapInfo.m_nMasterDataID = characterBasicData.MasterDataID;
+            entitySnapInfo.m_EntityRole = EntityRole;
+            entitySnapInfo.m_nMasterDataID = characterBasicData.MasterDataID;
 			entitySnapInfo.m_Position = Position;
 			entitySnapInfo.m_Rotation = Rotation;
 			entitySnapInfo.m_Velocity = Velocity;

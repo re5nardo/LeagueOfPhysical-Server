@@ -16,9 +16,9 @@ public class BehaviorController : MonoComponentBase
         }
         else
         {
-            Move move = BehaviorFactory.Instance.CreateBehavior(gameObject, MasterDataDefine.BehaviorID.MOVE) as Move;
+            Move move = BehaviorFactory.Instance.CreateBehavior(gameObject, Define.MasterData.BehaviorID.MOVE) as Move;
             Entity.AttachComponent(move);
-            move.SetData(MasterDataDefine.BehaviorID.MOVE, vec3Destination);
+            move.SetData(Define.MasterData.BehaviorID.MOVE, vec3Destination);
             move.onBehaviorEnd += BehaviorHelper.BehaviorDestroyer;
 
             move.StartBehavior();
@@ -31,9 +31,9 @@ public class BehaviorController : MonoComponentBase
         }
         else
         {
-            Rotation rotation = BehaviorFactory.Instance.CreateBehavior(gameObject, MasterDataDefine.BehaviorID.ROTATION) as Rotation;
+            Rotation rotation = BehaviorFactory.Instance.CreateBehavior(gameObject, Define.MasterData.BehaviorID.ROTATION) as Rotation;
             Entity.AttachComponent(rotation);
-            rotation.SetData(MasterDataDefine.BehaviorID.ROTATION, vec3Direction);
+            rotation.SetData(Define.MasterData.BehaviorID.ROTATION, vec3Direction);
             rotation.onBehaviorEnd += BehaviorHelper.BehaviorDestroyer;
 
             rotation.StartBehavior();

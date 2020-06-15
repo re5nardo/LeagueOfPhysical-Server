@@ -72,7 +72,7 @@ public class GameItemBuilder
 		gameItem.AngularVelocity = m_vec3AngularVelocity;
 
         StateController stateController = gameItem.GetComponent<StateController>();
-        stateController.StartState(MasterDataDefine.StateID.EntitySelfDestroy, m_fLifespan);
+        stateController.StartState(Define.MasterData.StateID.EntitySelfDestroy, m_fLifespan);
 
         gameItem.name = string.Format("Entity_{0}", gameItem.EntityID);
 

@@ -26,7 +26,7 @@ public class Attack : Action
     public override TaskStatus OnUpdate()
     {
 		int characterID = (Entity as Character).MasterData.ID;                          //  Temp
-		int attackID = 7 + (characterID - MasterDataDefine.CharacterID.EVELYNN) * 4;	//  Temp
+		int attackID = 7 + (characterID - Define.MasterData.CharacterID.EVELYNN) * 4;	//  Temp
         var behaviors = Entity.GetComponents<Behavior.BehaviorBase>();
         foreach(var behavior in behaviors)
         {

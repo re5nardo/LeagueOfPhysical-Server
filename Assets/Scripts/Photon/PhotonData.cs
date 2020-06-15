@@ -105,7 +105,8 @@ public class EntitySnapInfo
 {
 	public int m_nEntityID = -1;
 	public EntityType m_EntityType;
-	public SerializableVector3 m_Position;
+    public EntityRole m_EntityRole;
+    public SerializableVector3 m_Position;
 	public SerializableVector3 m_Rotation;
 	public SerializableVector3 m_Velocity;
 	public SerializableVector3 m_AngularVelocity;

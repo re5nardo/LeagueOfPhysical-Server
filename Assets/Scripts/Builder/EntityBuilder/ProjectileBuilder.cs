@@ -86,7 +86,7 @@ public class ProjectileBuilder
 		projectile.AngularVelocity = m_vec3AngularVelocity;
 
         StateController stateController = projectile.GetComponent<StateController>();
-        stateController.StartState(MasterDataDefine.StateID.EntitySelfDestroy, m_fLifespan);
+        stateController.StartState(Define.MasterData.StateID.EntitySelfDestroy, m_fLifespan);
 
         goProjectile.name = string.Format("Entity_{0}", projectile.EntityID);
 
