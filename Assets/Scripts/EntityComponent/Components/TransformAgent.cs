@@ -5,7 +5,7 @@ using GameFramework;
 
 public class TransformAgent : MonoComponentBase
 {
-    public int WaitingInterval = 5;  //  최소 대기 시간(tick) (이 시간 이하로는 다시 send 불가)
+    public int WaitingInterval = 3;  //  최소 대기 시간(tick) (이 시간 이하로는 다시 send 불가)
 
     public Vector3 LastPosition;
     public Vector3 LastRotation;

@@ -62,6 +62,8 @@ namespace LOP
             });
 
             tickUpdater.Initialize(1 / 30f, false, OnTick, OnTickEnd);
+
+            initialized = true;
         }
 
         protected override void Clear()
@@ -112,7 +114,7 @@ namespace LOP
         {
             SpawnManager.Instance.StartSpawn();
 
-            InvokeRepeating("SendSyncTick", 0f, 0.1f);
+            InvokeRepeating("SendSyncTick", 0f, 0.05f);
         }
 
         private void OnTick(int tick)
