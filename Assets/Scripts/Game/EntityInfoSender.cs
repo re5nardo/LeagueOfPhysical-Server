@@ -80,7 +80,7 @@ public class EntityInfoSender : MonoSingleton<EntityInfoSender>, ISubscriber, IT
 
             if (transformAgent.HasChanged)
             {
-                if ((Game.Current.CurrentTick - transformAgent.LastSendTick) >= transformAgent.WaitingInterval)
+                if (transformAgent.HasVelocityChanged || (Game.Current.CurrentTick - transformAgent.LastSendTick) >= transformAgent.WaitingInterval)
                 {
                     EntityTransformInfo entityTransformInfo = ObjectPool.Instance.GetObject<EntityTransformInfo>();
                     entityTransformInfo.SetEntityTransformInfo(entity, Game.Current.GameTime);
