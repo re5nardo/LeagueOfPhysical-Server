@@ -15,7 +15,7 @@ public class Entrance : PunBehaviour
     private void Start()
     {
 #if UNITY_STANDALONE && !UNITY_EDITOR
-        AutoCreateRoom = true;
+        autoCreateRoom = true;
 #endif
         loginComponent.successCallback = () =>
         {
@@ -88,16 +88,28 @@ public class Entrance : PunBehaviour
 
         RoomOptions roomOptions = new RoomOptions();
         roomOptions.PublishUserId = true;
+        roomOptions.MaxPlayers = 3;     //  1 server + 2 players
 
         string roomName = inputFieldRoomName.text;
+        string[] expectedUsers = null;
 
 #if UNITY_STANDALONE && !UNITY_EDITOR
         var arguments = System.Environment.GetCommandLineArgs();
+        
+        if (arguments.Length >= 1)
+        {
+            roomName = arguments[1];
+        }
 
-        roomName = arguments[1];
+        if (arguments.Length >= 3)
+        {
+            expectedUsers = new string[2]
+            {
+                arguments[2], arguments[3]
+            };
+        }
 #endif
-
-        PhotonNetwork.CreateRoom(roomName, roomOptions, null);
+        PhotonNetwork.CreateRoom(roomName, roomOptions, null, expectedUsers);
     }
 
     public override void OnCreatedRoom()
