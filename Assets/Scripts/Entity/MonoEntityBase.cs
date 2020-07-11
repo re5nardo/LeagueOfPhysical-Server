@@ -17,8 +17,6 @@ namespace Entity
             get { return EntityManager.Instance.IsRegistered(EntityID); }
         }
 
-        protected TransformAgent m_TransformAgent = null;
-
         private List<IComponent> m_listComponent = new List<IComponent>();
 
         protected virtual void Awake()
@@ -28,7 +26,6 @@ namespace Entity
 
 		protected virtual void InitComponents()
 		{
-            m_TransformAgent = AttachComponent(gameObject.AddComponent<TransformAgent>());
         }
 
 		public virtual void Initialize(params object[] param)

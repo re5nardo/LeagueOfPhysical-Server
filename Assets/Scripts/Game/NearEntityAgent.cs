@@ -3,6 +3,7 @@ using UnityEngine;
 using System;
 using GameFramework;
 using Entity;
+using System.Linq;
 
 public class NearEntityAgent : MonoComponentBase, ISubscriber
 {
@@ -28,6 +29,8 @@ public class NearEntityAgent : MonoComponentBase, ISubscriber
 	private HashSet<int> m_hashNearPlayerEntityID = new HashSet<int>();
 
 	private Dictionary<Enum, Action<object[]>> m_dicMessageHandler = new Dictionary<Enum, Action<object[]>>();
+
+    public Dictionary<int, EntityTransformSnap> m_EntityTransformSnaps = new Dictionary<int, EntityTransformSnap>();
 
     public override void OnAttached(IEntity entity)
 	{
@@ -206,70 +209,61 @@ public class NearEntityAgent : MonoComponentBase, ISubscriber
 
 	private void CheckAppearNDisAppearEntity(Dictionary<Vector2Int, CellSeenState> dicLastCellSeenState)
 	{
-		foreach (Cell seenCell in m_dicSeenCell.Values)
+        HashSet<int> appearEntityIDs = new HashSet<int>();
+        HashSet<int> disAppearEntityIDs = new HashSet<int>();
+
+        //  현재 Seen 상태의 Entity 순회
+        foreach (Cell seenCell in m_dicSeenCell.Values)
 		{
 			if (dicLastCellSeenState.ContainsKey(seenCell.m_vec2Position))
 			{
-				if (dicLastCellSeenState[seenCell.m_vec2Position] == CellSeenState.Seen || dicLastCellSeenState[seenCell.m_vec2Position] == CellSeenState.DeadBand_Seen)
+                //  이전 Seen 상태가 Seen 이었으면 (이미 보여지고 있던 상태면) 무시
+                if (dicLastCellSeenState[seenCell.m_vec2Position] == CellSeenState.Seen || dicLastCellSeenState[seenCell.m_vec2Position] == CellSeenState.DeadBand_Seen)
 				{
 					continue;
 				}
 			}
 
+            //  새롭게 Seen 상태가 된 Entity들
 			foreach (int nEntityID in seenCell.m_hashEntityID)
 			{
-				m_hashNearEntityID.Add(nEntityID);
-
-                MonoEntityBase entity = EntityManager.Instance.GetEntity(nEntityID) as MonoEntityBase;
-				if (entity.EntityRole == EntityRole.Player)
-				{
-					m_hashNearPlayerEntityID.Add(nEntityID);
-				}
-
-				SendEntityAppear(new List<int> { nEntityID });
-			}
+                appearEntityIDs.Add(nEntityID);
+            }
 		}
 
-		foreach (var lastCell in dicLastCellSeenState)
+        EntityAppear(appearEntityIDs.ToList());
+
+
+        foreach (var lastCell in dicLastCellSeenState)
 		{
 			Vector2Int lastCellPosition = lastCell.Key;
 			CellSeenState lastCellState = lastCell.Value;
 
-			if (lastCellState == CellSeenState.Seen || lastCellState == CellSeenState.DeadBand_Seen)
+            //  이전 Seen 상태가 Seen 이었던 (이미 보여지고 있던) 상태의 Entity 순회
+            if (lastCellState == CellSeenState.Seen || lastCellState == CellSeenState.DeadBand_Seen)
 			{
+                //  현재 보여지고 있는 상태가 아니면 (이전에 보여지다 현재 보여지지 않는 경우)
 				if (!m_dicCellSeenState.ContainsKey(lastCellPosition))
 				{
 					foreach (int nEntityID in EntityManager.Instance.GetCell(lastCellPosition).m_hashEntityID)
 					{
-						m_hashNearEntityID.Remove(nEntityID);
-						m_hashNearPlayerEntityID.Remove(nEntityID);
-
-						SendEntityDisAppear(new List<int> { nEntityID });
-					}
+                        disAppearEntityIDs.Add(nEntityID);
+                    }
 				}
 			}
 		}
-	}
+
+        EntityDisAppear(disAppearEntityIDs.ToList());
+    }
 
     //  List로 주변 Entity 관리하면서 추가 삭제 시 전송..??
-
-	private void OnOtherEntityAddedToGrid(int nEntityID, Vector2Int pos)
+    private void OnOtherEntityAddedToGrid(int nEntityID, Vector2Int pos)
 	{
 		if (m_dicSeenCell.ContainsKey(pos))
 		{
-			m_hashNearEntityID.Add(nEntityID);
-
-            MonoEntityBase entity = EntityManager.Instance.GetEntity(nEntityID) as MonoEntityBase;
-			if (entity.EntityRole == EntityRole.Player)
-			{
-				m_hashNearPlayerEntityID.Add(nEntityID);
-			}
-
-			SendEntityAppear(new List<int> { nEntityID });
+            EntityAppear(new List<int> { nEntityID });
 		}
 	}
-
-	
 
 	private void OnMyEntityRemovedFromGrid(int nEntityID, Vector2Int pos)
 	{
@@ -283,11 +277,8 @@ public class NearEntityAgent : MonoComponentBase, ISubscriber
 		{
 			if (m_dicCellSeenState[pos] == CellSeenState.Seen || m_dicCellSeenState[pos] == CellSeenState.DeadBand_Seen)
 			{
-				m_hashNearEntityID.Remove(nEntityID);
-				m_hashNearPlayerEntityID.Remove(nEntityID);
-
-				SendEntityDisAppear(new List<int> { nEntityID });
-			}
+                EntityDisAppear(new List<int> { nEntityID });
+            }
 		}
 	}
 
@@ -303,11 +294,8 @@ public class NearEntityAgent : MonoComponentBase, ISubscriber
 		{
 			if (m_dicCellSeenState[from] == CellSeenState.Seen || m_dicCellSeenState[from] == CellSeenState.DeadBand_Seen)
 			{
-				m_hashNearEntityID.Remove(nEntityID);
-				m_hashNearPlayerEntityID.Remove(nEntityID);
-
-				SendEntityDisAppear(new List<int> { nEntityID });
-			}
+                EntityDisAppear(new List<int> { nEntityID });
+            }
 		}
 
 		//	Check Appear
@@ -315,20 +303,49 @@ public class NearEntityAgent : MonoComponentBase, ISubscriber
 		{
 			if (!m_dicCellSeenState.ContainsKey(from) || m_dicCellSeenState[from] == CellSeenState.DeadBand_UnSeen)
 			{
-				m_hashNearEntityID.Add(nEntityID);
-
-                MonoEntityBase entity = EntityManager.Instance.GetEntity(nEntityID) as MonoEntityBase;
-				if (entity.EntityRole == EntityRole.Player)
-				{
-					m_hashNearPlayerEntityID.Add(nEntityID);
-				}
-
-				SendEntityAppear(new List<int> { nEntityID });
-			}
+                EntityAppear(new List<int> { nEntityID });
+            }
 		}
 	}
 
-	public HashSet<int> GetNearEntityIDs()
+    private void EntityAppear(List<int> entityIDs)
+    {
+        foreach (var entityID in entityIDs)
+        {
+            m_hashNearEntityID.Add(entityID);
+
+            MonoEntityBase entity = EntityManager.Instance.GetEntity(entityID) as MonoEntityBase;
+            if (entity.EntityRole == EntityRole.Player)
+            {
+                m_hashNearPlayerEntityID.Add(entityID);
+            }
+
+            if (!m_EntityTransformSnaps.ContainsKey(entityID))
+            {
+                m_EntityTransformSnaps[entityID] = new EntityTransformSnap(entityID);
+            }
+        }
+
+        SendEntityAppear(entityIDs);
+    }
+
+    private void EntityDisAppear(List<int> entityIDs)
+    {
+        foreach (var entityID in entityIDs)
+        {
+            m_hashNearEntityID.Remove(entityID);
+            m_hashNearPlayerEntityID.Remove(entityID);
+
+            if (m_EntityTransformSnaps.ContainsKey(entityID))
+            {
+                m_EntityTransformSnaps.Remove(entityID);
+            }
+        }
+
+        SendEntityDisAppear(entityIDs);
+    }
+
+    public HashSet<int> GetNearEntityIDs()
 	{
 		return new HashSet<int>(m_hashNearEntityID);
 	}

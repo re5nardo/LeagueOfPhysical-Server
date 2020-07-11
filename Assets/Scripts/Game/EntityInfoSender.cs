@@ -53,47 +53,51 @@ public class EntityInfoSender : MonoSingleton<EntityInfoSender>, ISubscriber, IT
 
             string strPlayerUserID = kv.Key;
             PhotonPlayer photonPlayer = kv.Value.Target as PhotonPlayer;
+            IEntity playerEntity = EntityManager.Instance.GetEntity(LOP.Game.Current.PlayerUserIDEntityID[strPlayerUserID]);
+            if (playerEntity == null)
+            {
+                //	Already removed
+                continue;
+            }
+            NearEntityAgent nearEntityAgent = playerEntity.GetComponent<NearEntityAgent>();
 
+            //  Get target entities
+            List<EntityTransformInfo> listEntityTransformInfo = new List<EntityTransformInfo>();
             Vector3 vec3Center = m_dicPlayerUserIDLookAtPosition.ContainsKey(strPlayerUserID) ? m_dicPlayerUserIDLookAtPosition[strPlayerUserID] : Vector3.zero;
+            var entities = EntityManager.Instance.GetEntities(vec3Center, LOP.Game.BROADCAST_SCOPE_RADIUS, EntityRole.All);
+            foreach (IEntity candidate in entities)
+            {
+                if (nearEntityAgent.m_EntityTransformSnaps.ContainsKey(candidate.EntityID))
+                {
+                    EntityTransformSnap entityTransformSnap = nearEntityAgent.m_EntityTransformSnaps[candidate.EntityID];
+                    if (entityTransformSnap.HasChanged)
+                    {
+                        if (entityTransformSnap.HasVelocityChanged || (Game.Current.CurrentTick - entityTransformSnap.LastSendTick) >= entityTransformSnap.WaitingInterval)
+                        {
+                            EntityTransformInfo entityTransformInfo = ObjectPool.Instance.GetObject<EntityTransformInfo>();
+                            entityTransformInfo.SetEntityTransformInfo(candidate, Game.Current.GameTime);
 
-            SC_NearEntityTransformInfos nearEntityTransformInfos = ObjectPool.Instance.GetObject<SC_NearEntityTransformInfos>();
-			List<EntityTransformInfo> listEntityTransformInfo = GetNearEntityTransformInfo(vec3Center, LOP.Game.BROADCAST_SCOPE_RADIUS, EntityRole.All);
+                            listEntityTransformInfo.Add(entityTransformInfo);
 
+                            entityTransformSnap.LastSendTick = Game.Current.CurrentTick;
+                            entityTransformSnap.HasChanged = false;
+                        }
+                    }
+                }
+            }
+
+            //  Send packet
             if (listEntityTransformInfo.Count > 0)
             {
+                SC_NearEntityTransformInfos nearEntityTransformInfos = ObjectPool.Instance.GetObject<SC_NearEntityTransformInfos>();
+
                 nearEntityTransformInfos.m_listEntityTransformInfo = listEntityTransformInfo;
 
 				RoomNetwork.Instance.Send(nearEntityTransformInfos, photonPlayer.ID, false, true);
-            }
 
-            ObjectPool.Instance.ReturnObject(nearEntityTransformInfos);
-        }
-    }
-
-    private List<EntityTransformInfo> GetNearEntityTransformInfo(Vector3 vec3Position, float fRadius, EntityRole entityRoleFlag, HashSet<int> hashExceptID = null)
-    {
-        List<EntityTransformInfo> listEntityTransformInfo = new List<EntityTransformInfo>();
-
-        foreach (IEntity entity in EntityManager.Instance.GetEntities(vec3Position, fRadius, entityRoleFlag, hashExceptID))
-        {
-            TransformAgent transformAgent = entity.GetComponent<TransformAgent>();
-
-            if (transformAgent.HasChanged)
-            {
-                if (transformAgent.HasVelocityChanged || (Game.Current.CurrentTick - transformAgent.LastSendTick) >= transformAgent.WaitingInterval)
-                {
-                    EntityTransformInfo entityTransformInfo = ObjectPool.Instance.GetObject<EntityTransformInfo>();
-                    entityTransformInfo.SetEntityTransformInfo(entity, Game.Current.GameTime);
-
-                    listEntityTransformInfo.Add(entityTransformInfo);
-
-                    transformAgent.LastSendTick = Game.Current.CurrentTick;
-                    transformAgent.HasChanged = false;
-                }
+                ObjectPool.Instance.ReturnObject(nearEntityTransformInfos);
             }
         }
-
-        return listEntityTransformInfo;
     }
 
     private void SendPlayerSkillInfos()
