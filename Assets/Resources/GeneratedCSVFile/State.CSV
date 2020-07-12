@@ -2,3 +2,4 @@ ID,Name,ClassName,ClassParams,Lifespan
 int,string,string,List<string>,float
 0,Invincible,BasicState,,5
 1,EntitySelfDestroy,EntitySelfDestroy,,-1
+2,Unmovable,BasicState,,-1
