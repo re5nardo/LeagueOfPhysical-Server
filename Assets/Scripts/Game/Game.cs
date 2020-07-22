@@ -113,8 +113,6 @@ namespace LOP
         protected override void OnBeforeRun()
         {
             SpawnManager.Instance.StartSpawn();
-
-            InvokeRepeating("SendSyncTick", 0f, 0.05f);
         }
 
         private void OnTick(int tick)
@@ -153,6 +151,8 @@ namespace LOP
 
             EntityInfoSender.Instance.Tick(tick);
             SpawnManager.Instance.Tick(tick);
+
+            RoomNetwork.Instance.SendToAll(new SC_SyncTick(CurrentTick));
         }
 
         private void OnTickEnd(int tick)
@@ -160,11 +160,6 @@ namespace LOP
             //BroadCastGameEvent();
 
             //gameEvents.Clear();
-        }
-
-        private void SendSyncTick()
-        {
-            RoomNetwork.Instance.SendToAll(new SC_SyncTick(CurrentTick));
         }
 
         private void OnNetworkMessage(IMessage msg, object[] objects)
