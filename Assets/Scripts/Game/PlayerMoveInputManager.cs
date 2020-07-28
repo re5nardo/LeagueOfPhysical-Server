@@ -62,15 +62,15 @@ public class PlayerMoveInputManager : MonoBehaviour, ISubscriber
 		Vector3 inputSum = Vector3.zero;
 		foreach (var notifyMoveInputData in notifyMoveInputDatas)
 		{
-			if (notifyMoveInputData.m_PlayerMoveInput.m_InputType == PlayerMoveInput.InputType.Release)
+			if (notifyMoveInputData.m_PlayerMoveInput.inputType == PlayerMoveInput.InputType.Release)
 			{
-				Character character = EntityManager.Instance.GetEntity(notifyMoveInputData.m_PlayerMoveInput.m_nEntityID) as Character;
+				Character character = EntityManager.Instance.GetEntity(notifyMoveInputData.m_PlayerMoveInput.entityID) as Character;
 				Behavior.Move oldMove = character.GetComponent<Behavior.Move>();
 				oldMove?.StopBehavior();
 			}
-			else if (notifyMoveInputData.m_PlayerMoveInput.m_InputType == PlayerMoveInput.InputType.Hold)
+			else if (notifyMoveInputData.m_PlayerMoveInput.inputType == PlayerMoveInput.InputType.Hold)
 			{
-				inputSum += notifyMoveInputData.m_PlayerMoveInput.m_InputData;
+				inputSum += notifyMoveInputData.m_PlayerMoveInput.inputData;
 			}
 		}
 
@@ -97,12 +97,12 @@ public class PlayerMoveInputManager : MonoBehaviour, ISubscriber
 	{
 		CS_NotifyMoveInputData notifyMoveInputData = msg as CS_NotifyMoveInputData;
 
-		if (!dicPlayerMoveInputData.ContainsKey(notifyMoveInputData.m_PlayerMoveInput.m_nEntityID))
+		if (!dicPlayerMoveInputData.ContainsKey(notifyMoveInputData.m_PlayerMoveInput.entityID))
 		{
-			dicPlayerMoveInputData.Add(notifyMoveInputData.m_PlayerMoveInput.m_nEntityID, new List<CS_NotifyMoveInputData>());
+			dicPlayerMoveInputData.Add(notifyMoveInputData.m_PlayerMoveInput.entityID, new List<CS_NotifyMoveInputData>());
 		}
 
-		dicPlayerMoveInputData[notifyMoveInputData.m_PlayerMoveInput.m_nEntityID].Add(notifyMoveInputData);
+		dicPlayerMoveInputData[notifyMoveInputData.m_PlayerMoveInput.entityID].Add(notifyMoveInputData);
 	}
 	#endregion
 

@@ -204,20 +204,26 @@ public class PlayerMoveInput
 		Release = 3,
 	}
 
-	public PlayerMoveInput(long lSequence = -1, int nEntityID = -1, SerializableVector3 inputData = default, float fGameTime = -1, InputType inputType = InputType.None)
-	{
-		m_lSequence = lSequence;
-		m_nEntityID = nEntityID;
-		m_InputData = inputData;
-		m_fGameTime = fGameTime;
-		m_InputType = inputType;
-	}
+    public PlayerMoveInput()
+    {
+    }
 
-	public long m_lSequence = -1;
-	public int m_nEntityID = -1;
-	public SerializableVector3 m_InputData = default;
-	public float m_fGameTime = -1;
-	public InputType m_InputType = InputType.None;
+    public PlayerMoveInput(int tick = -1, long sequence = -1, int entityID = -1, SerializableVector3 position = default, SerializableVector3 inputData = default, InputType inputType = InputType.None)
+    {
+        this.tick = tick;
+        this.sequence = sequence;
+        this.entityID = entityID;
+        this.position = position;
+        this.inputData = inputData;
+        this.inputType = inputType;
+    }
+
+    public int tick = -1;
+    public long sequence = -1;
+    public int entityID = -1;
+    public SerializableVector3 position = default;
+    public SerializableVector3 inputData = default;
+    public InputType inputType = InputType.None;
 }
 
 #region Protocols (Server to Client)
