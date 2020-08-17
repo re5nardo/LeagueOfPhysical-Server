@@ -9,7 +9,7 @@ namespace Behavior
         private Vector3 m_vec3Direction;
 
         // Angular speed in degrees per sec.
-		private float m_fAngularSpeed = 360 * 3;
+		private float m_fAngularSpeed = 360 * 2;
 
         #region BehaviorBase
         protected override void OnBehaviorStart()

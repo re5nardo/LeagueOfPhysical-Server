@@ -61,8 +61,8 @@ namespace Entity
             var tickables = allComponents.FindAll(x => x is ITickable).Cast<ITickable>().ToList();
             tickables.Sort((x, y) =>
             {
-                int value_x = x is State.StateBase ? 300 : x is Behavior.BehaviorBase ? 200 : x is Skill.SkillBase ? 100 : 0;
-                int value_y = y is State.StateBase ? 300 : y is Behavior.BehaviorBase ? 200 : y is Skill.SkillBase ? 100 : 0;
+                int value_x = x is PlayerMoveInputController ? 400 : x is State.StateBase ? 300 : x is Behavior.BehaviorBase ? 200 : x is Skill.SkillBase ? 100 : 0;
+                int value_y = y is PlayerMoveInputController ? 400 : y is State.StateBase ? 300 : y is Behavior.BehaviorBase ? 200 : y is Skill.SkillBase ? 100 : 0;
 
                 return value_y.CompareTo(value_x);
             });

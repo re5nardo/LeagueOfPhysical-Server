@@ -14,6 +14,7 @@ public class GameProtocolDispatcher : MonoBehaviour
         m_dicProtocolHandler.Add(PhotonEvent.CS_RequestEmotionExpression, new CS_RequestEmotionExpressionHandler());
         m_dicProtocolHandler.Add(PhotonEvent.CS_FirstStatusSelection, new CS_FirstStatusSelectionHandler());
         m_dicProtocolHandler.Add(PhotonEvent.CS_AbilitySelection, new CS_AbilitySelectionHandler());
+        m_dicProtocolHandler.Add(PhotonEvent.CS_NotifyMoveInputData, new CS_NotifyMoveInputDataHandler());
     }
 
     private void OnDestroy()

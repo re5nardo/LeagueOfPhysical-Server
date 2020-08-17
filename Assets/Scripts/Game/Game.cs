@@ -29,7 +29,6 @@ namespace LOP
         public GameEventManager GameEventManager { get { return gameEventManager; } }
 
         private GameProtocolDispatcher protocolDispatcher = null;
-        private PlayerMoveInputManager playerMoveInputManager = null;
         private RoomPubMessageHandler roomPubMessageHandler = null;
 
         public override IEnumerator Initialize()
@@ -47,7 +46,6 @@ namespace LOP
             ResourcePool.Instantiate();
 
             protocolDispatcher = gameObject.AddComponent<GameProtocolDispatcher>();
-            playerMoveInputManager = gameObject.AddComponent<PlayerMoveInputManager>();
 
             tickUpdater = gameObject.AddComponent<TickUpdater>();
             gameEventManager = gameObject.AddComponent<GameEventManager>();
@@ -78,12 +76,6 @@ namespace LOP
             {
                 Destroy(protocolDispatcher);
                 protocolDispatcher = null;
-            }
-
-            if (playerMoveInputManager != null)
-            {
-                Destroy(playerMoveInputManager);
-                playerMoveInputManager = null;
             }
 
             if (tickUpdater != null)
@@ -230,6 +222,7 @@ namespace LOP
                     character.AttachComponent(entityInventory);
 
                     character.AttachComponent(character.gameObject.AddComponent<NearEntityAgent>());
+                    character.AttachComponent(character.gameObject.AddComponent<PlayerMoveInputController>());
 
                     character.AttachComponent(character.gameObject.AddComponent<PlayerView>());
 
