@@ -208,12 +208,13 @@ public class PlayerMoveInput
     {
     }
 
-    public PlayerMoveInput(int tick = -1, long sequence = -1, int entityID = -1, SerializableVector3 position = default, SerializableVector3 inputData = default, InputType inputType = InputType.None)
+    public PlayerMoveInput(int tick = -1, long sequence = -1, int entityID = -1, SerializableVector3 position = default, SerializableVector3 rotation = default, SerializableVector3 inputData = default, InputType inputType = InputType.None)
     {
         this.tick = tick;
         this.sequence = sequence;
         this.entityID = entityID;
         this.position = position;
+        this.rotation = rotation;
         this.inputData = inputData;
         this.inputType = inputType;
     }
@@ -222,8 +223,21 @@ public class PlayerMoveInput
     public long sequence = -1;
     public int entityID = -1;
     public SerializableVector3 position = default;
+    public SerializableVector3 rotation = default;
     public SerializableVector3 inputData = default;
     public InputType inputType = InputType.None;
+}
+
+[Serializable]
+public class PlayerTransformInput
+{
+    public int tick = -1;
+    public long sequence = -1;
+    public int entityID = -1;
+    public SerializableVector3 position = default;
+    public SerializableVector3 rotation = default;
+    public SerializableVector3 positionOffset = default;
+    public SerializableVector3 rotationOffset = default;
 }
 
 #region Protocols (Server to Client)
