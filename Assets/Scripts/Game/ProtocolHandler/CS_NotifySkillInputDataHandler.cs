@@ -4,9 +4,9 @@ using UnityEngine;
 using GameFramework;
 using System.Linq;
 
-public class CS_NotifySkillInputDataHandler : IHandler<IPhotonEventMessage>
+public class CS_NotifySkillInputDataHandler
 {
-    public void Handle(IPhotonEventMessage msg)
+    public static void Handle(IPhotonEventMessage msg)
     {
         CS_NotifySkillInputData notifySkillInputData = msg as CS_NotifySkillInputData;
 

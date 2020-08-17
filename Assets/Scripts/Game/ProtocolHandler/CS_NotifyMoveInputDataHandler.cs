@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using GameFramework;
 
-public class CS_NotifyMoveInputDataHandler : IHandler<IPhotonEventMessage>
+public class CS_NotifyMoveInputDataHandler
 {
-    public void Handle(IPhotonEventMessage msg)
+    public static void Handle(IPhotonEventMessage msg)
     {
         CS_NotifyMoveInputData notifyMoveInputData = msg as CS_NotifyMoveInputData;
 

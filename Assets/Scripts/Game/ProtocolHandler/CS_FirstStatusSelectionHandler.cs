@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using GameFramework;
 
-public class CS_FirstStatusSelectionHandler : IHandler<IPhotonEventMessage>
+public class CS_FirstStatusSelectionHandler
 {
-    public void Handle(IPhotonEventMessage msg)
+    public static void Handle(IPhotonEventMessage msg)
     {
         CS_FirstStatusSelection firstStatusSelection = msg as CS_FirstStatusSelection;
 

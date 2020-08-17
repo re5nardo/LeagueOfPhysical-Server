@@ -2,27 +2,28 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
-using GameFramework;
 
 public class RoomProtocolDispatcher : MonoBehaviour
 {
-    private Dictionary<int, IHandler<IPhotonEventMessage>> m_dicProtocolHandler = new Dictionary<int, IHandler<IPhotonEventMessage>>();
+    private Dictionary<int, Action<IPhotonEventMessage>> protocolHandlers = new Dictionary<int, Action<IPhotonEventMessage>>();
 
     private void Awake()
     {
-        m_dicProtocolHandler.Add(PhotonEvent.CS_Ping, new CS_PingHandler());
+        protocolHandlers.Add(PhotonEvent.CS_Ping, CS_PingHandler.Handle);
     }
 
     private void OnDestroy()
     {
-        m_dicProtocolHandler.Clear();
+        protocolHandlers.Clear();
     }
 
     public void DispatchProtocol(IPhotonEventMessage msg)
     {
-        if (m_dicProtocolHandler.ContainsKey(msg.GetEventID()))
+        Action<IPhotonEventMessage> handler = null;
+
+        if (protocolHandlers.TryGetValue(msg.GetEventID(), out handler))
         {
-            m_dicProtocolHandler[msg.GetEventID()].Handle(msg);
+            handler?.Invoke(msg);
         }
     }
 }

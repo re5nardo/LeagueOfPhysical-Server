@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using GameFramework;
 
-public class CS_PingHandler : IHandler<IPhotonEventMessage>
+public class CS_PingHandler
 {
-    public void Handle(IPhotonEventMessage msg)
+    public static void Handle(IPhotonEventMessage msg)
     {
         CS_Ping ping = msg as CS_Ping;
 

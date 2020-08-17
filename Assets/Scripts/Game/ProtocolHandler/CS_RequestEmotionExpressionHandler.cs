@@ -4,9 +4,9 @@ using UnityEngine;
 using GameFramework;
 using System.Linq;
 
-public class CS_RequestEmotionExpressionHandler : IHandler<IPhotonEventMessage>
+public class CS_RequestEmotionExpressionHandler
 {
-    public void Handle(IPhotonEventMessage msg)
+    public static void Handle(IPhotonEventMessage msg)
     {
         CS_RequestEmotionExpression requestEmotionExpression = msg as CS_RequestEmotionExpression;
 

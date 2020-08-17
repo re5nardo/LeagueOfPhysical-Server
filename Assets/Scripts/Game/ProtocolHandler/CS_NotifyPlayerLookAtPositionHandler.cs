@@ -4,9 +4,9 @@ using UnityEngine;
 using System.Linq;
 using GameFramework;
 
-public class CS_NotifyPlayerLookAtPositionHandler : IHandler<IPhotonEventMessage>
+public class CS_NotifyPlayerLookAtPositionHandler
 {
-    public void Handle(IPhotonEventMessage msg)
+    public static void Handle(IPhotonEventMessage msg)
     {
         CS_NotifyPlayerLookAtPosition notifyPlayerLookAtPosition = msg as CS_NotifyPlayerLookAtPosition;
 

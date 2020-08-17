@@ -1,32 +1,34 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using GameFramework;
+using System;
 
 public class GameProtocolDispatcher : MonoBehaviour
 {
-    private Dictionary<int, IHandler<IPhotonEventMessage>> m_dicProtocolHandler = new Dictionary<int, IHandler<IPhotonEventMessage>>();
+    private Dictionary<int, Action<IPhotonEventMessage>> protocolHandlers = new Dictionary<int, Action<IPhotonEventMessage>>();
 
     private void Awake()
     {
-        m_dicProtocolHandler.Add(PhotonEvent.CS_NotifyPlayerLookAtPosition, new CS_NotifyPlayerLookAtPositionHandler());
-        m_dicProtocolHandler.Add(PhotonEvent.CS_NotifySkillInputData, new CS_NotifySkillInputDataHandler());
-        m_dicProtocolHandler.Add(PhotonEvent.CS_RequestEmotionExpression, new CS_RequestEmotionExpressionHandler());
-        m_dicProtocolHandler.Add(PhotonEvent.CS_FirstStatusSelection, new CS_FirstStatusSelectionHandler());
-        m_dicProtocolHandler.Add(PhotonEvent.CS_AbilitySelection, new CS_AbilitySelectionHandler());
-        m_dicProtocolHandler.Add(PhotonEvent.CS_NotifyMoveInputData, new CS_NotifyMoveInputDataHandler());
+        protocolHandlers.Add(PhotonEvent.CS_NotifyPlayerLookAtPosition, CS_NotifyPlayerLookAtPositionHandler.Handle);
+        protocolHandlers.Add(PhotonEvent.CS_NotifySkillInputData,       CS_NotifySkillInputDataHandler.Handle);
+        protocolHandlers.Add(PhotonEvent.CS_RequestEmotionExpression,   CS_RequestEmotionExpressionHandler.Handle);
+        protocolHandlers.Add(PhotonEvent.CS_FirstStatusSelection,       CS_FirstStatusSelectionHandler.Handle);
+        protocolHandlers.Add(PhotonEvent.CS_AbilitySelection,           CS_AbilitySelectionHandler.Handle);
+        protocolHandlers.Add(PhotonEvent.CS_NotifyMoveInputData,        CS_NotifyMoveInputDataHandler.Handle);
     }
 
     private void OnDestroy()
     {
-        m_dicProtocolHandler.Clear();
+        protocolHandlers.Clear();
     }
 
     public void DispatchProtocol(IPhotonEventMessage msg)
     {
-        if (m_dicProtocolHandler.ContainsKey(msg.GetEventID()))
+        Action<IPhotonEventMessage> handler = null;
+        
+        if (protocolHandlers.TryGetValue(msg.GetEventID(), out handler))
         {
-            m_dicProtocolHandler[msg.GetEventID()].Handle(msg);
+            handler?.Invoke(msg);
         }
     }
 }
