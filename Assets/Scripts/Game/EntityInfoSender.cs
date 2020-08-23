@@ -91,7 +91,8 @@ public class EntityInfoSender : MonoSingleton<EntityInfoSender>, ISubscriber, IT
             {
                 SC_NearEntityTransformInfos nearEntityTransformInfos = ObjectPool.Instance.GetObject<SC_NearEntityTransformInfos>();
 
-                nearEntityTransformInfos.m_listEntityTransformInfo = listEntityTransformInfo;
+                nearEntityTransformInfos.tick = Game.Current.CurrentTick;
+                nearEntityTransformInfos.entityTransformInfos = listEntityTransformInfo;
 
 				RoomNetwork.Instance.Send(nearEntityTransformInfos, photonPlayer.ID, false, true);
 

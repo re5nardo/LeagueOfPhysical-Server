@@ -22,6 +22,7 @@ public class PlayerMoveInputController : MonoComponentBase, ITickable
 
         //  Send to client
         SC_PlayerMoveInputResponse playerMoveInputResponse = new SC_PlayerMoveInputResponse();
+        playerMoveInputResponse.m_nTick = Game.Current.CurrentTick;
         playerMoveInputResponse.m_nEntityID = Entity.EntityID;
         playerMoveInputResponse.m_Position = Entity.Position;
         playerMoveInputResponse.m_Rotation = Entity.Rotation;

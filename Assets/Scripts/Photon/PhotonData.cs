@@ -191,6 +191,11 @@ public struct SerializableVector3
 	{
 		return new Vector3(x, y, z);
 	}
+
+    public override string ToString()
+    {
+        return ToVector3().ToString();
+    }
 }
 
 [Serializable]
@@ -260,7 +265,8 @@ public class SC_EnterRoom : IPhotonEventMessage
 public class SC_NearEntityTransformInfos : IPhotonEventMessage, IPoolable
 {
     public int senderID { get; set; }
-    public List<EntityTransformInfo> m_listEntityTransformInfo = new List<EntityTransformInfo>();
+    public int tick = -1;
+    public List<EntityTransformInfo> entityTransformInfos = new List<EntityTransformInfo>();
 
 	public byte GetEventID()
 	{
@@ -269,11 +275,11 @@ public class SC_NearEntityTransformInfos : IPhotonEventMessage, IPoolable
 
 	public void Clear()
 	{
-		foreach (var entityTransformInfo in m_listEntityTransformInfo)
+		foreach (var entityTransformInfo in entityTransformInfos)
 		{
 			ObjectPool.Instance.ReturnObject(entityTransformInfo);
 		}
-		m_listEntityTransformInfo.Clear();
+        entityTransformInfos.Clear();
 	}
 }
 
@@ -294,6 +300,7 @@ public class SC_EntitySkillInfo : IPhotonEventMessage
 public class SC_PlayerMoveInputResponse : IPhotonEventMessage
 {
     public int senderID { get; set; }
+    public int m_nTick = -1;
     public int m_nEntityID = -1;
 	public SerializableVector3 m_Position;
 	public SerializableVector3 m_Rotation;
