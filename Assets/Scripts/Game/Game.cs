@@ -59,7 +59,7 @@ namespace LOP
                 {RoomMessageKey.PlayerLeave, OnPlayerLeave},
             });
 
-            tickUpdater.Initialize(1 / 30f, false, OnTick, OnTickEnd);
+            tickUpdater.Initialize(1 / 30f, false, 0, OnTick, OnTickEnd);
 
             initialized = true;
         }
