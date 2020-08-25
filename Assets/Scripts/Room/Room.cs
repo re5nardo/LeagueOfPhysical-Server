@@ -42,12 +42,12 @@ namespace LOP
         #region PunBehaviour
         public override void OnPhotonPlayerConnected(PhotonPlayer newPlayer)
         {
-            RoomPubSubService.Instance.Publish(RoomMessageKey.PlayerEnter, newPlayer);
+            RoomPubSubService.Publish(RoomMessageKey.PlayerEnter, newPlayer);
         }
 
         public override void OnPhotonPlayerDisconnected(PhotonPlayer otherPlayer)
         {
-            RoomPubSubService.Instance.Publish(RoomMessageKey.PlayerLeave, otherPlayer);
+            RoomPubSubService.Publish(RoomMessageKey.PlayerLeave, otherPlayer);
         }
         #endregion
 

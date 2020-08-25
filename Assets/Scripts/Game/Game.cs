@@ -29,7 +29,6 @@ namespace LOP
         public GameEventManager GameEventManager { get { return gameEventManager; } }
 
         private GameProtocolDispatcher protocolDispatcher = null;
-        private RoomPubMessageHandler roomPubMessageHandler = null;
 
         public override IEnumerator Initialize()
         {
@@ -52,12 +51,8 @@ namespace LOP
 
             RoomNetwork.Instance.onMessage += OnNetworkMessage;
 
-            roomPubMessageHandler = gameObject.AddComponent<RoomPubMessageHandler>();
-            roomPubMessageHandler.Initialize(new Dictionary<Enum, Action<object[]>>
-            {
-                {RoomMessageKey.PlayerEnter, OnPlayerEnter},
-                {RoomMessageKey.PlayerLeave, OnPlayerLeave},
-            });
+            RoomPubSubService.AddSubscriber(RoomMessageKey.PlayerEnter, OnPlayerEnter);
+            RoomPubSubService.AddSubscriber(RoomMessageKey.PlayerLeave, OnPlayerLeave);
 
             tickUpdater.Initialize(1 / 30f, false, 0, OnTick, OnTickEnd);
 
@@ -90,11 +85,8 @@ namespace LOP
                 gameEventManager = null;
             }
 
-            if (roomPubMessageHandler != null)
-            {
-                Destroy(roomPubMessageHandler);
-                roomPubMessageHandler = null;
-            }
+            RoomPubSubService.RemoveSubscriber(RoomMessageKey.PlayerEnter, OnPlayerEnter);
+            RoomPubSubService.RemoveSubscriber(RoomMessageKey.PlayerLeave, OnPlayerLeave);
 
             if (RoomNetwork.IsInstantiated())
             {
@@ -159,9 +151,9 @@ namespace LOP
             protocolDispatcher.DispatchProtocol(msg as IPhotonEventMessage);
         }
 
-        private void OnPlayerEnter(object[] param)
+        private void OnPlayerEnter(object param)
         {
-            PhotonPlayer newPlayer = (PhotonPlayer)param[0];
+            PhotonPlayer newPlayer = (PhotonPlayer)param;
 
             playerUserIDPhotonPlayer[newPlayer.UserId] = new WeakReference(newPlayer);
 
@@ -243,9 +235,9 @@ namespace LOP
             }
         }
 
-        private void OnPlayerLeave(object[] param)
+        private void OnPlayerLeave(object param)
         {
-            PhotonPlayer photonPlayer = (PhotonPlayer)param[0];
+            PhotonPlayer photonPlayer = (PhotonPlayer)param;
 
             int entityID = playerUserIDEntityID[photonPlayer.UserId];
 
