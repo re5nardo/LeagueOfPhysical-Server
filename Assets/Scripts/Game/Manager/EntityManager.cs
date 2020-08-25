@@ -4,7 +4,7 @@ using GameFramework;
 using System;
 using Entity;
 
-public class EntityManager : GameFramework.EntityManager, ISubscriber
+public class EntityManager : GameFramework.EntityManager
 {
     #region Singlton Pattern
     protected static EntityManager instance = null;
@@ -29,27 +29,18 @@ public class EntityManager : GameFramework.EntityManager, ISubscriber
     }
     #endregion
 
-    private Dictionary<Enum, Action<object[]>> m_dicMessageHandler = new Dictionary<Enum, Action<object[]>>();
-
     private void Awake()
     {
         m_PositionGrid = new Grid();
 
         m_PositionGrid.SetGrid(10);
 
-        GamePubSubService.Instance.AddSubscriber(GameMessageKey.EntityMove, this);
-
-        m_dicMessageHandler.Add(GameMessageKey.EntityMove, OnEntityMove);
+        GamePubSubService.AddSubscriber(GameMessageKey.EntityMove, OnEntityMove);
     }
 
     private void OnDestroy()
     {
-        if (GamePubSubService.IsInstantiated())
-        {
-            GamePubSubService.Instance.RemoveSubscriber(GameMessageKey.EntityMove, this);
-        }
-
-        m_dicMessageHandler.Clear();
+        GamePubSubService.RemoveSubscriber(GameMessageKey.EntityMove, OnEntityMove);
     }
 
     public override void Clear()
@@ -58,23 +49,11 @@ public class EntityManager : GameFramework.EntityManager, ISubscriber
 
         m_PositionGrid = null;
 
-        if (GamePubSubService.IsInstantiated())
-        {
-            GamePubSubService.Instance.RemoveSubscriber(GameMessageKey.EntityMove, this);
-        }
-      
-        m_dicMessageHandler.Clear();
+        GamePubSubService.RemoveSubscriber(GameMessageKey.EntityMove, OnEntityMove);
     }
-
-    #region ISubscriber
-    public void OnMessage(Enum key, params object[] param)
-    {
-        m_dicMessageHandler[key](param);
-    }
-    #endregion
 
     #region Message Handler
-    private void OnEntityMove(params object[] param)
+    private void OnEntityMove(object[] param)
     {
         int nEntityID = (int)param[0];
 

@@ -5,7 +5,7 @@ using GameFramework;
 using Entity;
 using System.Linq;
 
-public class NearEntityAgent : MonoComponentBase, ISubscriber
+public class NearEntityAgent : MonoComponentBase
 {
 	public enum CellSeenState
 	{
@@ -28,8 +28,6 @@ public class NearEntityAgent : MonoComponentBase, ISubscriber
 	private HashSet<int> m_hashNearEntityID = new HashSet<int>();
 	private HashSet<int> m_hashNearPlayerEntityID = new HashSet<int>();
 
-	private Dictionary<Enum, Action<object[]>> m_dicMessageHandler = new Dictionary<Enum, Action<object[]>>();
-
     public Dictionary<int, EntityTransformSnap> m_EntityTransformSnaps = new Dictionary<int, EntityTransformSnap>();
 
     public override void OnAttached(IEntity entity)
@@ -47,13 +45,9 @@ public class NearEntityAgent : MonoComponentBase, ISubscriber
 		//	m_hashLastSubscribeCellPosition.Add(cell.m_vec2Position);
 		//}
 
-		GridPubSubService.Instance.AddSubscriber(GameMessageKey.EntityAddedToGrid, this);
-		GridPubSubService.Instance.AddSubscriber(GameMessageKey.EntityRemovedFromGrid, this);
-		GridPubSubService.Instance.AddSubscriber(GameMessageKey.EntityMoveCell, this);
-
-		m_dicMessageHandler.Add(GameMessageKey.EntityAddedToGrid, OnEntityAddedToGrid);
-		m_dicMessageHandler.Add(GameMessageKey.EntityRemovedFromGrid, OnEntityRemovedFromGrid);
-		m_dicMessageHandler.Add(GameMessageKey.EntityMoveCell, OnEntityMoveCell);
+		GridPubSubService.AddSubscriber(GameMessageKey.EntityAddedToGrid, OnEntityAddedToGrid);
+		GridPubSubService.AddSubscriber(GameMessageKey.EntityRemovedFromGrid, OnEntityRemovedFromGrid);
+		GridPubSubService.AddSubscriber(GameMessageKey.EntityMoveCell, OnEntityMoveCell);
 
 		UpdateMyEntityCellPosition(vec2CellPosition);
 	}
@@ -62,25 +56,13 @@ public class NearEntityAgent : MonoComponentBase, ISubscriber
     {
         base.OnDetached();
 
-        if (GridPubSubService.IsInstantiated())
-        {
-            GridPubSubService.Instance.RemoveSubscriber(GameMessageKey.EntityAddedToGrid, this);
-            GridPubSubService.Instance.RemoveSubscriber(GameMessageKey.EntityRemovedFromGrid, this);
-            GridPubSubService.Instance.RemoveSubscriber(GameMessageKey.EntityMoveCell, this);
-        }
-
-        m_dicMessageHandler.Clear();
+        GridPubSubService.RemoveSubscriber(GameMessageKey.EntityAddedToGrid, OnEntityAddedToGrid);
+        GridPubSubService.RemoveSubscriber(GameMessageKey.EntityRemovedFromGrid, OnEntityRemovedFromGrid);
+        GridPubSubService.RemoveSubscriber(GameMessageKey.EntityMoveCell, OnEntityMoveCell);
     }
 
-	#region ISubscriber
-	public void OnMessage(Enum key, params object[] param)
-	{
-        m_dicMessageHandler[key](param);
-	}
-	#endregion
-
 	#region Message Handler
-	private void OnEntityAddedToGrid(params object[] param)
+	private void OnEntityAddedToGrid(object[] param)
 	{
 		int nEntityID = (int)param[0];
 		Vector2Int pos = (Vector2Int)param[1];
@@ -95,7 +77,7 @@ public class NearEntityAgent : MonoComponentBase, ISubscriber
 		}
 	}
 
-	private void OnEntityRemovedFromGrid(params object[] param)
+	private void OnEntityRemovedFromGrid(object[] param)
 	{
 		int nEntityID = (int)param[0];
 		Vector2Int pos = (Vector2Int)param[1];
@@ -110,7 +92,7 @@ public class NearEntityAgent : MonoComponentBase, ISubscriber
 		}
 	}
 
-	private void OnEntityMoveCell(params object[] param)
+	private void OnEntityMoveCell(object[] param)
 	{
 		int nEntityID = (int)param[0];
 		Vector2Int from = (Vector2Int)param[1];

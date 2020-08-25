@@ -87,7 +87,7 @@ namespace Entity
             {
                 position = value;
 
-                GamePubSubService.Instance.Publish(GameMessageKey.EntityMove, EntityID);
+                GamePubSubService.Publish(GameMessageKey.EntityMove, new object[] { EntityID });
 
                 SendCommandToViews(new PositionChanged());
             }

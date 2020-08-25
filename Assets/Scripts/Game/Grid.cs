@@ -23,7 +23,7 @@ public class Grid : GameFramework.Grid
 
             if (bPublish)
             {
-                GridPubSubService.Instance.Publish(GameMessageKey.EntityAddedToGrid, nEntityID, vec2CellPosition);
+                GridPubSubService.Publish(GameMessageKey.EntityAddedToGrid, new object[] { nEntityID, vec2CellPosition });
             }
         }
     }
@@ -38,7 +38,7 @@ public class Grid : GameFramework.Grid
 
             if (bPublish)
             {
-                GridPubSubService.Instance.Publish(GameMessageKey.EntityRemovedFromGrid, nEntityID, vec2CellPosition);
+                GridPubSubService.Publish(GameMessageKey.EntityRemovedFromGrid, new object[] { nEntityID, vec2CellPosition });
             }
         }
     }
@@ -62,7 +62,7 @@ public class Grid : GameFramework.Grid
 
             Add(nEntityID, false);
 
-            GridPubSubService.Instance.Publish(GameMessageKey.EntityMoveCell, nEntityID, pre, cur);
+            GridPubSubService.Publish(GameMessageKey.EntityMoveCell, new object[] { nEntityID, pre, cur });
         }
     }
 

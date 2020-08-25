@@ -5,7 +5,7 @@ using Entity;
 using System;
 using GameFramework;
 
-public class SpawnManager : MonoSingleton<SpawnManager>, ISubscriber, ITickable
+public class SpawnManager : MonoSingleton<SpawnManager>, ITickable
 {
     private const float SPAWN_INTERVAL = 0.3f;
     private const int MAX_ENTITY_COUNT = 500;
@@ -13,26 +13,17 @@ public class SpawnManager : MonoSingleton<SpawnManager>, ISubscriber, ITickable
     private float m_fSpawnElapsedTime = 0f;
     private Dictionary<int, ControllerBase> m_dicEntityIDController = new Dictionary<int, ControllerBase>();
 
-	private Dictionary<Enum, Action<object[]>> m_dicMessageHandler = new Dictionary<Enum, Action<object[]>>();
-
 	protected override void Awake()
     {
         base.Awake();
 
-        GamePubSubService.Instance.AddSubscriber(GameMessageKey.EntityDestroy, this);
-
-		m_dicMessageHandler.Add(GameMessageKey.EntityDestroy, OnEntityDestroy);
+        GamePubSubService.AddSubscriber(GameMessageKey.EntityDestroy, OnEntityDestroy);
 	}
 
     private void OnDestroy()
     {
-        if (GamePubSubService.IsInstantiated())
-        {
-            GamePubSubService.Instance.RemoveSubscriber(GameMessageKey.EntityDestroy, this);
-        }
-
-		m_dicMessageHandler.Clear();
-	}
+        GamePubSubService.RemoveSubscriber(GameMessageKey.EntityDestroy, OnEntityDestroy);
+    }
 
     public void StartSpawn()
     {
@@ -125,15 +116,8 @@ public class SpawnManager : MonoSingleton<SpawnManager>, ISubscriber, ITickable
 		return treasureBox;
 	}
 
-	#region ISubscriber
-    public void OnMessage(Enum key, params object[] param)
-    {
-		m_dicMessageHandler[key](param);
-	}
-	#endregion
-
 	#region Message Handler
-	private void OnEntityDestroy(params object[] param)
+	private void OnEntityDestroy(object[] param)
 	{
 		int nEntityID = (int)param[0];
 

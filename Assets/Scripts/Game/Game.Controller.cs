@@ -219,7 +219,7 @@ namespace LOP
 
             entity.SendCommandToAll(new Destroying());
 
-            GamePubSubService.Instance.Publish(GameMessageKey.EntityDestroy, nEntityID);
+            GamePubSubService.Publish(GameMessageKey.EntityDestroy, new object[] { nEntityID });
 
             if (entity.EntityRole == EntityRole.Player)
             {

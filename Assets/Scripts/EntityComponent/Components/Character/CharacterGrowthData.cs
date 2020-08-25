@@ -26,7 +26,7 @@ public class CharacterGrowthData : ComponentBase
                     LOP.Game.Current.GameEventManager.Send(new EntityLevelUp(Entity.EntityID, value), PhotonHelper.GetPhotonPlayer(Entity.EntityID).ID);
                 }
 
-                GamePubSubService.Instance.Publish(GameMessageKey.LevelUp, Entity.EntityID, value);
+                GamePubSubService.Publish(GameMessageKey.LevelUp, new object[] { Entity.EntityID, value });
             }
         }
     }

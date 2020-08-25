@@ -3,40 +3,23 @@ using System;
 
 namespace GameFramework
 {
-    public class GridPubSubService : Singleton<GridPubSubService>, IPubSubService
+    public class GridPubSubService
     {
-        private Dictionary<Enum, HashSet<ISubscriber>> m_dicSubscribers = new Dictionary<Enum, HashSet<ISubscriber>>();
+        private static SimplePubSubService<Enum, object[]> simplePubSubService = new SimplePubSubService<Enum, object[]>();
 
-        public void Publish(Enum key, params object[] param)
+        public static void Publish(Enum key, object[] value)
         {
-            HashSet<ISubscriber> hashSubscriber = null;
-            if (m_dicSubscribers.TryGetValue(key, out hashSubscriber))
-            {
-                foreach (ISubscriber subscriber in hashSubscriber)
-                {
-                    subscriber.OnMessage(key, param);
-                }
-            }
+            simplePubSubService.Publish(key, value);
         }
 
-        public void AddSubscriber(Enum key, ISubscriber subscriber)
+        public static void AddSubscriber(Enum key, Action<object[]> subscriber)
         {
-            if (!m_dicSubscribers.ContainsKey(key))
-            {
-                m_dicSubscribers.Add(key, new HashSet<ISubscriber>());
-            }
-
-            m_dicSubscribers[key].Add(subscriber);
+            simplePubSubService.AddSubscriber(key, subscriber);
         }
 
-        public void RemoveSubscriber(Enum key, ISubscriber subscriber)
+        public static void RemoveSubscriber(Enum key, Action<object[]> subscriber)
         {
-            m_dicSubscribers[key].Remove(subscriber);
-        }
-
-        public void Clear()
-        {
-            m_dicSubscribers.Clear();
+            simplePubSubService.RemoveSubscriber(key, subscriber);
         }
     }
 }

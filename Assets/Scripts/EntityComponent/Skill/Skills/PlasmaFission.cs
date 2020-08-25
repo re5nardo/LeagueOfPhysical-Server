@@ -6,7 +6,7 @@ using GameFramework;
 
 namespace Skill
 {
-    public class PlasmaFission : SkillBase, ISubscriber
+    public class PlasmaFission : SkillBase
     {
         public enum State
         {
@@ -28,28 +28,19 @@ namespace Skill
 
         private int m_nFirstProjectileEntityID = -1;
 
-		private Dictionary<Enum, Action<object[]>> m_dicMessageHandler = new Dictionary<Enum, Action<object[]>>();
-
 		private void Awake()
         {
             m_nSkillMasterID = Define.MasterData.SkillID.PLASMA_FISSION;
             m_fCoolTime = 0f;
             m_State = State.Ready;
 
-            GamePubSubService.Instance.AddSubscriber(GameMessageKey.EntityDestroy, this);
-
-			m_dicMessageHandler.Add(GameMessageKey.EntityDestroy, OnEntityDestroy);
+            GamePubSubService.AddSubscriber(GameMessageKey.EntityDestroy, OnEntityDestroy);
 		}
 
         private void OnDestroy()
         {
-            if (GamePubSubService.IsInstantiated())
-            {
-                GamePubSubService.Instance.RemoveSubscriber(GameMessageKey.EntityDestroy, this);
-            }
-
-			m_dicMessageHandler.Clear();
-		}
+            GamePubSubService.RemoveSubscriber(GameMessageKey.EntityDestroy, OnEntityDestroy);
+        }
 
         private bool IsCoolTime()
         {
@@ -179,15 +170,8 @@ namespace Skill
                 .Build();
         }
 
-		#region ISubscriber
-        public void OnMessage(Enum key, params object[] param)
-        {
-			m_dicMessageHandler[key](param);
-		}
-		#endregion
-
 		#region Message Handler
-		private void OnEntityDestroy(params object[] param)
+		private void OnEntityDestroy(object[] param)
         {
 			int nEntityID = (int)param[0];
 

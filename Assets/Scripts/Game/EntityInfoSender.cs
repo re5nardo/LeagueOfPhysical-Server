@@ -4,30 +4,21 @@ using System;
 using GameFramework;
 using Entity;
 
-public class EntityInfoSender : MonoSingleton<EntityInfoSender>, ISubscriber, ITickable
+public class EntityInfoSender : MonoSingleton<EntityInfoSender>, ITickable
 {
     private Dictionary<string, Vector3> m_dicPlayerUserIDLookAtPosition = new Dictionary<string, Vector3>();                    //  key : Player UserID, vlue : LookAtPosition
-
-    private Dictionary<Enum, Action<object[]>> m_dicMessageHandler = new Dictionary<Enum, Action<object[]>>();
 
 #region MonoBehaviour
     protected override void Awake()
     {
         base.Awake();
 
-        GamePubSubService.Instance.AddSubscriber(GameMessageKey.EntityDestroy, this);
-
-        m_dicMessageHandler.Add(GameMessageKey.EntityDestroy, OnEntityDestroy);
+        GamePubSubService.AddSubscriber(GameMessageKey.EntityDestroy, OnEntityDestroy);
     }
 
     private void OnDestroy()
     {
-        if (GamePubSubService.IsInstantiated())
-        {
-            GamePubSubService.Instance.RemoveSubscriber(GameMessageKey.EntityDestroy, this);
-        }
-
-		m_dicMessageHandler.Clear();
+        GamePubSubService.RemoveSubscriber(GameMessageKey.EntityDestroy, OnEntityDestroy);
 	}
     #endregion
 
@@ -133,15 +124,8 @@ public class EntityInfoSender : MonoSingleton<EntityInfoSender>, ISubscriber, IT
         m_dicPlayerUserIDLookAtPosition[userId] = position;
     }
 
-    #region ISubscriber
-    public void OnMessage(Enum key, params object[] param)
-    {
-		m_dicMessageHandler[key](param);
-	}
-	#endregion
-
 	#region Message Handler
-    private void OnEntityDestroy(params object[] param)
+    private void OnEntityDestroy(object[] param)
     {
         int nEntityID = (int)param[0];
 
