@@ -4,16 +4,30 @@ using UnityEngine;
 using GameFramework;
 using Entity;
 
-public class PlayerMoveInputController : MonoComponentBase, ITickable
+public class PlayerMoveInputController : MonoComponentBase
 {
     private Queue<CS_NotifyMoveInputData> notifyMoveInputDatas = new Queue<CS_NotifyMoveInputData>();
+
+    public override void OnAttached(IEntity entity)
+    {
+        base.OnAttached(entity);
+
+        TickPubSubService.AddSubscriber("EarlyTick", OnEarlyTick);
+    }
+
+    public override void OnDetached()
+    {
+        base.OnDetached();
+
+        TickPubSubService.RemoveSubscriber("EarlyTick", OnEarlyTick);
+    }
 
     public void AddPlayerMoveInputController(CS_NotifyMoveInputData notifyMoveInputData)
     {
         notifyMoveInputDatas.Enqueue(notifyMoveInputData);
     }
 
-    public void Tick(int tick)
+    private void OnEarlyTick(int tick)
     {
         if (notifyMoveInputDatas.Count == 0)
             return;

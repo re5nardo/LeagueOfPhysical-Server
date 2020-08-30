@@ -4,7 +4,7 @@ using System;
 using GameFramework;
 using Entity;
 
-public class EntityInfoSender : MonoSingleton<EntityInfoSender>, ITickable
+public class EntityInfoSender : MonoSingleton<EntityInfoSender>
 {
     private Dictionary<string, Vector3> m_dicPlayerUserIDLookAtPosition = new Dictionary<string, Vector3>();                    //  key : Player UserID, vlue : LookAtPosition
 
@@ -14,26 +14,36 @@ public class EntityInfoSender : MonoSingleton<EntityInfoSender>, ITickable
         base.Awake();
 
         GamePubSubService.AddSubscriber(GameMessageKey.EntityDestroy, OnEntityDestroy);
+
+        TickPubSubService.AddSubscriber("TickEnd", OnTickEnd);
     }
 
     private void OnDestroy()
     {
         GamePubSubService.RemoveSubscriber(GameMessageKey.EntityDestroy, OnEntityDestroy);
-	}
+
+        TickPubSubService.RemoveSubscriber("TickEnd", OnTickEnd);
+    }
     #endregion
 
-    public void Tick(int tick)
+    private void OnTickEnd(int tick)
+    {
+        SendInfo();
+    }
+
+    public void SendInfo()
     {
         SendTransformInfo();
-        SendPlayerSkillInfos();
+        SendPlayerSkillInfo();
+        SendSyncTick();
     }
 
     private void SendTransformInfo()
     {
-        SendNearEntityTransformInfos();
+        SendNearEntityTransformInfo();
     }
 
-    private void SendNearEntityTransformInfos()
+    private void SendNearEntityTransformInfo()
     {
         foreach (KeyValuePair<string, WeakReference> kv in LOP.Game.Current.PlayerUserIDPhotonPlayer)
         {
@@ -92,7 +102,7 @@ public class EntityInfoSender : MonoSingleton<EntityInfoSender>, ITickable
         }
     }
 
-    private void SendPlayerSkillInfos()
+    private void SendPlayerSkillInfo()
     {
         foreach (KeyValuePair<string, WeakReference> kv in LOP.Game.Current.PlayerUserIDPhotonPlayer)
         {
@@ -117,6 +127,11 @@ public class EntityInfoSender : MonoSingleton<EntityInfoSender>, ITickable
 
 			RoomNetwork.Instance.Send(entitySkillInfo, photonPlayer.ID);
         }
+    }
+
+    private void SendSyncTick()
+    {
+        RoomNetwork.Instance.SendToAll(new SC_SyncTick(Game.Current.CurrentTick));
     }
 
     public void SetPlayerLookAtPosition(string userId, Vector3 position)

@@ -5,7 +5,7 @@ using Entity;
 using System;
 using GameFramework;
 
-public class SpawnManager : MonoSingleton<SpawnManager>, ITickable
+public class SpawnManager : MonoSingleton<SpawnManager>
 {
     private const float SPAWN_INTERVAL = 0.3f;
     private const int MAX_ENTITY_COUNT = 500;
@@ -18,11 +18,15 @@ public class SpawnManager : MonoSingleton<SpawnManager>, ITickable
         base.Awake();
 
         GamePubSubService.AddSubscriber(GameMessageKey.EntityDestroy, OnEntityDestroy);
+
+        TickPubSubService.AddSubscriber("Tick", OnTick);
 	}
 
     private void OnDestroy()
     {
         GamePubSubService.RemoveSubscriber(GameMessageKey.EntityDestroy, OnEntityDestroy);
+
+        TickPubSubService.RemoveSubscriber("Tick", OnTick);
     }
 
     public void StartSpawn()
@@ -44,7 +48,7 @@ public class SpawnManager : MonoSingleton<SpawnManager>, ITickable
 		}
 	}
 
-    public void Tick(int tick)
+    private void OnTick(int tick)
     {
         if (m_fSpawnElapsedTime > SPAWN_INTERVAL && MAX_ENTITY_COUNT > EntityManager.Instance.GetAllEntities().Count)
         {

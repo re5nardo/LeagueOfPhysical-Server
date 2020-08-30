@@ -7,7 +7,7 @@ using GameEvent;
 
 namespace Behavior
 {
-    public abstract class BehaviorBase : MonoComponentBase, ITickable
+    public abstract class BehaviorBase : MonoComponentBase
     {
         public event Action<BehaviorBase> onBehaviorEnd = null;
 
@@ -47,17 +47,17 @@ namespace Behavior
 
         new protected MonoEntityBase Entity = null;
 
-        private MasterData.Behavior m_MasterData__ = null;
-        public MasterData.Behavior m_MasterData
+        private MasterData.Behavior masterData = null;
+        public MasterData.Behavior MasterData
         {
             get
             {
-                if (m_MasterData__ == null)
+                if (masterData == null)
                 {
-                    m_MasterData__ = MasterDataManager.Instance.GetMasterData<MasterData.Behavior>(m_nBehaviorMasterID);
+                    masterData = MasterDataManager.Instance.GetMasterData<MasterData.Behavior>(m_nBehaviorMasterID);
                 }
 
-                return m_MasterData__;
+                return masterData;
             }
         }
 
@@ -99,7 +99,7 @@ namespace Behavior
 
             OnBehaviorStart();
 
-            Tick(Game.Current.CurrentTick);
+            OnTick(Game.Current.CurrentTick);
         }
 
         private void StopPreviousBehaviors()
@@ -110,14 +110,14 @@ namespace Behavior
 
             foreach (var behavior in behaviors)
             {
-                if (!m_MasterData.CompatibleBehaviorIDs.Contains(behavior.GetBehaviorMasterID()))
+                if (!MasterData.CompatibleBehaviorIDs.Contains(behavior.GetBehaviorMasterID()))
                 {
                     behavior.StopBehavior();
                 }
             }
         }
 
-        public void Tick(int tick)
+        public void OnTick(int tick)
         {
             if (lastTick == tick)
             {
@@ -137,7 +137,7 @@ namespace Behavior
         {
             isPlaying = false;
 
-            LOP.Game.Current.GameEventManager.SendToNear(new EntityBehaviorEnd(Entity.EntityID, m_MasterData.ID), Entity.Position);
+            LOP.Game.Current.GameEventManager.SendToNear(new EntityBehaviorEnd(Entity.EntityID, MasterData.ID), Entity.Position);
 
             OnBehaviorEnd();
 

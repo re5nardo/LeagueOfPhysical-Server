@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Skill
 {
-    public abstract class SkillBase : MonoComponentBase, ITickable
+    public abstract class SkillBase : MonoComponentBase
     {
         protected abstract void OnSkillUpdate();
 
@@ -43,17 +43,17 @@ namespace Skill
 
         new public MonoEntityBase Entity { get; private set; }
 
-        private MasterData.Skill m_MasterData__ = null;
-        public MasterData.Skill m_MasterData
+        private MasterData.Skill masterData = null;
+        public MasterData.Skill MasterData
         {
             get
             {
-                if (m_MasterData__ == null)
+                if (masterData == null)
                 {
-                    m_MasterData__ = MasterDataManager.Instance.GetMasterData<MasterData.Skill>(m_nSkillMasterID);
+                    masterData = MasterDataManager.Instance.GetMasterData<MasterData.Skill>(m_nSkillMasterID);
                 }
 
-                return m_MasterData__;
+                return masterData;
             }
         }
 
@@ -89,7 +89,7 @@ namespace Skill
             startTick = Game.Current.CurrentTick;
             lastTick = -1;
 
-            Tick(Game.Current.CurrentTick);
+            OnTick(Game.Current.CurrentTick);
         }
 
         public int GetSkillMasterID()
@@ -97,7 +97,7 @@ namespace Skill
             return m_nSkillMasterID;
         }
 
-        public void Tick(int tick)
+        public void OnTick(int tick)
         {
             if (lastTick == tick)
             {

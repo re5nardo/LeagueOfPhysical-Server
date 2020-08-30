@@ -32,6 +32,27 @@ namespace Entity
 		{
 		}
 
+        public virtual void OnTick(int tick)
+        {
+            //  States
+            GetComponents<State.StateBase>()?.ForEach(state =>
+            {
+                state.OnTick(tick);
+            });
+
+            //  Behaviors
+            GetComponents<Behavior.BehaviorBase>()?.ForEach(behavior =>
+            {
+                behavior.OnTick(tick);
+            });
+
+            //  Skills
+            GetComponents<Skill.SkillBase>()?.ForEach(skill =>
+            {
+                skill.OnTick(tick);
+            });
+        }
+
         #region Interface For Convenience
         public abstract float MovementSpeed { get; }
         public abstract void Move(Vector3 vec3Destination);
@@ -55,28 +76,6 @@ namespace Entity
         #endregion
 
         #region IEntity
-        public virtual void Tick(int tick)
-        {
-            var allComponents = GetComponents<IComponent>();
-            var tickables = allComponents.FindAll(x => x is ITickable).Cast<ITickable>().ToList();
-            tickables.Sort((x, y) =>
-            {
-                int value_x = x is PlayerMoveInputController ? 400 : x is State.StateBase ? 300 : x is Behavior.BehaviorBase ? 200 : x is Skill.SkillBase ? 100 : 0;
-                int value_y = y is PlayerMoveInputController ? 400 : y is State.StateBase ? 300 : y is Behavior.BehaviorBase ? 200 : y is Skill.SkillBase ? 100 : 0;
-
-                return value_y.CompareTo(value_x);
-            });
-
-            tickables.ForEach(tickable =>
-            {
-                //  Iterating중에 Entity가 Destroy 안되었는지 체크
-                if (IsValid)
-                {
-                    tickable.Tick(tick);
-                }
-            });
-        }
-
         public int EntityID { get; protected set; } = -1;
 
         private Vector3 position;

@@ -26,7 +26,7 @@ namespace State
             }
             else
             {
-                lifespan = m_MasterData.Lifespan;
+                lifespan = MasterData.Lifespan;
             }
         }
         #endregion

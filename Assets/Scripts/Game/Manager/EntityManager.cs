@@ -27,6 +27,16 @@ public class EntityManager : GameFramework.EntityManager
     {
         return instance != null;
     }
+
+    public static void Instantiate()
+    {
+        if (instance == null)
+        {
+            GameObject goSingleton = new GameObject(typeof(EntityManager).Name + "Singleton");
+
+            instance = goSingleton.AddComponent<EntityManager>();
+        }
+    }
     #endregion
 
     private void Awake()
@@ -36,11 +46,19 @@ public class EntityManager : GameFramework.EntityManager
         m_PositionGrid.SetGrid(10);
 
         GamePubSubService.AddSubscriber(GameMessageKey.EntityMove, OnEntityMove);
+
+        TickPubSubService.AddSubscriber("Tick", OnTick);
+        TickPubSubService.AddSubscriber("BeforePhysicsSimulation", OnBeforePhysicsSimulation);
+        TickPubSubService.AddSubscriber("AfterPhysicsSimulation", OnAfterPhysicsSimulation);
     }
 
     private void OnDestroy()
     {
         GamePubSubService.RemoveSubscriber(GameMessageKey.EntityMove, OnEntityMove);
+
+        TickPubSubService.RemoveSubscriber("Tick", OnTick);
+        TickPubSubService.RemoveSubscriber("BeforePhysicsSimulation", OnBeforePhysicsSimulation);
+        TickPubSubService.RemoveSubscriber("AfterPhysicsSimulation", OnAfterPhysicsSimulation);
     }
 
     public override void Clear()
@@ -87,6 +105,48 @@ public class EntityManager : GameFramework.EntityManager
             entity =>
             {
                 return !(hashExceptID != null && hashExceptID.Contains(entity.EntityID));
+            }
+        });
+    }
+
+    private void OnTick(int tick)
+    {
+        //  sort
+        //  ...
+
+        GetAllEntities<MonoEntityBase>()?.ForEach(entity =>
+        {
+            if (entity.IsValid)
+            {
+                entity.OnTick(tick);
+            }
+        });
+    }
+
+    private void OnBeforePhysicsSimulation(int tick)
+    {
+        //  sort
+        //  ...
+
+        GetAllEntities<MonoEntityBase>()?.ForEach(entity =>
+        {
+            if (entity.IsValid)
+            {
+                entity.OnBeforePhysicsSimulation(tick);
+            }
+        });
+    }
+
+    private void OnAfterPhysicsSimulation(int tick)
+    {
+        //  sort
+        //  ...
+
+        GetAllEntities<MonoEntityBase>()?.ForEach(entity =>
+        {
+            if (entity.IsValid)
+            {
+                entity.OnAfterPhysicsSimulation(tick);
             }
         });
     }

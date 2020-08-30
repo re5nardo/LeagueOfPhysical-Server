@@ -24,7 +24,7 @@ namespace Behavior
 
 			Entity.SendCommandToViews(new AnimatorSetTrigger("Attack"));
 
-            LOP.Game.Current.GameEventManager.SendToNear(new EntityBehaviorStart(Entity.EntityID, m_MasterData.ID), Entity.Position);
+            LOP.Game.Current.GameEventManager.SendToNear(new EntityBehaviorStart(Entity.EntityID, MasterData.ID), Entity.Position);
         }
 
         protected override bool OnBehaviorUpdate()
@@ -44,11 +44,11 @@ namespace Behavior
         {
             base.SetData(nBehaviorMasterID);
 
-            m_fLifespan = m_MasterData.Lifespan;
-            m_fAttackTime = float.Parse(m_MasterData.ClassParams.Find(x => x.Contains("AttackTime")).Split(':')[1]);
-            m_nProjectileID = int.Parse(m_MasterData.ClassParams.Find(x => x.Contains("ProjectileID")).Split(':')[1]);
-            m_fProjectileHeight = float.Parse(m_MasterData.ClassParams.Find(x => x.Contains("ProjectileHeight")).Split(':')[1]);
-            m_fProjectileLifespan = float.Parse(m_MasterData.ClassParams.Find(x => x.Contains("ProjectileLifespan")).Split(':')[1]);
+            m_fLifespan = MasterData.Lifespan;
+            m_fAttackTime = float.Parse(MasterData.ClassParams.Find(x => x.Contains("AttackTime")).Split(':')[1]);
+            m_nProjectileID = int.Parse(MasterData.ClassParams.Find(x => x.Contains("ProjectileID")).Split(':')[1]);
+            m_fProjectileHeight = float.Parse(MasterData.ClassParams.Find(x => x.Contains("ProjectileHeight")).Split(':')[1]);
+            m_fProjectileLifespan = float.Parse(MasterData.ClassParams.Find(x => x.Contains("ProjectileLifespan")).Split(':')[1]);
 
             if (param.Length > 0 && param[0] is SkillInputData)
             {
