@@ -15,7 +15,7 @@ public class EntityTransformSnap
         {
             if (entity == null)
             {
-                entity = EntityManager.Instance.GetEntity(entityID);
+                entity = Entities.Get(entityID);
             }
             return entity;
         }

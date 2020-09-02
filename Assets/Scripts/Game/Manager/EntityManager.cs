@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using GameFramework;
-using System;
 using Entity;
 
 public class EntityManager : GameFramework.EntityManager

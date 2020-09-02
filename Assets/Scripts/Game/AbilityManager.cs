@@ -7,8 +7,6 @@ public class AbilityManager : MonoSingleton<AbilityManager>
 {
 	public List<int> GenerateAbilityIDs(int nEntityID)
 	{
-		Character character = EntityManager.Instance.GetEntity(nEntityID) as Character;
-
 		List<int> abilityIDs = new List<int>();
 
 		abilityIDs.Add(Random.Range(0, 7));
@@ -22,7 +20,7 @@ public class AbilityManager : MonoSingleton<AbilityManager>
 
 	public void ApplyAbility(int nEntityID, int nAbilityID)
 	{
-		Character entity = EntityManager.Instance.GetEntity(nEntityID) as Character;
+		IEntity entity = Entities.Get(nEntityID);
 		CharacterStatusController characterStatusController = entity.GetComponent<CharacterStatusController>();
 
 		MasterData.Ability master = MasterDataManager.Instance.GetMasterData<MasterData.Ability>(nAbilityID);

@@ -23,7 +23,7 @@ public class GameItemPhysicsController : MonoComponentBase
     {
         ModelTriggerEnter cmd = command as ModelTriggerEnter;
 
-        Character target = EntityManager.Instance.GetEntity(cmd.targetEntityID) as Character;
+        Character target = Entities.Get<Character>(cmd.targetEntityID);
         if (target == null || !target.IsAlive)
             return;
 

@@ -9,7 +9,7 @@ public class CS_FirstStatusSelectionHandler
     {
         CS_FirstStatusSelection firstStatusSelection = msg as CS_FirstStatusSelection;
 
-        CharacterStatusController statusController = EntityManager.Instance.GetEntity(firstStatusSelection.m_nEntityID).GetComponent<CharacterStatusController>();
+        CharacterStatusController statusController = Entities.Get(firstStatusSelection.m_nEntityID).GetComponent<CharacterStatusController>();
         statusController.OnFirstStatusSelection(firstStatusSelection.m_FirstStatusElement);
     }
 }

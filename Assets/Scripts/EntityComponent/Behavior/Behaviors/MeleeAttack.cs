@@ -35,12 +35,12 @@ namespace Behavior
                 foreach (Collider collider in targets)
                 {
                     EntityIDTag entityIDTag = collider.GetComponent<EntityIDTag>();
-                    if(entityIDTag == null || EntityManager.Instance.GetEntity(entityIDTag.GetEntityID()) == null)
+                    if(entityIDTag == null || Entities.Get(entityIDTag.GetEntityID()) == null)
                     {
                         continue;
                     }
 
-					IEntity target = EntityManager.Instance.GetEntity(entityIDTag.GetEntityID());
+					IEntity target = Entities.Get(entityIDTag.GetEntityID());
 					if (target is Character)
 					{
 						if (target.EntityID == Entity.EntityID || !(target as Character).IsAlive)
@@ -91,7 +91,7 @@ namespace Behavior
                 if (data.m_InputData.ToVector3() == Vector3.zero)
                 {
                     //  Auto aiming
-                    List<IEntity> targets = EntityManager.Instance.GetEntities(Entity.Position, 20, EntityRole.All, new HashSet<int> { Entity.EntityID });
+                    List<IEntity> targets = Entities.Get(Entity.Position, 20, EntityRole.All, new HashSet<int> { Entity.EntityID });
                     List<IEntity> candidates = new List<IEntity>();
                     foreach (IEntity target in targets)
                     {

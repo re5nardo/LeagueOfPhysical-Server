@@ -50,7 +50,7 @@ public class SpawnManager : MonoSingleton<SpawnManager>
 
     private void OnTick(int tick)
     {
-        if (m_fSpawnElapsedTime > SPAWN_INTERVAL && MAX_ENTITY_COUNT > EntityManager.Instance.GetAllEntities().Count)
+        if (m_fSpawnElapsedTime > SPAWN_INTERVAL && MAX_ENTITY_COUNT > Entities.AllIDs.Count)
         {
             //  Create Monster
             Character monster = CreateMonster();

@@ -8,7 +8,7 @@ public class Grid : GameFramework.Grid
 {
     public override void Add(int nEntityID, bool bPublish = true)
     {
-        IEntity entity = EntityManager.Instance.GetEntity(nEntityID);
+        IEntity entity = Entities.Get(nEntityID);
 
         Vector2Int vec2CellPosition = GetCellPosition(entity.Position);
 
@@ -52,7 +52,7 @@ public class Grid : GameFramework.Grid
 
         Vector2Int pre = m_EntityIDCellPosition[nEntityID];
 
-        IEntity entity = EntityManager.Instance.GetEntity(nEntityID);
+        IEntity entity = Entities.Get(nEntityID);
 
         Vector2Int cur = GetCellPosition(entity.Position);
 
@@ -76,7 +76,7 @@ public class Grid : GameFramework.Grid
         {
             foreach (int nEntityID in cell.m_hashEntityID)
             {
-                IEntity entity = EntityManager.Instance.GetEntity(nEntityID);
+                IEntity entity = Entities.Get(nEntityID);
 
                 if (!GameFramework.Util.IsSatisfy(entity, conditions))
                     continue;
@@ -101,7 +101,7 @@ public class Grid : GameFramework.Grid
         {
             foreach (int nEntityID in cell.m_hashEntityID)
             {
-                IEntity entity = EntityManager.Instance.GetEntity(nEntityID);
+                IEntity entity = Entities.Get(nEntityID);
 
                 if (!GameFramework.Util.IsSatisfy(entity, conditions))
                     continue;
@@ -127,7 +127,7 @@ public class Grid : GameFramework.Grid
         {
             foreach (int nEntityID in m_Cells[vec2CellPos].m_hashEntityID)
             {
-                IEntity entity = EntityManager.Instance.GetEntity(nEntityID);
+                IEntity entity = Entities.Get(nEntityID);
 
                 if (!GameFramework.Util.IsSatisfy(entity, conditions))
                     continue;

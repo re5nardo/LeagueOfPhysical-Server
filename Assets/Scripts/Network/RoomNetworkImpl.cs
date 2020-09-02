@@ -46,7 +46,7 @@ public class RoomNetworkImpl : MonoBehaviour, INetworkImpl
 
 	public void SendToNear(IMessage msg, Vector3 vec3Center, float fRadius, bool bReliable = true, bool bInstant = false)
 	{
-		foreach (IEntity entity in EntityManager.Instance.GetEntities(vec3Center, fRadius, EntityRole.Player))
+		foreach (IEntity entity in Entities.Get(vec3Center, fRadius, EntityRole.Player))
 		{
 			string strPlayerUserID = "";
 			if (LOP.Game.Current.EntityIDPlayerUserID.TryGetValue(entity.EntityID, out strPlayerUserID))

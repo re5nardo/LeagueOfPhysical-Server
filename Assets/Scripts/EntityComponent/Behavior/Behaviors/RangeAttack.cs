@@ -57,7 +57,7 @@ namespace Behavior
                 if (data.m_InputData.ToVector3() == Vector3.zero)
                 {
                     //  Auto aiming
-                    List<IEntity> targets = EntityManager.Instance.GetEntities(Entity.Position, 20, EntityRole.All, new HashSet<int> { Entity.EntityID });
+                    List<IEntity> targets = Entities.Get(Entity.Position, 20, EntityRole.All, new HashSet<int> { Entity.EntityID });
                     List<IEntity> candidates = new List<IEntity>();
                     foreach (IEntity target in targets)
                     {

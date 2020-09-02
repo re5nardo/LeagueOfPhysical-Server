@@ -148,7 +148,7 @@ namespace Skill
         {
             MasterData.Projectile masterData = MasterDataManager.Instance.GetMasterData<MasterData.Projectile>(Define.MasterData.ProjectileID.PLASMA_1);
 
-            IEntity firstProjectile = EntityManager.Instance.GetEntity(m_nFirstProjectileEntityID);
+            IEntity firstProjectile = Entities.Get(m_nFirstProjectileEntityID);
 
             Vector3 vec3StartPosition = split ? firstProjectile.Position : Entity.Position;
             vec3StartPosition.y = m_fTargetProjectileHeight;

@@ -296,7 +296,7 @@ public class NearEntityAgent : MonoComponentBase
         {
             m_hashNearEntityID.Add(entityID);
 
-            MonoEntityBase entity = EntityManager.Instance.GetEntity(entityID) as MonoEntityBase;
+            MonoEntityBase entity = Entities.Get<MonoEntityBase>(entityID);
             if (entity.EntityRole == EntityRole.Player)
             {
                 m_hashNearPlayerEntityID.Add(entityID);
@@ -341,7 +341,7 @@ public class NearEntityAgent : MonoComponentBase
 		entityAppear.m_listEntitySnapInfo = new List<EntitySnapInfo>(entityIDs.Count);
 		foreach (int entityID in entityIDs)
 		{
-			IEntity entity = EntityManager.Instance.GetEntity(entityID);
+			IEntity entity = Entities.Get(entityID);
 			entityAppear.m_listEntitySnapInfo.Add(EntityHelper.GetEntitySnapInfo(entity));
 		}
 		entityAppear.m_fGameTime = Game.Current.GameTime;

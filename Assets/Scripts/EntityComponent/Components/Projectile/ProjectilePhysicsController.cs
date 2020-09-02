@@ -28,7 +28,7 @@ public class ProjectilePhysicsController : MonoComponentBase
 
         int projectorID = Entity.GetComponent<ProjectileBasicData>().ProjectorID;
 
-        IEntity target = EntityManager.Instance.GetEntity(cmd.targetEntityID);
+        IEntity target = Entities.Get(cmd.targetEntityID);
         if (target == null)
         {
             //  Already destroyed

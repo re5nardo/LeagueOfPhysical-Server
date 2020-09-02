@@ -8,7 +8,7 @@ public class PhotonHelper
     public static int[] GetActorIDs(Vector3 vec3Position, float fRadius)
     {
         List<int> actorIDs = new List<int>();
-        foreach (IEntity entity in EntityManager.Instance.GetEntities(vec3Position, fRadius, EntityRole.Player))
+        foreach (IEntity entity in Entities.Get(vec3Position, fRadius, EntityRole.Player))
         {
             
             if (LOP.Game.Current.EntityIDPlayerUserID.ContainsKey(entity.EntityID))

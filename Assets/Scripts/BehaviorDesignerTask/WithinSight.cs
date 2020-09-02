@@ -34,7 +34,7 @@ public class WithinSight : Conditional
     {
 		EntityBasicView entityBasicView = Entity.GetComponent<EntityBasicView>();
 
-		List<IEntity> listEntity = EntityManager.Instance.GetEntities(entityBasicView.ModelTransform, fieldOfViewAngle, viewMagnitude, EntityRole.Player, new HashSet<int> { Entity.EntityID });
+		List<IEntity> listEntity = Entities.Get(entityBasicView.ModelTransform, fieldOfViewAngle, viewMagnitude, EntityRole.Player, new HashSet<int> { Entity.EntityID });
 		listEntity.RemoveAll(x => !(x is Character));
 
 		if (listEntity.Count > 0)

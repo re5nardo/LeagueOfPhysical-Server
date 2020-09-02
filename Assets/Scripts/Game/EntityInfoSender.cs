@@ -54,7 +54,7 @@ public class EntityInfoSender : MonoSingleton<EntityInfoSender>
 
             string strPlayerUserID = kv.Key;
             PhotonPlayer photonPlayer = kv.Value.Target as PhotonPlayer;
-            IEntity playerEntity = EntityManager.Instance.GetEntity(LOP.Game.Current.PlayerUserIDEntityID[strPlayerUserID]);
+            IEntity playerEntity = Entities.Get(LOP.Game.Current.PlayerUserIDEntityID[strPlayerUserID]);
             if (playerEntity == null)
             {
                 //	Already removed
@@ -65,7 +65,7 @@ public class EntityInfoSender : MonoSingleton<EntityInfoSender>
             //  Get target entities
             List<EntityTransformInfo> listEntityTransformInfo = new List<EntityTransformInfo>();
             Vector3 vec3Center = m_dicPlayerUserIDLookAtPosition.ContainsKey(strPlayerUserID) ? m_dicPlayerUserIDLookAtPosition[strPlayerUserID] : Vector3.zero;
-            var entities = EntityManager.Instance.GetEntities(vec3Center, LOP.Game.BROADCAST_SCOPE_RADIUS, EntityRole.All);
+            var entities = Entities.Get(vec3Center, LOP.Game.BROADCAST_SCOPE_RADIUS, EntityRole.All);
             foreach (IEntity candidate in entities)
             {
                 if (nearEntityAgent.m_EntityTransformSnaps.ContainsKey(candidate.EntityID))
@@ -113,7 +113,7 @@ public class EntityInfoSender : MonoSingleton<EntityInfoSender>
 
             string strPlayerUserID = kv.Key;
             PhotonPlayer photonPlayer = kv.Value.Target as PhotonPlayer;
-            IEntity entity = EntityManager.Instance.GetEntity(LOP.Game.Current.PlayerUserIDEntityID[strPlayerUserID]);
+            IEntity entity = Entities.Get(LOP.Game.Current.PlayerUserIDEntityID[strPlayerUserID]);
 			if(entity == null)
 			{
 				//	Already removed
@@ -144,7 +144,7 @@ public class EntityInfoSender : MonoSingleton<EntityInfoSender>
     {
         int nEntityID = (int)param[0];
 
-        MonoEntityBase entity = EntityManager.Instance.GetEntity(nEntityID) as MonoEntityBase;
+        MonoEntityBase entity = Entities.Get<MonoEntityBase>(nEntityID);
 
         //	Player's entity
         if (entity.EntityRole == EntityRole.Player)

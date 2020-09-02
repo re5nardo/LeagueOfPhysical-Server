@@ -24,7 +24,7 @@ namespace LOP
 
             if (playerUserIDEntityID.ContainsKey(newPlayer.UserId))
             {
-                MonoEntityBase userEntity = EntityManager.Instance.GetEntity(playerUserIDEntityID[newPlayer.UserId]) as MonoEntityBase;
+                MonoEntityBase userEntity = Entities.Get<MonoEntityBase>(playerUserIDEntityID[newPlayer.UserId]);
 
                 SC_EnterRoom enterRoom = new SC_EnterRoom();
                 enterRoom.m_nEntityID = userEntity.EntityID;
@@ -106,7 +106,7 @@ namespace LOP
 
             int entityID = playerUserIDEntityID[photonPlayer.UserId];
 
-            IEntity entity = EntityManager.Instance.GetEntity(entityID);
+            IEntity entity = Entities.Get(entityID);
 
             NearEntityAgent nearEntityAgent = entity.GetComponent<NearEntityAgent>();
             entity.DetachComponent(nearEntityAgent);
@@ -128,11 +128,11 @@ namespace LOP
 
         public void EntityGetGameItem(int nEntityID, int nGameItemID)
         {
-            GameItem gameItem = EntityManager.Instance.GetEntity(nGameItemID) as GameItem;
+            GameItem gameItem = Entities.Get<GameItem>(nGameItemID);
 
             DestroyEntity(nGameItemID);
 
-            Character character = EntityManager.Instance.GetEntity(nEntityID) as Character;
+            Character character = Entities.Get<Character>(nEntityID);
             if (character == null || !character.IsAlive)
             {
                 return;
@@ -148,7 +148,7 @@ namespace LOP
 
         public void HealEntity(int healingEntityID, int healedEntityID, int heal)
         {
-            Character character = EntityManager.Instance.GetEntity(healedEntityID) as Character;
+            Character character = Entities.Get<Character>(healedEntityID);
             if (character == null || !character.IsAlive)
             {
                 return;
@@ -161,7 +161,7 @@ namespace LOP
 
         public void EntityGetMoney(int entityID, int money, Vector3 position)
         {
-            MonoEntityBase entity = EntityManager.Instance.GetEntity(entityID) as MonoEntityBase;
+            MonoEntityBase entity = Entities.Get<MonoEntityBase>(entityID);
 
             EntityInventory entityInventory = entity.GetComponent<EntityInventory>();
             if (entityInventory != null)
@@ -177,7 +177,7 @@ namespace LOP
 
         public void EntityGetExp(int entityID, int exp)
         {
-            MonoEntityBase entity = EntityManager.Instance.GetEntity(entityID) as MonoEntityBase;
+            MonoEntityBase entity = Entities.Get<MonoEntityBase>(entityID);
 
             CharacterGrowthData characterGrowthData = entity.GetComponent<CharacterGrowthData>();
             if (characterGrowthData != null)
@@ -202,8 +202,8 @@ namespace LOP
             int attackDamage = 0;
             int armor = 0;
 
-            MonoEntityBase attacker = EntityManager.Instance.GetEntity(nAttackerID) as MonoEntityBase;
-            MonoEntityBase attacked = EntityManager.Instance.GetEntity(nAttackedID) as MonoEntityBase;
+            MonoEntityBase attacker = Entities.Get<MonoEntityBase>(nAttackerID);
+            MonoEntityBase attacked = Entities.Get<MonoEntityBase>(nAttackedID);
 
             //	AttackDamage
             if (attacker.EntityType == EntityType.Character)
@@ -239,7 +239,7 @@ namespace LOP
 
         public void AttackCharacter(int nAttackerID, int nAttackedID, int nDamage)
         {
-            Character entity = EntityManager.Instance.GetEntity(nAttackedID) as Character;
+            Character entity = Entities.Get<Character>(nAttackedID);
             if (!entity.IsAlive)
                 return;
 
@@ -259,7 +259,7 @@ namespace LOP
 
         public void AttackGameItem(int nAttackerID, int nAttackedID, int nDamage)
         {
-            GameItem gameItem = EntityManager.Instance.GetEntity(nAttackedID) as GameItem;
+            GameItem gameItem = Entities.Get<GameItem>(nAttackedID);
             if (!gameItem.IsAlive || gameItem.MasterData.ID != Define.MasterData.GameItemID.TREASURE_BOX)
                 return;
 
@@ -290,8 +290,8 @@ namespace LOP
 
         public void EntityDie(int nAttackerID, int nDiedID)
         {
-            Character attacker = EntityManager.Instance.GetEntity(nAttackerID) as Character;
-            Character died = EntityManager.Instance.GetEntity(nDiedID) as Character;
+            Character attacker = Entities.Get<Character>(nAttackerID);
+            Character died = Entities.Get<Character>(nDiedID);
 
             BehaviorController behaviorController = died.GetComponent<BehaviorController>();
             behaviorController.Die();
@@ -326,7 +326,7 @@ namespace LOP
 
         public void DestroyEntity(int nEntityID)
         {
-            MonoEntityBase entity = EntityManager.Instance.GetEntity(nEntityID) as MonoEntityBase;
+            MonoEntityBase entity = Entities.Get<MonoEntityBase>(nEntityID);
 
             entity.SendCommandToAll(new Destroying());
 
