@@ -19,6 +19,7 @@ public class CustomSerializationCode
 	public const byte SC_SelectableAbilityInfo = 24;
     public const byte SC_GameEvents = 25;
     public const byte SC_SyncTick = 26;
+    public const byte SC_Synchronization = 27;
 
 	public const byte CS_NotifyMoveInputData = 130;
 	public const byte CS_NotifyPlayerLookAtPosition = 131;
@@ -45,6 +46,7 @@ public class PhotonEvent
 	public const byte SC_SelectableAbilityInfo = 17;
     public const byte SC_GameEvents = 18;
     public const byte SC_SyncTick = 19;
+    public const byte SC_Synchronization = 20;
 
 	public const byte CS_NotifyMoveInputData = 100;
 	public const byte CS_NotifyPlayerLookAtPosition = 101;
@@ -187,7 +189,36 @@ public struct SerializableVector3
 		return new Vector3(value.x, value.y, value.z);
 	}
 
-	public Vector3 ToVector3()
+    public override bool Equals(object obj)
+    {
+        if (obj is SerializableVector3)
+        {
+            return this.Equals((SerializableVector3)obj);
+        }
+        return false;
+    }
+
+    public bool Equals(SerializableVector3 value)
+    {
+        return (x == value.x) && (y == value.y) && (z == value.z);
+    }
+
+    public override int GetHashCode()
+    {
+        return (x, y, z).GetHashCode();
+    }
+
+    public static bool operator ==(SerializableVector3 lhs, SerializableVector3 rhs)
+    {
+        return lhs.Equals(rhs);
+    }
+
+    public static bool operator !=(SerializableVector3 lhs, SerializableVector3 rhs)
+    {
+        return !(lhs.Equals(rhs));
+    }
+
+    public Vector3 ToVector3()
 	{
 		return new Vector3(x, y, z);
 	}
@@ -444,6 +475,23 @@ public class SC_SyncTick : IPhotonEventMessage
     public byte GetEventID()
     {
         return PhotonEvent.SC_SyncTick;
+    }
+}
+
+[Serializable]
+public class SC_Synchronization : IPhotonEventMessage, IPoolable
+{
+    public int senderID { get; set; }
+    public List<ISnap> snaps = new List<ISnap>();
+
+    public byte GetEventID()
+    {
+        return PhotonEvent.SC_Synchronization;
+    }
+
+    public void Clear()
+    {
+        snaps.Clear();
     }
 }
 #endregion
