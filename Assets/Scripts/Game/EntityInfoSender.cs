@@ -33,73 +33,8 @@ public class EntityInfoSender : MonoSingleton<EntityInfoSender>
 
     public void SendInfo()
     {
-        SendTransformInfo();
         SendPlayerSkillInfo();
         SendSyncTick();
-    }
-
-    private void SendTransformInfo()
-    {
-        SendNearEntityTransformInfo();
-    }
-
-    private void SendNearEntityTransformInfo()
-    {
-        foreach (KeyValuePair<string, WeakReference> kv in LOP.Game.Current.PlayerUserIDPhotonPlayer)
-        {
-            if (!kv.Value.IsAlive)
-            {
-                continue;
-            }
-
-            string strPlayerUserID = kv.Key;
-            PhotonPlayer photonPlayer = kv.Value.Target as PhotonPlayer;
-            IEntity playerEntity = Entities.Get(LOP.Game.Current.PlayerUserIDEntityID[strPlayerUserID]);
-            if (playerEntity == null)
-            {
-                //	Already removed
-                continue;
-            }
-            NearEntityAgent nearEntityAgent = playerEntity.GetComponent<NearEntityAgent>();
-
-            //  Get target entities
-            List<EntityTransformInfo> listEntityTransformInfo = new List<EntityTransformInfo>();
-            Vector3 vec3Center = m_dicPlayerUserIDLookAtPosition.ContainsKey(strPlayerUserID) ? m_dicPlayerUserIDLookAtPosition[strPlayerUserID] : Vector3.zero;
-            var entities = Entities.Get(vec3Center, LOP.Game.BROADCAST_SCOPE_RADIUS, EntityRole.All);
-            foreach (IEntity candidate in entities)
-            {
-                if (nearEntityAgent.m_EntityTransformSnaps.ContainsKey(candidate.EntityID))
-                {
-                    EntityTransformSnap entityTransformSnap = nearEntityAgent.m_EntityTransformSnaps[candidate.EntityID];
-                    if (entityTransformSnap.HasChanged)
-                    {
-                        if (entityTransformSnap.HasVelocityChanged || (Game.Current.CurrentTick - entityTransformSnap.LastSendTick) >= entityTransformSnap.WaitingInterval)
-                        {
-                            EntityTransformInfo entityTransformInfo = ObjectPool.Instance.GetObject<EntityTransformInfo>();
-                            entityTransformInfo.SetEntityTransformInfo(candidate, Game.Current.GameTime);
-
-                            listEntityTransformInfo.Add(entityTransformInfo);
-
-                            entityTransformSnap.LastSendTick = Game.Current.CurrentTick;
-                            entityTransformSnap.HasChanged = false;
-                        }
-                    }
-                }
-            }
-
-            //  Send packet
-            if (listEntityTransformInfo.Count > 0)
-            {
-                SC_NearEntityTransformInfos nearEntityTransformInfos = ObjectPool.Instance.GetObject<SC_NearEntityTransformInfos>();
-
-                nearEntityTransformInfos.tick = Game.Current.CurrentTick;
-                nearEntityTransformInfos.entityTransformInfos = listEntityTransformInfo;
-
-				RoomNetwork.Instance.Send(nearEntityTransformInfos, photonPlayer.ID, false, true);
-
-                ObjectPool.Instance.ReturnObject(nearEntityTransformInfos);
-            }
-        }
     }
 
     private void SendPlayerSkillInfo()

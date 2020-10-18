@@ -6,7 +6,6 @@ public class PhotonTypeRegister
     {
         //  Server to client
         PhotonPeer.RegisterType(typeof(SC_EnterRoom), CustomSerializationCode.SC_EnterRoom, Util.CommonDataCompressionSerialize, Util.CommonDataCompressionDeserialize);
-        PhotonPeer.RegisterType(typeof(SC_NearEntityTransformInfos), CustomSerializationCode.SC_NearEntityTransformInfos, Util.CommonDataCompressionSerialize, Util.CommonDataCompressionDeserialize);
         PhotonPeer.RegisterType(typeof(SC_EntitySkillInfo), CustomSerializationCode.SC_EntitySkillInfo, Util.CommonDataCompressionSerialize, Util.CommonDataCompressionDeserialize);
         PhotonPeer.RegisterType(typeof(SC_PlayerMoveInputResponse), CustomSerializationCode.SC_PlayerMoveInputResponse, Util.CommonDataCompressionSerialize, Util.CommonDataCompressionDeserialize);
         PhotonPeer.RegisterType(typeof(SC_EmotionExpression), CustomSerializationCode.SC_EmotionExpression, Util.CommonDataCompressionSerialize, Util.CommonDataCompressionDeserialize);

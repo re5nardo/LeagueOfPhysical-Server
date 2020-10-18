@@ -7,7 +7,7 @@ using GameEvent;
 
 namespace Behavior
 {
-    public abstract class BehaviorBase : MonoComponentBase
+    public abstract class BehaviorBase : MonoComponentBase, ISynchronizable
     {
         public event Action<BehaviorBase> onBehaviorEnd = null;
 
@@ -20,6 +20,20 @@ namespace Behavior
         protected int lastTick = -1;
 
         private bool isPlaying = false;
+
+        #region ISynchronizable
+        public ISynchronizable Parent { get; set; } = null;
+        public bool Enable { get; set; } = true;
+        public bool EnableInHierarchy => Parent == null ? Enable : Parent.EnableInHierarchy && Enable;
+        public bool HasCoreChange => LastSendSnap == null ? true : !LastSendSnap.EqualsCore(CurrentSnap.Set(this));
+        public bool IsDirty => isDirty || LastSendSnap == null ? true : !LastSendSnap.EqualsValue(CurrentSnap.Set(this));
+        #endregion
+
+        private bool isDirty = false;
+        protected virtual int WaitingInterval => 5;
+        protected virtual ISnap LastSendSnap { get; set; } = new BehaviorSnap();
+        protected virtual ISnap CurrentSnap { get; set; } = new BehaviorSnap();
+        private bool IsValidToSend => EnableInHierarchy;
 
         protected float DeltaTime
         {
@@ -67,11 +81,17 @@ namespace Behavior
             base.OnAttached(entity);
 
             Entity = entity as MonoEntityBase;
+
+            MonoEntitySynchronization monoEntitySynchronization = Entity.GetComponent<MonoEntitySynchronization>();
+            monoEntitySynchronization?.Add(this);
         }
 
         public override void OnDetached()
         {
             base.OnDetached();
+
+            MonoEntitySynchronization monoEntitySynchronization = Entity.GetComponent<MonoEntitySynchronization>();
+            monoEntitySynchronization?.Remove(this);
 
             Entity = null;
         }
@@ -174,5 +194,42 @@ namespace Behavior
                 StopBehavior();
             }
         }
+
+        #region ISynchronizable
+        public void SetDirty()
+        {
+            isDirty = true;
+        }
+
+        public abstract ISnap GetSnap();
+
+        public void UpdateSynchronizable()
+        {
+            if (IsValidToSend && IsDirty)
+            {
+                if (HasCoreChange || WaitingInterval == -1 || Game.Current.CurrentTick - LastSendSnap.Tick > WaitingInterval)
+                {
+                    SendSynchronization();
+                }
+            }
+        }
+
+        public void SendSynchronization()
+        {
+            SynchronizationManager.SendSnap(LastSendSnap.Set(this));
+
+            isDirty = false;
+        }
+
+        public virtual void OnReceiveSynchronization(ISnap snap)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual void Reconcile(ISnap snap)
+        {
+            throw new NotImplementedException();
+        }
+        #endregion
     }
 }

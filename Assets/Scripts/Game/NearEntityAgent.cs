@@ -28,8 +28,6 @@ public class NearEntityAgent : MonoComponentBase
 	private HashSet<int> m_hashNearEntityID = new HashSet<int>();
 	private HashSet<int> m_hashNearPlayerEntityID = new HashSet<int>();
 
-    public Dictionary<int, EntityTransformSnap> m_EntityTransformSnaps = new Dictionary<int, EntityTransformSnap>();
-
     public override void OnAttached(IEntity entity)
 	{
 		base.OnAttached(entity);
@@ -301,11 +299,6 @@ public class NearEntityAgent : MonoComponentBase
             {
                 m_hashNearPlayerEntityID.Add(entityID);
             }
-
-            if (!m_EntityTransformSnaps.ContainsKey(entityID))
-            {
-                m_EntityTransformSnaps[entityID] = new EntityTransformSnap(entityID);
-            }
         }
 
         SendEntityAppear(entityIDs);
@@ -317,11 +310,6 @@ public class NearEntityAgent : MonoComponentBase
         {
             m_hashNearEntityID.Remove(entityID);
             m_hashNearPlayerEntityID.Remove(entityID);
-
-            if (m_EntityTransformSnaps.ContainsKey(entityID))
-            {
-                m_EntityTransformSnaps.Remove(entityID);
-            }
         }
 
         SendEntityDisAppear(entityIDs);

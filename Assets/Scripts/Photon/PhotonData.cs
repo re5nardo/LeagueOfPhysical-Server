@@ -7,7 +7,6 @@ using System;
 public class CustomSerializationCode
 {
 	public const byte SC_EnterRoom = 3;
-	public const byte SC_NearEntityTransformInfos = 4;
 	public const byte SC_EntitySkillInfo = 5;
 	public const byte SC_PlayerMoveInputResponse = 6;
 	public const byte SC_EmotionExpression = 7;
@@ -34,7 +33,6 @@ public class CustomSerializationCode
 public class PhotonEvent
 {
 	public const byte SC_EnterRoom = 0;
-	public const byte SC_NearEntityTransformInfos = 1;
 	public const byte SC_EntitySkillInfo = 2;
 	public const byte SC_PlayerMoveInputResponse = 3;
 	public const byte SC_EmotionExpression = 4;
@@ -289,28 +287,6 @@ public class SC_EnterRoom : IPhotonEventMessage
 	public byte GetEventID()
 	{
 		return PhotonEvent.SC_EnterRoom;
-	}
-}
-
-[Serializable]
-public class SC_NearEntityTransformInfos : IPhotonEventMessage, IPoolable
-{
-    public int senderID { get; set; }
-    public int tick = -1;
-    public List<EntityTransformInfo> entityTransformInfos = new List<EntityTransformInfo>();
-
-	public byte GetEventID()
-	{
-		return PhotonEvent.SC_NearEntityTransformInfos;
-	}
-
-	public void Clear()
-	{
-		foreach (var entityTransformInfo in entityTransformInfos)
-		{
-			ObjectPool.Instance.ReturnObject(entityTransformInfo);
-		}
-        entityTransformInfos.Clear();
 	}
 }
 

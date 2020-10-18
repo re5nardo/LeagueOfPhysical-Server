@@ -62,5 +62,12 @@ namespace Behavior
         {
             return m_vec3Destination;
         }
+
+        #region ISynchronizable
+        public override ISnap GetSnap()
+        {
+            return new BehaviorSnap(Entity);
+        }
+        #endregion
     }
 }

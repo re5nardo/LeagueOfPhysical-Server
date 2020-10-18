@@ -127,9 +127,16 @@ namespace Behavior
                 }
                 else
                 {
-                    Entity.Rotation = Quaternion.LookRotation(data.m_InputData.ToVector3()).eulerAngles;
+                    Entity.Rotation = Quaternion.LookRotation(data.m_InputData).eulerAngles;
                 }
             }
+        }
+        #endregion
+
+        #region ISynchronizable
+        public override ISnap GetSnap()
+        {
+            return new BehaviorSnap(Entity);
         }
         #endregion
     }

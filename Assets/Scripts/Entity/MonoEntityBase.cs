@@ -12,12 +12,12 @@ namespace Entity
         public EntityType EntityType { get; protected set; } = EntityType.None;
         public EntityRole EntityRole { get; protected set; } = EntityRole.None;
 
-        public bool IsValid
-        {
-            get { return EntityManager.Instance.IsRegistered(EntityID); }
-        }
+        public bool IsValid => EntityManager.Instance.IsRegistered(EntityID);
 
         private List<IComponent> m_listComponent = new List<IComponent>();
+
+        private MonoEntitySynchronization monoEntitySynchronization = null;
+        private EntityTransformSynchronization entityTransformSynchronization = null;
 
         protected virtual void Awake()
 		{
@@ -26,6 +26,8 @@ namespace Entity
 
 		protected virtual void InitComponents()
 		{
+            monoEntitySynchronization = AttachComponent(gameObject.AddComponent<MonoEntitySynchronization>());
+            entityTransformSynchronization = AttachComponent(gameObject.AddComponent<EntityTransformSynchronization>());
         }
 
 		public virtual void Initialize(params object[] param)

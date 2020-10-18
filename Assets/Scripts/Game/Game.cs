@@ -115,6 +115,7 @@ namespace LOP
         private void OnTickEnd(int tick)
         {
             TickPubSubService.Publish("TickEnd", tick);
+            TickPubSubService.Publish("LateTickEnd", tick);
         }
     }
 }
