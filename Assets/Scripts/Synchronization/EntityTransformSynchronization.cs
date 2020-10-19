@@ -69,10 +69,5 @@ public class EntityTransformSynchronization : MonoComponentBase, ISynchronizable
     {
         throw new NotImplementedException();
     }
-
-    public void Reconcile(ISnap snap)
-    {
-        throw new NotImplementedException();
-    }
     #endregion
 }

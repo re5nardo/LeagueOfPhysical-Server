@@ -225,11 +225,6 @@ namespace Behavior
         {
             throw new NotImplementedException();
         }
-
-        public virtual void Reconcile(ISnap snap)
-        {
-            throw new NotImplementedException();
-        }
         #endregion
     }
 }

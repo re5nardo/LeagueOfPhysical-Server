@@ -82,11 +82,6 @@ public class MonoEntitySynchronization : MonoComponentBase, ISynchronizableCompo
         throw new NotImplementedException();
     }
 
-    public void Reconcile(ISnap snap)
-    {
-        throw new NotImplementedException();
-    }
-
     public void Add(ISynchronizable child)
     {
         Children.Add(child);
