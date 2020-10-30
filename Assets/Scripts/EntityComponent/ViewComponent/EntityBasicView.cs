@@ -179,18 +179,27 @@ public class EntityBasicView : MonoViewComponentBase
 	#region Animator
 	public void Animator_SetFloat(string name, float value)
 	{
-		m_AnimatorModel?.SetFloat(name, value);
-	}
+        if (m_AnimatorModel != null)
+        {
+            m_AnimatorModel.SetFloat(name, value);
+        }
+    }
 
 	public void Animator_SetBool(string name, bool value)
 	{
-		m_AnimatorModel?.SetBool(name, value);
-	}
+        if (m_AnimatorModel != null)
+        {
+            m_AnimatorModel.SetBool(name, value);
+        }
+    }
 
 	public void Animator_SetTrigger(string name)
 	{
-		m_AnimatorModel?.SetTrigger(name);
-	}
+        if (m_AnimatorModel != null)
+        {
+            m_AnimatorModel.SetTrigger(name);
+        }
+    }
 	#endregion
 
 	#region Model Collision Handler

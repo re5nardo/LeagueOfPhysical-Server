@@ -66,4 +66,17 @@ public class BehaviorController : MonoComponentBase
 
         behavior.StartBehavior();
     }
+
+    public void StopBehavior(int nBehaviorMasterID)
+    {
+        var behaviors = Entity.GetComponents<BehaviorBase>();
+
+        behaviors?.ForEach(behavior =>
+        {
+            if (behavior.GetBehaviorMasterID() == nBehaviorMasterID)
+            {
+                behavior.StopBehavior();
+            }
+        });
+    }
 }
