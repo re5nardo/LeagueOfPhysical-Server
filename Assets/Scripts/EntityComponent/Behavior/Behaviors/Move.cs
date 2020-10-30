@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using GameFramework;
 using GameEvent;
+using EntityCommand;
 
 namespace Behavior
 {
@@ -14,6 +15,8 @@ namespace Behavior
             base.OnBehaviorStart();
 
             LOP.Game.Current.GameEventManager.SendToNear(new EntityBehaviorStart(Entity.EntityID, MasterData.ID, (SerializableVector3)m_vec3Destination), Entity.Position);
+
+            Entity.SendCommandToViews(new AnimatorSetBool("Move", true));
         }
 
         protected override bool OnBehaviorUpdate()
@@ -43,6 +46,8 @@ namespace Behavior
             base.OnBehaviorEnd();
 
 			Entity.Velocity = Vector3.zero;
+
+            Entity.SendCommandToViews(new AnimatorSetBool("Move", false));
         }
 
         public override void SetData(int nBehaviorMasterID, params object[] param)
