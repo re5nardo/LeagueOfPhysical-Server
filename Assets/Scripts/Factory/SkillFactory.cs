@@ -2,24 +2,26 @@
 using System;
 using Skill;
 using GameFramework;
+using System.Collections.Generic;
 
 public class SkillFactory : MonoSingleton<SkillFactory>
 {
+    private List<Type> source = new List<Type>
+    {
+        typeof(FireBehavior),
+        typeof(PlasmaFission),
+    };
+
     public SkillBase CreateSkill(GameObject goTarget, int nSkillMasterID)
     {
         try
         {
             MasterData.Skill masterData = MasterDataManager.instance.GetMasterData<MasterData.Skill>(nSkillMasterID);
 
-            switch (masterData.ClassName)
+            Type target = source.Find(type => type.Name == masterData.ClassName);
+            if (target != null)
             {
-                case "FireBehavior":
-                    FireBehavior fireBehavior = goTarget.AddComponent<FireBehavior>();
-                    return fireBehavior;
-
-                case "PlasmaFission":
-                    PlasmaFission plasmaFission = goTarget.AddComponent<PlasmaFission>();
-                    return plasmaFission;
+                return goTarget.AddComponent(target) as SkillBase;
             }
 
             Debug.LogError(string.Format("There is no matched ClassName! masterData.ClassName : {0}", masterData.ClassName));
