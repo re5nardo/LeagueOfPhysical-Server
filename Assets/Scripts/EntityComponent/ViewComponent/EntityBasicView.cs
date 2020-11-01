@@ -17,26 +17,26 @@ public class EntityBasicView : MonoViewComponentBase
     {
         base.OnAttached(entity);
 
-        CommandHandlerOn(typeof(ModelChanged), OnModelChanged);
-        CommandHandlerOn(typeof(PositionChanged), OnPositionChanged);
-        CommandHandlerOn(typeof(RotationChanged), OnRotationChanged);
-        CommandHandlerOn(typeof(AnimatorSetTrigger), OnAnimatorSetTrigger);
-        CommandHandlerOn(typeof(AnimatorSetFloat), OnAnimatorSetFloat);
-        CommandHandlerOn(typeof(AnimatorSetBool), OnAnimatorSetBool);
-        CommandHandlerOn(typeof(Destroying), OnDestroying);
+        AddCommandHandler(typeof(ModelChanged), OnModelChanged);
+        AddCommandHandler(typeof(PositionChanged), OnPositionChanged);
+        AddCommandHandler(typeof(RotationChanged), OnRotationChanged);
+        AddCommandHandler(typeof(AnimatorSetTrigger), OnAnimatorSetTrigger);
+        AddCommandHandler(typeof(AnimatorSetFloat), OnAnimatorSetFloat);
+        AddCommandHandler(typeof(AnimatorSetBool), OnAnimatorSetBool);
+        AddCommandHandler(typeof(Destroying), OnDestroying);
     }
 
     public override void OnDetached()
     {
         base.OnDetached();
 
-        CommandHandlerOff(typeof(ModelChanged));
-        CommandHandlerOff(typeof(PositionChanged));
-        CommandHandlerOff(typeof(RotationChanged));
-        CommandHandlerOff(typeof(AnimatorSetTrigger));
-        CommandHandlerOff(typeof(AnimatorSetFloat));
-        CommandHandlerOff(typeof(AnimatorSetBool));
-        CommandHandlerOff(typeof(Destroying));
+        RemoveCommandHandler(typeof(ModelChanged), OnModelChanged);
+        RemoveCommandHandler(typeof(PositionChanged), OnPositionChanged);
+        RemoveCommandHandler(typeof(RotationChanged), OnRotationChanged);
+        RemoveCommandHandler(typeof(AnimatorSetTrigger), OnAnimatorSetTrigger);
+        RemoveCommandHandler(typeof(AnimatorSetFloat), OnAnimatorSetFloat);
+        RemoveCommandHandler(typeof(AnimatorSetBool), OnAnimatorSetBool);
+        RemoveCommandHandler(typeof(Destroying), OnDestroying);
     }
 
     #region Command Handlers

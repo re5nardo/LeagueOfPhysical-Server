@@ -9,14 +9,14 @@ public class GameItemPhysicsController : MonoComponentBase
     {
         base.OnAttached(entity);
 
-        CommandHandlerOn(typeof(ModelTriggerEnter), OnModelTriggerEnter);
+        AddCommandHandler(typeof(ModelTriggerEnter), OnModelTriggerEnter);
     }
 
     public override void OnDetached()
     {
         base.OnDetached();
 
-        CommandHandlerOff(typeof(ModelTriggerEnter));
+        RemoveCommandHandler(typeof(ModelTriggerEnter), OnModelTriggerEnter);
     }
 
     private void OnModelTriggerEnter(ICommand command)
