@@ -31,11 +31,9 @@ public class PhotonHelper
 
     public static int GetActorID(int nEntityID)
     {
-        string strPlayerUserID = "";
-        if (LOP.Game.Current.EntityIDPlayerUserID.TryGetValue(nEntityID, out strPlayerUserID))
+        if (LOP.Game.Current.EntityIDPlayerUserID.TryGetValue(nEntityID, out string strPlayerUserID))
         {
-            WeakReference target = null;
-            if (LOP.Game.Current.PlayerUserIDPhotonPlayer.TryGetValue(strPlayerUserID, out target))
+            if (LOP.Game.Current.PlayerUserIDPhotonPlayer.TryGetValue(strPlayerUserID, out WeakReference target))
             {
                 if (target.IsAlive)
                 {

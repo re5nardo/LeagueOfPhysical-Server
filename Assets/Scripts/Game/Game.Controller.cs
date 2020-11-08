@@ -47,8 +47,7 @@ namespace LOP
             }
             else
             {
-                object characterId;
-                if (!newPlayer.CustomProperties.TryGetValue("CharacterID", out characterId))
+                if (!newPlayer.CustomProperties.TryGetValue("CharacterID", out object characterId))
                 {
                     Debug.LogError("CharacterID does not exist!");
                 }

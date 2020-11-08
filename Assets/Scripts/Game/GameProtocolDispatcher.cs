@@ -24,9 +24,7 @@ public class GameProtocolDispatcher : MonoBehaviour
 
     public void DispatchProtocol(IPhotonEventMessage msg)
     {
-        Action<IPhotonEventMessage> handler = null;
-        
-        if (protocolHandlers.TryGetValue(msg.GetEventID(), out handler))
+        if (protocolHandlers.TryGetValue(msg.GetEventID(), out Action<IPhotonEventMessage> handler))
         {
             handler?.Invoke(msg);
         }
