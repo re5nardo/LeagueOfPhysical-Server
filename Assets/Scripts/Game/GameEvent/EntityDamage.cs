@@ -9,8 +9,8 @@ namespace GameEvent
     [Serializable]
     public class EntityDamage : IGameEvent
     {
-        public int seq { get; }
-        public int tick { get; set; }
+        public int Seq { get; }
+        public int Tick { get; set; }
         public int attackerID;
         public int damagedID;
         public int damage;
@@ -18,8 +18,8 @@ namespace GameEvent
 
         public EntityDamage(int attackerID, int damagedID, int damage, int afterHP)
         {
-            seq = LOP.Game.Current.GameEventManager.GenerateSeq();
-            tick = Game.Current.CurrentTick;
+            Seq = LOP.Game.Current.GameEventManager.GenerateSeq();
+            Tick = Game.Current.CurrentTick;
             this.attackerID = attackerID;
             this.damagedID = damagedID;
             this.damage = damage;

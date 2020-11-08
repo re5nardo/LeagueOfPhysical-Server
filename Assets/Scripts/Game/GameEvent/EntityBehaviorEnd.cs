@@ -9,15 +9,15 @@ namespace GameEvent
     [Serializable]
     public class EntityBehaviorEnd : IGameEvent
     {
-        public int seq { get; }
-        public int tick { get; set; }
+        public int Seq { get; }
+        public int Tick { get; set; }
         public int entityID;
         public int behaviorMasterID;
 
         public EntityBehaviorEnd(int entityID, int behaviorMasterID)
         {
-            seq = LOP.Game.Current.GameEventManager.GenerateSeq();
-            tick = Game.Current.CurrentTick;
+            Seq = LOP.Game.Current.GameEventManager.GenerateSeq();
+            Tick = Game.Current.CurrentTick;
             this.entityID = entityID;
             this.behaviorMasterID = behaviorMasterID;
         }

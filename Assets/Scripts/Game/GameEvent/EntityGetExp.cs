@@ -9,16 +9,16 @@ namespace GameEvent
     [Serializable]
     public class EntityGetExp : IGameEvent
     {
-        public int seq { get; }
-        public int tick { get; set; }
+        public int Seq { get; }
+        public int Tick { get; set; }
         public int entityID;
         public int exp;
         public int afterExp;
 
         public EntityGetExp(int entityID, int exp, int afterExp)
         {
-            seq = LOP.Game.Current.GameEventManager.GenerateSeq();
-            tick = Game.Current.CurrentTick;
+            Seq = LOP.Game.Current.GameEventManager.GenerateSeq();
+            Tick = Game.Current.CurrentTick;
             this.entityID = entityID;
             this.exp = exp;
             this.afterExp = afterExp;

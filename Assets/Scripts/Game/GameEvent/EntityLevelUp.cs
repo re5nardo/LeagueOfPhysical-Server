@@ -9,15 +9,15 @@ namespace GameEvent
     [Serializable]
     public class EntityLevelUp : IGameEvent
     {
-        public int seq { get; }
-        public int tick { get; set; }
+        public int Seq { get; }
+        public int Tick { get; set; }
         public int entityID;
         public int level;
 
         public EntityLevelUp(int entityID, int level)
         {
-            seq = LOP.Game.Current.GameEventManager.GenerateSeq();
-            tick = Game.Current.CurrentTick;
+            Seq = LOP.Game.Current.GameEventManager.GenerateSeq();
+            Tick = Game.Current.CurrentTick;
             this.entityID = entityID;
             this.level = level;
         }
