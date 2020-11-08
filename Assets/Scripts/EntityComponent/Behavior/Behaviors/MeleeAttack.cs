@@ -136,7 +136,7 @@ namespace Behavior
         #region ISynchronizable
         public override ISnap GetSnap()
         {
-            return new BehaviorSnap(Entity);
+            return new BehaviorSnap(Entity.EntityID.ToString(), GetType().Name);
         }
         #endregion
     }

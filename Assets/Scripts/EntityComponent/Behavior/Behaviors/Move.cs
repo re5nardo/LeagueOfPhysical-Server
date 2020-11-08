@@ -9,6 +9,11 @@ namespace Behavior
     {
         private Vector3 m_vec3Destination;
 
+        #region ISynchronizable
+        protected override ISnap LastSendSnap { get; set; } = new MoveSnap();
+        protected override ISnap CurrentSnap { get; set; } = new MoveSnap();
+        #endregion
+
         #region BehaviorBase
         protected override void OnBehaviorStart()
         {
@@ -71,7 +76,7 @@ namespace Behavior
         #region ISynchronizable
         public override ISnap GetSnap()
         {
-            return new BehaviorSnap(Entity);
+            return new MoveSnap(Entity.EntityID.ToString());
         }
         #endregion
     }
