@@ -14,7 +14,6 @@ public class MonoEntitySnap : ISnap
     public List<ISnap> snaps = new List<ISnap>();
 
     public MonoEntitySnap() { }
-
     public MonoEntitySnap(MonoEntityBase monoEntityBase)
     {
         Tick = Game.Current.CurrentTick;

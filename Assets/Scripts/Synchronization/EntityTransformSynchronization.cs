@@ -15,7 +15,7 @@ public class EntityTransformSynchronization : MonoComponentBase, ISynchronizable
     #endregion
 
     private bool isDirty = false;
-    private int WaitingInterval => 4;
+    private int WaitingInterval => (int)(1 / Game.Current.TickInterval);
     private EntityTransformSnap LastSendSnap { get; set; } = new EntityTransformSnap();
     private EntityTransformSnap CurrentSnap { get; set; } = new EntityTransformSnap();
     private bool IsValidToSend => EnableInHierarchy;
