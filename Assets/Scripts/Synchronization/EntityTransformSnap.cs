@@ -8,7 +8,7 @@ using System;
 public class EntityTransformSnap : ISnap
 {
     public int Tick { get; set; }
-    public string Id { get; set; }
+    public int entityId;
 
     public SerializableVector3 position;
     public SerializableVector3 rotation;
@@ -20,7 +20,7 @@ public class EntityTransformSnap : ISnap
     public EntityTransformSnap(IEntity entity)
     {
         Tick = Game.Current.CurrentTick;
-        Id = entity.EntityID.ToString();
+        entityId = entity.EntityID;
         position = entity.Position;
         rotation = entity.Rotation;
         velocity = entity.Velocity;
@@ -32,7 +32,7 @@ public class EntityTransformSnap : ISnap
         EntityTransformSnap other = snap as EntityTransformSnap;
 
         if (other == null) return false;
-        if (other.Id != Id) return false;
+        if (other.entityId != entityId) return false;
         if (other.velocity != velocity) return false;
         if (other.angularVelocity != angularVelocity) return false;
 
@@ -44,7 +44,7 @@ public class EntityTransformSnap : ISnap
         EntityTransformSnap other = snap as EntityTransformSnap;
 
         if (other == null) return false;
-        if (other.Id != Id) return false;
+        if (other.entityId != entityId) return false;
         if (other.position != position) return false;
         if (other.rotation != rotation) return false;
         if (other.velocity != velocity) return false;
@@ -58,7 +58,7 @@ public class EntityTransformSnap : ISnap
         var entityTransformSynchronization = synchronizable as EntityTransformSynchronization;
 
         Tick = Game.Current.CurrentTick;
-        Id = entityTransformSynchronization.Entity.EntityID.ToString();
+        entityId = entityTransformSynchronization.Entity.EntityID;
         position = entityTransformSynchronization.Entity.Position;
         rotation = entityTransformSynchronization.Entity.Rotation;
         velocity = entityTransformSynchronization.Entity.Velocity;
@@ -72,7 +72,7 @@ public class EntityTransformSnap : ISnap
         EntityTransformSnap clone = new EntityTransformSnap();
 
         clone.Tick = Tick;
-        clone.Id = Id;
+        clone.entityId = entityId;
         clone.position = position;
         clone.rotation = rotation;
         clone.velocity = velocity;
@@ -83,6 +83,6 @@ public class EntityTransformSnap : ISnap
 
     public override string ToString()
     {
-        return $"[Tick {Tick}][EntityTransformSnap] Id : {Id}, position : {position.ToString()}, rotation : {rotation.ToString()}, velocity : {velocity.ToString()}, angularVelocity : {angularVelocity.ToString()}";
+        return $"[Tick {Tick}][EntityTransformSnap] entityId : {entityId}, position : {position.ToString()}, rotation : {rotation.ToString()}, velocity : {velocity.ToString()}, angularVelocity : {angularVelocity.ToString()}";
     }
 }

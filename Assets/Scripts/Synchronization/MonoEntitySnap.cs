@@ -9,7 +9,7 @@ using Entity;
 public class MonoEntitySnap : ISnap
 {
     public int Tick { get; set; }
-    public string Id { get; set; }
+    public int entityId;
 
     public List<ISnap> snaps = new List<ISnap>();
 
@@ -17,7 +17,7 @@ public class MonoEntitySnap : ISnap
     public MonoEntitySnap(MonoEntityBase monoEntityBase)
     {
         Tick = Game.Current.CurrentTick;
-        Id = monoEntityBase.EntityID.ToString();
+        entityId = monoEntityBase.EntityID;
     }
 
     public bool EqualsCore(ISnap snap)
@@ -25,7 +25,7 @@ public class MonoEntitySnap : ISnap
         MonoEntitySnap other = snap as MonoEntitySnap;
 
         if (other == null) return false;
-        if (other.Id != Id) return false;
+        if (other.entityId != entityId) return false;
 
         return true;
     }
@@ -35,7 +35,7 @@ public class MonoEntitySnap : ISnap
         MonoEntitySnap other = snap as MonoEntitySnap;
 
         if (other == null) return false;
-        if (other.Id != Id) return false;
+        if (other.entityId != entityId) return false;
 
         return true;
     }
@@ -45,7 +45,7 @@ public class MonoEntitySnap : ISnap
         var monoEntitySynchronization = synchronizable as MonoEntitySynchronization;
 
         Tick = Game.Current.CurrentTick;
-        Id = monoEntitySynchronization.Entity.EntityID.ToString();
+        entityId = monoEntitySynchronization.Entity.EntityID;
 
         return this;
     }
@@ -55,7 +55,7 @@ public class MonoEntitySnap : ISnap
         MonoEntitySnap clone = new MonoEntitySnap();
 
         clone.Tick = Tick;
-        clone.Id = Id;
+        clone.entityId = entityId;
         snaps.ForEach(snap => clone.snaps.Add(snap.Clone()));
 
         return clone;
@@ -63,6 +63,6 @@ public class MonoEntitySnap : ISnap
 
     public override string ToString()
     {
-        return $"[Tick {Tick}][MonoEntitySnap] Id : {Id}";
+        return $"[Tick {Tick}][MonoEntitySnap] entityId : {entityId}";
     }
 }

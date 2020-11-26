@@ -9,15 +9,15 @@ using Behavior;
 public class BehaviorSnap : ISnap
 {
     public int Tick { get; set; }
-    public string Id { get; set; }
-    public string behaviorName;
+    public int entityId;
+    public int behaviorMasterId;
 
     public BehaviorSnap() { }
-    public BehaviorSnap(string id, string behaviorName)
+    public BehaviorSnap(BehaviorBase behavior)
     {
         Tick = Game.Current.CurrentTick;
-        Id = id;
-        this.behaviorName = behaviorName;
+        entityId = behavior.Entity.EntityID;
+        behaviorMasterId = behavior.GetBehaviorMasterID();
     }
 
     public virtual bool EqualsCore(ISnap snap)
@@ -25,8 +25,8 @@ public class BehaviorSnap : ISnap
         BehaviorSnap other = snap as BehaviorSnap;
 
         if (other == null) return false;
-        if (other.Id != Id) return false;
-        if (other.behaviorName != behaviorName) return false;
+        if (other.entityId != entityId) return false;
+        if (other.behaviorMasterId != behaviorMasterId) return false;
 
         return true;
     }
@@ -36,8 +36,8 @@ public class BehaviorSnap : ISnap
         BehaviorSnap other = snap as BehaviorSnap;
 
         if (other == null) return false;
-        if (other.Id != Id) return false;
-        if (other.behaviorName != behaviorName) return false;
+        if (other.entityId != entityId) return false;
+        if (other.behaviorMasterId != behaviorMasterId) return false;
 
         return true;
     }
@@ -47,8 +47,8 @@ public class BehaviorSnap : ISnap
         var behaviorBase = synchronizable as BehaviorBase;
 
         Tick = Game.Current.CurrentTick;
-        Id = behaviorBase.Entity.EntityID.ToString();
-        behaviorName = behaviorBase.GetType().Name;
+        entityId = behaviorBase.Entity.EntityID;
+        behaviorMasterId = behaviorBase.GetBehaviorMasterID();
 
         return this;
     }
@@ -58,14 +58,14 @@ public class BehaviorSnap : ISnap
         BehaviorSnap clone = new BehaviorSnap();
 
         clone.Tick = Tick;
-        clone.Id = Id;
-        clone.behaviorName = behaviorName;
+        clone.entityId = entityId;
+        clone.behaviorMasterId = behaviorMasterId;
 
         return clone;
     }
 
     public override string ToString()
     {
-        return $"[Tick {Tick}][BehaviorSnap] Id : {Id}, behaviorName : {behaviorName}";
+        return $"[Tick {Tick}][BehaviorSnap] entityId : {entityId}, behaviorMasterId : {behaviorMasterId}";
     }
 }

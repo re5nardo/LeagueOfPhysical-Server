@@ -201,7 +201,10 @@ namespace Behavior
             isDirty = true;
         }
 
-        public abstract ISnap GetSnap();
+        public virtual ISnap GetSnap()
+        {
+            return new BehaviorSnap(this);
+        }
 
         public void UpdateSynchronizable()
         {

@@ -89,12 +89,5 @@ namespace Behavior
 
 			return Vector3.Cross(cur, dest).y > 0 ? 1 : -1;
 		}
-
-        #region ISynchronizable
-        public override ISnap GetSnap()
-        {
-            return new BehaviorSnap(Entity.EntityID.ToString(), GetType().Name);
-        }
-        #endregion
     }
 }

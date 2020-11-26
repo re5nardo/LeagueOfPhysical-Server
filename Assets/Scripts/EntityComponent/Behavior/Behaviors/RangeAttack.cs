@@ -122,12 +122,5 @@ namespace Behavior
                 .SetEntityRole(EntityRole.NPC)
 				.Build();
         }
-
-        #region ISynchronizable
-        public override ISnap GetSnap()
-        {
-            return new BehaviorSnap(Entity.EntityID.ToString(), GetType().Name);
-        }
-        #endregion
     }
 }

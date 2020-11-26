@@ -11,7 +11,7 @@ public class MoveSnap : BehaviorSnap
     public SerializableVector3 destination;
 
     public MoveSnap() { }
-    public MoveSnap(string id) : base(id, typeof(Move).Name) { }
+    public MoveSnap(BehaviorBase behavior) : base(behavior) { }
 
     public override bool EqualsCore(ISnap snap)
     {
@@ -58,8 +58,8 @@ public class MoveSnap : BehaviorSnap
         MoveSnap clone = new MoveSnap();
 
         clone.Tick = Tick;
-        clone.Id = Id;
-        clone.behaviorName = behaviorName;
+        clone.entityId = entityId;
+        clone.behaviorMasterId = behaviorMasterId;
         clone.destination = destination;
 
         return clone;
