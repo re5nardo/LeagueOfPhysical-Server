@@ -5,7 +5,7 @@ using GameFramework;
 using Entity;
 using System.Linq;
 
-public class NearEntityAgent : MonoComponentBase
+public class NearEntityController : MonoComponentBase
 {
 	public enum CellSeenState
 	{

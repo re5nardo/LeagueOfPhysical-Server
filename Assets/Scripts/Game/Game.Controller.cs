@@ -34,8 +34,8 @@ namespace LOP
 
                 RoomNetwork.Instance.Send(enterRoom, newPlayer.ID);
 
-                //  NearEntityAgent
-                userEntity.AttachComponent(userEntity.gameObject.AddComponent<NearEntityAgent>());
+                //  NearEntityController
+                userEntity.AttachComponent(userEntity.gameObject.AddComponent<NearEntityController>());
 
                 //  Entity Skill Info
                 SkillController controller = userEntity.GetComponent<SkillController>();
@@ -77,7 +77,7 @@ namespace LOP
                     EntityInventory entityInventory = EntityAdditionalDataInitializer.Instance.Initialize(new EntityInventory(), character.EntityID);
                     character.AttachComponent(entityInventory);
 
-                    character.AttachComponent(character.gameObject.AddComponent<NearEntityAgent>());
+                    character.AttachComponent(character.gameObject.AddComponent<NearEntityController>());
                     character.AttachComponent(character.gameObject.AddComponent<PlayerMoveInputController>());
 
                     character.AttachComponent(character.gameObject.AddComponent<PlayerView>());
@@ -107,10 +107,10 @@ namespace LOP
 
             IEntity entity = Entities.Get(entityID);
 
-            NearEntityAgent nearEntityAgent = entity.GetComponent<NearEntityAgent>();
-            entity.DetachComponent(nearEntityAgent);
+            NearEntityController nearEntityController = entity.GetComponent<NearEntityController>();
+            entity.DetachComponent(nearEntityController);
 
-            Destroy(nearEntityAgent);
+            Destroy(nearEntityController);
 
             playerUserIDPhotonPlayer.Remove(photonPlayer.UserId);
 
