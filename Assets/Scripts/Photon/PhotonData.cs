@@ -260,18 +260,6 @@ public class PlayerMoveInput
     public InputType inputType = InputType.None;
 }
 
-[Serializable]
-public class PlayerTransformInput
-{
-    public int tick = -1;
-    public long sequence = -1;
-    public int entityID = -1;
-    public SerializableVector3 position = default;
-    public SerializableVector3 rotation = default;
-    public SerializableVector3 positionOffset = default;
-    public SerializableVector3 rotationOffset = default;
-}
-
 #region Protocols (Server to Client)
 [Serializable]
 public class SC_EnterRoom : IPhotonEventMessage
