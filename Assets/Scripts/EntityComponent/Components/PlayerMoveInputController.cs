@@ -34,21 +34,18 @@ public class PlayerMoveInputController : MonoComponentBase
 
         var notifyMoveInputData = notifyMoveInputDatas.Dequeue();
 
-        //  Send to client
-        SC_PlayerMoveInputResponse playerMoveInputResponse = new SC_PlayerMoveInputResponse();
-        playerMoveInputResponse.m_nTick = Game.Current.CurrentTick;
-        playerMoveInputResponse.m_nEntityID = Entity.EntityID;
-        playerMoveInputResponse.m_Position = Entity.Position;
-        playerMoveInputResponse.m_Rotation = Entity.Rotation;
-        playerMoveInputResponse.m_lLastProcessedSequence = notifyMoveInputData.m_PlayerMoveInput.sequence;
-
-        RoomNetwork.Instance.Send(playerMoveInputResponse, PhotonHelper.GetActorID(Entity.EntityID), true, true);
-
-        if (CanMove())
+        if (notifyMoveInputData.m_PlayerMoveInput.inputType == PlayerMoveInput.InputType.Hold)
         {
-            //  Move process
+            if (CanMove())
+            {
+                var behaviorController = Entity.GetComponent<BehaviorController>();
+                behaviorController.Move(Entity.Position + notifyMoveInputData.m_PlayerMoveInput.inputData.ToVector3().normalized * Game.Current.TickInterval * 3 * (Entity as Character).MovementSpeed, notifyMoveInputData.m_PlayerMoveInput.sequence);
+            }
+        }
+        else if (notifyMoveInputData.m_PlayerMoveInput.inputType == PlayerMoveInput.InputType.Release)
+        {
             var behaviorController = Entity.GetComponent<BehaviorController>();
-            behaviorController.Move(Entity.Position + notifyMoveInputData.m_PlayerMoveInput.inputData.ToVector3().normalized * Game.Current.TickInterval * 3 * (Entity as Character).MovementSpeed);
+            behaviorController.StopBehavior(Define.MasterData.BehaviorID.MOVE);
         }
     }
 
