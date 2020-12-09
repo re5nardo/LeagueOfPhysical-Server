@@ -21,32 +21,15 @@ namespace Behavior
 
         protected override bool OnBehaviorUpdate()
         {
-            float dest_y = Quaternion.LookRotation(m_vec3Direction).eulerAngles.y;
-			float mine_y = Entity.Rotation.y;
+            float toRotate = Vector3.SignedAngle(m_vec3Direction, Entity.Forward, Vector3.up);
+			if (toRotate == 0)
+            {
+                return false;
+            }
 
-			float toRotate = dest_y - mine_y;
-			if (Util.Approximately(toRotate, 0))
-				return false;
+			Entity.AngularVelocity = new Vector3(0, (toRotate > 0 ? 1 : -1) * m_fAngularSpeed, 0);
 
-			int sign = GetRotationSign(Entity.Forward, m_vec3Direction);
-			if (sign > 0)
-			{
-				if (dest_y < mine_y)
-				{
-					toRotate = (dest_y + 360) - mine_y;
-				}
-			}
-			else
-			{
-				if (dest_y > mine_y)
-				{
-					toRotate = dest_y - (mine_y + 360);
-				}
-			}
-
-			Entity.AngularVelocity = new Vector3(0, sign * m_fAngularSpeed, 0);
-
-			float rotated = Entity.AngularVelocity.y * DeltaTime;
+			float rotated = toRotate * m_fAngularSpeed * DeltaTime;
 
 			if (Util.Approximately(toRotate, rotated) || Mathf.Abs(toRotate) <= Mathf.Abs(rotated))
 			{
@@ -56,7 +39,7 @@ namespace Behavior
 			}
 			else
 			{
-				Entity.Rotation = new Vector3(Entity.Rotation.x, (Entity.Rotation.y + rotated) % 360, Entity.Rotation.z);
+                Entity.Rotation = new Vector3(Entity.Rotation.x, (Entity.Rotation.y + rotated) % 360, Entity.Rotation.z);
 
 				return true;
 			}
@@ -82,12 +65,9 @@ namespace Behavior
 			m_vec3Direction = vec3Direction;
         }
 
-		private int GetRotationSign(Vector3 cur, Vector3 dest)
-		{
-			cur = new Vector3(cur.x, 0, cur.z);
-			dest = new Vector3(dest.x, 0, dest.z);
-
-			return Vector3.Cross(cur, dest).y > 0 ? 1 : -1;
-		}
+        public Vector3 GetDestination()
+        {
+            return Quaternion.LookRotation(m_vec3Direction).eulerAngles;
+        }
     }
 }
