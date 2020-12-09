@@ -21,7 +21,7 @@ namespace Behavior
 
         protected override bool OnBehaviorUpdate()
         {
-            float toRotate = Vector3.SignedAngle(m_vec3Direction, Entity.Forward, Vector3.up);
+            float toRotate = Vector3.SignedAngle(Entity.Forward, m_vec3Direction, Vector3.up);
 			if (toRotate == 0)
             {
                 return false;
@@ -29,7 +29,7 @@ namespace Behavior
 
 			Entity.AngularVelocity = new Vector3(0, (toRotate > 0 ? 1 : -1) * m_fAngularSpeed, 0);
 
-			float rotated = toRotate * m_fAngularSpeed * DeltaTime;
+			float rotated = Entity.AngularVelocity.y * DeltaTime;
 
 			if (Util.Approximately(toRotate, rotated) || Mathf.Abs(toRotate) <= Mathf.Abs(rotated))
 			{
