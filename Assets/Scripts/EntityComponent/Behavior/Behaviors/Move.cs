@@ -28,9 +28,19 @@ namespace Behavior
         {
 			Vector3 toMove = m_vec3Destination - Entity.Position;
 
-			Entity.Velocity = toMove.normalized * Entity.MovementSpeed;
+            //  회전량에 따라 감속하는 정도를 다르게?
+            //var angle = Vector3.Angle(Entity.Forward, toMove);
+            //Entity.Velocity *=  Mathf.Lerp(0.8f, 0.5f, angle / 180);
 
-			Vector3 moved = toMove.normalized * Entity.MovementSpeed * DeltaTime;
+            Entity.Velocity *= 0.8f;
+            Entity.Velocity += (toMove.normalized * Entity.MovementSpeed * 0.3f);
+
+            if (Entity.Velocity.magnitude > Entity.MovementSpeed)
+            {
+                Entity.Velocity = Entity.Velocity.normalized * Entity.MovementSpeed;
+            }
+
+            Vector3 moved = Entity.Velocity * DeltaTime;
 
             if (Util.Approximately(toMove.sqrMagnitude, moved.sqrMagnitude) || toMove.sqrMagnitude <= moved.sqrMagnitude)
             {
