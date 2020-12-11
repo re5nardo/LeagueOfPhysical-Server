@@ -32,8 +32,8 @@ namespace Behavior
             //var angle = Vector3.Angle(Entity.Forward, toMove);
             //Entity.Velocity *=  Mathf.Lerp(0.8f, 0.5f, angle / 180);
 
-            Entity.Velocity *= 0.8f;
-            Entity.Velocity += (toMove.normalized * Entity.MovementSpeed * 0.3f);
+            Entity.Velocity *= 0.9f;
+            Entity.Velocity += (toMove.normalized * Entity.MovementSpeed * 0.2f);
 
             if (Entity.Velocity.magnitude > Entity.MovementSpeed)
             {
