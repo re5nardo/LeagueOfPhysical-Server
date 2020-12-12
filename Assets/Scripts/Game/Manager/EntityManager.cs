@@ -22,7 +22,7 @@ public class EntityManager : GameFramework.EntityManager
         }
     }
 
-    public static bool IsInstantiated()
+    public static bool HasInstance()
     {
         return instance != null;
     }

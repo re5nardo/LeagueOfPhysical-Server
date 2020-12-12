@@ -1,82 +1,42 @@
 ﻿using System.Collections;
-using Photon;
 using GameFramework;
+using UnityEngine;
 
 namespace LOP
 {
-    public class Room : PunBehaviour
+    public class Room : MonoSingleton<Room>
     {
-        private Game game = null;
-        private RoomProtocolDispatcher protocolDispatcher = null;
-
-        public static Room Instance { get; private set; }
-
-        public static bool IsInstantiated()
-        {
-            return Instance != null;
-        }
+        [SerializeField] private Game game = null;
+        [SerializeField] private RoomProtocolDispatcher roomProtocolDispatcher = null;
+        [SerializeField] private RoomPunBehaviour roomPunBehaviour = null;
 
         #region MonoBehaviour
-        private void Awake()
-        {
-            Instance = this;
-        }
-
         private IEnumerator Start()
         {
-            yield return StartCoroutine(Initialize());
+            yield return Initialize();
 
             PhotonNetwork.isMessageQueueRunning = true;
 
             game.Run();
         }
 
-        private void OnDestroy()
+        protected override void OnDestroy()
         {
+            base.OnDestroy();
+
             Clear();
-
-            Instance = null;
-        }
-        #endregion
-
-        #region PunBehaviour
-        public override void OnPhotonPlayerConnected(PhotonPlayer newPlayer)
-        {
-            RoomPubSubService.Publish(RoomMessageKey.PlayerEnter, newPlayer);
-        }
-
-        public override void OnPhotonPlayerDisconnected(PhotonPlayer otherPlayer)
-        {
-            RoomPubSubService.Publish(RoomMessageKey.PlayerLeave, otherPlayer);
         }
         #endregion
 
         private IEnumerator Initialize()
         {
-            MasterDataManager.Instance.Initialize();
+            yield return game.Initialize();
 
-            game = gameObject.AddComponent<Game>();
-            yield return StartCoroutine(game.Initialize());
-
-            protocolDispatcher = gameObject.AddComponent<RoomProtocolDispatcher>();
-   
             RoomNetwork.Instance.onMessage += OnNetworkMessage;
         }
 
         private void Clear()
         {
-            if (game != null)
-            {
-                Destroy(game);
-                game = null;
-            }
-
-            if (protocolDispatcher != null)
-            {
-                Destroy(protocolDispatcher);
-                protocolDispatcher = null;
-            }
-
             if (RoomNetwork.HasInstance())
             {
                 RoomNetwork.Instance.onMessage -= OnNetworkMessage;
@@ -85,7 +45,7 @@ namespace LOP
 
         private void OnNetworkMessage(IMessage msg, object[] objects)
         {
-            protocolDispatcher.DispatchProtocol(msg as IPhotonEventMessage);
+            roomProtocolDispatcher.DispatchProtocol(msg as IPhotonEventMessage);
         }
     }
 }

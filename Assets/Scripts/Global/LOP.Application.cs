@@ -20,14 +20,14 @@ namespace LOP
             UnityEngine.Application.targetFrameRate = 30;
 
             //  BehaviorDesigner.Runtime.BehaviorManager
-            GameObject goBehaviorManager = new GameObject("BehaviorManager");
-            UnityEngine.Object.DontDestroyOnLoad(goBehaviorManager);
-
-            BehaviorDesigner.Runtime.BehaviorManager behaviorManager = goBehaviorManager.AddComponent<BehaviorDesigner.Runtime.BehaviorManager>();
+            var behaviorManager = new GameObject("BehaviorManager").AddComponent<BehaviorDesigner.Runtime.BehaviorManager>();
             behaviorManager.UpdateInterval = BehaviorDesigner.Runtime.UpdateIntervalType.Manual;
+            UnityEngine.Object.DontDestroyOnLoad(behaviorManager);
 
             //  PhotonType Register
             PhotonTypeRegister.Register();
+
+            MasterDataManager.Instantiate();
         }
     }
 }

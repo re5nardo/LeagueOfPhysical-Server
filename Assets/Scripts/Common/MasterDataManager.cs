@@ -7,7 +7,16 @@ public class MasterDataManager : MonoSingleton<MasterDataManager>
 {
     private Dictionary<System.Type, Dictionary<int, IMasterData>> m_dicMasterData = new Dictionary<System.Type, Dictionary<int, IMasterData>>();
 
-    public void Initialize()
+    protected override void Awake()
+    {
+        base.Awake();
+
+        DontDestroyOnLoad(this);
+
+        Initialize();
+    }
+
+    private void Initialize()
     {
         SetCharacter();
         SetBehavior();
