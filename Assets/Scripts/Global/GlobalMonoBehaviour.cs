@@ -6,8 +6,13 @@ using System;
 
 public class GlobalMonoBehavior : MonoSingleton<GlobalMonoBehavior>
 {
-    private bool isApplicationQuitting = false;
-    public bool IsApplicationQuitting { get { return isApplicationQuitting; } }
+    public bool IsApplicationQuitting { get; private set; }
+
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+    private static void OnBeforeSceneLoadRuntimeMethod()
+    {
+        Instantiate();
+    }
 
     private void Start()
     {
@@ -16,7 +21,7 @@ public class GlobalMonoBehavior : MonoSingleton<GlobalMonoBehavior>
 
     private void OnApplicationQuit()
     {
-        isApplicationQuitting = true;
+        IsApplicationQuitting = true;
     }
 
     public new static Coroutine StartCoroutine(IEnumerator routine)

@@ -127,7 +127,7 @@ public class EntityBasicView : MonoViewComponentBase
 		{
 			Destroy(m_goModel.GetComponent<EntityIDTag>());
 
-			if (ResourcePool.IsInstantiated())
+			if (ResourcePool.HasInstance())
 			{
 				ResourcePool.Instance.ReturnResource(m_goModel);
 			}

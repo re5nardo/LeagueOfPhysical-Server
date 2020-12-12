@@ -6,7 +6,7 @@ namespace LOP
 {
     public class Application
     {
-        public static bool IsApplicationQuitting { get { return GlobalMonoBehavior.Instance.IsApplicationQuitting; } }
+        public static bool IsApplicationQuitting => GlobalMonoBehavior.Instance.IsApplicationQuitting;
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         private static void OnBeforeSceneLoadRuntimeMethod()

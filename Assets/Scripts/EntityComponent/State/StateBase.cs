@@ -121,8 +121,7 @@ namespace State
         {
             isPlaying = false;
 
-            //	OnDestroy 타이밍에 호출될 수 있는 곳이기 때문에 Check.. 좀 더 좋은 방법 없나..?
-            if (RoomNetwork.IsInstantiated() && LOP.Room.IsInstantiated() && EntityManager.IsInstantiated())
+            if (!LOP.Application.IsApplicationQuitting)
             {
                 //SC_EntityBehaviorEndEvent entityBehaviorEndEvent = new SC_EntityBehaviorEndEvent(m_Entity.GetEntityID(), m_nBehaviorMasterID);
                 //RoomNetwork.Instance.SendToNear(entityBehaviorEndEvent, m_Entity.GetPosition(), GameRoom.BROADCAST_SCOPE_RADIUS);

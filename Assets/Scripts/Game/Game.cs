@@ -86,7 +86,7 @@ namespace LOP
             RoomPubSubService.RemoveSubscriber(RoomMessageKey.PlayerEnter, OnPlayerEnter);
             RoomPubSubService.RemoveSubscriber(RoomMessageKey.PlayerLeave, OnPlayerLeave);
 
-            if (RoomNetwork.IsInstantiated())
+            if (RoomNetwork.HasInstance())
             {
                 RoomNetwork.Instance.onMessage -= OnNetworkMessage;
             }
