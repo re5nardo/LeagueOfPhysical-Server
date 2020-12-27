@@ -13,7 +13,7 @@ namespace LOP
     {
         private void OnNetworkMessage(IMessage msg, object[] objects)
         {
-            protocolDispatcher.DispatchProtocol(msg as IPhotonEventMessage);
+            gameProtocolDispatcher.DispatchProtocol(msg as IPhotonEventMessage);
         }
 
         private void OnPlayerEnter(object param)

@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Entity;
-using System;
 using GameFramework;
 
-public class SpawnManager : MonoSingleton<SpawnManager>
+public class SpawnManager : MonoBehaviour
 {
     private const float SPAWN_INTERVAL = 0.3f;
     private const int MAX_ENTITY_COUNT = 500;
@@ -13,10 +12,8 @@ public class SpawnManager : MonoSingleton<SpawnManager>
     private float m_fSpawnElapsedTime = 0f;
     private Dictionary<int, ControllerBase> m_dicEntityIDController = new Dictionary<int, ControllerBase>();
 
-	protected override void Awake()
+	private void Awake()
     {
-        base.Awake();
-
         GamePubSubService.AddSubscriber(GameMessageKey.EntityDestroy, OnEntityDestroy);
 
         TickPubSubService.AddSubscriber("Tick", OnTick);

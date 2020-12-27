@@ -24,10 +24,6 @@ public class RememberGame : SubGameBase
 
     protected override void OnTick(int tick)
     {
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            EndGame();
-        }
     }
 
     protected override void OnEarlyTickEnd(int tick)

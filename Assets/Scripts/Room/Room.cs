@@ -7,8 +7,9 @@ namespace LOP
     public class Room : MonoSingleton<Room>
     {
         [SerializeField] private Game game = null;
-        [SerializeField] private RoomProtocolDispatcher roomProtocolDispatcher = null;
-        [SerializeField] private RoomPunBehaviour roomPunBehaviour = null;
+
+        private RoomProtocolDispatcher roomProtocolDispatcher = null;
+        private RoomPunBehaviour roomPunBehaviour = null;
 
         #region MonoBehaviour
         private IEnumerator Start()
@@ -30,6 +31,9 @@ namespace LOP
 
         private IEnumerator Initialize()
         {
+            roomProtocolDispatcher = gameObject.AddComponent<RoomProtocolDispatcher>();
+            roomPunBehaviour = gameObject.AddComponent<RoomPunBehaviour>();
+
             yield return game.Initialize();
 
             RoomNetwork.Instance.onMessage += OnNetworkMessage;

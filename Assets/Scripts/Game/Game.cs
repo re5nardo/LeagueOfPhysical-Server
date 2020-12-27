@@ -1,10 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using GameFramework;
-using UnityEngine.SceneManagement;
 using System;
 using System.Collections.ObjectModel;
+using GameFramework;
 
 namespace LOP
 {
@@ -13,7 +12,7 @@ namespace LOP
         public const float BROADCAST_SCOPE = 80f;
         public const float BROADCAST_SCOPE_RADIUS = BROADCAST_SCOPE * 0.5f;
 
-        public new static Game Current { get { return GameFramework.Game.Current as Game; } }
+        public new static Game Current => GameFramework.Game.Current as Game;
 
         private Dictionary<string, int> playerUserIDEntityID = new Dictionary<string, int>();                                  //  key : Player UserID, vlue : EntityID
         private Dictionary<int, string> entityIDPlayerUserID = new Dictionary<int, string>();                                  //  key : EntityID, vlue : Player UserID
@@ -23,29 +22,24 @@ namespace LOP
         public ReadOnlyDictionary<int, string> EntityIDPlayerUserID { get; private set; }
         public ReadOnlyDictionary<string, WeakReference> PlayerUserIDPhotonPlayer { get; private set; }
 
-        private GameEventManager gameEventManager;
-        public GameEventManager GameEventManager { get { return gameEventManager; } }
+        public GameEventManager GameEventManager => gameEventManager;
 
-        private GameProtocolDispatcher protocolDispatcher = null;
+        private GameProtocolDispatcher gameProtocolDispatcher = null;
+        private GameEventManager gameEventManager = null;
+        private GameManager gameManager = null;
 
         public override IEnumerator Initialize()
         {
-            GameFramework.Game.Current = this;
-
-            yield return SceneManager.LoadSceneAsync("RiftOfSummoner", LoadSceneMode.Additive);
-
             Physics.autoSimulation = false;
 
             PlayerUserIDEntityID = new ReadOnlyDictionary<string, int>(playerUserIDEntityID);
             EntityIDPlayerUserID = new ReadOnlyDictionary<int, string>(entityIDPlayerUserID);
             PlayerUserIDPhotonPlayer = new ReadOnlyDictionary<string, WeakReference>(playerUserIDPhotonPlayer);
 
-            ResourcePool.Instantiate();
-
-            protocolDispatcher = gameObject.AddComponent<GameProtocolDispatcher>();
-
             tickUpdater = gameObject.AddComponent<TickUpdater>();
+            gameProtocolDispatcher = gameObject.AddComponent<GameProtocolDispatcher>();
             gameEventManager = gameObject.AddComponent<GameEventManager>();
+            gameManager = gameObject.AddComponent<GameManager>();
 
             RoomNetwork.Instance.onMessage += OnNetworkMessage;
 
@@ -54,35 +48,25 @@ namespace LOP
 
             tickUpdater.Initialize(1 / 30f, false, 0, OnTick, OnTickEnd);
 
-            initialized = true;
+            EntityInfoSender.Instantiate();
+            EntityManager.Instantiate();
+            ResourcePool.Instantiate();
+
+            Initialized = true;
+
+            yield break;
         }
 
         protected override void Clear()
         {
             base.Clear();
 
+            Physics.autoSimulation = true;
+
             playerUserIDEntityID = null;
             entityIDPlayerUserID = null;
             playerUserIDPhotonPlayer = null;
-
-            if (protocolDispatcher != null)
-            {
-                Destroy(protocolDispatcher);
-                protocolDispatcher = null;
-            }
-
-            if (tickUpdater != null)
-            {
-                Destroy(tickUpdater);
-                tickUpdater = null;
-            }
-
-            if (gameEventManager != null)
-            {
-                Destroy(gameEventManager);
-                gameEventManager = null;
-            }
-
+    
             RoomPubSubService.RemoveSubscriber(RoomMessageKey.PlayerEnter, OnPlayerEnter);
             RoomPubSubService.RemoveSubscriber(RoomMessageKey.PlayerLeave, OnPlayerLeave);
 
@@ -94,9 +78,7 @@ namespace LOP
 
         protected override void OnBeforeRun()
         {
-            SpawnManager.Instance.StartSpawn();
-            EntityInfoSender.Instantiate();
-            EntityManager.Instantiate();
+            gameManager.StartGameManager();
         }
 
         private void OnTick(int tick)
@@ -114,8 +96,13 @@ namespace LOP
 
         private void OnTickEnd(int tick)
         {
+            TickPubSubService.Publish("EarlyTickEnd", tick);
             TickPubSubService.Publish("TickEnd", tick);
             TickPubSubService.Publish("LateTickEnd", tick);
+
+            if (gameManager.IsMatchEnd)
+            {
+            }
         }
     }
 }
