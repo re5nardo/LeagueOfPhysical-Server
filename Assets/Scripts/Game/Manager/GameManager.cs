@@ -6,35 +6,26 @@ namespace LOP
 {
     public class GameManager : MonoBehaviour
     {
-        public bool IsMatchEnd { get; private set; } = false;
+        private GameStateMachine gameStateMachine = null;
 
-        private List<GameProcedureBase> gameProcedures = new List<GameProcedureBase>();
+        public bool IsMatchEnd => gameStateMachine.CurrentState is MatchEndState;
 
         private void Awake()
         {
-            Initialize();
+            gameStateMachine = new GameObject("GameStateMachine").AddComponent<GameStateMachine>();
         }
 
-        private void Initialize()
+        private void OnDestroy()
         {
-            gameProcedures.Add(gameObject.AddComponent<SubGameCycle>());
+            if (gameStateMachine != null)
+            {
+                Destroy(gameStateMachine.gameObject);
+            }
         }
 
         public void StartGameManager()
         {
-            StartCoroutine(GameManagerLoop());
-        }
-        
-        private IEnumerator GameManagerLoop()
-        {
-            IsMatchEnd = false;
-
-            foreach (var gameProcedure in gameProcedures)
-            {
-                yield return gameProcedure.Procedure();
-            }
-
-            IsMatchEnd = false;
+            gameStateMachine.StartStateMachine();
         }
     }
 }

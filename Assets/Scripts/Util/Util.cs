@@ -254,18 +254,6 @@ public class Util
         }
     }
 
-    public static T GetOrAddComponent<T>(GameObject target) where T : Component
-    {
-		T component = target.GetComponent<T>();
-
-		if(component == null)
-		{
-			component = target.AddComponent<T>();
-		}
-
-		return component;
-    }
-
     public static bool Approximately(float a, float b, float fTolerance = 1E-05f)
     {
         return Mathf.Abs(a - b) < fTolerance;
