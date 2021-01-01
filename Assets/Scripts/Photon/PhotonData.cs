@@ -18,6 +18,9 @@ public class CustomSerializationCode
     public const byte SC_GameEvents = 25;
     public const byte SC_SyncTick = 26;
     public const byte SC_Synchronization = 27;
+    public const byte SC_SubGameInfo = 28;
+    public const byte SC_SubGameStart = 29;
+    public const byte SC_SubGameEnd = 30;
 
 	public const byte CS_NotifyMoveInputData = 130;
 	public const byte CS_NotifyPlayerLookAtPosition = 131;
@@ -26,6 +29,7 @@ public class CustomSerializationCode
 	public const byte CS_Ping = 135;
 	public const byte CS_FirstStatusSelection = 136;
 	public const byte CS_AbilitySelection = 137;
+    public const byte CS_SubGamePreparation = 138;
 }
 
 //  0 ~ 199
@@ -43,6 +47,9 @@ public class PhotonEvent
     public const byte SC_GameEvents = 18;
     public const byte SC_SyncTick = 19;
     public const byte SC_Synchronization = 20;
+    public const byte SC_SubGameInfo = 21;
+    public const byte SC_SubGameStart = 22;
+    public const byte SC_SubGameEnd = 23;
 
 	public const byte CS_NotifyMoveInputData = 100;
 	public const byte CS_NotifyPlayerLookAtPosition = 101;
@@ -51,6 +58,7 @@ public class PhotonEvent
 	public const byte CS_Ping = 105;
 	public const byte CS_FirstStatusSelection = 106;
 	public const byte CS_AbilitySelection = 107;
+    public const byte CS_SubGamePreparation = 108;
 }
 
 [Serializable]
@@ -440,6 +448,43 @@ public class SC_Synchronization : IPhotonEventMessage, IPoolable
         snaps.Clear();
     }
 }
+
+[Serializable]
+public class SC_SubGameInfo : IPhotonEventMessage
+{
+    public int senderID { get; set; }
+    public string subGameId;
+    public string subGameState;
+
+    public byte GetEventID()
+    {
+        return PhotonEvent.SC_SubGameInfo;
+    }
+}
+
+[Serializable]
+public class SC_SubGameStart : IPhotonEventMessage
+{
+    public int senderID { get; set; }
+    public string subGameId;
+
+    public byte GetEventID()
+    {
+        return PhotonEvent.SC_SubGameStart;
+    }
+}
+
+[Serializable]
+public class SC_SubGameEnd : IPhotonEventMessage
+{
+    public int senderID { get; set; }
+    public string subGameId;
+
+    public byte GetEventID()
+    {
+        return PhotonEvent.SC_SubGameEnd;
+    }
+}
 #endregion
 
 #region Protocols (Client to Server)
@@ -542,5 +587,24 @@ public class CS_AbilitySelection : IPhotonEventMessage
 	{
 		return PhotonEvent.CS_AbilitySelection;
 	}
+}
+
+[Serializable]
+public class CS_SubGamePreparation : IPhotonEventMessage
+{
+    public int senderID { get; set; }
+    public int entityID;
+    public float preparation;
+
+    public CS_SubGamePreparation(int entityID, int preparation)
+    {
+        this.entityID = entityID;
+        this.preparation = preparation;
+    }
+
+    public byte GetEventID()
+    {
+        return PhotonEvent.CS_SubGamePreparation;
+    }
 }
 #endregion

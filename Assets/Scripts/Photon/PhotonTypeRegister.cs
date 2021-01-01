@@ -17,6 +17,9 @@ public class PhotonTypeRegister
         PhotonPeer.RegisterType(typeof(SC_GameEvents), CustomSerializationCode.SC_GameEvents, Util.CommonDataCompressionSerialize, Util.CommonDataCompressionDeserialize);
         PhotonPeer.RegisterType(typeof(SC_SyncTick), CustomSerializationCode.SC_SyncTick, Util.CommonDataCompressionSerialize, Util.CommonDataCompressionDeserialize);
         PhotonPeer.RegisterType(typeof(SC_Synchronization), CustomSerializationCode.SC_Synchronization, Util.CommonDataCompressionSerialize, Util.CommonDataCompressionDeserialize);
+        PhotonPeer.RegisterType(typeof(SC_SubGameInfo), CustomSerializationCode.SC_SubGameInfo, Util.CommonDataCompressionSerialize, Util.CommonDataCompressionDeserialize);
+        PhotonPeer.RegisterType(typeof(SC_SubGameStart), CustomSerializationCode.SC_SubGameStart, Util.CommonDataCompressionSerialize, Util.CommonDataCompressionDeserialize);
+        PhotonPeer.RegisterType(typeof(SC_SubGameEnd), CustomSerializationCode.SC_SubGameEnd, Util.CommonDataCompressionSerialize, Util.CommonDataCompressionDeserialize);
 
         //  Client to server
         PhotonPeer.RegisterType(typeof(CS_NotifyMoveInputData), CustomSerializationCode.CS_NotifyMoveInputData, Util.CommonDataCompressionSerialize, Util.CommonDataCompressionDeserialize);
@@ -26,5 +29,6 @@ public class PhotonTypeRegister
         PhotonPeer.RegisterType(typeof(CS_Ping), CustomSerializationCode.CS_Ping, Util.CommonDataCompressionSerialize, Util.CommonDataCompressionDeserialize);
         PhotonPeer.RegisterType(typeof(CS_FirstStatusSelection), CustomSerializationCode.CS_FirstStatusSelection, Util.CommonDataCompressionSerialize, Util.CommonDataCompressionDeserialize);
         PhotonPeer.RegisterType(typeof(CS_AbilitySelection), CustomSerializationCode.CS_AbilitySelection, Util.CommonDataCompressionSerialize, Util.CommonDataCompressionDeserialize);
+        PhotonPeer.RegisterType(typeof(CS_SubGamePreparation), CustomSerializationCode.CS_SubGamePreparation, Util.CommonDataCompressionSerialize, Util.CommonDataCompressionDeserialize);
     }
 }
