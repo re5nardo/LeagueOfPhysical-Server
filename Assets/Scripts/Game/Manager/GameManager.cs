@@ -8,6 +8,8 @@ namespace LOP
     {
         private GameStateMachine gameStateMachine = null;
 
+        public SubGameData currentSubGame = null;
+
         public bool IsMatchEnd => gameStateMachine.CurrentState is MatchEndState;
 
         private void Awake()

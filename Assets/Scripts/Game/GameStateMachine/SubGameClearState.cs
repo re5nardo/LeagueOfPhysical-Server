@@ -37,9 +37,9 @@ public class SubGameClearState : MonoBehaviour, IState<GameStateInput>
 
     private IEnumerator Procedure()
     {
-        yield return SceneManager.UnloadSceneAsync(GameBlackboard.keyValues["sceneName"], UnloadSceneOptions.UnloadAllEmbeddedSceneObjects);
+        yield return SceneManager.UnloadSceneAsync(LOP.Game.Current.GameManager.currentSubGame.scene.name, UnloadSceneOptions.UnloadAllEmbeddedSceneObjects);
 
-        GameBlackboard.keyValues.Remove("sceneName");
+        LOP.Game.Current.GameManager.currentSubGame = null;
 
         FSM.MoveNext(GameStateInput.StateDone);
     }

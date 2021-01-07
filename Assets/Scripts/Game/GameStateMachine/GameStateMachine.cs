@@ -5,7 +5,7 @@ using GameFramework.FSM;
 
 public class GameStateMachine : MonoBehaviour, IFiniteStateMachine<IState<GameStateInput>, GameStateInput>
 {
-    public IState<GameStateInput> InitState => gameObject.GetOrAddComponent<SubGameSelectionState>();
+    public IState<GameStateInput> InitState => gameObject.GetOrAddComponent<WaitForPlayersState>();
     public IState<GameStateInput> CurrentState { get; private set; }
 
     public void StartStateMachine()

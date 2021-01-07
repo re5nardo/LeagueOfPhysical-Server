@@ -23,6 +23,7 @@ namespace LOP
         public ReadOnlyDictionary<string, WeakReference> PlayerUserIDPhotonPlayer { get; private set; }
 
         public GameEventManager GameEventManager => gameEventManager;
+        public GameManager GameManager => gameManager;
 
         private GameProtocolDispatcher gameProtocolDispatcher = null;
         private GameEventManager gameEventManager = null;

@@ -3,27 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using GameFramework.FSM;
 using System;
-using GameFramework;
 
-public class SubGameSelectionState : MonoBehaviour, IState<GameStateInput>
+public class WaitForPlayersState : MonoBehaviour, IState<GameStateInput>
 {
     public IFiniteStateMachine<IState<GameStateInput>, GameStateInput> FSM => gameObject.GetOrAddComponent<GameStateMachine>();
 
-    private SubGameData[] subGameDatas = null;
-
     public void Enter()
     {
-        subGameDatas = Resources.LoadAll<SubGameData>("ScriptableObject/SubGameData");
-
-        var index = UnityEngine.Random.Range(0, subGameDatas.Length);
-
-        LOP.Game.Current.GameManager.currentSubGame = subGameDatas[index];
-
-        FSM.MoveNext(GameStateInput.StateDone);
     }
 
     public void Execute()
     {
+        if (PhotonNetwork.room.ExpectedUsers == null || PhotonNetwork.room.ExpectedUsers.Length == LOP.Game.Current.PlayerUserIDPhotonPlayer.Count)
+        {
+            FSM.MoveNext(GameStateInput.StateDone);
+        }
     }
 
     public void Exit()
@@ -35,7 +29,7 @@ public class SubGameSelectionState : MonoBehaviour, IState<GameStateInput>
         switch (input)
         {
             case GameStateInput.StateDone:
-                return gameObject.GetOrAddComponent<SubGamePrepareState>();
+                return gameObject.GetOrAddComponent<SubGameSelectionState>();
         }
 
         throw new Exception($"Invalid transition: {GetType().Name} with {input}");

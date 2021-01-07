@@ -37,7 +37,7 @@ public class SubGamePrepareState : MonoBehaviour, IState<GameStateInput>
 
     private IEnumerator Procedure()
     {
-        yield return SceneManager.LoadSceneAsync(GameBlackboard.keyValues["sceneName"], LoadSceneMode.Additive);
+        yield return SceneManager.LoadSceneAsync(LOP.Game.Current.GameManager.currentSubGame.scene.name, LoadSceneMode.Additive);
 
         yield return SubGameBase.Current.Initialize();
 
