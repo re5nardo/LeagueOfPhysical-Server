@@ -18,9 +18,7 @@ public class CustomSerializationCode
     public const byte SC_GameEvents = 25;
     public const byte SC_SyncTick = 26;
     public const byte SC_Synchronization = 27;
-    public const byte SC_SubGameInfo = 28;
-    public const byte SC_SubGameStart = 29;
-    public const byte SC_SubGameEnd = 30;
+    public const byte SC_GameState = 28;
 
 	public const byte CS_NotifyMoveInputData = 130;
 	public const byte CS_NotifyPlayerLookAtPosition = 131;
@@ -47,9 +45,7 @@ public class PhotonEvent
     public const byte SC_GameEvents = 18;
     public const byte SC_SyncTick = 19;
     public const byte SC_Synchronization = 20;
-    public const byte SC_SubGameInfo = 21;
-    public const byte SC_SubGameStart = 22;
-    public const byte SC_SubGameEnd = 23;
+    public const byte SC_GameState = 21;
 
 	public const byte CS_NotifyMoveInputData = 100;
 	public const byte CS_NotifyPlayerLookAtPosition = 101;
@@ -268,6 +264,11 @@ public class PlayerMoveInput
     public InputType inputType = InputType.None;
 }
 
+[Serializable]
+public class GameStateData
+{
+}
+
 #region Protocols (Server to Client)
 [Serializable]
 public class SC_EnterRoom : IPhotonEventMessage
@@ -450,39 +451,15 @@ public class SC_Synchronization : IPhotonEventMessage, IPoolable
 }
 
 [Serializable]
-public class SC_SubGameInfo : IPhotonEventMessage
+public class SC_GameState : IPhotonEventMessage
 {
     public int senderID { get; set; }
-    public string subGameId;
-    public string subGameState;
+    public string gameState;
+    public GameStateData gameStateData;
 
     public byte GetEventID()
     {
-        return PhotonEvent.SC_SubGameInfo;
-    }
-}
-
-[Serializable]
-public class SC_SubGameStart : IPhotonEventMessage
-{
-    public int senderID { get; set; }
-    public string subGameId;
-
-    public byte GetEventID()
-    {
-        return PhotonEvent.SC_SubGameStart;
-    }
-}
-
-[Serializable]
-public class SC_SubGameEnd : IPhotonEventMessage
-{
-    public int senderID { get; set; }
-    public string subGameId;
-
-    public byte GetEventID()
-    {
-        return PhotonEvent.SC_SubGameEnd;
+        return PhotonEvent.SC_GameState;
     }
 }
 #endregion
