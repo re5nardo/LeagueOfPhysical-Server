@@ -53,6 +53,8 @@ namespace LOP
             EntityManager.Instantiate();
             ResourcePool.Instantiate();
 
+            gameManager.StartGameManager();
+
             Initialized = true;
 
             yield break;
@@ -79,7 +81,6 @@ namespace LOP
 
         protected override void OnBeforeRun()
         {
-            gameManager.StartGameManager();
         }
 
         private void OnTick(int tick)
