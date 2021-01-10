@@ -4,16 +4,14 @@ using UnityEngine;
 using GameFramework.FSM;
 using System;
 
-public class SubGameProgressState : MonoBehaviour, IState<GameStateInput>
+public class SubGameProgressState : GameStateBase
 {
-    public IFiniteStateMachine<IState<GameStateInput>, GameStateInput> FSM => gameObject.GetOrAddComponent<GameStateMachine>();
-
-    public void Enter()
+    public override void Enter()
     {
         SubGameBase.Current.StartGame();
     }
 
-    public void Execute()
+    public override void Execute()
     {
         if (SubGameBase.Current.IsGameEnd)
         {
@@ -21,18 +19,20 @@ public class SubGameProgressState : MonoBehaviour, IState<GameStateInput>
         }
     }
 
-    public void Exit()
+    public override IState GetNext<I>(I input)
     {
-    }
+        if (!Enum.TryParse(input.ToString(), out GameStateInput gameStateInput))
+        {
+            Debug.LogError($"Invalid input! input : {input}");
+            return default;
+        }
 
-    public IState<GameStateInput> GetNext(GameStateInput input)
-    {
-        switch (input)
+        switch (gameStateInput)
         {
             case GameStateInput.StateDone:
                 return gameObject.GetOrAddComponent<SubGameClearState>();
         }
 
-        throw new Exception($"Invalid transition: {GetType().Name} with {input}");
+        throw new Exception($"Invalid transition: {GetType().Name} with {gameStateInput}");
     }
 }

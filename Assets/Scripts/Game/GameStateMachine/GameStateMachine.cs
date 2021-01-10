@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 using GameFramework.FSM;
+using System;
 
-public class GameStateMachine : MonoBehaviour, IFiniteStateMachine<IState<GameStateInput>, GameStateInput>
+public class GameStateMachine : MonoBehaviour, IFiniteStateMachine
 {
-    public IState<GameStateInput> InitState => gameObject.GetOrAddComponent<WaitForPlayersState>();
-    public IState<GameStateInput> CurrentState { get; private set; }
+    public IState InitState => gameObject.GetOrAddComponent<WaitForPlayersState>();
+    public IState CurrentState { get; private set; }
 
     public void StartStateMachine()
     {
@@ -19,7 +20,7 @@ public class GameStateMachine : MonoBehaviour, IFiniteStateMachine<IState<GameSt
         CurrentState?.Execute();
     }
 
-    public IState<GameStateInput> MoveNext(GameStateInput input)
+    public IState MoveNext<I>(I input) where I : Enum
     {
         var next = CurrentState.GetNext(input);
 
@@ -41,4 +42,12 @@ public class GameStateMachine : MonoBehaviour, IFiniteStateMachine<IState<GameSt
 public enum GameStateInput
 {
     StateDone = 0,
+
+    //  States
+    WaitForPlayersState = 100,
+    SubGameSelectionState = 101,
+    SubGamePrepareState = 102,
+    SubGameProgressState = 103,
+    SubGameEndState = 104,
+    MatchEndState = 105,
 }

@@ -4,15 +4,9 @@ using UnityEngine;
 using GameFramework.FSM;
 using System;
 
-public class WaitForPlayersState : MonoBehaviour, IState<GameStateInput>
+public class WaitForPlayersState : GameStateBase
 {
-    public IFiniteStateMachine<IState<GameStateInput>, GameStateInput> FSM => gameObject.GetOrAddComponent<GameStateMachine>();
-
-    public void Enter()
-    {
-    }
-
-    public void Execute()
+    public override void Execute()
     {
         if (PhotonNetwork.room.ExpectedUsers == null || PhotonNetwork.room.ExpectedUsers.Length == LOP.Game.Current.PlayerUserIDPhotonPlayer.Count)
         {
@@ -20,18 +14,20 @@ public class WaitForPlayersState : MonoBehaviour, IState<GameStateInput>
         }
     }
 
-    public void Exit()
+    public override IState GetNext<I>(I input)
     {
-    }
+        if (!Enum.TryParse(input.ToString(), out GameStateInput gameStateInput))
+        {
+            Debug.LogError($"Invalid input! input : {input}");
+            return default;
+        }
 
-    public IState<GameStateInput> GetNext(GameStateInput input)
-    {
-        switch (input)
+        switch (gameStateInput)
         {
             case GameStateInput.StateDone:
                 return gameObject.GetOrAddComponent<SubGameSelectionState>();
         }
 
-        throw new Exception($"Invalid transition: {GetType().Name} with {input}");
+        throw new Exception($"Invalid transition: {GetType().Name} with {gameStateInput}");
     }
 }

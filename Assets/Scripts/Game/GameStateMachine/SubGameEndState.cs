@@ -4,21 +4,8 @@ using UnityEngine;
 using GameFramework.FSM;
 using System;
 
-public class SubGameSelectionState : GameStateBase
+public class SubGameEndState : GameStateBase
 {
-    private SubGameData[] subGameDatas = null;
-
-    public override void Enter()
-    {
-        subGameDatas = Resources.LoadAll<SubGameData>("ScriptableObject/SubGameData");
-
-        var index = UnityEngine.Random.Range(0, subGameDatas.Length);
-
-        LOP.Game.Current.GameManager.currentSubGame = subGameDatas[index];
-
-        FSM.MoveNext(GameStateInput.StateDone);
-    }
-
     public override IState GetNext<I>(I input)
     {
         if (!Enum.TryParse(input.ToString(), out GameStateInput gameStateInput))
@@ -30,7 +17,7 @@ public class SubGameSelectionState : GameStateBase
         switch (gameStateInput)
         {
             case GameStateInput.StateDone:
-                return gameObject.GetOrAddComponent<SubGamePrepareState>();
+                return gameObject.GetOrAddComponent<MatchEndState>();
         }
 
         throw new Exception($"Invalid transition: {GetType().Name} with {gameStateInput}");

@@ -5,34 +5,34 @@ using UnityEngine.SceneManagement;
 using GameFramework.FSM;
 using System;
 
-public class SubGamePrepareState : MonoBehaviour, IState<GameStateInput>
+public class SubGamePrepareState : GameStateBase
 {
-    public IFiniteStateMachine<IState<GameStateInput>, GameStateInput> FSM => gameObject.GetOrAddComponent<GameStateMachine>();
-
-    public void Enter()
+    public override void Enter()
     {
         StopCoroutine("Procedure");
         StartCoroutine("Procedure");
     }
 
-    public void Execute()
-    {
-    }
-
-    public void Exit()
+    public override void Exit()
     {
         StopCoroutine("Procedure");
     }
 
-    public IState<GameStateInput> GetNext(GameStateInput input)
+    public override IState GetNext<I>(I input)
     {
-        switch (input)
+        if (!Enum.TryParse(input.ToString(), out GameStateInput gameStateInput))
+        {
+            Debug.LogError($"Invalid input! input : {input}");
+            return default;
+        }
+
+        switch (gameStateInput)
         {
             case GameStateInput.StateDone:
                 return gameObject.GetOrAddComponent<SubGameProgressState>();
         }
 
-        throw new Exception($"Invalid transition: {GetType().Name} with {input}");
+        throw new Exception($"Invalid transition: {GetType().Name} with {gameStateInput}");
     }
 
     private IEnumerator Procedure()
