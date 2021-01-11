@@ -131,7 +131,6 @@ GameObject:
   m_Component:
   - component: {fileID: 684324695}
   - component: {fileID: 684324694}
-  - component: {fileID: 684324693}
   m_Layer: 0
   m_Name: SubGame
   m_TagString: Untagged
@@ -139,18 +138,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &684324693
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 684324692}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b4560680733639147b57383cf82e185c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &684324694
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -164,7 +151,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sceneToLoad: {fileID: 102900000, guid: 0c4600691a2b2a84ca36849e79e10ad8, type: 3}
-  spawnManager: {fileID: 684324693}
 --- !u!4 &684324695
 Transform:
   m_ObjectHideFlags: 0

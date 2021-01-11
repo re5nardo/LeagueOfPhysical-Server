@@ -6,7 +6,6 @@ using UnityEngine.SceneManagement;
 public class RememberGame : SubGameBase
 {
     [SerializeField] private Object sceneToLoad = null;
-    [SerializeField] private SpawnManager spawnManager = null;
 
     protected override IEnumerator OnInitialize()
     {
@@ -15,7 +14,6 @@ public class RememberGame : SubGameBase
 
     protected override void OnGameStart()
     {
-        spawnManager.StartSpawn();
     }
 
     protected override void OnGameEnd()
