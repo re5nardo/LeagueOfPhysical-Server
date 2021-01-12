@@ -34,7 +34,7 @@ namespace LOP
             roomProtocolHandler = gameObject.AddComponent<RoomProtocolHandler>();
             roomPunBehaviour = gameObject.AddComponent<RoomPunBehaviour>();
 
-            roomProtocolHandler[typeof(CS_PingHandler)] = CS_PingHandler.Handle;
+            roomProtocolHandler[typeof(CS_Ping)] = CS_PingHandler.Handle;
 
             yield return game.Initialize();
         }

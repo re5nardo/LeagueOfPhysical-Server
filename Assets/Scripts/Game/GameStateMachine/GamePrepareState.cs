@@ -15,7 +15,7 @@ public class GamePrepareState : GameStateBase
     {
         roomProtocolHandler[typeof(CS_GamePreparation)] = OnGamePreparation;
 
-        if (PhotonNetwork.room.ExpectedUsers == null)
+        if (PhotonNetwork.room.ExpectedUsers != null)
         {
             foreach (var expectedUser in PhotonNetwork.room.ExpectedUsers)
             {

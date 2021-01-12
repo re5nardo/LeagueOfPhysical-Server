@@ -42,12 +42,12 @@ namespace LOP
             gameEventManager = gameObject.AddComponent<GameEventManager>();
             gameManager = gameObject.AddComponent<GameManager>();
 
-            roomProtocolHandler[typeof(CS_NotifyPlayerLookAtPositionHandler)]   = CS_NotifyPlayerLookAtPositionHandler.Handle;
-            roomProtocolHandler[typeof(CS_NotifySkillInputDataHandler)]         = CS_NotifySkillInputDataHandler.Handle;
-            roomProtocolHandler[typeof(CS_RequestEmotionExpressionHandler)]     = CS_RequestEmotionExpressionHandler.Handle;
-            roomProtocolHandler[typeof(CS_FirstStatusSelectionHandler)]         = CS_FirstStatusSelectionHandler.Handle;
-            roomProtocolHandler[typeof(CS_AbilitySelectionHandler)]             = CS_AbilitySelectionHandler.Handle;
-            roomProtocolHandler[typeof(CS_NotifyMoveInputDataHandler)]          = CS_NotifyMoveInputDataHandler.Handle;
+            roomProtocolHandler[typeof(CS_NotifyPlayerLookAtPosition)]   = CS_NotifyPlayerLookAtPositionHandler.Handle;
+            roomProtocolHandler[typeof(CS_NotifySkillInputData)]         = CS_NotifySkillInputDataHandler.Handle;
+            roomProtocolHandler[typeof(CS_RequestEmotionExpression)]     = CS_RequestEmotionExpressionHandler.Handle;
+            roomProtocolHandler[typeof(CS_FirstStatusSelection)]         = CS_FirstStatusSelectionHandler.Handle;
+            roomProtocolHandler[typeof(CS_AbilitySelection)]             = CS_AbilitySelectionHandler.Handle;
+            roomProtocolHandler[typeof(CS_NotifyMoveInputData)]          = CS_NotifyMoveInputDataHandler.Handle;
 
             RoomPubSubService.AddSubscriber(RoomMessageKey.PlayerEnter, OnPlayerEnter);
             RoomPubSubService.AddSubscriber(RoomMessageKey.PlayerLeave, OnPlayerLeave);
