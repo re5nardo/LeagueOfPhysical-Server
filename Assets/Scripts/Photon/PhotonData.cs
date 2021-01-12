@@ -27,7 +27,8 @@ public class CustomSerializationCode
 	public const byte CS_Ping = 135;
 	public const byte CS_FirstStatusSelection = 136;
 	public const byte CS_AbilitySelection = 137;
-    public const byte CS_SubGamePreparation = 138;
+    public const byte CS_GamePreparation = 138;
+    public const byte CS_SubGamePreparation = 139;
 }
 
 //  0 ~ 199
@@ -54,7 +55,8 @@ public class PhotonEvent
 	public const byte CS_Ping = 105;
 	public const byte CS_FirstStatusSelection = 106;
 	public const byte CS_AbilitySelection = 107;
-    public const byte CS_SubGamePreparation = 108;
+    public const byte CS_GamePreparation = 108;
+    public const byte CS_SubGamePreparation = 109;
 }
 
 [Serializable]
@@ -564,6 +566,25 @@ public class CS_AbilitySelection : IPhotonEventMessage
 	{
 		return PhotonEvent.CS_AbilitySelection;
 	}
+}
+
+[Serializable]
+public class CS_GamePreparation : IPhotonEventMessage
+{
+    public int senderID { get; set; }
+    public int entityID;
+    public float preparation;
+
+    public CS_GamePreparation(int entityID, int preparation)
+    {
+        this.entityID = entityID;
+        this.preparation = preparation;
+    }
+
+    public byte GetEventID()
+    {
+        return PhotonEvent.CS_GamePreparation;
+    }
 }
 
 [Serializable]

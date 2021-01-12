@@ -27,6 +27,7 @@ public class PhotonTypeRegister
         PhotonPeer.RegisterType(typeof(CS_Ping), CustomSerializationCode.CS_Ping, Util.CommonDataCompressionSerialize, Util.CommonDataCompressionDeserialize);
         PhotonPeer.RegisterType(typeof(CS_FirstStatusSelection), CustomSerializationCode.CS_FirstStatusSelection, Util.CommonDataCompressionSerialize, Util.CommonDataCompressionDeserialize);
         PhotonPeer.RegisterType(typeof(CS_AbilitySelection), CustomSerializationCode.CS_AbilitySelection, Util.CommonDataCompressionSerialize, Util.CommonDataCompressionDeserialize);
+        PhotonPeer.RegisterType(typeof(CS_GamePreparation), CustomSerializationCode.CS_SubGamePreparation, Util.CommonDataCompressionSerialize, Util.CommonDataCompressionDeserialize);
         PhotonPeer.RegisterType(typeof(CS_SubGamePreparation), CustomSerializationCode.CS_SubGamePreparation, Util.CommonDataCompressionSerialize, Util.CommonDataCompressionDeserialize);
     }
 }
