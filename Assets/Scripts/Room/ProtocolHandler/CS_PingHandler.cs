@@ -5,7 +5,7 @@ using GameFramework;
 
 public class CS_PingHandler
 {
-    public static void Handle(IPhotonEventMessage msg)
+    public static void Handle(IMessage msg)
     {
         CS_Ping ping = msg as CS_Ping;
 

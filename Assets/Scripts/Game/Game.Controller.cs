@@ -11,11 +11,6 @@ namespace LOP
 {
     public partial class Game
     {
-        private void OnNetworkMessage(IMessage msg, object[] objects)
-        {
-            gameProtocolDispatcher.DispatchProtocol(msg as IPhotonEventMessage);
-        }
-
         private void OnPlayerEnter(object param)
         {
             PhotonPlayer newPlayer = (PhotonPlayer)param;

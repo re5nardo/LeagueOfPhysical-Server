@@ -6,11 +6,11 @@ using System.Linq;
 
 public class CS_NotifySkillInputDataHandler
 {
-    public static void Handle(IPhotonEventMessage msg)
+    public static void Handle(IMessage msg)
     {
         CS_NotifySkillInputData notifySkillInputData = msg as CS_NotifySkillInputData;
 
-        PhotonPlayer photonPlayer = PhotonNetwork.playerList.ToList().Find(x => x.ID == msg.senderID);
+        PhotonPlayer photonPlayer = PhotonNetwork.playerList.ToList().Find(x => x.ID == notifySkillInputData.senderID);
 
         IEntity entity = Entities.Get(LOP.Game.Current.PlayerUserIDEntityID[photonPlayer.UserId]);
         foreach (Skill.SkillBase skill in entity.GetComponents<Skill.SkillBase>())

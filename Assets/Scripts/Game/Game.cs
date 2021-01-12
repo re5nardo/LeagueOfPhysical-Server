@@ -25,7 +25,7 @@ namespace LOP
         public GameEventManager GameEventManager => gameEventManager;
         public GameManager GameManager => gameManager;
 
-        private GameProtocolDispatcher gameProtocolDispatcher = null;
+        private RoomProtocolHandler roomProtocolHandler = null;
         private GameEventManager gameEventManager = null;
         private GameManager gameManager = null;
 
@@ -38,11 +38,16 @@ namespace LOP
             PlayerUserIDPhotonPlayer = new ReadOnlyDictionary<string, WeakReference>(playerUserIDPhotonPlayer);
 
             tickUpdater = gameObject.AddComponent<TickUpdater>();
-            gameProtocolDispatcher = gameObject.AddComponent<GameProtocolDispatcher>();
+            roomProtocolHandler = gameObject.AddComponent<RoomProtocolHandler>();
             gameEventManager = gameObject.AddComponent<GameEventManager>();
             gameManager = gameObject.AddComponent<GameManager>();
 
-            RoomNetwork.Instance.onMessage += OnNetworkMessage;
+            roomProtocolHandler[typeof(CS_NotifyPlayerLookAtPositionHandler)]   = CS_NotifyPlayerLookAtPositionHandler.Handle;
+            roomProtocolHandler[typeof(CS_NotifySkillInputDataHandler)]         = CS_NotifySkillInputDataHandler.Handle;
+            roomProtocolHandler[typeof(CS_RequestEmotionExpressionHandler)]     = CS_RequestEmotionExpressionHandler.Handle;
+            roomProtocolHandler[typeof(CS_FirstStatusSelectionHandler)]         = CS_FirstStatusSelectionHandler.Handle;
+            roomProtocolHandler[typeof(CS_AbilitySelectionHandler)]             = CS_AbilitySelectionHandler.Handle;
+            roomProtocolHandler[typeof(CS_NotifyMoveInputDataHandler)]          = CS_NotifyMoveInputDataHandler.Handle;
 
             RoomPubSubService.AddSubscriber(RoomMessageKey.PlayerEnter, OnPlayerEnter);
             RoomPubSubService.AddSubscriber(RoomMessageKey.PlayerLeave, OnPlayerLeave);
@@ -70,11 +75,6 @@ namespace LOP
     
             RoomPubSubService.RemoveSubscriber(RoomMessageKey.PlayerEnter, OnPlayerEnter);
             RoomPubSubService.RemoveSubscriber(RoomMessageKey.PlayerLeave, OnPlayerLeave);
-
-            if (RoomNetwork.HasInstance())
-            {
-                RoomNetwork.Instance.onMessage -= OnNetworkMessage;
-            }
         }
 
         protected override void OnBeforeRun()

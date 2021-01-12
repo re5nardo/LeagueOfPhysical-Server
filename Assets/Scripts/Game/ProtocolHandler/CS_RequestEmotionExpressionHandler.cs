@@ -6,11 +6,11 @@ using System.Linq;
 
 public class CS_RequestEmotionExpressionHandler
 {
-    public static void Handle(IPhotonEventMessage msg)
+    public static void Handle(IMessage msg)
     {
         CS_RequestEmotionExpression requestEmotionExpression = msg as CS_RequestEmotionExpression;
 
-        PhotonPlayer photonPlayer = PhotonNetwork.playerList.ToList().Find(x => x.ID == msg.senderID);
+        PhotonPlayer photonPlayer = PhotonNetwork.playerList.ToList().Find(x => x.ID == requestEmotionExpression.senderID);
 
         IEntity senderEntity = Entities.Get(LOP.Game.Current.PlayerUserIDEntityID[photonPlayer.UserId]);
 
