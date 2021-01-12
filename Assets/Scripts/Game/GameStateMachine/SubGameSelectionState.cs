@@ -8,7 +8,7 @@ public class SubGameSelectionState : GameStateBase
 {
     private SubGameData[] subGameDatas = null;
 
-    public override void Enter()
+    protected override void OnEnter()
     {
         subGameDatas = Resources.LoadAll<SubGameData>("ScriptableObject/SubGameData");
 

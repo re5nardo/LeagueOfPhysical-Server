@@ -8,15 +8,39 @@ public abstract class GameStateBase : MonoBehaviour, IState
 {
     public IFiniteStateMachine FSM => gameObject.GetOrAddComponent<GameStateMachine>();
 
-    public virtual void Enter()
+    protected RoomProtocolHandler roomProtocolHandler = null;
+
+    private void Awake()
+    {
+        roomProtocolHandler = gameObject.AddComponent<RoomProtocolHandler>();
+    }
+
+    public void Enter()
+    {
+        OnEnter();
+    }
+
+    public void Execute()
+    {
+        OnExecute();
+    }
+
+    public void Exit()
+    {
+        OnExit();
+
+        roomProtocolHandler.Clear();
+    }
+
+    protected virtual void OnEnter()
     {
     }
 
-    public virtual void Execute()
+    protected virtual void OnExecute()
     {
     }
 
-    public virtual void Exit()
+    protected virtual void OnExit()
     {
     }
 

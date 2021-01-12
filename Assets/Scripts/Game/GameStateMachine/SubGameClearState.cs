@@ -7,13 +7,13 @@ using System;
 
 public class SubGameClearState : GameStateBase
 {
-    public override void Enter()
+    protected override void OnEnter()
     {
         StopCoroutine("Procedure");
         StartCoroutine("Procedure");
     }
 
-    public override void Exit()
+    protected override void OnExit()
     {
         StopCoroutine("Procedure");
     }

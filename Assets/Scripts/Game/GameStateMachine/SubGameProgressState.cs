@@ -6,12 +6,12 @@ using System;
 
 public class SubGameProgressState : GameStateBase
 {
-    public override void Enter()
+    protected override void OnEnter()
     {
         SubGameBase.Current.StartGame();
     }
 
-    public override void Execute()
+    protected override void OnExecute()
     {
         if (SubGameBase.Current.IsGameEnd)
         {

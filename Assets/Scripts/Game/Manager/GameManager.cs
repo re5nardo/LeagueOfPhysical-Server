@@ -24,10 +24,5 @@ namespace LOP
                 Destroy(gameStateMachine.gameObject);
             }
         }
-
-        public void StartGameManager()
-        {
-            gameStateMachine.StartStateMachine();
-        }
     }
 }
