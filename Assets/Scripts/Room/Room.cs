@@ -8,7 +8,7 @@ namespace LOP
     {
         [SerializeField] private Game game = null;
 
-        private RoomProtocolHandler roomProtocolHandler = null;
+        private RoomProtocolDispatcher roomProtocolDispatcher = null;
         private RoomPunBehaviour roomPunBehaviour = null;
 
         #region MonoBehaviour
@@ -31,10 +31,10 @@ namespace LOP
 
         private IEnumerator Initialize()
         {
-            roomProtocolHandler = gameObject.AddComponent<RoomProtocolHandler>();
+            roomProtocolDispatcher = gameObject.AddComponent<RoomProtocolDispatcher>();
             roomPunBehaviour = gameObject.AddComponent<RoomPunBehaviour>();
 
-            roomProtocolHandler[typeof(CS_Ping)] = CS_PingHandler.Handle;
+            roomProtocolDispatcher[typeof(CS_Ping)] = CS_PingHandler.Handle;
 
             yield return game.Initialize();
         }

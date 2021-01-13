@@ -4,7 +4,7 @@ using UnityEngine;
 using System;
 using GameFramework;
 
-public class RoomProtocolHandler : MonoBehaviour
+public class RoomProtocolDispatcher : MonoBehaviour
 {
     private Dictionary<Type, Action<IMessage>> handlers = new Dictionary<Type, Action<IMessage>>();
 

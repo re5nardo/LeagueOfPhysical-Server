@@ -13,7 +13,7 @@ public class GamePrepareState : GameStateBase
 
     protected override void OnEnter()
     {
-        roomProtocolHandler[typeof(CS_GamePreparation)] = OnGamePreparation;
+        roomProtocolDispatcher[typeof(CS_GamePreparation)] = OnGamePreparation;
 
         if (PhotonNetwork.room.ExpectedUsers != null)
         {

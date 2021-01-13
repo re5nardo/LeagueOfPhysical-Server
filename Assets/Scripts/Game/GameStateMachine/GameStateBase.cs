@@ -8,11 +8,11 @@ public abstract class GameStateBase : MonoBehaviour, IState
 {
     public IFiniteStateMachine FSM => gameObject.GetOrAddComponent<GameStateMachine>();
 
-    protected RoomProtocolHandler roomProtocolHandler = null;
+    protected RoomProtocolDispatcher roomProtocolDispatcher = null;
 
     private void Awake()
     {
-        roomProtocolHandler = gameObject.AddComponent<RoomProtocolHandler>();
+        roomProtocolDispatcher = gameObject.AddComponent<RoomProtocolDispatcher>();
     }
 
     public void Enter()
@@ -29,7 +29,7 @@ public abstract class GameStateBase : MonoBehaviour, IState
     {
         OnExit();
 
-        roomProtocolHandler.Clear();
+        roomProtocolDispatcher.Clear();
     }
 
     protected virtual void OnEnter()
