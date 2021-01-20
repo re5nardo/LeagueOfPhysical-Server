@@ -122,3 +122,10 @@ public enum FirstStatusElement
 	WIS = 5,
 	CHA = 6,
 }
+
+[Serializable]
+public enum MatchType
+{
+    Friendly = 0,
+    Rank = 1,
+}

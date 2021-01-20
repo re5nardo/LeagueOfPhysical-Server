@@ -37,7 +37,7 @@ public class SubGameClearState : GameStateBase
 
     private IEnumerator Procedure()
     {
-        yield return SceneManager.UnloadSceneAsync(LOP.Game.Current.GameManager.currentSubGame.scene.name, UnloadSceneOptions.UnloadAllEmbeddedSceneObjects);
+        yield return SceneManager.UnloadSceneAsync(LOP.Game.Current.GameManager.currentSubGame.sceneName, UnloadSceneOptions.UnloadAllEmbeddedSceneObjects);
 
         LOP.Game.Current.GameManager.currentSubGame = null;
 

@@ -6,11 +6,9 @@ using System;
 
 public class SubGameSelectionState : GameStateBase
 {
-    private SubGameData[] subGameDatas = null;
-
     protected override void OnEnter()
     {
-        subGameDatas = Resources.LoadAll<SubGameData>("ScriptableObject/SubGameData");
+        var subGameDatas = SubGameData.GetAll();
 
         var index = UnityEngine.Random.Range(0, subGameDatas.Length);
 

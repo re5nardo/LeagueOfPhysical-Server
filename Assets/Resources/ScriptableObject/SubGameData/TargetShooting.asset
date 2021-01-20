@@ -12,5 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9454b50e75a186f48af685303e57e46d, type: 3}
   m_Name: TargetShooting
   m_EditorClassIdentifier: 
-  id: TargetShooting
-  scene: {fileID: 102900000, guid: d012b4ff4f530ea4492ae2b5ee2d2400, type: 3}
+  title: TargetShooting
+  description: TargetShooting
+  sceneName: TargetShooting
+  minPlayers: 2
+  availableMatchType: 0000000001000000

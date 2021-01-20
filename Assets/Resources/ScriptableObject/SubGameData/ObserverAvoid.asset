@@ -12,5 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9454b50e75a186f48af685303e57e46d, type: 3}
   m_Name: ObserverAvoid
   m_EditorClassIdentifier: 
-  id: ObserverAvoid
-  scene: {fileID: 102900000, guid: 8d242b26dc46f274dac00907e53b4df0, type: 3}
+  title: ObserverAvoid
+  description: ObserverAvoid
+  sceneName: ObserverAvoid
+  minPlayers: 2
+  availableMatchType: 0000000001000000
