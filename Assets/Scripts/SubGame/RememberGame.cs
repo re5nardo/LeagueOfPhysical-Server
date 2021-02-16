@@ -5,11 +5,11 @@ using UnityEngine.SceneManagement;
 
 public class RememberGame : SubGameBase
 {
-    [SerializeField] private Object sceneToLoad = null;
+    [SerializeField] private string bgSceneName = "RiftOfSummoner";
 
     protected override IEnumerator OnInitialize()
     {
-        yield return SceneManager.LoadSceneAsync(sceneToLoad.name, LoadSceneMode.Additive);
+        yield return SceneManager.LoadSceneAsync(bgSceneName, LoadSceneMode.Additive);
     }
 
     protected override void OnGameStart()
