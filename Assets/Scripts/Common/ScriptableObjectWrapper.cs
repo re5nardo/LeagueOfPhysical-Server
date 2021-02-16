@@ -12,7 +12,7 @@ public abstract class ScriptableObjectWrapper<T> : ScriptableObject where T : Sc
         {
             if (forceUpdate || cachedScriptableObjects == null)
             {
-                var scriptableObjects = Resources.LoadAll<T>($"ScriptableObject/{typeof(T).Name}") as T[];
+                var scriptableObjects = Resources.FindObjectsOfTypeAll<T>();
 
                 cachedScriptableObjects = scriptableObjects;
             }
