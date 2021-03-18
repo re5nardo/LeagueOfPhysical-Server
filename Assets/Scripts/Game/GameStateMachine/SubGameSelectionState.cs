@@ -4,10 +4,12 @@ using UnityEngine;
 using GameFramework.FSM;
 using System;
 
-public class SubGameSelectionState : GameStateBase
+public class SubGameSelectionState : MonoStateBase
 {
-    protected override void OnEnter()
+    public override void Enter()
     {
+        base.Enter();
+
         var subGameDatas = SubGameData.GetAll();
 
         var index = UnityEngine.Random.Range(0, subGameDatas.Length);

@@ -4,15 +4,19 @@ using UnityEngine;
 using GameFramework.FSM;
 using System;
 
-public class SubGameProgressState : GameStateBase
+public class SubGameProgressState : MonoStateBase
 {
-    protected override void OnEnter()
+    public override void Enter()
     {
+        base.Enter();
+
         SubGameBase.Current.StartGame();
     }
 
-    protected override void OnExecute()
+    public override void Execute()
     {
+        base.Execute();
+
         if (SubGameBase.Current.IsGameEnd)
         {
             FSM.MoveNext(GameStateInput.StateDone);

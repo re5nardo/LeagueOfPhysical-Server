@@ -4,7 +4,7 @@ using UnityEngine;
 using GameFramework.FSM;
 using System;
 
-public class MatchEndState : GameStateBase
+public class MatchEndState : MonoStateBase
 {
     public override IState GetNext<I>(I input)
     {

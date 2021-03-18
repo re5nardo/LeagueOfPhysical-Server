@@ -6,13 +6,21 @@ using System;
 using System.Linq;
 using GameFramework;
 
-public class GamePrepareState : GameStateBase
+public class GamePrepareState : MonoStateBase
 {
+    private RoomProtocolDispatcher roomProtocolDispatcher = null;
     private Dictionary<string, float> playerPrepareStates = new Dictionary<string, float>();
     private bool resourceLoaded = false;
 
-    protected override void OnEnter()
+    private void Awake()
     {
+        roomProtocolDispatcher = gameObject.AddComponent<RoomProtocolDispatcher>();
+    }
+
+    public override void Enter()
+    {
+        base.Enter();
+
         roomProtocolDispatcher[typeof(CS_GamePreparation)] = OnGamePreparation;
 
         if (PhotonNetwork.room.ExpectedUsers != null)
@@ -27,19 +35,25 @@ public class GamePrepareState : GameStateBase
         StartCoroutine("Procedure");
     }
 
-    protected override void OnExecute()
+    public override void Execute()
     {
+        base.Execute();
+
         if (playerPrepareStates.All(x => x.Value > 1) && resourceLoaded)
         {
             FSM.MoveNext(GameStateInput.StateDone);
         }
     }
 
-    protected override void OnExit()
+    public override void Exit()
     {
+        base.Exit();
+
+        roomProtocolDispatcher.Clear();
+
         StopCoroutine("Procedure");
     }
-
+    
     public override IState GetNext<I>(I input)
     {
         if (!Enum.TryParse(input.ToString(), out GameStateInput gameStateInput))
@@ -68,6 +82,11 @@ public class GamePrepareState : GameStateBase
 
     private void OnGamePreparation(IMessage msg)
     {
+        if (!IsValid)
+        {
+            return;
+        }
+
         CS_GamePreparation gamePreparation = msg as CS_GamePreparation;
 
         var playerUserID = LOP.Game.Current.EntityIDPlayerUserID[gamePreparation.entityID];

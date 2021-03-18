@@ -5,16 +5,20 @@ using UnityEngine.SceneManagement;
 using GameFramework.FSM;
 using System;
 
-public class SubGamePrepareState : GameStateBase
+public class SubGamePrepareState : MonoStateBase
 {
-    protected override void OnEnter()
+    public override void Enter()
     {
+        base.Enter();
+
         StopCoroutine("Procedure");
         StartCoroutine("Procedure");
     }
 
-    protected override void OnExit()
+    public override void Exit()
     {
+        base.Exit();
+
         StopCoroutine("Procedure");
     }
 
