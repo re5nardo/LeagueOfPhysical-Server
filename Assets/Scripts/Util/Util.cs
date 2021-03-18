@@ -254,6 +254,23 @@ public class Util
         }
     }
 
+    public static T TryEnumParse<T>(string value, T defaultValue)
+    {
+        try
+        {
+            return (T)Enum.Parse(typeof(T), value);
+        }
+        catch (InvalidCastException)
+        {
+            return defaultValue;
+        }
+        catch (Exception e)
+        {
+            Debug.LogError("Enum cast failed with unknown error: " + e.Message);
+            return defaultValue;
+        }
+    }
+
     public static bool Approximately(float a, float b, float fTolerance = 1E-05f)
     {
         return Mathf.Abs(a - b) < fTolerance;
