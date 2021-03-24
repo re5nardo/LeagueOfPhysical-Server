@@ -1,4 +1,6 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
+using System;
 
 public static class Extension
 {
@@ -19,9 +21,18 @@ public static class Extension
         var component = gameObject.GetComponent<T>();
         if (component == null)
         {
+
             component = gameObject.AddComponent<T>();
         }
 
         return component;
+    }
+
+    public static void ForEach<T>(this IEnumerable<T> enumerable, Action<T> action)
+    {
+        foreach (T item in enumerable)
+        {
+            action.Invoke(item);
+        }
     }
 }

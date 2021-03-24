@@ -19,6 +19,8 @@ namespace LOP
             PhotonNetwork.isMessageQueueRunning = true;
 
             game.Run();
+
+            InvokeRepeating("SendAlive", 0, 7);
         }
 
         protected override void OnDestroy()
@@ -41,6 +43,11 @@ namespace LOP
 
         private void Clear()
         {
+        }
+
+        private void SendAlive()
+        {
+            LOPWebAPI.Alive();
         }
     }
 }
