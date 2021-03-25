@@ -12,16 +12,7 @@ using System.IO.Compression;
 /// </summary>
 public class LOPHttp : MonoSingleton<LOPHttp>
 {
-    private LOPHttpTransport httpTransport = null;
-
-    protected override void Awake()
-    {
-        base.Awake();
-
-        httpTransport = Instance.gameObject.AddComponent<LOPHttpTransport>();
-    }
-
-    public void Start()
+    private void Start()
     {
         DontDestroyOnLoad(this);
     }
@@ -151,37 +142,16 @@ public class LOPHttp : MonoSingleton<LOPHttp>
 
     private void OnResponse(string jsonResponse, LOPHttpRequestContainer reqContainer)
     {
-        try
-        {
-            var LOPHttpResult = JsonUtility.FromJson<LOPHttpResultBase>(jsonResponse);
-
-            if (LOPHttpResult.code == 200)
-            {
-                reqContainer.JsonResponse = jsonResponse;
-                reqContainer.DeserializeResultJson();
-                reqContainer.ApiResult.Request = reqContainer.ApiRequest;
-                reqContainer.ApiResult.CustomData = reqContainer.CustomData;
-                reqContainer.InvokeSuccessCallback();
-            }
-            else
-            {
-                if (reqContainer.ErrorCallback != null)
-                {
-                    reqContainer.Error = GenerateLOPHttpError(reqContainer.ApiEndpoint, jsonResponse, reqContainer.CustomData);
-                    reqContainer.ErrorCallback(reqContainer.Error);
-                }
-            }
-        }
-        catch (Exception e)
-        {
-            Debug.LogException(e);
-        }
+        reqContainer.JsonResponse = jsonResponse;
+        reqContainer.DeserializeResultJson();
+        reqContainer.ApiResult.Request = reqContainer.ApiRequest;
+        reqContainer.ApiResult.CustomData = reqContainer.CustomData;
+        reqContainer.InvokeSuccessCallback?.Invoke();
     }
 
     private void OnError(string error, LOPHttpRequestContainer reqContainer)
     {
         reqContainer.JsonResponse = error;
-
         if (reqContainer.ErrorCallback != null)
         {
             reqContainer.Error = GenerateLOPHttpError(reqContainer.ApiEndpoint, reqContainer.JsonResponse, reqContainer.CustomData);

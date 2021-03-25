@@ -6,7 +6,7 @@ using GameFramework;
 
 public partial class LOPHttpTransport : MonoSingleton<LOPHttpTransport>
 {
-    public void Start()
+    private void Start()
     {
         DontDestroyOnLoad(this);
     }
