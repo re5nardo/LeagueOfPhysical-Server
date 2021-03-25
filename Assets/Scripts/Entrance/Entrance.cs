@@ -2,6 +2,7 @@
 using UnityEngine.SceneManagement;
 using Photon;
 using UnityEngine.UI;
+using System;
 
 public class Entrance : PunBehaviour
 {
@@ -96,7 +97,7 @@ public class Entrance : PunBehaviour
         textState.text = "로비에 접속하였습니다.";
 
 #if UNITY_STANDALONE && !UNITY_EDITOR
-        var arguments = System.Environment.GetCommandLineArgs();
+        var arguments = Environment.GetCommandLineArgs();
         string roomName = arguments[2];
         string[] expectedUsers = new string[arguments.Length - 3];
         for (int i = 3; i < arguments.Length; ++i)

@@ -47,7 +47,7 @@ namespace LOP
 
         private void SendAlive()
         {
-            LOPWebAPI.Alive();
+            LOPWebAPI.Alive(PhotonNetwork.room.Name);
         }
     }
 }
