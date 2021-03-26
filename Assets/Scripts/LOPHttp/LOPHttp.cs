@@ -6,6 +6,7 @@ using System.Text;
 using GameFramework;
 using System.IO;
 using System.IO.Compression;
+using UnityEngine.Networking;
 
 /// <summary>
 /// This is a wrapper for Http So we can better separate the functionaity of Http Requests delegated to WWW or HttpWebRequest
@@ -18,7 +19,7 @@ public class LOPHttp : MonoSingleton<LOPHttp>
     }
 
     #region Static functions
-    public static void MakeApiCall<TResult>(string apiEndpoint, LOPHttpRequestBase request, Action<TResult> resultCallback, Action<LOPHttpError> errorCallback,
+    public static void MakeApiCall<TResult>(string method, string apiEndpoint, LOPHttpRequestBase request, Action<TResult> resultCallback, Action<LOPHttpError> errorCallback,
         object customData = null, Dictionary<string, string> extraHeaders = null, LOPServerSettings apiSettings = null) where TResult : LOPHttpResultBase
     {
         var reqContainer = new LOPHttpRequestContainer
@@ -43,10 +44,10 @@ public class LOPHttp : MonoSingleton<LOPHttp>
             resultCallback?.Invoke((TResult)reqContainer.ApiResult);
         };
 
-        MakeApiCall(reqContainer);
+        MakeApiCall(method, reqContainer);
     }
 
-    public static void MakeApiCall(LOPHttpRequestContainer reqContainer)
+    public static void MakeApiCall(string method, LOPHttpRequestContainer reqContainer)
     {
         reqContainer.RequestHeaders["Content-Type"] = "application/json";
         reqContainer.RequestHeaders["Accept-Encoding"] = "gzip";
@@ -66,19 +67,50 @@ public class LOPHttp : MonoSingleton<LOPHttp>
             }
         }
 
-        LOPHttpTransport.Put(reqContainer.FullUrl, reqContainer.Payload, reqContainer.RequestHeaders,
-            (string result) =>
-            {
-                Instance.OnResponse(result, reqContainer);
-            },
-            error =>
-            {
-                Instance.OnError(error, reqContainer);
-            }
-        );
+        switch(method)
+        {
+            case UnityWebRequest.kHttpVerbGET:
+                LOPHttpTransport.Get(reqContainer.FullUrl, reqContainer.RequestHeaders,
+                    result =>
+                    {
+                        Instance.OnResponse(result, reqContainer);
+                    },
+                    error =>
+                    {
+                        Instance.OnError(error, reqContainer);
+                    }
+                );
+                break;
+
+            case UnityWebRequest.kHttpVerbPOST:
+                LOPHttpTransport.Post(reqContainer.FullUrl, Encoding.UTF8.GetString(reqContainer.Payload), reqContainer.RequestHeaders,
+                    result =>
+                    {
+                        Instance.OnResponse(result, reqContainer);
+                    },
+                    error =>
+                    {
+                        Instance.OnError(error, reqContainer);
+                    }
+                );
+                break;
+
+            case UnityWebRequest.kHttpVerbPUT:
+                LOPHttpTransport.Put(reqContainer.FullUrl, reqContainer.Payload, reqContainer.RequestHeaders,
+                    result =>
+                    {
+                        Instance.OnResponse(result, reqContainer);
+                    },
+                    error =>
+                    {
+                        Instance.OnError(error, reqContainer);
+                    }
+                );
+                break;
+        }
     }
 
-    public static string GetFullUrl(string apiCall, Dictionary<string, string> getParams, LOPServerSettings apiSettings)
+    public static string GetFullUrl(string apiCall, Dictionary<string, string> queryString, LOPServerSettings apiSettings)
     {
         StringBuilder sb = new StringBuilder(1000);
 
@@ -87,23 +119,20 @@ public class LOPHttp : MonoSingleton<LOPHttp>
             .Append(apiSettings.port)
             .Append(apiCall);
 
-        if (getParams != null)
+        bool firstParam = true;
+        queryString?.ForEach(pair =>
         {
-            bool firstParam = true;
-            foreach (var paramPair in getParams)
+            if (firstParam)
             {
-                if (firstParam)
-                {
-                    sb.Append("?");
-                    firstParam = false;
-                }
-                else
-                {
-                    sb.Append("&");
-                }
-                sb.Append(paramPair.Key).Append("=").Append(paramPair.Value);
+                sb.Append("?");
+                firstParam = false;
             }
-        }
+            else
+            {
+                sb.Append("&");
+            }
+            sb.Append(pair.Key).Append("=").Append(pair.Value);
+        });
 
         return sb.ToString();
     }
