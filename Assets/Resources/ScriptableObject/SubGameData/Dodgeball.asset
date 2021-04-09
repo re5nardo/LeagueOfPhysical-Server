@@ -12,8 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9454b50e75a186f48af685303e57e46d, type: 3}
   m_Name: Dodgeball
   m_EditorClassIdentifier: 
+  subGameId: Dodgeball
   title: Dodgeball
   description: Dodgeball
   sceneName: Dodgeball
-  minPlayers: 2
+  minPlayerCount: 2
+  maxPlayerCount: 8
   availableMatchType: 0000000001000000
