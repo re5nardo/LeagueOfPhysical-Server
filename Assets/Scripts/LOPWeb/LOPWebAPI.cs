@@ -1,13 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using GameFramework;
+using System;
 
 public class LOPWebAPI
 {
-    /// <summary>
-    /// Send alive notification.
-    /// </summary>
-    public static void Alive(string roomId)
+    public static HttpRequestContainer<string> Alive(string roomId, Action<string> onResult = null, Action<string> onError = null)
     {
-        GameFramework.HttpTransport.Put(GameFramework.Http.GetFullUri($"/healthcheck/alive/{roomId}", null, GameFramework.ServerSettings.Get("ServerSettings_Room")));
+        return Http.Put($"/healthcheck/alive/{roomId}", onResult, onError, apiSettings: GameFramework.ServerSettings.Get("ServerSettings_Room"));
     }
 }

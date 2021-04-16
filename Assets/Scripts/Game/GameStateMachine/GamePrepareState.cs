@@ -82,7 +82,7 @@ public class GamePrepareState : MonoStateBase
 
     private void OnGamePreparation(IMessage msg)
     {
-        if (!IsValid)
+        if (!IsCurrent)
         {
             return;
         }
