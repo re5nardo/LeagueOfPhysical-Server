@@ -17,7 +17,7 @@ public class SubGameEndState : MonoStateBase
         switch (gameStateInput)
         {
             case GameStateInput.StateDone:
-                return gameObject.GetOrAddComponent<MatchEndState>();
+                return gameObject.GetOrAddComponent<GameEndState>();
         }
 
         throw new Exception($"Invalid transition: {GetType().Name} with {gameStateInput}");

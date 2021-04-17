@@ -4,7 +4,7 @@ using UnityEngine;
 using GameFramework.FSM;
 using System;
 
-public class MatchEndState : MonoStateBase
+public class GameEndState : MonoStateBase
 {
     public override IState GetNext<I>(I input)
     {
@@ -17,7 +17,7 @@ public class MatchEndState : MonoStateBase
         switch (gameStateInput)
         {
             case GameStateInput.StateDone:
-                return gameObject.GetOrAddComponent<MatchEndState>();
+                return gameObject.GetOrAddComponent<GameEndState>();
         }
 
         throw new Exception($"Invalid transition: {GetType().Name} with {gameStateInput}");

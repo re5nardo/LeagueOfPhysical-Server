@@ -100,7 +100,7 @@ namespace LOP
             TickPubSubService.Publish("TickEnd", tick);
             TickPubSubService.Publish("LateTickEnd", tick);
 
-            if (gameManager.IsMatchEnd)
+            if (gameManager.IsGameEnd)
             {
             }
         }
