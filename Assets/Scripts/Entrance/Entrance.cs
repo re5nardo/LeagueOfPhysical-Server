@@ -99,13 +99,18 @@ public class Entrance : PunBehaviour
 #if UNITY_STANDALONE && !UNITY_EDITOR
         var arguments = Environment.GetCommandLineArgs();
         string roomName = arguments[2];
-        string[] expectedUsers = new string[arguments.Length - 3];
-        for (int i = 3; i < arguments.Length; ++i)
-        {
-            expectedUsers[i - 3] = arguments[i];
-        }
+        //string[] expectedUsers = new string[arguments.Length - 3];
+        //for (int i = 3; i < arguments.Length; ++i)
+        //{
+        //    expectedUsers[i - 3] = arguments[i];
+        //}
+
+        var matchSettingData = AppDataContainer.Get<MatchSettingData>();
+        matchSettingData.matchSetting.matchType = Util.TryEnumParse(arguments[3], MatchType.Friendly);
+        matchSettingData.matchSetting.subGameId = arguments[4];
+        matchSettingData.matchSetting.mapId = arguments[5];
         
-        CreateRoom(roomName, expectedUsers);
+        CreateRoom(roomName, null);
 #else
         if (autoCreateRoom)
         {

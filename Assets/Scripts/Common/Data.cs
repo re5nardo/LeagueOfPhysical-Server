@@ -129,3 +129,18 @@ public enum MatchType
     Friendly = 0,
     Rank = 1,
 }
+
+[Serializable]
+public struct MatchSetting
+{
+    public MatchType matchType;
+    public string subGameId;
+    public string mapId;
+
+    public MatchSetting(MatchType matchType, string subGameId, string mapId)
+    {
+        this.matchType = matchType;
+        this.subGameId = subGameId;
+        this.mapId = mapId;
+    }
+}
