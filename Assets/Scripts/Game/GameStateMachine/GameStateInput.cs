@@ -9,5 +9,5 @@ public enum GameStateInput
     SubGamePrepareState = 102,
     SubGameProgressState = 103,
     SubGameEndState = 104,
-    MatchEndState = 105,
+    GameEndState = 105,
 }
