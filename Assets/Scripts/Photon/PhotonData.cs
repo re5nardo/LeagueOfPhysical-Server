@@ -19,6 +19,7 @@ public class CustomSerializationCode
     public const byte SC_SyncTick = 26;
     public const byte SC_Synchronization = 27;
     public const byte SC_GameState = 28;
+    public const byte SC_GameEnd = 29;
 
 	public const byte CS_NotifyMoveInputData = 130;
 	public const byte CS_NotifyPlayerLookAtPosition = 131;
@@ -47,6 +48,7 @@ public class PhotonEvent
     public const byte SC_SyncTick = 19;
     public const byte SC_Synchronization = 20;
     public const byte SC_GameState = 21;
+    public const byte SC_GameEnd = 22;
 
 	public const byte CS_NotifyMoveInputData = 100;
 	public const byte CS_NotifyPlayerLookAtPosition = 101;
@@ -271,6 +273,19 @@ public class GameStateData
 {
 }
 
+[Serializable]
+public struct RankingData
+{
+    public string entityId;
+    public int ranking;
+
+    public RankingData(string entityId, int ranking)
+    {
+        this.entityId = entityId;
+        this.ranking = ranking;
+    }
+}
+
 #region Protocols (Server to Client)
 [Serializable]
 public class SC_EnterRoom : IPhotonEventMessage
@@ -462,6 +477,20 @@ public class SC_GameState : IPhotonEventMessage
     public byte GetEventID()
     {
         return PhotonEvent.SC_GameState;
+    }
+}
+
+[Serializable]
+public class SC_GameEnd : IPhotonEventMessage
+{
+    public int senderID { get; set; }
+    public List<int> winnerEntityIds = new List<int>();
+    public List<int> loserEntityIds = new List<int>();
+    public List<RankingData> rankingDataList = new List<RankingData>();
+
+    public byte GetEventID()
+    {
+        return PhotonEvent.SC_GameEnd;
     }
 }
 #endregion

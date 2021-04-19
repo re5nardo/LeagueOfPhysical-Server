@@ -18,6 +18,7 @@ public class PhotonTypeRegister
         PhotonPeer.RegisterType(typeof(SC_SyncTick), CustomSerializationCode.SC_SyncTick, Util.CommonDataCompressionSerialize, Util.CommonDataCompressionDeserialize);
         PhotonPeer.RegisterType(typeof(SC_Synchronization), CustomSerializationCode.SC_Synchronization, Util.CommonDataCompressionSerialize, Util.CommonDataCompressionDeserialize);
         PhotonPeer.RegisterType(typeof(SC_GameState), CustomSerializationCode.SC_GameState, Util.CommonDataCompressionSerialize, Util.CommonDataCompressionDeserialize);
+        PhotonPeer.RegisterType(typeof(SC_GameEnd), CustomSerializationCode.SC_GameEnd, Util.CommonDataCompressionSerialize, Util.CommonDataCompressionDeserialize);
 
         //  Client to server
         PhotonPeer.RegisterType(typeof(CS_NotifyMoveInputData), CustomSerializationCode.CS_NotifyMoveInputData, Util.CommonDataCompressionSerialize, Util.CommonDataCompressionDeserialize);
