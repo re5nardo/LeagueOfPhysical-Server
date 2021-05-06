@@ -20,7 +20,7 @@ namespace LOP
 
             game.Run();
 
-            InvokeRepeating("SendAlive", 0, 7);
+            InvokeRepeating("SendHeartbeat", 0, 7);
         }
 
         protected override void OnDestroy()
@@ -45,9 +45,9 @@ namespace LOP
         {
         }
 
-        private void SendAlive()
+        private void SendHeartbeat()
         {
-            LOPWebAPI.Alive(PhotonNetwork.room.Name);
+            LOPWebAPI.Heartbeat(PhotonNetwork.room.Name);
         }
     }
 }

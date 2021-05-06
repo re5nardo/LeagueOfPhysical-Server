@@ -14,8 +14,10 @@ public class SynchronizationManager : MonoSingleton<SynchronizationManager>
         TickPubSubService.AddSubscriber("LateTickEnd", OnLateTickEnd);
     }
 
-    private void OnDestroy()
+    protected override void OnDestroy()
     {
+        base.OnDestroy();
+
         TickPubSubService.RemoveSubscriber("LateTickEnd", OnLateTickEnd);
     }
 
