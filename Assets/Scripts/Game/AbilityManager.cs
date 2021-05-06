@@ -21,7 +21,7 @@ public class AbilityManager : MonoSingleton<AbilityManager>
 	public void ApplyAbility(int nEntityID, int nAbilityID)
 	{
 		IEntity entity = Entities.Get(nEntityID);
-		CharacterStatusController characterStatusController = entity.GetComponent<CharacterStatusController>();
+		CharacterStatusController characterStatusController = entity.GetEntityComponent<CharacterStatusController>();
 
 		MasterData.Ability master = MasterDataManager.Instance.GetMasterData<MasterData.Ability>(nAbilityID);
 

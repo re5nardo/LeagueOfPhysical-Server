@@ -14,7 +14,7 @@ public class CS_RequestEmotionExpressionHandler
 
         IEntity senderEntity = Entities.Get(LOP.Game.Current.PlayerUserIDEntityID[photonPlayer.UserId]);
 
-        EmotionExpressionData emotionExpressionData = senderEntity.GetComponent<EmotionExpressionData>();
+        EmotionExpressionData emotionExpressionData = senderEntity.GetEntityComponent<EmotionExpressionData>();
         if (!emotionExpressionData.m_listEmotionExpressionID.Exists(x => x == requestEmotionExpression.m_nEmotionExpressionID))
         {
             Debug.LogWarning("Invalid nEmotionExpressionID! nEmotionExpressionID : " + requestEmotionExpression.m_nEmotionExpressionID);

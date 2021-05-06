@@ -102,7 +102,7 @@ namespace LOP
 
             IEntity entity = Entities.Get(entityID);
 
-            NearEntityController nearEntityController = entity.GetComponent<NearEntityController>();
+            NearEntityController nearEntityController = entity.GetEntityComponent<NearEntityController>();
             entity.DetachComponent(nearEntityController);
 
             Destroy(nearEntityController);

@@ -14,10 +14,9 @@ namespace Entity
 
         public bool IsValid => EntityManager.Instance.IsRegistered(EntityID);
 
-        private List<IComponent> m_listComponent = new List<IComponent>();
+        private List<IComponent> components = new List<IComponent>();
 
-        private MonoEntitySynchronization monoEntitySynchronization = null;
-        private EntityTransformSynchronization entityTransformSynchronization = null;
+        protected EntityBasicView entityBasicView = null;
 
         protected virtual void Awake()
 		{
@@ -26,8 +25,8 @@ namespace Entity
 
 		protected virtual void InitComponents()
 		{
-            monoEntitySynchronization = AttachComponent(gameObject.AddComponent<MonoEntitySynchronization>());
-            entityTransformSynchronization = AttachComponent(gameObject.AddComponent<EntityTransformSynchronization>());
+            AttachComponent(gameObject.AddComponent<MonoEntitySynchronization>());
+            AttachComponent(gameObject.AddComponent<EntityTransformSynchronization>());
         }
 
 		public virtual void Initialize(params object[] param)
@@ -37,19 +36,19 @@ namespace Entity
         public virtual void OnTick(int tick)
         {
             //  States
-            GetComponents<State.StateBase>()?.ForEach(state =>
+            GetEntityComponents<State.StateBase>()?.ForEach(state =>
             {
                 state.OnTick(tick);
             });
 
             //  Behaviors
-            GetComponents<Behavior.BehaviorBase>()?.ForEach(behavior =>
+            GetEntityComponents<Behavior.BehaviorBase>()?.ForEach(behavior =>
             {
                 behavior.OnTick(tick);
             });
 
             //  Skills
-            GetComponents<Skill.SkillBase>()?.ForEach(skill =>
+            GetEntityComponents<Skill.SkillBase>()?.ForEach(skill =>
             {
                 skill.OnTick(tick);
             });
@@ -58,6 +57,8 @@ namespace Entity
         #region Interface For Convenience
         public abstract float MovementSpeed { get; }
         public abstract void Move(Vector3 vec3Destination);
+        public Transform ModelTransform => entityBasicView.ModelTransform;
+        public Rigidbody ModelRigidbody => entityBasicView.ModelRigidbody;
 
         public Vector3 Forward { get { return (Quaternion.Euler(Rotation) * Vector3.forward).normalized; } }
 
@@ -83,7 +84,7 @@ namespace Entity
         private Vector3 position;
         public Vector3 Position
         {
-            get { return position; }
+            get => position;
             set
             {
                 position = value;
@@ -97,7 +98,7 @@ namespace Entity
         private Vector3 rotation;
         public Vector3 Rotation
         {
-            get { return rotation; }
+            get => rotation;
             set
             {
                 rotation = value;
@@ -106,12 +107,33 @@ namespace Entity
             }
         }
 
-        public Vector3 Velocity { get; set; }
-        public Vector3 AngularVelocity { get; set; }
+        private Vector3 velocity;
+        public Vector3 Velocity
+        {
+            get => velocity;
+            set
+            {
+                velocity = value;
+
+                SendCommandToViews(new VelocityChanged());
+            }
+        }
+
+        private Vector3 angularVelocity;
+        public Vector3 AngularVelocity
+        {
+            get => angularVelocity;
+            set
+            {
+                angularVelocity = value;
+
+                SendCommandToViews(new AngularVelocityChanged());
+            }
+        }
 
         public T AttachComponent<T>(T component) where T : IComponent
         {
-            m_listComponent.Add(component);
+            components.Add(component);
 
             component.OnAttached(this);
 
@@ -120,16 +142,16 @@ namespace Entity
 
         public T DetachComponent<T>(T component) where T : IComponent
         {
-            m_listComponent.Remove(component);
+            components.Remove(component);
 
             component.OnDetached();
 
             return component;
         }
 
-        public T GetComponent<T>() where T : IComponent
+        public T GetEntityComponent<T>() where T : IComponent
         {
-            var found = m_listComponent.Find(x => x is T);
+            var found = components.Find(x => x is T);
 
             if (found == null)
                 return default;
@@ -137,9 +159,9 @@ namespace Entity
             return (T)found;
         }
 
-        public List<T> GetComponents<T>() where T : IComponent
+        public List<T> GetEntityComponents<T>() where T : IComponent
         {
-            var found = m_listComponent.FindAll(x => x is T);
+            var found = components.FindAll(x => x is T);
 
             if (found == null)
                 return null;
@@ -149,11 +171,11 @@ namespace Entity
 
         public void SendCommandToAll(ICommand command)
         {
-            List<IComponent> components = new List<IComponent>(m_listComponent);
+            List<IComponent> temp = new List<IComponent>(components);
 
-            foreach (var component in components)
+            foreach (var component in temp)
             {
-                if (!m_listComponent.Contains(component))
+                if (!components.Contains(component))
                     continue;
 
                 component.OnCommand(command);
@@ -162,11 +184,11 @@ namespace Entity
 
         public void SendCommand(ICommand command, List<Type> cullings)
         {
-            List<IComponent> components = new List<IComponent>(m_listComponent);
+            List<IComponent> temp = new List<IComponent>(components);
 
-            foreach (var component in components)
+            foreach (var component in temp)
             {
-                if (!m_listComponent.Contains(component))
+                if (!components.Contains(component))
                     continue;
 
                 if (cullings.Exists(x => x.IsAssignableFrom(component.GetType())))
@@ -179,36 +201,6 @@ namespace Entity
         public void SendCommandToViews(ICommand command)
         {
             SendCommand(command, new List<Type> { typeof(ViewComponentBase), typeof(MonoViewComponentBase) });
-        }
-        #endregion
-
-        #region PhysicsSimulation
-        public virtual void OnBeforePhysicsSimulation(int tick)
-        {
-            EntityBasicView entityBasicView = GetComponent<EntityBasicView>();
-
-            entityBasicView.ModelTransform.hasChanged = false;
-            entityBasicView.ModelTransform.GetComponent<Rigidbody>().isKinematic = false;
-        }
-
-        public virtual void OnAfterPhysicsSimulation(int tick)
-        {
-            EntityBasicView entityBasicView = GetComponent<EntityBasicView>();
-
-            if (entityBasicView.ModelTransform.hasChanged)
-            {
-                if (Position != entityBasicView.Position)
-                {
-                    Position = entityBasicView.Position;
-                }
-
-                if (Rotation != entityBasicView.Rotation)
-                {
-                    Rotation = entityBasicView.Rotation;
-                }
-            }
-
-            entityBasicView.ModelTransform.GetComponent<Rigidbody>().isKinematic = true;
         }
         #endregion
     }

@@ -26,7 +26,7 @@ public class CharacterAbilityController : MonoComponentBase
 
 		if (Entity.EntityID == nEntityID && (nLevel % 3) == 0)
 		{
-            CharacterAbilityData characterAbilityData = Entity.GetComponent<CharacterAbilityData>();
+            CharacterAbilityData characterAbilityData = Entity.GetEntityComponent<CharacterAbilityData>();
             characterAbilityData.IncreaseSelectableAbilityCount();
 		}
 	}
@@ -34,7 +34,7 @@ public class CharacterAbilityController : MonoComponentBase
 
 	public void OnAbilitySelection(int nAbilityID)
 	{
-        CharacterAbilityData characterAbilityData = Entity.GetComponent<CharacterAbilityData>();
+        CharacterAbilityData characterAbilityData = Entity.GetEntityComponent<CharacterAbilityData>();
         characterAbilityData.SelectAbility(nAbilityID);
         characterAbilityData.DecreaseSelectableAbilityCount();
 	}

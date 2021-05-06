@@ -15,8 +15,6 @@ namespace Entity
 
 		private GameItemBasicData gameItemBasicData = null;
 
-		private GameItemView gameItemView = null;
-
         private BehaviorController behaviorController = null;
         private StateController stateController = null;
         private GameItemPhysicsController gameItemPhysicsController = null;
@@ -42,7 +40,7 @@ namespace Entity
 
             gameItemBasicData = AttachComponent(gameObject.AddComponent<GameItemBasicData>());
 
-            gameItemView = AttachComponent(gameObject.AddComponent<GameItemView>());
+            entityBasicView = AttachComponent(gameObject.AddComponent<GameItemView>());
 
             behaviorController = AttachComponent(gameObject.AddComponent<BehaviorController>());
             stateController = AttachComponent(gameObject.AddComponent<StateController>());

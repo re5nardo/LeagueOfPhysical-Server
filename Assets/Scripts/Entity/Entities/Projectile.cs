@@ -15,8 +15,6 @@ namespace Entity
 
 		private ProjectileBasicData projectileBasicData = null;
 
-		private ProjectileView projectileView = null;
-
 		private BehaviorController behaviorController = null;
         private StateController stateController = null;
         private ProjectilePhysicsController projectilePhysicsController = null;
@@ -42,7 +40,7 @@ namespace Entity
 
             projectileBasicData = AttachComponent(gameObject.AddComponent<ProjectileBasicData>());
 
-            projectileView = AttachComponent(gameObject.AddComponent<ProjectileView>());
+            entityBasicView = AttachComponent(gameObject.AddComponent<ProjectileView>());
 
             behaviorController = AttachComponent(gameObject.AddComponent<BehaviorController>());
             stateController = AttachComponent(gameObject.AddComponent<StateController>());

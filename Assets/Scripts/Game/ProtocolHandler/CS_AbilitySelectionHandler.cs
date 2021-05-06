@@ -9,7 +9,7 @@ public class CS_AbilitySelectionHandler
     {
         CS_AbilitySelection abilitySelection = msg as CS_AbilitySelection;
 
-        CharacterAbilityController abilityController = Entities.Get(abilitySelection.m_nEntityID).GetComponent<CharacterAbilityController>();
+        CharacterAbilityController abilityController = Entities.Get(abilitySelection.m_nEntityID).GetEntityComponent<CharacterAbilityController>();
         abilityController.OnAbilitySelection(abilitySelection.m_nAbilityID);
     }
 }

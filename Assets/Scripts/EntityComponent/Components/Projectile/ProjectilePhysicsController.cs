@@ -26,7 +26,7 @@ public class ProjectilePhysicsController : MonoComponentBase
     {
         ModelTriggerEnter cmd = command as ModelTriggerEnter;
 
-        int projectorID = Entity.GetComponent<ProjectileBasicData>().ProjectorID;
+        int projectorID = Entity.GetEntityComponent<ProjectileBasicData>().ProjectorID;
 
         IEntity target = Entities.Get(cmd.targetEntityID);
         if (target == null)

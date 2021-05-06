@@ -18,8 +18,10 @@ public class EntityInfoSender : MonoSingleton<EntityInfoSender>
         TickPubSubService.AddSubscriber("TickEnd", OnTickEnd);
     }
 
-    private void OnDestroy()
+    protected override void OnDestroy()
     {
+        base.OnDestroy();
+
         GamePubSubService.RemoveSubscriber(GameMessageKey.EntityDestroy, OnEntityDestroy);
 
         TickPubSubService.RemoveSubscriber("TickEnd", OnTickEnd);
@@ -57,7 +59,7 @@ public class EntityInfoSender : MonoSingleton<EntityInfoSender>
 
 			SC_EntitySkillInfo entitySkillInfo = new SC_EntitySkillInfo();
 			entitySkillInfo.m_nEntityID = entity.EntityID;
-			SkillController controller = entity.GetComponent<SkillController>();
+			SkillController controller = entity.GetEntityComponent<SkillController>();
 			entitySkillInfo.m_dicSkillInfo = controller.GetEntitySkillInfo();
 
 			RoomNetwork.Instance.Send(entitySkillInfo, photonPlayer.ID);

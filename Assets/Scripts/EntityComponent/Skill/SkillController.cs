@@ -30,7 +30,7 @@ public class SkillController : MonoComponentBase
 
 	public void RemoveSkill(int nSkillMasterID)
 	{
-		var skills = Entity.GetComponents<SkillBase>();
+		var skills = Entity.GetEntityComponents<SkillBase>();
 		if (skills == null)
 			return;
 

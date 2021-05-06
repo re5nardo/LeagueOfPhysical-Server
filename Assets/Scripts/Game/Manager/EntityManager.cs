@@ -47,8 +47,6 @@ public class EntityManager : GameFramework.EntityManager
         GamePubSubService.AddSubscriber(GameMessageKey.EntityMove, OnEntityMove);
 
         TickPubSubService.AddSubscriber("Tick", OnTick);
-        TickPubSubService.AddSubscriber("BeforePhysicsSimulation", OnBeforePhysicsSimulation);
-        TickPubSubService.AddSubscriber("AfterPhysicsSimulation", OnAfterPhysicsSimulation);
     }
 
     private void OnDestroy()
@@ -56,8 +54,6 @@ public class EntityManager : GameFramework.EntityManager
         GamePubSubService.RemoveSubscriber(GameMessageKey.EntityMove, OnEntityMove);
 
         TickPubSubService.RemoveSubscriber("Tick", OnTick);
-        TickPubSubService.RemoveSubscriber("BeforePhysicsSimulation", OnBeforePhysicsSimulation);
-        TickPubSubService.RemoveSubscriber("AfterPhysicsSimulation", OnAfterPhysicsSimulation);
     }
 
     public override void Clear()
@@ -118,34 +114,6 @@ public class EntityManager : GameFramework.EntityManager
             if (entity.IsValid)
             {
                 entity.OnTick(tick);
-            }
-        });
-    }
-
-    private void OnBeforePhysicsSimulation(int tick)
-    {
-        //  sort
-        //  ...
-
-        GetAllEntities<MonoEntityBase>()?.ForEach(entity =>
-        {
-            if (entity.IsValid)
-            {
-                entity.OnBeforePhysicsSimulation(tick);
-            }
-        });
-    }
-
-    private void OnAfterPhysicsSimulation(int tick)
-    {
-        //  sort
-        //  ...
-
-        GetAllEntities<MonoEntityBase>()?.ForEach(entity =>
-        {
-            if (entity.IsValid)
-            {
-                entity.OnAfterPhysicsSimulation(tick);
             }
         });
     }

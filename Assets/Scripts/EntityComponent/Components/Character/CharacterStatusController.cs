@@ -26,7 +26,7 @@ public class CharacterStatusController : MonoComponentBase
 
 		if (Entity.EntityID == nEntityID)
 		{
-            CharacterStatusData characterStatusData = Entity.GetComponent<CharacterStatusData>();
+            CharacterStatusData characterStatusData = Entity.GetEntityComponent<CharacterStatusData>();
             characterStatusData.IncreaseSelectableFirstStatusCount();
 		}
 	}
@@ -39,14 +39,14 @@ public class CharacterStatusController : MonoComponentBase
 		if (!character.IsSelectableFirstStatus)
 			return;
 
-        CharacterStatusData characterStatusData = Entity.GetComponent<CharacterStatusData>();
+        CharacterStatusData characterStatusData = Entity.GetEntityComponent<CharacterStatusData>();
         characterStatusData.IncreaseFirstStatus(element);
         characterStatusData.DecreaseSelectableFirstStatusCount();
 	}
 
 	public void OnApplyFirstStatusAbility(FirstStatusElement element)
 	{
-        CharacterStatusData characterStatusData = Entity.GetComponent<CharacterStatusData>();
+        CharacterStatusData characterStatusData = Entity.GetEntityComponent<CharacterStatusData>();
         characterStatusData.IncreaseFirstStatus(element);
 	}
 }

@@ -18,8 +18,6 @@ namespace Entity
 		private CharacterStatusData characterStatusData = null;
 		private CharacterAbilityData characterAbilityData = null;
 
-		private CharacterView characterView = null;
-
         private BehaviorController behaviorController = null;
         private StateController stateController = null;
         private SkillController skillController = null;
@@ -49,7 +47,7 @@ namespace Entity
             characterStatusData = AttachComponent(gameObject.AddComponent<CharacterStatusData>());
             characterAbilityData = AttachComponent(gameObject.AddComponent<CharacterAbilityData>());
 
-            characterView = AttachComponent(gameObject.AddComponent<CharacterView>());
+            entityBasicView = AttachComponent(gameObject.AddComponent<CharacterView>());
 
             behaviorController = AttachComponent(gameObject.AddComponent<BehaviorController>());
             stateController = AttachComponent(gameObject.AddComponent<StateController>());
@@ -79,8 +77,6 @@ namespace Entity
 		public bool IsAlive { get { return characterStatusData.CurrentHP > 0; } }
 
 		public bool IsSelectableFirstStatus { get { return characterStatusData.SelectableFirstStatusCount > 0; } }
-
-		public Transform ModelTransform { get { return characterView.ModelTransform; } }
 
 		public override float MovementSpeed { get { return characterStatusData.MovementSpeed; } }
 

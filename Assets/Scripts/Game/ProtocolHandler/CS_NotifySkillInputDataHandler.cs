@@ -13,7 +13,7 @@ public class CS_NotifySkillInputDataHandler
         PhotonPlayer photonPlayer = PhotonNetwork.playerList.ToList().Find(x => x.ID == notifySkillInputData.senderID);
 
         IEntity entity = Entities.Get(LOP.Game.Current.PlayerUserIDEntityID[photonPlayer.UserId]);
-        foreach (Skill.SkillBase skill in entity.GetComponents<Skill.SkillBase>())
+        foreach (Skill.SkillBase skill in entity.GetEntityComponents<Skill.SkillBase>())
         {
             if (skill.GetSkillMasterID() == notifySkillInputData.m_SkillInputData.m_nSkillID)
             {

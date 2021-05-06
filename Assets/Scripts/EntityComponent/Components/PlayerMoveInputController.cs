@@ -38,13 +38,13 @@ public class PlayerMoveInputController : MonoComponentBase
         {
             if (CanMove())
             {
-                var behaviorController = Entity.GetComponent<BehaviorController>();
+                var behaviorController = Entity.GetEntityComponent<BehaviorController>();
                 behaviorController.Move(Entity.Position + notifyMoveInputData.m_PlayerMoveInput.inputData.ToVector3().normalized * Game.Current.TickInterval * 5 * (Entity as Character).MovementSpeed);
             }
         }
         else if (notifyMoveInputData.m_PlayerMoveInput.inputType == PlayerMoveInput.InputType.Release)
         {
-            var behaviorController = Entity.GetComponent<BehaviorController>();
+            var behaviorController = Entity.GetEntityComponent<BehaviorController>();
             behaviorController.StopBehavior(Define.MasterData.BehaviorID.MOVE);
         }
     }
