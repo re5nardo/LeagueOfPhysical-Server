@@ -46,13 +46,12 @@ namespace Behavior
             }
             else
             {
-                var force = toMove.XZ().normalized * Entity.MovementSpeed / 0.2f * DeltaTime;
-
-                Entity.ModelRigidbody.velocity += force;
+                var xz = toMove.XZ().normalized * Entity.MovementSpeed;
+                Entity.ModelRigidbody.velocity = new Vector3(xz.x, Entity.ModelRigidbody.velocity.y, xz.z);
 
                 if (Entity.ModelRigidbody.velocity.XZ().magnitude >= Entity.MovementSpeed)
                 {
-                    var xz = Entity.ModelRigidbody.velocity.XZ().normalized * Entity.MovementSpeed;
+                    xz = Entity.ModelRigidbody.velocity.XZ().normalized * Entity.MovementSpeed;
 
                     Entity.ModelRigidbody.velocity = new Vector3(xz.x, Entity.ModelRigidbody.velocity.y, xz.z);
                 }
