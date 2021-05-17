@@ -25,7 +25,6 @@ namespace Entity
 
 		protected virtual void InitComponents()
 		{
-            AttachComponent(gameObject.AddComponent<MonoEntitySynchronization>());
             AttachComponent(gameObject.AddComponent<EntityTransformSynchronization>());
         }
 

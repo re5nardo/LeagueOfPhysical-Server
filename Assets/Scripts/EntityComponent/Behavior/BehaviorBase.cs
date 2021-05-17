@@ -22,9 +22,7 @@ namespace Behavior
         private bool isPlaying = false;
 
         #region ISynchronizable
-        public ISynchronizable Parent { get; set; } = null;
         public bool Enable { get; set; } = true;
-        public bool EnableInHierarchy => Parent == null ? Enable : Parent.EnableInHierarchy && Enable;
         public bool HasCoreChange => LastSendSnap == null ? true : !LastSendSnap.EqualsCore(CurrentSnap.Set(this));
         public bool IsDirty => isDirty || LastSendSnap == null ? true : !LastSendSnap.EqualsValue(CurrentSnap.Set(this));
         #endregion
@@ -33,7 +31,7 @@ namespace Behavior
         protected virtual int WaitingInterval => 5;
         protected virtual ISnap LastSendSnap { get; set; } = new BehaviorSnap();
         protected virtual ISnap CurrentSnap { get; set; } = new BehaviorSnap();
-        private bool IsValidToSend => EnableInHierarchy;
+        private bool IsValidToSend => Enable;
 
         protected float DeltaTime
         {
@@ -82,20 +80,23 @@ namespace Behavior
 
             Entity = entity as MonoEntityBase;
 
-            MonoEntitySynchronization monoEntitySynchronization = Entity.GetComponent<MonoEntitySynchronization>();
-            monoEntitySynchronization?.Add(this);
+            TickPubSubService.AddSubscriber("TickEnd", OnTickEnd);
         }
 
         public override void OnDetached()
         {
             base.OnDetached();
 
-            MonoEntitySynchronization monoEntitySynchronization = Entity.GetComponent<MonoEntitySynchronization>();
-            monoEntitySynchronization?.Remove(this);
+            TickPubSubService.RemoveSubscriber("TickEnd", OnTickEnd);
 
             Entity = null;
         }
         #endregion
+
+        private void OnTickEnd(int tick)
+        {
+            UpdateSynchronizable();
+        }
 
         public virtual void SetData(int nBehaviorMasterID, params object[] param)
         {

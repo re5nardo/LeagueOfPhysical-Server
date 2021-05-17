@@ -7,9 +7,7 @@ using System;
 public class EntityTransformSynchronization : MonoComponentBase, ISynchronizable
 {
     #region ISynchronizable
-    public ISynchronizable Parent { get; set; } = null;
     public bool Enable { get; set; } = true;
-    public bool EnableInHierarchy => Parent == null ? Enable : Parent.EnableInHierarchy && Enable;
     public bool HasCoreChange => LastSendSnap == null ? true : !LastSendSnap.EqualsCore(CurrentSnap.Set(this));
     public bool IsDirty => isDirty || LastSendSnap == null ? true : !LastSendSnap.EqualsValue(CurrentSnap.Set(this));
     #endregion
@@ -18,22 +16,25 @@ public class EntityTransformSynchronization : MonoComponentBase, ISynchronizable
     private int WaitingInterval => (int)(1 / Game.Current.TickInterval);
     private EntityTransformSnap LastSendSnap { get; set; } = new EntityTransformSnap();
     private EntityTransformSnap CurrentSnap { get; set; } = new EntityTransformSnap();
-    private bool IsValidToSend => EnableInHierarchy;
+    private bool IsValidToSend => Enable;
 
     public override void OnAttached(IEntity entity)
     {
         base.OnAttached(entity);
-        
-        MonoEntitySynchronization monoEntitySynchronization = Entity.GetEntityComponent<MonoEntitySynchronization>();
-        monoEntitySynchronization?.Add(this);
+
+        TickPubSubService.AddSubscriber("TickEnd", OnTickEnd);
     }
 
     public override void OnDetached()
     {
         base.OnDetached();
 
-        MonoEntitySynchronization monoEntitySynchronization = Entity.GetEntityComponent<MonoEntitySynchronization>();
-        monoEntitySynchronization?.Remove(this);
+        TickPubSubService.RemoveSubscriber("TickEnd", OnTickEnd);
+    }
+
+    private void OnTickEnd(int tick)
+    {
+        UpdateSynchronizable();
     }
 
     #region ISynchronizable
