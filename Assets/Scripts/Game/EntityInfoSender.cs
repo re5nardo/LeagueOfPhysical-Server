@@ -35,8 +35,12 @@ public class EntityInfoSender : MonoSingleton<EntityInfoSender>
 
     public void SendInfo()
     {
-        SendPlayerSkillInfo();
-        SendSyncTick();
+        //SendPlayerSkillInfo();
+
+        if (Game.Current.CurrentTick % 30 == 0)  //  1초마다 보내도록
+        {
+            SendSyncTick();
+        }
     }
 
     private void SendPlayerSkillInfo()
