@@ -7,7 +7,8 @@ using System;
 public class CustomSerializationCode
 {
 	public const byte SC_EnterRoom = 3;
-	public const byte SC_EntitySkillInfo = 5;
+    public const byte SC_ProcessMoveInputData = 4;
+    public const byte SC_EntitySkillInfo = 5;
 	public const byte SC_EmotionExpression = 7;
 	public const byte SC_EntityAppear = 14;
 	public const byte SC_EntityDisAppear = 15;
@@ -36,7 +37,8 @@ public class CustomSerializationCode
 public class PhotonEvent
 {
 	public const byte SC_EnterRoom = 0;
-	public const byte SC_EntitySkillInfo = 2;
+    public const byte SC_ProcessMoveInputData = 1;
+    public const byte SC_EntitySkillInfo = 2;
 	public const byte SC_EmotionExpression = 4;
 	public const byte SC_EntityAppear = 11;
 	public const byte SC_EntityDisAppear = 12;
@@ -300,6 +302,19 @@ public class SC_EnterRoom : IPhotonEventMessage
 	{
 		return PhotonEvent.SC_EnterRoom;
 	}
+}
+
+[Serializable]
+public class SC_ProcessMoveInputData : IPhotonEventMessage
+{
+    public int senderID { get; set; }
+    public int tick;
+    public long sequence;
+
+    public byte GetEventID()
+    {
+        return PhotonEvent.SC_ProcessMoveInputData;
+    }
 }
 
 [Serializable]
