@@ -47,6 +47,14 @@ public class PlayerMoveInputController : MonoComponentBase
             var behaviorController = Entity.GetEntityComponent<BehaviorController>();
             behaviorController.StopBehavior(Define.MasterData.BehaviorID.MOVE);
         }
+
+        SC_ProcessMoveInputData processMoveInputData = new SC_ProcessMoveInputData();
+        processMoveInputData.tick = Game.Current.CurrentTick;
+        processMoveInputData.sequence = notifyMoveInputData.m_PlayerMoveInput.sequence;
+
+        RoomNetwork.Instance.Send(processMoveInputData, notifyMoveInputData.senderID);
+
+        Entity.GetEntityComponent<EntityTransformSynchronization>()?.SetDirty();
     }
 
     private bool CanMove()  //  BehaviorController::Move() 에서 체크해야 하나...? 
