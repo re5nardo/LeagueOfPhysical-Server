@@ -42,6 +42,8 @@ public class EntityTransformSnap : ISnap
 
         if (other == null) return false;
         if (other.entityId != entityId) return false;
+        if (other.position != position) return false;
+        if (other.rotation != rotation) return false;
         if (other.velocity != velocity) return false;
         if (other.angularVelocity != angularVelocity) return false;
         if (other.destPosition != destPosition) return false;

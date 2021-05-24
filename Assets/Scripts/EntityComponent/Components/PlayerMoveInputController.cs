@@ -53,8 +53,6 @@ public class PlayerMoveInputController : MonoComponentBase
         processMoveInputData.sequence = notifyMoveInputData.m_PlayerMoveInput.sequence;
 
         RoomNetwork.Instance.Send(processMoveInputData, notifyMoveInputData.senderID);
-
-        Entity.GetEntityComponent<EntityTransformSynchronization>()?.SetDirty();
     }
 
     private bool CanMove()  //  BehaviorController::Move() 에서 체크해야 하나...? 
