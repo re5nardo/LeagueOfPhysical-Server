@@ -17,7 +17,7 @@ namespace LOP
         private static void Initialize()
         {
             //  Target FrameRate
-            UnityEngine.Application.targetFrameRate = 30;
+            UnityEngine.Application.targetFrameRate = 60;
 
             //  BehaviorDesigner.Runtime.BehaviorManager
             var behaviorManager = new GameObject("BehaviorManager").AddComponent<BehaviorDesigner.Runtime.BehaviorManager>();
