@@ -63,17 +63,17 @@ public class EntityBasicView : MonoViewComponentBase
 
     private void OnPositionChanged(ICommand command)
     {
-        if (m_RigidbodyModel != null)
+        if (m_trModel != null)
         {
-            m_RigidbodyModel.position = Entity.Position;
+            m_trModel.position = Entity.Position;
         }
     }
 
     private void OnRotationChanged(ICommand command)
     {
-        if (m_RigidbodyModel != null)
+        if (m_trModel != null)
         {
-            m_RigidbodyModel.rotation = Quaternion.Euler(Entity.Rotation);
+            m_trModel.rotation = Quaternion.Euler(Entity.Rotation);
         }
     }
 

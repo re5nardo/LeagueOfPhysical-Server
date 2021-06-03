@@ -23,6 +23,11 @@ namespace Entity
 			InitComponents();
 		}
 
+        protected virtual void OnDestroy()
+        {
+            DetachAllComponents();
+        }
+
 		protected virtual void InitComponents()
 		{
             AttachComponent(gameObject.AddComponent<EntityTransformSynchronization>());
@@ -146,6 +151,13 @@ namespace Entity
             component.OnDetached();
 
             return component;
+        }
+
+        public void DetachAllComponents()
+        {
+            var iteration = new List<IComponent>(components);
+
+            iteration.ForEach(component => DetachComponent(component));
         }
 
         public T GetEntityComponent<T>() where T : IComponent
