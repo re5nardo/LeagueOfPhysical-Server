@@ -25,6 +25,7 @@ public class PhotonTypeRegister
         PhotonPeer.RegisterType(typeof(CS_NotifyMoveInputData), CustomSerializationCode.CS_NotifyMoveInputData, Util.CommonDataCompressionSerialize, Util.CommonDataCompressionDeserialize);
         PhotonPeer.RegisterType(typeof(CS_NotifyPlayerLookAtPosition), CustomSerializationCode.CS_NotifyPlayerLookAtPosition, Util.CommonDataCompressionSerialize, Util.CommonDataCompressionDeserialize);
         PhotonPeer.RegisterType(typeof(CS_NotifySkillInputData), CustomSerializationCode.CS_NotifySkillInputData, Util.CommonDataCompressionSerialize, Util.CommonDataCompressionDeserialize);
+        PhotonPeer.RegisterType(typeof(CS_NotifyJumpInputData), CustomSerializationCode.CS_NotifyJumpInputData, Util.CommonDataCompressionSerialize, Util.CommonDataCompressionDeserialize);
         PhotonPeer.RegisterType(typeof(CS_RequestEmotionExpression), CustomSerializationCode.CS_RequestEmotionExpression, Util.CommonDataCompressionSerialize, Util.CommonDataCompressionDeserialize);
         PhotonPeer.RegisterType(typeof(CS_Ping), CustomSerializationCode.CS_Ping, Util.CommonDataCompressionSerialize, Util.CommonDataCompressionDeserialize);
         PhotonPeer.RegisterType(typeof(CS_FirstStatusSelection), CustomSerializationCode.CS_FirstStatusSelection, Util.CommonDataCompressionSerialize, Util.CommonDataCompressionDeserialize);

@@ -15,7 +15,7 @@ public class CS_NotifySkillInputDataHandler
         IEntity entity = Entities.Get(LOP.Game.Current.PlayerUserIDEntityID[photonPlayer.UserId]);
         foreach (Skill.SkillBase skill in entity.GetEntityComponents<Skill.SkillBase>())
         {
-            if (skill.GetSkillMasterID() == notifySkillInputData.m_SkillInputData.m_nSkillID)
+            if (skill.GetSkillMasterID() == notifySkillInputData.m_SkillInputData.skillID)
             {
                 skill.OnReceiveSkillInputData(notifySkillInputData.m_SkillInputData);
                 return;

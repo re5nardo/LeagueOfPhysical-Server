@@ -88,7 +88,7 @@ namespace Behavior
             {
                 SkillInputData data = param[0] as SkillInputData;
 
-                if (data.m_InputData.ToVector3() == Vector3.zero)
+                if (data.inputData.ToVector3() == Vector3.zero)
                 {
                     //  Auto aiming
                     List<IEntity> targets = Entities.Get(Entity.Position, 20, EntityRole.All, new HashSet<int> { Entity.EntityID });
@@ -127,7 +127,7 @@ namespace Behavior
                 }
                 else
                 {
-                    Entity.Rotation = Quaternion.LookRotation(data.m_InputData).eulerAngles;
+                    Entity.Rotation = Quaternion.LookRotation(data.inputData).eulerAngles;
                 }
             }
         }
