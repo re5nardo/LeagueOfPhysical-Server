@@ -10,7 +10,6 @@ public class CS_NotifyMoveInputDataHandler
         CS_NotifyMoveInputData notifyMoveInputData = msg as CS_NotifyMoveInputData;
 
         IEntity entity = Entities.Get(notifyMoveInputData.m_PlayerMoveInput.entityID);
-        entity.GetEntityComponent<PlayerMoveInputController>()?.AddPlayerMoveInputController(notifyMoveInputData);
+        entity?.GetEntityComponent<PlayerInputController>()?.AddMoveInputData(notifyMoveInputData);
     }
 }
-

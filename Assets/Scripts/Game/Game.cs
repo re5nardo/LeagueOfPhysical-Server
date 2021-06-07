@@ -44,6 +44,7 @@ namespace LOP
 
             roomProtocolDispatcher[typeof(CS_NotifyPlayerLookAtPosition)]   = CS_NotifyPlayerLookAtPositionHandler.Handle;
             roomProtocolDispatcher[typeof(CS_NotifySkillInputData)]         = CS_NotifySkillInputDataHandler.Handle;
+            roomProtocolDispatcher[typeof(CS_NotifyJumpInputData)]          = CS_NotifyJumpInputDataHandler.Handle;
             roomProtocolDispatcher[typeof(CS_RequestEmotionExpression)]     = CS_RequestEmotionExpressionHandler.Handle;
             roomProtocolDispatcher[typeof(CS_FirstStatusSelection)]         = CS_FirstStatusSelectionHandler.Handle;
             roomProtocolDispatcher[typeof(CS_AbilitySelection)]             = CS_AbilitySelectionHandler.Handle;

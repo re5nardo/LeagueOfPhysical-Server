@@ -73,7 +73,7 @@ namespace LOP
                     character.AttachComponent(entityInventory);
 
                     character.AttachComponent(character.gameObject.AddComponent<NearEntityController>());
-                    character.AttachComponent(character.gameObject.AddComponent<PlayerMoveInputController>());
+                    character.AttachComponent(character.gameObject.AddComponent<PlayerInputController>());
 
                     character.AttachComponent(character.gameObject.AddComponent<PlayerView>());
 
