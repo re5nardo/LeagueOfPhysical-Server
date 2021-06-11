@@ -47,6 +47,7 @@ public class PlayerInputController : MonoComponentBase
 
             SC_ProcessInputData processInputData = new SC_ProcessInputData();
             processInputData.tick = Game.Current.CurrentTick;
+            processInputData.type = "jump";
             processInputData.sequence = notifyJumpInputData.jumpInputData.sequence;
 
             RoomNetwork.Instance.Send(processInputData, notifyJumpInputData.senderID);
@@ -72,6 +73,7 @@ public class PlayerInputController : MonoComponentBase
 
             SC_ProcessInputData processInputData = new SC_ProcessInputData();
             processInputData.tick = Game.Current.CurrentTick;
+            processInputData.type = "move";
             processInputData.sequence = notifyMoveInputData.m_PlayerMoveInput.sequence;
 
             RoomNetwork.Instance.Send(processInputData, notifyMoveInputData.senderID);
