@@ -40,9 +40,9 @@ public class EntityManager : GameFramework.EntityManager
 
     private void Awake()
     {
-        m_PositionGrid = new Grid();
+        positionGrid = new Grid();
 
-        m_PositionGrid.SetGrid(10);
+        positionGrid.SetGrid(10);
 
         GamePubSubService.AddSubscriber(GameMessageKey.EntityMove, OnEntityMove);
 
@@ -60,7 +60,7 @@ public class EntityManager : GameFramework.EntityManager
     {
         base.Clear();
 
-        m_PositionGrid = null;
+        positionGrid = null;
 
         GamePubSubService.RemoveSubscriber(GameMessageKey.EntityMove, OnEntityMove);
     }
@@ -70,7 +70,7 @@ public class EntityManager : GameFramework.EntityManager
     {
         int nEntityID = (int)param[0];
 
-        m_PositionGrid.Move(nEntityID);
+        positionGrid.Move(nEntityID);
     }
     #endregion
 
