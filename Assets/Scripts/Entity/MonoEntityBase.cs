@@ -30,7 +30,6 @@ namespace Entity
 
 		protected virtual void InitComponents()
 		{
-            AttachComponent(gameObject.AddComponent<EntityTransformSynchronization>());
         }
 
 		public virtual void Initialize(params object[] param)
@@ -60,7 +59,6 @@ namespace Entity
 
         #region Interface For Convenience
         public abstract float MovementSpeed { get; }
-        public abstract void Move(Vector3 vec3Destination);
         public Transform ModelTransform => entityBasicView.ModelTransform;
         public Rigidbody ModelRigidbody => entityBasicView.ModelRigidbody;
 

@@ -13,7 +13,9 @@ namespace Entity
 		}
 		#endregion
 
-		private ProjectileBasicData projectileBasicData = null;
+        private EntityTransformSynchronization entityTransformSynchronization = null;
+
+        private ProjectileBasicData projectileBasicData = null;
 
 		private BehaviorController behaviorController = null;
         private StateController stateController = null;
@@ -38,6 +40,8 @@ namespace Entity
 		{
 			base.InitComponents();
 
+            entityTransformSynchronization = AttachComponent(gameObject.AddComponent<EntityTransformSynchronization>());
+
             projectileBasicData = AttachComponent(gameObject.AddComponent<ProjectileBasicData>());
 
             entityBasicView = AttachComponent(gameObject.AddComponent<ProjectileView>());
@@ -60,7 +64,7 @@ namespace Entity
 		#region Interface For Convenience
 		public override float MovementSpeed { get { return projectileBasicData.MovementSpeed; } }
 	
-		public override void Move(Vector3 vec3Destination)
+		public void Move(Vector3 vec3Destination)
 		{
             behaviorController.Move(vec3Destination);
 		}

@@ -14,7 +14,9 @@ namespace Entity
 		}
 		#endregion
 
-		private CharacterBasicData characterBasicData = null;
+        private EntityTransformSynchronization entityTransformSynchronization = null;
+
+        private CharacterBasicData characterBasicData = null;
 		private CharacterStatusData characterStatusData = null;
 		private CharacterAbilityData characterAbilityData = null;
 
@@ -42,6 +44,8 @@ namespace Entity
 		protected override void InitComponents()
 		{
 			base.InitComponents();
+
+            entityTransformSynchronization = AttachComponent(gameObject.AddComponent<EntityTransformSynchronization>());
 
             characterBasicData = AttachComponent(gameObject.AddComponent<CharacterBasicData>());
             characterStatusData = AttachComponent(gameObject.AddComponent<CharacterStatusData>());
@@ -83,11 +87,6 @@ namespace Entity
 		public FirstStatus FirstStatus { get { return characterStatusData.FirstStatus; } }
 
 		public SecondStatus SecondStatus { get { return characterStatusData.SecondStatus; } }
-
-		public override void Move(Vector3 vec3Destination)
-		{
-			behaviorController.Move(vec3Destination);
-		}
 
 		public override EntitySnapInfo GetEntitySnapInfo()
 		{

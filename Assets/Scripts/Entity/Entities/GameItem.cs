@@ -13,7 +13,9 @@ namespace Entity
 		}
 		#endregion
 
-		private GameItemBasicData gameItemBasicData = null;
+        private EntityTransformSynchronization entityTransformSynchronization = null;
+
+        private GameItemBasicData gameItemBasicData = null;
 
         private BehaviorController behaviorController = null;
         private StateController stateController = null;
@@ -37,6 +39,8 @@ namespace Entity
 		protected override void InitComponents()
 		{
 			base.InitComponents();
+
+            entityTransformSynchronization = AttachComponent(gameObject.AddComponent<EntityTransformSynchronization>());
 
             gameItemBasicData = AttachComponent(gameObject.AddComponent<GameItemBasicData>());
 
@@ -62,11 +66,6 @@ namespace Entity
 	
 		public override float MovementSpeed { get { return gameItemBasicData.MovementSpeed; } }
 	
-		public override void Move(Vector3 vec3Destination)
-		{
-            behaviorController.Move(vec3Destination);
-		}
-
 		public override EntitySnapInfo GetEntitySnapInfo()
 		{
 			GameItemSnapInfo entitySnapInfo = new GameItemSnapInfo();

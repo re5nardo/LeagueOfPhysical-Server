@@ -260,7 +260,7 @@ public class AINecromancerControllerAsMonster : AIControllerBase
             return false;
         }
 
-		Entity.Move(position);
+		//Entity.Move(position);
 
         return true;
     }
