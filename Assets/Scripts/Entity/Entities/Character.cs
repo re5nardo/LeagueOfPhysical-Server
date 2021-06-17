@@ -62,7 +62,9 @@ namespace Entity
 
 		public override void Initialize(params object[] param)
 		{
-			EntityID = EntityManager.Instance.GenerateEntityID();
+            base.Initialize(param);
+
+            EntityID = EntityManager.Instance.GenerateEntityID();
 			EntityType = EntityType.Character;
             EntityRole = (EntityRole)param[5];
 
@@ -100,7 +102,7 @@ namespace Entity
 			entitySnapInfo.m_Rotation = Rotation;
 			entitySnapInfo.m_Velocity = Velocity;
 			entitySnapInfo.m_AngularVelocity = AngularVelocity;
-			entitySnapInfo.m_strModel = characterBasicData.ModelName;
+			entitySnapInfo.m_strModel = characterBasicData.ModelId;
 			entitySnapInfo.m_FirstStatus = characterStatusData.FirstStatus;
 			entitySnapInfo.m_SecondStatus = characterStatusData.SecondStatus;
 			entitySnapInfo.m_nSelectableFirstStatusCount = characterStatusData.SelectableFirstStatusCount;

@@ -325,7 +325,10 @@ public class NearEntityController : MonoComponentBase
 		if (LOP.Application.IsApplicationQuitting)
 			return;
 
-		SC_EntityAppear entityAppear = new SC_EntityAppear();
+        //  Don't send Local Entities
+        entityIDs.RemoveAll(entityID => Entities.Get<MonoEntityBase>(entityID).IsLocalEntity);
+
+        SC_EntityAppear entityAppear = new SC_EntityAppear();
 		entityAppear.m_listEntitySnapInfo = new List<EntitySnapInfo>(entityIDs.Count);
 		foreach (int entityID in entityIDs)
 		{
@@ -344,7 +347,10 @@ public class NearEntityController : MonoComponentBase
 		if (LOP.Application.IsApplicationQuitting)
 			return;
 
-		SC_EntityDisAppear entityDisAppear = new SC_EntityDisAppear();
+        //  Don't send Local Entities
+        entityIDs.RemoveAll(entityID => Entities.Get<MonoEntityBase>(entityID).IsLocalEntity);
+
+        SC_EntityDisAppear entityDisAppear = new SC_EntityDisAppear();
 		entityDisAppear.m_listEntityID = entityIDs;
 
 		int actorID = PhotonHelper.GetActorID(Entity.EntityID);

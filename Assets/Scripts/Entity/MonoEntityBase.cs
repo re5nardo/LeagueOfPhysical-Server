@@ -13,6 +13,7 @@ namespace Entity
         public EntityRole EntityRole { get; protected set; } = EntityRole.None;
 
         public bool IsValid => EntityManager.Instance.IsRegistered(EntityID);
+        public bool IsLocalEntity => EntityID < 0;
 
         private List<IComponent> components = new List<IComponent>();
 

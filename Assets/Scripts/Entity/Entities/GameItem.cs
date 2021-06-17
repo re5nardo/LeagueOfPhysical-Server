@@ -53,7 +53,9 @@ namespace Entity
 
 		public override void Initialize(params object[] param)
 		{
-			EntityID = EntityManager.Instance.GenerateEntityID();
+            base.Initialize(param);
+
+            EntityID = EntityManager.Instance.GenerateEntityID();
 			EntityType = EntityType.GameItem;
             EntityRole = (EntityRole)param[2];
 
@@ -78,7 +80,7 @@ namespace Entity
 			entitySnapInfo.m_Rotation = Rotation;
 			entitySnapInfo.m_Velocity = Velocity;
 			entitySnapInfo.m_AngularVelocity = AngularVelocity;
-			entitySnapInfo.m_strModel = gameItemBasicData.ModelName;
+			entitySnapInfo.m_strModel = gameItemBasicData.ModelId;
 			entitySnapInfo.m_nHP = gameItemBasicData.CurrentHP;
 			entitySnapInfo.m_nMaximumHP = gameItemBasicData.MaximumHP;
 

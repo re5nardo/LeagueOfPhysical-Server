@@ -132,30 +132,35 @@ public class EntityBasicView : MonoViewComponentBase
 
 	private void SetModel(string strModel)
 	{
-		m_goModel = ResourcePool.Instance.GetResource(strModel);
-		m_goModel.transform.parent = null;
-		m_trModel = m_goModel.transform;
+        SetModel(ResourcePool.Instance.GetResource(strModel));
+    }
 
-		m_goModel.AddComponent<EntityIDTag>().SetEntityID(Entity.EntityID);
+    public void SetModel(GameObject model)
+    {
+        m_goModel = model;
+        m_goModel.transform.parent = null;
+        m_trModel = m_goModel.transform;
+
+        m_goModel.AddComponent<EntityIDTag>().SetEntityID(Entity.EntityID);
 
         m_RigidbodyModel = m_goModel.GetComponent<Rigidbody>();
         m_AnimatorModel = m_goModel.GetComponent<Animator>();
 
-		m_AnimationEventListener = m_goModel.GetComponent<AnimationEventListener>();
-		if (m_AnimationEventListener != null)
-		{
-			m_AnimationEventListener.onAnimationEnd += OnAnimationEnd;
-		}
+        m_AnimationEventListener = m_goModel.GetComponent<AnimationEventListener>();
+        if (m_AnimationEventListener != null)
+        {
+            m_AnimationEventListener.onAnimationEnd += OnAnimationEnd;
+        }
 
-		m_goModel.GetComponentsInChildren(true, m_listModelCollisionReporter);
-		foreach (CollisionReporter reporter in m_listModelCollisionReporter)
-		{
-			reporter.onCollisionEnter += OnModelCollisionEnterHandler;
-			reporter.onTriggerEnter += OnModelTriggerEnterHandler;
-			reporter.onTriggerStay += OnModelTriggerStayHandler;
-		}
-		m_goModel.GetComponentsInChildren(true, m_listModelRenderer);
-	}
+        m_goModel.GetComponentsInChildren(true, m_listModelCollisionReporter);
+        foreach (CollisionReporter reporter in m_listModelCollisionReporter)
+        {
+            reporter.onCollisionEnter += OnModelCollisionEnterHandler;
+            reporter.onTriggerEnter += OnModelTriggerEnterHandler;
+            reporter.onTriggerStay += OnModelTriggerStayHandler;
+        }
+        m_goModel.GetComponentsInChildren(true, m_listModelRenderer);
+    }
 
 	private void ClearModel()
 	{

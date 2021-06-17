@@ -53,6 +53,8 @@ namespace Entity
 
 		public override void Initialize(params object[] param)
 		{
+            base.Initialize(param);
+
 			EntityID = EntityManager.Instance.GenerateEntityID();
 			EntityType = EntityType.Projectile;
             EntityRole = (EntityRole)param[4];
@@ -81,7 +83,7 @@ namespace Entity
 			entitySnapInfo.m_Rotation = Rotation;
 			entitySnapInfo.m_Velocity = Velocity;
 			entitySnapInfo.m_AngularVelocity = AngularVelocity;
-			entitySnapInfo.m_strModel = projectileBasicData.ModelName;
+			entitySnapInfo.m_strModel = projectileBasicData.ModelId;
 			entitySnapInfo.m_fMovementSpeed = projectileBasicData.MovementSpeed;
 
 			return entitySnapInfo;
