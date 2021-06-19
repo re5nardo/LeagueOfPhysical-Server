@@ -31,3 +31,5 @@ int,string,string,List<string>,float,List<int>
 28,MalphiteActiveSkill1,MeleeAttack,AttackTime:0.15,0.5,
 29,MalphiteActiveSkill2,MeleeAttack,AttackTime:0.15,0.5,
 30,MalphiteUltimateSkill,MeleeAttack,AttackTime:0.15,0.5,
+10000,ContinuousPatrol,ContinuousPatrol,,-1,
+10001,ContinuousRotation,ContinuousRotation,,-1,

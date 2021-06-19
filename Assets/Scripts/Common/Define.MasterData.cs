@@ -28,6 +28,9 @@ namespace Define
             public const int MOVE = 1;
             public const int ROTATION = 2;
             public const int DIE = 3;
+
+            public const int CONTINUOUS_PATROL = 10000;
+            public const int CONTINUOUS_ROTATION = 10001;
         }
 
         public class StateID

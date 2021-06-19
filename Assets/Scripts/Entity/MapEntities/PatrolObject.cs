@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using GameFramework;
+using Behavior;
 
 namespace Entity
 {
@@ -13,26 +13,16 @@ namespace Entity
 
         public override float MovementSpeed => speed;
 
-        public Vector3 GetPositionByTick(int tick)
+        public override void Initialize(params object[] param)
         {
-            var halfMagnitude = (halfwayPoint - startPoint).magnitude;
-            var distance = MovementSpeed * Game.Current.GameTime;
+            base.Initialize(param);
+            
+            ContinuousPatrol continuousPatrol = BehaviorFactory.Instance.CreateBehavior(gameObject, Define.MasterData.BehaviorID.CONTINUOUS_PATROL) as ContinuousPatrol;
+            AttachComponent(continuousPatrol);
+            continuousPatrol.SetData(Define.MasterData.BehaviorID.CONTINUOUS_PATROL, startPoint, halfwayPoint);
+            continuousPatrol.onBehaviorEnd += BehaviorHelper.BehaviorDestroyer;
 
-            if ((int)(distance / halfMagnitude) % 2 == 0)
-            {
-                return Vector3.Lerp(startPoint, halfwayPoint, (distance % halfMagnitude) / halfMagnitude);
-            }
-            else
-            {
-                return Vector3.Lerp(halfwayPoint, startPoint, (distance % halfMagnitude) / halfMagnitude);
-            }
-        }
-       
-        public override void OnTick(int tick)
-        {
-            base.OnTick(tick);
-
-            Position = GetPositionByTick(tick);
+            continuousPatrol.StartBehavior();
         }
     }
 }

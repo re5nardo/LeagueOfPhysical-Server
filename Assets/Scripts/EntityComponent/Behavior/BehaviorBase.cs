@@ -22,7 +22,7 @@ namespace Behavior
         private bool isPlaying = false;
 
         #region ISynchronizable
-        public bool Enable { get; set; } = true;
+        public virtual bool Enable { get; set; } = true;
         public bool HasCoreChange => LastSendSnap == null ? true : !LastSendSnap.EqualsCore(CurrentSnap.Set(this));
         public bool IsDirty => isDirty || LastSendSnap == null ? true : !LastSendSnap.EqualsValue(CurrentSnap.Set(this));
         #endregion
