@@ -8,6 +8,9 @@ public class EntityInfoSender : MonoSingleton<EntityInfoSender>
 {
     private Dictionary<string, Vector3> m_dicPlayerUserIDLookAtPosition = new Dictionary<string, Vector3>();                    //  key : Player UserID, vlue : LookAtPosition
 
+    private const float SEND_SYNC_TICK_INTERVAL = 0.5f;
+    private float sendSyncTickTime = 0;
+
 #region MonoBehaviour
     protected override void Awake()
     {
@@ -37,9 +40,12 @@ public class EntityInfoSender : MonoSingleton<EntityInfoSender>
     {
         //SendPlayerSkillInfo();
 
-        if (Game.Current.CurrentTick % 30 == 0)  //  1초마다 보내도록
+        sendSyncTickTime += Game.Current.TickInterval;
+        if (sendSyncTickTime >= SEND_SYNC_TICK_INTERVAL)
         {
             SendSyncTick();
+
+            sendSyncTickTime -= SEND_SYNC_TICK_INTERVAL;
         }
     }
 
