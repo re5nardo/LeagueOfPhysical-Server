@@ -65,6 +65,20 @@ public class EntityManager : GameFramework.EntityManager
         GamePubSubService.RemoveSubscriber(GameMessageKey.EntityMove, OnEntityMove);
     }
 
+    public override void RegisterEntity(IEntity entity)
+    {
+        base.RegisterEntity(entity);
+
+        GamePubSubService.Publish(GameMessageKey.EntityRegister, new object[] { entity.EntityID });
+    }
+
+    public override void UnregisterEntity(int nEntityID)
+    {
+        base.UnregisterEntity(nEntityID);
+
+        GamePubSubService.Publish(GameMessageKey.EntityUnregister, new object[] { nEntityID });
+    }
+
     #region Message Handler
     private void OnEntityMove(object[] param)
     {

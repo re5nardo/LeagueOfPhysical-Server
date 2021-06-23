@@ -7,6 +7,8 @@ public enum GameMessageKey
 	EntityAddedToGrid = 3,
 	EntityRemovedFromGrid = 4,
 	LevelUp = 5,
+    EntityRegister = 6,
+    EntityUnregister = 7,
 }
 
 public enum RoomMessageKey
