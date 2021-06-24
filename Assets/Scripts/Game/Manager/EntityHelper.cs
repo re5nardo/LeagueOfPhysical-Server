@@ -54,6 +54,21 @@ public class Entities
         return EntityManager.Instance.GetAllEntities<T>();
     }
 
+    public static List<T> GetAll<T>(EntityRole role) where T : MonoEntityBase
+    {
+        List<T> targets = new List<T>();
+
+        All?.ForEach(entity =>
+        {
+            if (entity is T target && target.EntityRole == role)
+            {
+                targets.Add(target);
+            }
+        });
+
+        return targets;
+    }
+
     public static HashSet<int> AllIDs => EntityManager.Instance.GetAllEntityIDs();
     #endregion
 }

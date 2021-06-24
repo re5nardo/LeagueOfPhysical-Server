@@ -8,7 +8,9 @@ namespace LOP
     {
         private GameStateMachine gameStateMachine = null;
 
-        public SubGameData currentSubGame = null;
+        public string subGameId;
+        public string mapName;
+        public SubGameData SubGameData => SubGameData.Get(subGameId);
 
         public bool IsGameEnd => gameStateMachine.CurrentState is GameEndState;
 
@@ -23,6 +25,11 @@ namespace LOP
             {
                 Destroy(gameStateMachine.gameObject);
             }
+        }
+
+        public void StartGame()
+        {
+            gameStateMachine.StartStateMachine();
         }
     }
 }

@@ -6,9 +6,4 @@ using GameFramework.FSM;
 public class GameStateMachine : MonoStateMachineBase
 {
     public override IState InitState => gameObject.GetOrAddComponent<GamePrepareState>();
-
-    private void Awake()
-    {
-        StartStateMachine();
-    }
 }

@@ -19,3 +19,5 @@ MonoBehaviour:
   minPlayerCount: 2
   maxPlayerCount: 8
   availableMatchType: 0000000001000000
+  availableMapNames:
+  - RiftOfSummoner

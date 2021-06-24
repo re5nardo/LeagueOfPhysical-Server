@@ -80,6 +80,7 @@ namespace LOP
 
         protected override void OnBeforeRun()
         {
+            GameManager.StartGame();
         }
 
         private void OnTick(int tick)
