@@ -10,6 +10,7 @@ public class BehaviorFactory : MonoSingleton<BehaviorFactory>
     {
         typeof(Move),
         typeof(Rotation),
+        typeof(Jump),
         typeof(MeleeAttack),
         typeof(RangeAttack),
         typeof(ContinuousPatrol),

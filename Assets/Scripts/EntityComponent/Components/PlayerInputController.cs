@@ -41,8 +41,8 @@ public class PlayerInputController : MonoComponentBase
 
             if (CanJump())
             {
-                var entity = Entities.Get<MonoEntityBase>(notifyJumpInputData.jumpInputData.entityID);
-                entity.ModelRigidbody.AddForce(Vector3.up * 1000, ForceMode.Impulse);
+                var behaviorController = Entity.GetEntityComponent<BehaviorController>();
+                behaviorController.Jump();
             }
 
             SC_ProcessInputData processInputData = new SC_ProcessInputData();

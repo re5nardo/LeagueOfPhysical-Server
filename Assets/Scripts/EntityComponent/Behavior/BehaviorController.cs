@@ -40,6 +40,16 @@ public class BehaviorController : MonoComponentBase
         }
     }
 
+    public void Jump()
+    {
+        Jump jump = BehaviorFactory.Instance.CreateBehavior(gameObject, Define.MasterData.BehaviorID.JUMP) as Jump;
+        Entity.AttachComponent(jump);
+        jump.SetData(Define.MasterData.BehaviorID.JUMP);
+        jump.onBehaviorEnd += BehaviorHelper.BehaviorDestroyer;
+
+        jump.StartBehavior();
+    }
+
     public void Die()
     {
         var behaviors = Entity.GetEntityComponents<BehaviorBase>();
