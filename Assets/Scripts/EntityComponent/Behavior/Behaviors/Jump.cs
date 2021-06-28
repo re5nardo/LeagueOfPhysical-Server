@@ -1,6 +1,5 @@
 using UnityEngine;
 using GameEvent;
-using EntityCommand;
 
 namespace Behavior
 {
@@ -22,7 +21,7 @@ namespace Behavior
 
         protected override bool OnBehaviorUpdate()
         {
-            Entity.ModelRigidbody.AddForce(Vector3.up * 1000, ForceMode.Impulse);
+            Entity.ModelRigidbody.AddForce(Vector3.up * 15, ForceMode.VelocityChange);
 
             return false;
         }

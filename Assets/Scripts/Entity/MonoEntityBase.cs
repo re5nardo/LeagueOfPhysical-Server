@@ -58,12 +58,28 @@ namespace Entity
             });
         }
 
+        public bool IsGrounded
+        {
+            get
+            {
+                float ySize = 0.01f;
+                float maxDistance = 0.05f;
+                var center = Position + Up * ySize;
+                var halfExtents = new Vector3(ModelCollider.bounds.extents.x, ySize / 2, ModelCollider.bounds.extents.z);
+
+                return Physics.BoxCast(center, halfExtents, Down, Quaternion.Euler(Rotation), maxDistance);
+            }
+        }
+
         #region Interface For Convenience
         public abstract float MovementSpeed { get; }
         public Transform ModelTransform => entityBasicView.ModelTransform;
         public Rigidbody ModelRigidbody => entityBasicView.ModelRigidbody;
+        public Collider ModelCollider => entityBasicView.ModelCollider;
 
         public Vector3 Forward { get { return (Quaternion.Euler(Rotation) * Vector3.forward).normalized; } }
+        public Vector3 Up { get { return (Quaternion.Euler(Rotation) * Vector3.up).normalized; } }
+        public Vector3 Down { get { return (Quaternion.Euler(Rotation) * Vector3.down).normalized; } }
 
         public virtual EntitySnapInfo GetEntitySnapInfo()
         {

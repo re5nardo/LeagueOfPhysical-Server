@@ -8,6 +8,7 @@ public class EntityBasicView : MonoViewComponentBase
 	private GameObject m_goModel = null;
 	private Transform m_trModel = null;
     private Rigidbody m_RigidbodyModel = null;
+    private Collider m_ColliderModel = null;
     private Animator m_AnimatorModel = null;
 	private AnimationEventListener m_AnimationEventListener = null;
 	private List<CollisionReporter> m_listModelCollisionReporter = new List<CollisionReporter>();
@@ -15,6 +16,7 @@ public class EntityBasicView : MonoViewComponentBase
 
     public Transform ModelTransform => m_trModel;
     public Rigidbody ModelRigidbody => m_RigidbodyModel;
+    public Collider ModelCollider => m_ColliderModel;
 
     public override void OnAttached(IEntity entity)
     {
@@ -152,6 +154,7 @@ public class EntityBasicView : MonoViewComponentBase
         m_goModel.AddComponent<EntityIDTag>().SetEntityID(Entity.EntityID);
 
         m_RigidbodyModel = m_goModel.GetComponent<Rigidbody>();
+        m_ColliderModel = m_goModel.GetComponent<Collider>();
         m_AnimatorModel = m_goModel.GetComponent<Animator>();
 
         m_AnimationEventListener = m_goModel.GetComponent<AnimationEventListener>();
@@ -185,6 +188,7 @@ public class EntityBasicView : MonoViewComponentBase
 		m_goModel = null;
 		m_trModel = null;
         m_RigidbodyModel = null;
+        m_ColliderModel = null;
         m_AnimatorModel = null;
 
 		if (m_AnimationEventListener != null)

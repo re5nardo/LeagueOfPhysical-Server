@@ -85,8 +85,10 @@ public class PlayerInputController : MonoComponentBase
         return true;
     }
 
-    private bool CanJump()  //  BehaviorController::Move() 에서 체크해야 하나...? 
+    private bool CanJump()
     {
+        //  IsGrounded는 클라의 그것을 믿는다. 서버에서 자체적으로 IsGrounded를 체크하면 클라와 미세한 차이에 의해 결과가 다를 수 있기에..
+        //  그 대신 서버에서는 hold 여부와 같은 상태 체크를 한다. (To Do)
         return true;
     }
 }
