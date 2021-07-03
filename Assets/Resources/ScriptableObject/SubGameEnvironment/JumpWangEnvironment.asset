@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bbdbb22cd3678fc488c56619a9a5caec, type: 3}
   m_Name: JumpWangEnvironment
   m_EditorClassIdentifier: 
-  MoveSpeedFactor: 1.5
+  MoveSpeedFactor: 1
   JumpPowerFactor: 15
-  GravityFactor: 1.2
+  GravityFactor: 1.3
