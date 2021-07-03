@@ -10,6 +10,7 @@ namespace Entity
         [SerializeField] private Vector3 startPoint;
         [SerializeField] private Vector3 halfwayPoint;
         [SerializeField] float speed = 1;
+        [SerializeField] float timeOffset;
 
         public override float MovementSpeed => speed;
 
@@ -19,7 +20,7 @@ namespace Entity
             
             ContinuousPatrol continuousPatrol = BehaviorFactory.Instance.CreateBehavior(gameObject, Define.MasterData.BehaviorID.CONTINUOUS_PATROL) as ContinuousPatrol;
             AttachComponent(continuousPatrol);
-            continuousPatrol.SetData(Define.MasterData.BehaviorID.CONTINUOUS_PATROL, startPoint, halfwayPoint);
+            continuousPatrol.SetData(Define.MasterData.BehaviorID.CONTINUOUS_PATROL, startPoint, halfwayPoint, timeOffset);
             continuousPatrol.onBehaviorEnd += BehaviorHelper.BehaviorDestroyer;
 
             continuousPatrol.StartBehavior();

@@ -7,6 +7,7 @@ namespace Behavior
     {
         private Vector3 startPoint;
         private Vector3 halfwayPoint;
+        private float timeOffset;
 
         #region ISynchronizable
         public override bool Enable => false;
@@ -26,13 +27,14 @@ namespace Behavior
 
             startPoint = (Vector3)param[0];
             halfwayPoint = (Vector3)param[1];
+            timeOffset = (float)param[2];
         }
         #endregion
 
         public Vector3 GetPositionByTick()
         {
             var halfMagnitude = (halfwayPoint - startPoint).magnitude;
-            var distance = Entity.MovementSpeed * Game.Current.GameTime;
+            var distance = Entity.MovementSpeed * (Game.Current.GameTime + timeOffset);
 
             if ((int)(distance / halfMagnitude) % 2 == 0)
             {
