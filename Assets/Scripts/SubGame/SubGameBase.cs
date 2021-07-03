@@ -5,6 +5,9 @@ using GameFramework;
 
 public abstract class SubGameBase : MonoBehaviour
 {
+    [SerializeField] private SubGameEnvironment subGameEnvironment;
+    public SubGameEnvironment SubGameEnvironment => subGameEnvironment;
+
     public static SubGameBase Current = null;
 
     public bool Initialized { get; private set; } = false;

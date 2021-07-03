@@ -31,7 +31,7 @@ namespace Behavior
 
             if (Entity.ModelRigidbody.isKinematic)
             {
-                Vector3 moved = toMove.normalized * Entity.MovementSpeed * DeltaTime;
+                Vector3 moved = toMove.normalized * Entity.MovementSpeed * DeltaTime * SubGameBase.Current.SubGameEnvironment.MoveSpeedFactor;
 
                 if (Util.Approximately(toMove.sqrMagnitude, moved.sqrMagnitude) || toMove.sqrMagnitude <= moved.sqrMagnitude)
                 {
@@ -46,12 +46,12 @@ namespace Behavior
             }
             else
             {
-                var xz = toMove.XZ().normalized * Entity.MovementSpeed;
+                var xz = toMove.XZ().normalized * Entity.MovementSpeed * SubGameBase.Current.SubGameEnvironment.MoveSpeedFactor;
                 Entity.ModelRigidbody.velocity = new Vector3(xz.x, Entity.ModelRigidbody.velocity.y, xz.z);
 
-                if (Entity.ModelRigidbody.velocity.XZ().magnitude >= Entity.MovementSpeed)
+                if (Entity.ModelRigidbody.velocity.XZ().magnitude >= Entity.MovementSpeed * SubGameBase.Current.SubGameEnvironment.MoveSpeedFactor)
                 {
-                    xz = Entity.ModelRigidbody.velocity.XZ().normalized * Entity.MovementSpeed;
+                    xz = Entity.ModelRigidbody.velocity.XZ().normalized * Entity.MovementSpeed * SubGameBase.Current.SubGameEnvironment.MoveSpeedFactor;
 
                     Entity.ModelRigidbody.velocity = new Vector3(xz.x, Entity.ModelRigidbody.velocity.y, xz.z);
                 }

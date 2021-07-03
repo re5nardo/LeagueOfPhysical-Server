@@ -47,6 +47,8 @@ public class JumpWang : SubGameBase
 
             entity.ModelRigidbody.constraints = RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation;
         }
+
+        Physics.gravity *= SubGameEnvironment.GravityFactor;
     }
     
     protected override void OnGameStart()

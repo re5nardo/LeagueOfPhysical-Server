@@ -152,7 +152,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7af9cfad04ee6c04cab492b4a4dfbb95, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bgSceneName: Space
+  subGameEnvironment: {fileID: 11400000, guid: 7044765b058f98348b023a1ff871284b, type: 2}
 --- !u!4 &684324695
 Transform:
   m_ObjectHideFlags: 0
