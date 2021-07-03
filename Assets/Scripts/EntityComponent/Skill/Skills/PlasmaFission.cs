@@ -87,7 +87,7 @@ namespace Skill
 
 					m_nFirstProjectileEntityID = projectile.EntityID;
 
-                    Vector3 vec3Destination = projectile.Position + projectile.Forward * projectile.MovementSpeed * m_fTargetProjectileLifespan;
+                    Vector3 vec3Destination = projectile.Position + projectile.Forward * projectile.FactoredMovementSpeed * m_fTargetProjectileLifespan;
                     projectile.Move(vec3Destination);
 
                     m_State = State.WaitReuse;
@@ -133,14 +133,14 @@ namespace Skill
             Entity.Projectile projectile_left = CreateProjectile(true);
 
             Vector3 vec3NewDir = Quaternion.Euler(0, -90f, 0) * projectile_left.Forward;
-            Vector3 vec3Destination = projectile_left.Position + vec3NewDir.normalized * projectile_left.MovementSpeed * m_fTargetProjectileLifespan;
+            Vector3 vec3Destination = projectile_left.Position + vec3NewDir.normalized * projectile_left.FactoredMovementSpeed * m_fTargetProjectileLifespan;
             projectile_left.Move(vec3Destination);
 
             //  Right
             Entity.Projectile projectile_right = CreateProjectile(true);
 
             vec3NewDir = Quaternion.Euler(0, 90f, 0) * projectile_right.Forward;
-            vec3Destination = projectile_right.Position + vec3NewDir.normalized * projectile_right.MovementSpeed * m_fTargetProjectileLifespan;
+            vec3Destination = projectile_right.Position + vec3NewDir.normalized * projectile_right.FactoredMovementSpeed * m_fTargetProjectileLifespan;
             projectile_right.Move(vec3Destination);
         }
 

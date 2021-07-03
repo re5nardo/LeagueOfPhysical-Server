@@ -34,7 +34,7 @@ namespace Behavior
         public Vector3 GetPositionByTick()
         {
             var halfMagnitude = (halfwayPoint - startPoint).magnitude;
-            var distance = Entity.MovementSpeed * (Game.Current.GameTime + timeOffset);
+            var distance = Entity.FactoredMovementSpeed * (Game.Current.GameTime + timeOffset);
 
             if ((int)(distance / halfMagnitude) % 2 == 0)
             {

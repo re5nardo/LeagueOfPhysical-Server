@@ -33,7 +33,7 @@ namespace Behavior
             {
                 Projectile projectile = CreateProjectile();
 
-				Vector3 vec3Destination = projectile.Position + projectile.Forward * projectile.MovementSpeed * m_fProjectileLifespan;
+				Vector3 vec3Destination = projectile.Position + projectile.Forward * projectile.FactoredMovementSpeed * m_fProjectileLifespan;
 				projectile.Move(vec3Destination);
 			}
 

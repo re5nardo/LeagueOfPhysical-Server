@@ -84,7 +84,8 @@ namespace Entity
 
 		public bool IsSelectableFirstStatus { get { return characterStatusData.SelectableFirstStatusCount > 0; } }
 
-		public override float MovementSpeed { get { return characterStatusData.MovementSpeed; } }
+        public override float MovementSpeed => characterStatusData.MovementSpeed;
+        public override float FactoredMovementSpeed => characterStatusData.MovementSpeed * SubGameBase.Current.SubGameEnvironment.MoveSpeedFactor;
 
 		public FirstStatus FirstStatus { get { return characterStatusData.FirstStatus; } }
 

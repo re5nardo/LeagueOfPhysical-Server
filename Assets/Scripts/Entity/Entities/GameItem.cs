@@ -65,10 +65,11 @@ namespace Entity
 
         #region Interface For Convenience
         public bool IsAlive { get { return gameItemBasicData.CurrentHP > 0; } }
-	
-		public override float MovementSpeed { get { return gameItemBasicData.MovementSpeed; } }
-	
-		public override EntitySnapInfo GetEntitySnapInfo()
+
+        public override float MovementSpeed => gameItemBasicData.MovementSpeed;
+        public override float FactoredMovementSpeed => gameItemBasicData.MovementSpeed * SubGameBase.Current.SubGameEnvironment.MoveSpeedFactor;
+
+        public override EntitySnapInfo GetEntitySnapInfo()
 		{
 			GameItemSnapInfo entitySnapInfo = new GameItemSnapInfo();
 

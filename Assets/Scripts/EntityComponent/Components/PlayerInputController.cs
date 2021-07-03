@@ -62,7 +62,7 @@ public class PlayerInputController : MonoComponentBase
                 if (CanMove())
                 {
                     var behaviorController = Entity.GetEntityComponent<BehaviorController>();
-                    behaviorController.Move(Entity.Position + notifyMoveInputData.m_PlayerMoveInput.inputData.ToVector3().normalized * Game.Current.TickInterval * 5 * (Entity as Character).MovementSpeed);
+                    behaviorController.Move(Entity.Position + notifyMoveInputData.m_PlayerMoveInput.inputData.ToVector3().normalized * Game.Current.TickInterval * 5 * (Entity as Character).FactoredMovementSpeed);
                 }
             }
             else if (notifyMoveInputData.m_PlayerMoveInput.inputType == PlayerMoveInput.InputType.Release)
