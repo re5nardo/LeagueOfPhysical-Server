@@ -8,20 +8,12 @@ namespace Skill
     {
         protected abstract void OnSkillUpdate();
 
-        protected int m_nSkillMasterID = -1;
-        protected float m_fLastUpdateTime = -1f;
-        protected float m_fElapsedTime = 0f;
-        protected float m_fCoolTime = 0f;
+        protected int skillMasterID = -1;
+        protected float coolTime = 0f;
         protected int startTick = -1;
         protected int lastTick = -1;
 
-        protected float DeltaTime
-        {
-            get
-            {
-                return lastTick == -1 ? CurrentUpdateTime : CurrentUpdateTime - LastUpdateTime;
-            }
-        }
+        protected float DeltaTime => Game.Current.CurrentTick == 0 ? 0 : Game.Current.TickInterval;
 
         protected float CurrentUpdateTime
         {
@@ -39,7 +31,11 @@ namespace Skill
             }
         }
 
-        public float CoolTime { get { return m_fCoolTime; } }
+        public float CoolTime => coolTime;
+        public bool IsCoolTime()
+        {
+            return CoolTime > 0;
+        }
 
         new public MonoEntityBase Entity { get; private set; }
 
@@ -50,7 +46,7 @@ namespace Skill
             {
                 if (masterData == null)
                 {
-                    masterData = MasterDataManager.Instance.GetMasterData<MasterData.Skill>(m_nSkillMasterID);
+                    masterData = MasterDataManager.Instance.GetMasterData<MasterData.Skill>(skillMasterID);
                 }
 
                 return masterData;
@@ -79,9 +75,9 @@ namespace Skill
         }
         #endregion
 
-        public virtual void SetData(int nSkillMasterID, params object[] param)
+        public virtual void SetData(int skillMasterID, params object[] param)
         {
-            m_nSkillMasterID = nSkillMasterID;
+            this.skillMasterID = skillMasterID;
         }
 
         public void StartSkill()
@@ -94,7 +90,7 @@ namespace Skill
 
         public int GetSkillMasterID()
         {
-            return m_nSkillMasterID;
+            return skillMasterID;
         }
 
         public void OnTick(int tick)
@@ -104,6 +100,8 @@ namespace Skill
                 //Debug.LogWarning("Tick() is ignored! lastTick == tick");
                 return;
             }
+
+            coolTime = Mathf.Max(0, CoolTime - DeltaTime);
 
             OnSkillUpdate();
 

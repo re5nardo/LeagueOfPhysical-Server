@@ -7,20 +7,24 @@ namespace Skill
 {
     public class FireBehavior : SkillBase
     {
-        private int m_nTargetBehaviorID = -1;
-        private float m_fFireTime;
-        private SkillInputData m_SkillInputData;
+        #region MasterData
+        private int targetBehaviorID = -1;
+        private float fireTime;
+        #endregion
+
+        private SkillInputData skillInputData;
+        private int fireStartTick = -1;
+
+        public float FireTime => fireStartTick * Game.Current.TickInterval + fireTime;
 
         #region SkillBase
         public override void SetData(int nSkillMasterID, params object[] param)
         {
             base.SetData(nSkillMasterID, param);
 
-            MasterData.Skill masterData = MasterDataManager.Instance.GetMasterData<MasterData.Skill>(nSkillMasterID);
-
-            string[] splitted = masterData.ClassParams[0].Split(':');
-            m_nTargetBehaviorID = int.Parse(splitted[0]);
-            m_fFireTime = float.Parse(splitted[1]);
+            string[] splitted = MasterData.ClassParams[0].Split(':');
+            targetBehaviorID = int.Parse(splitted[0]);
+            fireTime = float.Parse(splitted[1]);
         }
         #endregion
 
@@ -29,34 +33,30 @@ namespace Skill
         {
             base.OnReceiveSkillInputData(skillInputData);
 
-            m_SkillInputData = skillInputData;
-
-            if (m_fCoolTime > 0)
+            if (IsCoolTime())
             {
                 return;
             }
 
-            m_fElapsedTime = DeltaTime;
-            m_fLastUpdateTime = -1f;
+            this.skillInputData = skillInputData;
+            fireStartTick = Game.Current.CurrentTick;
         }
         #endregion
 
         protected override void OnSkillUpdate()
         {
-            if (m_fLastUpdateTime < m_fFireTime && m_fFireTime <= m_fElapsedTime)
+            if (IsCoolTime())
             {
-                MasterData.Skill masterData = MasterDataManager.Instance.GetMasterData<MasterData.Skill>(m_nSkillMasterID);
-
-                BehaviorController behaviorController = Entity.GetComponent<BehaviorController>();
-                behaviorController?.StartBehavior(m_nTargetBehaviorID, m_SkillInputData);
-
-                m_fCoolTime = masterData.CoolTime;
+                return;
             }
 
-            m_fLastUpdateTime = m_fElapsedTime;
+            if (LastUpdateTime < FireTime && FireTime <= CurrentUpdateTime)
+            {
+                BehaviorController behaviorController = Entity.GetComponent<BehaviorController>();
+                behaviorController?.StartBehavior(targetBehaviorID, skillInputData);
 
-            m_fElapsedTime += DeltaTime;
-            m_fCoolTime = Mathf.Max(0, m_fCoolTime - DeltaTime);
+                coolTime = MasterData.CoolTime;
+            }
         }
     }
 }

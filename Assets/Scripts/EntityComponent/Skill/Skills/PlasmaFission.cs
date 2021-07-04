@@ -6,7 +6,7 @@ using GameFramework;
 
 namespace Skill
 {
-    public class PlasmaFission : SkillBase
+    public class PlasmaFission : SkillBase  //  다시 구현해야 함!!
     {
         public enum State
         {
@@ -30,8 +30,8 @@ namespace Skill
 
 		private void Awake()
         {
-            m_nSkillMasterID = Define.MasterData.SkillID.PLASMA_FISSION;
-            m_fCoolTime = 0f;
+            skillMasterID = Define.MasterData.SkillID.PLASMA_FISSION;
+            coolTime = 0f;
             m_State = State.Ready;
 
             GamePubSubService.AddSubscriber(GameMessageKey.EntityDestroy, OnEntityDestroy);
@@ -42,35 +42,19 @@ namespace Skill
             GamePubSubService.RemoveSubscriber(GameMessageKey.EntityDestroy, OnEntityDestroy);
         }
 
-        private bool IsCoolTime()
-        {
-            return m_fCoolTime > 0;
-        }
-
         protected override void OnSkillUpdate()
         {
             if (IsCoolTime())
             {
-                m_fCoolTime = Mathf.Max(0, m_fCoolTime - DeltaTime);
-
-                if (m_fCoolTime == 0)
-                {
-                    m_State = State.Ready;
-                }
+                return;
             }
-            else
+
+            if (m_State == State.WaitReuse)
             {
-                m_fElapsedTime += DeltaTime;
-
-                if (m_State == State.WaitReuse)
-                {
-                    m_FireSkillElapsedTime += DeltaTime;
-                }
-
-                UpdateBody();
-
-                m_fLastUpdateTime = m_fElapsedTime;
+                m_FireSkillElapsedTime += DeltaTime;
             }
+
+            UpdateBody();
         }
 
         private void UpdateBody()
@@ -179,13 +163,10 @@ namespace Skill
             {
                 Splitting();
 
-                m_fElapsedTime = 0;
-                m_fLastUpdateTime = -1f;
                 m_FireSkillElapsedTime = 0f;
 
                 //  Cooltime
-                MasterData.Skill masterData = MasterDataManager.Instance.GetMasterData<MasterData.Skill>(m_nSkillMasterID);
-                m_fCoolTime = masterData.CoolTime;
+                coolTime = MasterData.CoolTime;
 
                 m_State = State.CoolTime;
             }
