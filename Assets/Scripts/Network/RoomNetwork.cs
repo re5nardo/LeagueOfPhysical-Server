@@ -4,38 +4,33 @@ using GameFramework;
 
 public class RoomNetwork : MonoSingleton<RoomNetwork>, INetwork
 {
-	private INetworkImpl m_INetworkImpl__ = null;
-	public INetworkImpl m_NetworkImpl
-	{
-		get { return m_INetworkImpl__; }
-		set { m_INetworkImpl__ = value; }
-	}
+	public INetworkImpl NetworkImpl { get; private set; }
 
-	public Action<IMessage, object[]> onMessage
+	public Action<IMessage> OnMessage
 	{
-		get { return m_NetworkImpl.onMessage; }
-		set { m_NetworkImpl.onMessage = value; }
-	}
+		get => NetworkImpl.OnMessage;
+        set => NetworkImpl.OnMessage = value;
+    }
 
 	protected override void Awake()
 	{
 		base.Awake();
 
-		m_INetworkImpl__ = gameObject.AddComponent<RoomNetworkImpl>();
+        NetworkImpl = gameObject.AddComponent<RoomNetworkImpl>();
 	}
 
-	public void Send(IMessage msg, int nTargetID, bool bReliable = true, bool bInstant = false)
+	public void Send(IMessage msg, int targetId, bool reliable = true, bool instant = false)
 	{
-		m_NetworkImpl.Send(msg, nTargetID, bReliable, bInstant);
+        NetworkImpl.Send(msg, targetId, reliable, instant);
 	}
 
-	public void SendToAll(IMessage msg, bool bReliable = true, bool bInstant = false)
+	public void SendToAll(IMessage msg, bool reliable = true, bool instant = false)
 	{
-		m_NetworkImpl.SendToAll(msg, bReliable, bInstant);
+        NetworkImpl.SendToAll(msg, reliable, instant);
 	}
 
-	public void SendToNear(IMessage msg, Vector3 vec3Center, float fRadius, bool bReliable = true, bool bInstant = false)
+	public void SendToNear(IMessage msg, Vector3 center, float radius, bool reliable = true, bool instant = false)
 	{
-		m_NetworkImpl.SendToNear(msg, vec3Center, fRadius, bReliable, bInstant);
+        NetworkImpl.SendToNear(msg, center, radius, reliable, instant);
 	}
 }

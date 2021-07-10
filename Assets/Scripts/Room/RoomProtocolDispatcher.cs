@@ -23,20 +23,20 @@ public class RoomProtocolDispatcher : MonoBehaviour
 
     private void Awake()
     {
-        RoomNetwork.Instance.onMessage += OnNetworkMessage;
+        RoomNetwork.Instance.OnMessage += OnNetworkMessage;
     }
 
     private void OnDestroy()
     {
         if (RoomNetwork.HasInstance())
         {
-            RoomNetwork.Instance.onMessage -= OnNetworkMessage;
+            RoomNetwork.Instance.OnMessage -= OnNetworkMessage;
         }
 
         handlers.Clear();
     }
 
-    private void OnNetworkMessage(IMessage msg, object[] objects)
+    private void OnNetworkMessage(IMessage msg)
     {
         if (handlers.TryGetValue(msg.GetType(), out Action<IMessage> handler))
         {

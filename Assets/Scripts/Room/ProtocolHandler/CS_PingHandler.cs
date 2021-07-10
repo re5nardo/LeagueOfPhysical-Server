@@ -9,6 +9,6 @@ public class CS_PingHandler
     {
         CS_Ping ping = msg as CS_Ping;
 
-        RoomNetwork.Instance.Send(new SC_Ping(), ping.senderID, bInstant: true);
+        RoomNetwork.Instance.Send(new SC_Ping(), ping.senderID, instant: true);
     }
 }
