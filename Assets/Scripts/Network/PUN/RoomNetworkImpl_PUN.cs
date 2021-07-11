@@ -2,7 +2,7 @@
 using System;
 using GameFramework;
 
-public class RoomNetworkImpl : MonoBehaviour, INetworkImpl
+public class RoomNetworkImpl_PUN : MonoBehaviour, INetworkImpl
 {
     public Action<IMessage> OnMessage { get; set; }
 
@@ -31,7 +31,12 @@ public class RoomNetworkImpl : MonoBehaviour, INetworkImpl
 		}
 	}
 
-	public void SendToAll(IMessage msg, bool reliable = true, bool instant = false)
+    public void Send(IMessage msg, ulong targetId, bool reliable = true, bool instant = false)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void SendToAll(IMessage msg, bool reliable = true, bool instant = false)
 	{
 		foreach (var player in PhotonNetwork.playerList)
 		{

@@ -16,7 +16,7 @@ public class RoomNetwork : MonoSingleton<RoomNetwork>, INetwork
 	{
 		base.Awake();
 
-        NetworkImpl = gameObject.AddComponent<RoomNetworkImpl>();
+        NetworkImpl = gameObject.AddComponent<RoomNetworkImpl_PUN>();
 	}
 
 	public void Send(IMessage msg, int targetId, bool reliable = true, bool instant = false)
@@ -24,7 +24,12 @@ public class RoomNetwork : MonoSingleton<RoomNetwork>, INetwork
         NetworkImpl.Send(msg, targetId, reliable, instant);
 	}
 
-	public void SendToAll(IMessage msg, bool reliable = true, bool instant = false)
+    public void Send(IMessage msg, ulong targetId, bool reliable = true, bool instant = false)
+    {
+        NetworkImpl.Send(msg, targetId, reliable, instant);
+    }
+
+    public void SendToAll(IMessage msg, bool reliable = true, bool instant = false)
 	{
         NetworkImpl.SendToAll(msg, reliable, instant);
 	}
