@@ -1,50 +1,93 @@
 ﻿using System.Collections.Generic;
 using GameFramework;
+using System;
+using UnityEngine;
 
 public class ObjectPool : Singleton<ObjectPool>
 {
-    private Dictionary<string, LinkedList<IPoolable>> m_dicObject = new Dictionary<string, LinkedList<IPoolable>>();
-    private Dictionary<IPoolable, string> m_dicBeingUsed = new Dictionary<IPoolable, string>();
+    private Dictionary<Type, InternalObjectPool> objectPools = new Dictionary<Type, InternalObjectPool>();
 
-    public T GetObject<T>() where T : class, IPoolable, new()
+    public T GetObject<T>() where T : class, IPoolable
     {
-        T target = null;
-        string typeName = typeof(T).Name;
-
-        if (!m_dicObject.ContainsKey(typeName))
+        if (!objectPools.ContainsKey(typeof(T)))
         {
-            m_dicObject[typeName] = new LinkedList<IPoolable>();
+            objectPools[typeof(T)] = new InternalObjectPool();
         }
 
-        if (m_dicObject[typeName].Count > 0)
+        return objectPools[typeof(T)].GetObject<T>();
+    }
+
+    public IPoolable GetObject(Type type)
+    {
+        if (!objectPools.ContainsKey(type))
         {
-            target = m_dicObject[typeName].Last.Value as T;
-
-            m_dicObject[typeName].RemoveLast();
-        }
-        else
-        {
-            target = new T();
+            objectPools[type] = new InternalObjectPool();
         }
 
-        m_dicBeingUsed[target] = typeName;
-
-        return target;
+        return objectPools[type].GetObject(type);
     }
 
     public void ReturnObject(IPoolable obj)
     {
-        obj.Clear();
-
-        if (m_dicBeingUsed.ContainsKey(obj))
+        if (objectPools.TryGetValue(obj.GetType(), out var internalObjectPool))
         {
-            m_dicObject[m_dicBeingUsed[obj]].AddLast(obj);
-
-            m_dicBeingUsed.Remove(obj);
+            internalObjectPool.ReturnObject(obj);
         }
         else
         {
-            UnityEngine.Debug.LogWarning(string.Format("Returned object is invalid! Type name : {0}", m_dicBeingUsed[obj]));
+            Debug.LogWarning($"Returned object is invalid! Type: {obj.GetType()}");
+        }
+    }
+
+    class InternalObjectPool
+    {
+        private Queue<IPoolable> pool = new Queue<IPoolable>();
+        private LinkedList<IPoolable> beingUsed = new LinkedList<IPoolable>();
+
+        public T GetObject<T>() where T : IPoolable
+        {
+            T target = default;
+            if (pool.Count > 0)
+            {
+                target = (T)pool.Dequeue();
+            }
+            else
+            {
+                target = Activator.CreateInstance<T>();
+            }
+
+            beingUsed.AddLast(target);
+            return target;
+        }
+
+        public IPoolable GetObject(Type type)
+        {
+            if (!typeof(IPoolable).IsAssignableFrom(type))
+            {
+                Debug.LogError($"The type is invalid! Type: {type}");
+                return null;
+            }
+
+            IPoolable target = null;
+            if (pool.Count > 0)
+            {
+                target = pool.Dequeue() as IPoolable;
+            }
+            else
+            {
+                target = Activator.CreateInstance(type) as IPoolable;
+            }
+
+            beingUsed.AddLast(target);
+            return target;
+        }
+
+        public void ReturnObject(IPoolable obj)
+        {
+            obj.Clear();
+
+            beingUsed.Remove(obj);
+            pool.Enqueue(obj);
         }
     }
 }
