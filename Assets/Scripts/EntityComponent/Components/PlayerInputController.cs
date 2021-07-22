@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using GameFramework;
 using Entity;
+using NetworkModel.Mirror;
 
 public class PlayerInputController : MonoComponentBase
 {
@@ -45,27 +46,27 @@ public class PlayerInputController : MonoComponentBase
                 behaviorController.Jump();
             }
 
-            SC_ProcessInputData processInputData = new SC_ProcessInputData();
+            var processInputData = new SC_ProcessInputData();
             processInputData.tick = Game.Current.CurrentTick;
             processInputData.type = "jump";
             processInputData.sequence = notifyJumpInputData.jumpInputData.sequence;
 
-            RoomNetwork.Instance.Send(processInputData, notifyJumpInputData.senderID);
+            RoomNetwork.Instance.Send(processInputData, notifyJumpInputData.Sender);
         }
 
         if (notifyMoveInputDatas.Count > 0)
         {
             var notifyMoveInputData = notifyMoveInputDatas.Dequeue();
 
-            if (notifyMoveInputData.m_PlayerMoveInput.inputType == PlayerMoveInput.InputType.Hold)
+            if (notifyMoveInputData.playerMoveInput.inputType == PlayerMoveInput.InputType.Hold)
             {
                 if (CanMove())
                 {
                     var behaviorController = Entity.GetEntityComponent<BehaviorController>();
-                    behaviorController.Move(Entity.Position + notifyMoveInputData.m_PlayerMoveInput.inputData.ToVector3().normalized * Game.Current.TickInterval * 5 * (Entity as Character).FactoredMovementSpeed);
+                    behaviorController.Move(Entity.Position + notifyMoveInputData.playerMoveInput.inputData.normalized * Game.Current.TickInterval * 5 * (Entity as Character).FactoredMovementSpeed);
                 }
             }
-            else if (notifyMoveInputData.m_PlayerMoveInput.inputType == PlayerMoveInput.InputType.Release)
+            else if (notifyMoveInputData.playerMoveInput.inputType == PlayerMoveInput.InputType.Release)
             {
                 var behaviorController = Entity.GetEntityComponent<BehaviorController>();
                 behaviorController.StopBehavior(Define.MasterData.BehaviorID.MOVE);
@@ -74,9 +75,9 @@ public class PlayerInputController : MonoComponentBase
             SC_ProcessInputData processInputData = new SC_ProcessInputData();
             processInputData.tick = Game.Current.CurrentTick;
             processInputData.type = "move";
-            processInputData.sequence = notifyMoveInputData.m_PlayerMoveInput.sequence;
+            processInputData.sequence = notifyMoveInputData.playerMoveInput.sequence;
 
-            RoomNetwork.Instance.Send(processInputData, notifyMoveInputData.senderID);
+            RoomNetwork.Instance.Send(processInputData, notifyMoveInputData.Sender);
         }
     }
 

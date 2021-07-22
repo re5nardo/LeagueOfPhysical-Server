@@ -5,6 +5,7 @@ using GameFramework.FSM;
 using System;
 using System.Linq;
 using GameFramework;
+using NetworkModel.Mirror;
 
 public class GamePrepareState : MonoStateBase
 {
@@ -89,7 +90,7 @@ public class GamePrepareState : MonoStateBase
 
         CS_GamePreparation gamePreparation = msg as CS_GamePreparation;
 
-        var playerUserID = LOP.Game.Current.EntityIDPlayerUserID[gamePreparation.entityID];
+        var playerUserID = LOP.Game.Current.EntityIDPlayerUserID[gamePreparation.entityId];
 
         playerPrepareStates[playerUserID] = gamePreparation.preparation;
     }

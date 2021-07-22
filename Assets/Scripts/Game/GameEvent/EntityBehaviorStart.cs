@@ -13,8 +13,6 @@ namespace GameEvent
         public int Tick { get; set; }
         public int entityID;
         public int behaviorMasterID;
-        //public SerializableVector3 position;
-        //public SerializableVector3 rotation;
         public object[] param;
 
         public EntityBehaviorStart(int entityID, int behaviorMasterID, params object[] param)

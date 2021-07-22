@@ -4,6 +4,7 @@ using EntityCommand;
 using System.Collections.Generic;
 using GameFramework;
 using GameEvent;
+using NetworkModel.Mirror;
 
 namespace Behavior
 {
@@ -54,7 +55,7 @@ namespace Behavior
             {
                 SkillInputData data = param[0] as SkillInputData;
 
-                if (data.inputData.ToVector3() == Vector3.zero)
+                if (data.inputData == Vector3.zero)
                 {
                     //  Auto aiming
                     List<IEntity> targets = Entities.Get(Entity.Position, 20, EntityRole.All, new HashSet<int> { Entity.EntityID });

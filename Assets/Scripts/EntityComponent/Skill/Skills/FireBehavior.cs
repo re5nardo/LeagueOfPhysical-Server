@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using GameFramework;
+using NetworkModel.Mirror;
 
 namespace Skill
 {

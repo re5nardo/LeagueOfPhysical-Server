@@ -1,4 +1,5 @@
 ﻿using ExitGames.Client.Photon;
+using NetworkModel.PUN;
 
 public class PhotonTypeRegister
 {

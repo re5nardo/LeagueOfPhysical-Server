@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using GameFramework;
+using NetworkModel.Mirror;
 
 public class SynchronizationManager : MonoSingleton<SynchronizationManager>
 {
@@ -41,8 +42,8 @@ public class SynchronizationManager : MonoSingleton<SynchronizationManager>
     {
         if (snaps.Count > 0)
         {
-            SC_Synchronization synchronization = ObjectPool.Instance.GetObject<SC_Synchronization>();
-            synchronization.snaps = snaps;
+            var synchronization = ObjectPool.Instance.GetObject<SC_Synchronization>();
+            synchronization.listSnap = snaps;
 
             RoomNetwork.Instance.SendToAll(synchronization, true, true);
 

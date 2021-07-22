@@ -3,6 +3,7 @@ using Entity;
 using System;
 using System.Collections.Generic;
 using GameFramework;
+using NetworkModel.Mirror;
 
 namespace Skill
 {

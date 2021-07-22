@@ -1,6 +1,7 @@
 ﻿using Entity;
 using GameFramework;
 using UnityEngine;
+using NetworkModel.Mirror;
 
 namespace Skill
 {

@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using GameFramework;
 using Entity;
+using NetworkModel.Mirror;
 
 public class EntityHelper
 {

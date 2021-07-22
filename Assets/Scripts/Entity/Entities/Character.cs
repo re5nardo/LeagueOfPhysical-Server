@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using GameFramework;
+using NetworkModel.Mirror;
 
 namespace Entity
 {
@@ -93,20 +94,19 @@ namespace Entity
 
 		public override EntitySnapInfo GetEntitySnapInfo()
 		{
-			CharacterSnapInfo entitySnapInfo = new CharacterSnapInfo();
+			var entitySnapInfo = new CharacterSnapInfo();
 
-			entitySnapInfo.m_nEntityID = EntityID;
-			entitySnapInfo.m_EntityType = EntityType;
-            entitySnapInfo.m_EntityRole = EntityRole;
-            entitySnapInfo.m_nMasterDataID = characterBasicData.MasterDataID;
-			entitySnapInfo.m_Position = Position;
-			entitySnapInfo.m_Rotation = Rotation;
-			entitySnapInfo.m_Velocity = Velocity;
-			entitySnapInfo.m_AngularVelocity = AngularVelocity;
-			entitySnapInfo.m_strModel = characterBasicData.ModelId;
-			entitySnapInfo.m_FirstStatus = characterStatusData.FirstStatus;
-			entitySnapInfo.m_SecondStatus = characterStatusData.SecondStatus;
-			entitySnapInfo.m_nSelectableFirstStatusCount = characterStatusData.SelectableFirstStatusCount;
+			entitySnapInfo.entityId = EntityID;
+			entitySnapInfo.entityType = EntityType;
+            entitySnapInfo.entityRole = EntityRole;
+            entitySnapInfo.masterDataId = characterBasicData.MasterDataID;
+			entitySnapInfo.position = Position;
+			entitySnapInfo.rotation = Rotation;
+			entitySnapInfo.velocity = Velocity;
+			entitySnapInfo.angularVelocity = AngularVelocity;
+			entitySnapInfo.model = characterBasicData.ModelId;
+			entitySnapInfo.firstStatus = characterStatusData.FirstStatus;
+			entitySnapInfo.secondStatus = characterStatusData.SecondStatus;
 
 			return entitySnapInfo;
 		}

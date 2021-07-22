@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using GameFramework;
 using System.Linq;
+using NetworkModel.Mirror;
 
 public class CS_RequestEmotionExpressionHandler
 {
@@ -10,20 +11,18 @@ public class CS_RequestEmotionExpressionHandler
     {
         CS_RequestEmotionExpression requestEmotionExpression = msg as CS_RequestEmotionExpression;
 
-        PhotonPlayer photonPlayer = PhotonNetwork.playerList.ToList().Find(x => x.ID == requestEmotionExpression.senderID);
-
-        IEntity senderEntity = Entities.Get(LOP.Game.Current.PlayerUserIDEntityID[photonPlayer.UserId]);
+        IEntity senderEntity = Entities.Get(LOP.Game.Current.ConnIdEntityId[requestEmotionExpression.Sender]);
 
         EmotionExpressionData emotionExpressionData = senderEntity.GetEntityComponent<EmotionExpressionData>();
-        if (!emotionExpressionData.m_listEmotionExpressionID.Exists(x => x == requestEmotionExpression.m_nEmotionExpressionID))
+        if (!emotionExpressionData.m_listEmotionExpressionID.Exists(x => x == requestEmotionExpression.emotionExpressionId))
         {
-            Debug.LogWarning("Invalid nEmotionExpressionID! nEmotionExpressionID : " + requestEmotionExpression.m_nEmotionExpressionID);
+            Debug.LogWarning("Invalid nEmotionExpressionID! nEmotionExpressionID : " + requestEmotionExpression.emotionExpressionId);
             return;
         }
 
         SC_EmotionExpression emotionExpression = new SC_EmotionExpression();
-        emotionExpression.m_nEntityID = senderEntity.EntityID;
-        emotionExpression.m_nEmotionExpressionID = requestEmotionExpression.m_nEmotionExpressionID;
+        emotionExpression.entityId = senderEntity.EntityID;
+        emotionExpression.emotionExpressionId = requestEmotionExpression.emotionExpressionId;
 
         RoomNetwork.Instance.SendToNear(emotionExpression, senderEntity.Position, LOP.Game.BROADCAST_SCOPE_RADIUS);
     }

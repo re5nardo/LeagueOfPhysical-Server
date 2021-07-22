@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using GameFramework;
-using System.Linq;
+using NetworkModel.Mirror;
 
 public class CS_NotifySkillInputDataHandler
 {
@@ -10,14 +10,13 @@ public class CS_NotifySkillInputDataHandler
     {
         CS_NotifySkillInputData notifySkillInputData = msg as CS_NotifySkillInputData;
 
-        PhotonPlayer photonPlayer = PhotonNetwork.playerList.ToList().Find(x => x.ID == notifySkillInputData.senderID);
+        IEntity entity = Entities.Get(notifySkillInputData.skillInputData.entityId);
 
-        IEntity entity = Entities.Get(LOP.Game.Current.PlayerUserIDEntityID[photonPlayer.UserId]);
         foreach (Skill.SkillBase skill in entity.GetEntityComponents<Skill.SkillBase>())
         {
-            if (skill.GetSkillMasterID() == notifySkillInputData.m_SkillInputData.skillID)
+            if (skill.GetSkillMasterID() == notifySkillInputData.skillInputData.skillId)
             {
-                skill.OnReceiveSkillInputData(notifySkillInputData.m_SkillInputData);
+                skill.OnReceiveSkillInputData(notifySkillInputData.skillInputData);
                 return;
             }
         }

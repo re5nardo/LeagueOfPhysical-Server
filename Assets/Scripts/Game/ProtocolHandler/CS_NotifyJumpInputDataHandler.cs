@@ -2,15 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using GameFramework;
-using Entity;
+using NetworkModel.Mirror;
 
 public class CS_NotifyJumpInputDataHandler
 {
     public static void Handle(IMessage msg)
     {
-        CS_NotifyJumpInputData notifyJumpInputData = msg as CS_NotifyJumpInputData;
+        var notifyJumpInputData = msg as CS_NotifyJumpInputData;
 
-        IEntity entity = Entities.Get(notifyJumpInputData.jumpInputData.entityID);
+        IEntity entity = Entities.Get(notifyJumpInputData.jumpInputData.entityId);
         entity?.GetEntityComponent<PlayerInputController>()?.AddJumpInputData(notifyJumpInputData);
     }
 }

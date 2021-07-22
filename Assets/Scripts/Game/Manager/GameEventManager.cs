@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using GameFramework;
+using NetworkModel.Mirror;
 
 public class GameEventManager : MonoBehaviour
 {
@@ -24,7 +25,7 @@ public class GameEventManager : MonoBehaviour
             return;
         }
 
-        SC_GameEvents gameEvents = new SC_GameEvents(new List<IGameEvent> { gameEvent });
+        var gameEvents = new SC_GameEvents(new List<IGameEvent> { gameEvent });
         RoomNetwork.Instance.Send(gameEvents, nTargetID, bReliable, bInstant);
     }
 
@@ -35,7 +36,7 @@ public class GameEventManager : MonoBehaviour
             return;
         }
 
-        SC_GameEvents gameEvents = new SC_GameEvents(new List<IGameEvent> { gameEvent });
+        var gameEvents = new SC_GameEvents(new List<IGameEvent> { gameEvent });
         RoomNetwork.Instance.SendToAll(gameEvents, bReliable, bInstant);
     }
 
@@ -46,7 +47,7 @@ public class GameEventManager : MonoBehaviour
             return;
         }
 
-        SC_GameEvents gameEvents = new SC_GameEvents(new List<IGameEvent> { gameEvent });
+        var gameEvents = new SC_GameEvents(new List<IGameEvent> { gameEvent });
         RoomNetwork.Instance.SendToNear(gameEvents, center, fRadius, bReliable, bInstant);
     }
 }

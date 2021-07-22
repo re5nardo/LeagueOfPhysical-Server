@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using NetworkModel.Mirror;
 
 namespace Entity
 {
@@ -71,19 +72,19 @@ namespace Entity
 
         public override EntitySnapInfo GetEntitySnapInfo()
 		{
-			GameItemSnapInfo entitySnapInfo = new GameItemSnapInfo();
+			var entitySnapInfo = new GameItemSnapInfo();
 
-			entitySnapInfo.m_nEntityID = EntityID;
-			entitySnapInfo.m_EntityType = EntityType;
-            entitySnapInfo.m_EntityRole = EntityRole;
-            entitySnapInfo.m_nMasterDataID = gameItemBasicData.MasterDataID;
-			entitySnapInfo.m_Position = Position;
-			entitySnapInfo.m_Rotation = Rotation;
-			entitySnapInfo.m_Velocity = Velocity;
-			entitySnapInfo.m_AngularVelocity = AngularVelocity;
-			entitySnapInfo.m_strModel = gameItemBasicData.ModelId;
-			entitySnapInfo.m_nHP = gameItemBasicData.CurrentHP;
-			entitySnapInfo.m_nMaximumHP = gameItemBasicData.MaximumHP;
+			entitySnapInfo.entityId = EntityID;
+			entitySnapInfo.entityType = EntityType;
+            entitySnapInfo.entityRole = EntityRole;
+            entitySnapInfo.masterDataId = gameItemBasicData.MasterDataID;
+			entitySnapInfo.position = Position;
+			entitySnapInfo.rotation = Rotation;
+			entitySnapInfo.velocity = Velocity;
+			entitySnapInfo.angularVelocity = AngularVelocity;
+			entitySnapInfo.model = gameItemBasicData.ModelId;
+			entitySnapInfo.HP = gameItemBasicData.CurrentHP;
+			entitySnapInfo.maximumHP = gameItemBasicData.MaximumHP;
 
 			return entitySnapInfo;
 		}

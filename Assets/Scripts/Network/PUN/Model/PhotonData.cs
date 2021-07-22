@@ -64,615 +64,618 @@ public class PhotonEvent
     public const byte CS_GamePreparation = 108;
     public const byte CS_SubGamePreparation = 109;
 }
-
-[Serializable]
-public class EntityTransformInfo : IPoolable
+namespace NetworkModel.PUN
 {
-    public EntityTransformInfo()
+    [Serializable]
+    public class EntityTransformInfo : IPoolable
     {
-    }
-
-    public EntityTransformInfo(IEntity entity, float gameTime)
-    {
-        m_nEntityID = entity.EntityID;
-        m_Position = entity.Position;
-        m_Rotation = entity.Rotation;
-        m_Velocity = entity.Velocity;
-		m_AngularVelocity = entity.AngularVelocity;
-		m_GameTime = gameTime;
-    }
-
-    public void SetEntityTransformInfo(IEntity entity, float gameTime)
-    {
-        m_nEntityID = entity.EntityID;
-        m_Position = entity.Position;
-        m_Rotation = entity.Rotation;
-        m_Velocity = entity.Velocity;
-		m_AngularVelocity = entity.AngularVelocity;
-		m_GameTime = gameTime;
-    }
-
-    public void Clear()
-    {
-        m_nEntityID = -1;
-        m_Position = default;
-        m_Rotation = default;
-        m_Velocity = default;
-		m_AngularVelocity = default;
-		m_GameTime = 0;
-    }
-
-    public int m_nEntityID = -1;
-    public SerializableVector3 m_Position;
-    public SerializableVector3 m_Rotation;
-    public SerializableVector3 m_Velocity;
-	public SerializableVector3 m_AngularVelocity;
-	public float m_GameTime;
-}
-
-[Serializable]
-public class EntitySnapInfo
-{
-	public int m_nEntityID = -1;
-	public EntityType m_EntityType;
-    public EntityRole m_EntityRole;
-    public SerializableVector3 m_Position;
-	public SerializableVector3 m_Rotation;
-	public SerializableVector3 m_Velocity;
-	public SerializableVector3 m_AngularVelocity;
-}
-
-[Serializable]
-public class CharacterSnapInfo : EntitySnapInfo
-{
-	public int m_nMasterDataID = -1;
-	public string m_strModel;
-	public FirstStatus m_FirstStatus;
-	public SecondStatus m_SecondStatus;
-	public int m_nSelectableFirstStatusCount;
-}
-
-[Serializable]
-public class ProjectileSnapInfo : EntitySnapInfo
-{
-	public int m_nMasterDataID = -1;
-	public string m_strModel;
-	public float m_fMovementSpeed;
-}
-
-[Serializable]
-public class GameItemSnapInfo : EntitySnapInfo
-{
-	public int m_nMasterDataID = -1;
-	public string m_strModel;
-	public int m_nHP;
-	public int m_nMaximumHP;
-}
-
-[Serializable]
-public class SkillInputData
-{
-    public int tick = -1;
-    public int entityID = -1;
-    public int skillID = -1;
-    public SerializableVector3 inputData = default;
-
-    public SkillInputData(int tick, int entityID, int skillID, SerializableVector3 inputData)
-    {
-        this.tick = tick;
-        this.entityID = entityID;
-        this.skillID = skillID;
-        this.inputData = inputData;
-    }
-}
-
-[Serializable]
-public class JumpInputData
-{
-    public int tick = -1;
-    public long sequence = -1;
-    public int entityID = -1;
-
-    public JumpInputData(int tick, long sequence, int entityID)
-    {
-        this.tick = tick;
-        this.sequence = sequence;
-        this.entityID = entityID;
-    }
-}
-
-[Serializable]
-public struct SerializableVector3
-{
-	public float x;
-	public float y;
-	public float z;
-
-	public SerializableVector3(float x, float y, float z)
-	{
-		this.x = x;
-		this.y = y;
-		this.z = z;
-	}
-
-	public SerializableVector3(Vector3 vec3)
-	{
-		x = vec3.x;
-		y = vec3.y;
-		z = vec3.z;
-	}
-
-	public static implicit operator SerializableVector3(Vector3 value)
-	{
-		return new SerializableVector3(value.x, value.y, value.z);
-	}
-
-	public static implicit operator Vector3(SerializableVector3 value)
-	{
-		return new Vector3(value.x, value.y, value.z);
-	}
-
-    public override bool Equals(object obj)
-    {
-        if (obj is SerializableVector3)
+        public EntityTransformInfo()
         {
-            return this.Equals((SerializableVector3)obj);
         }
-        return false;
+
+        public EntityTransformInfo(IEntity entity, float gameTime)
+        {
+            m_nEntityID = entity.EntityID;
+            m_Position = entity.Position;
+            m_Rotation = entity.Rotation;
+            m_Velocity = entity.Velocity;
+            m_AngularVelocity = entity.AngularVelocity;
+            m_GameTime = gameTime;
+        }
+
+        public void SetEntityTransformInfo(IEntity entity, float gameTime)
+        {
+            m_nEntityID = entity.EntityID;
+            m_Position = entity.Position;
+            m_Rotation = entity.Rotation;
+            m_Velocity = entity.Velocity;
+            m_AngularVelocity = entity.AngularVelocity;
+            m_GameTime = gameTime;
+        }
+
+        public void Clear()
+        {
+            m_nEntityID = -1;
+            m_Position = default;
+            m_Rotation = default;
+            m_Velocity = default;
+            m_AngularVelocity = default;
+            m_GameTime = 0;
+        }
+
+        public int m_nEntityID = -1;
+        public SerializableVector3 m_Position;
+        public SerializableVector3 m_Rotation;
+        public SerializableVector3 m_Velocity;
+        public SerializableVector3 m_AngularVelocity;
+        public float m_GameTime;
     }
 
-    public bool Equals(SerializableVector3 value)
+    [Serializable]
+    public class EntitySnapInfo
     {
-        return (x == value.x) && (y == value.y) && (z == value.z);
+        public int m_nEntityID = -1;
+        public EntityType m_EntityType;
+        public EntityRole m_EntityRole;
+        public SerializableVector3 m_Position;
+        public SerializableVector3 m_Rotation;
+        public SerializableVector3 m_Velocity;
+        public SerializableVector3 m_AngularVelocity;
     }
 
-    public override int GetHashCode()
+    [Serializable]
+    public class CharacterSnapInfo : EntitySnapInfo
     {
-        return (x, y, z).GetHashCode();
+        public int m_nMasterDataID = -1;
+        public string m_strModel;
+        public FirstStatus m_FirstStatus;
+        public SecondStatus m_SecondStatus;
+        public int m_nSelectableFirstStatusCount;
     }
 
-    public static bool operator ==(SerializableVector3 lhs, SerializableVector3 rhs)
+    [Serializable]
+    public class ProjectileSnapInfo : EntitySnapInfo
     {
-        return lhs.Equals(rhs);
+        public int m_nMasterDataID = -1;
+        public string m_strModel;
+        public float m_fMovementSpeed;
     }
 
-    public static bool operator !=(SerializableVector3 lhs, SerializableVector3 rhs)
+    [Serializable]
+    public class GameItemSnapInfo : EntitySnapInfo
     {
-        return !(lhs.Equals(rhs));
+        public int m_nMasterDataID = -1;
+        public string m_strModel;
+        public int m_nHP;
+        public int m_nMaximumHP;
     }
 
-    public Vector3 ToVector3()
-	{
-		return new Vector3(x, y, z);
-	}
-
-    public override string ToString()
+    [Serializable]
+    public class SkillInputData
     {
-        return ToVector3().ToString();
+        public int tick = -1;
+        public int entityID = -1;
+        public int skillID = -1;
+        public SerializableVector3 inputData = default;
+
+        public SkillInputData(int tick, int entityID, int skillID, SerializableVector3 inputData)
+        {
+            this.tick = tick;
+            this.entityID = entityID;
+            this.skillID = skillID;
+            this.inputData = inputData;
+        }
     }
-}
 
-[Serializable]
-public class PlayerMoveInput
-{
-	public enum InputType
-	{
-		None = 0,
-		Press = 1,
-		Hold = 2,
-		Release = 3,
-	}
+    [Serializable]
+    public class JumpInputData
+    {
+        public int tick = -1;
+        public long sequence = -1;
+        public int entityID = -1;
 
-    public PlayerMoveInput()
+        public JumpInputData(int tick, long sequence, int entityID)
+        {
+            this.tick = tick;
+            this.sequence = sequence;
+            this.entityID = entityID;
+        }
+    }
+
+    [Serializable]
+    public struct SerializableVector3
+    {
+        public float x;
+        public float y;
+        public float z;
+
+        public SerializableVector3(float x, float y, float z)
+        {
+            this.x = x;
+            this.y = y;
+            this.z = z;
+        }
+
+        public SerializableVector3(Vector3 vec3)
+        {
+            x = vec3.x;
+            y = vec3.y;
+            z = vec3.z;
+        }
+
+        public static implicit operator SerializableVector3(Vector3 value)
+        {
+            return new SerializableVector3(value.x, value.y, value.z);
+        }
+
+        public static implicit operator Vector3(SerializableVector3 value)
+        {
+            return new Vector3(value.x, value.y, value.z);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is SerializableVector3)
+            {
+                return this.Equals((SerializableVector3)obj);
+            }
+            return false;
+        }
+
+        public bool Equals(SerializableVector3 value)
+        {
+            return (x == value.x) && (y == value.y) && (z == value.z);
+        }
+
+        public override int GetHashCode()
+        {
+            return (x, y, z).GetHashCode();
+        }
+
+        public static bool operator ==(SerializableVector3 lhs, SerializableVector3 rhs)
+        {
+            return lhs.Equals(rhs);
+        }
+
+        public static bool operator !=(SerializableVector3 lhs, SerializableVector3 rhs)
+        {
+            return !(lhs.Equals(rhs));
+        }
+
+        public Vector3 ToVector3()
+        {
+            return new Vector3(x, y, z);
+        }
+
+        public override string ToString()
+        {
+            return ToVector3().ToString();
+        }
+    }
+
+    [Serializable]
+    public class PlayerMoveInput
+    {
+        public enum InputType
+        {
+            None = 0,
+            Press = 1,
+            Hold = 2,
+            Release = 3,
+        }
+
+        public PlayerMoveInput()
+        {
+        }
+
+        public PlayerMoveInput(int tick = -1, long sequence = -1, int entityID = -1, SerializableVector3 inputData = default, InputType inputType = InputType.None)
+        {
+            this.tick = tick;
+            this.sequence = sequence;
+            this.entityID = entityID;
+            this.inputData = inputData;
+            this.inputType = inputType;
+        }
+
+        public int tick = -1;
+        public long sequence = -1;
+        public int entityID = -1;
+        public SerializableVector3 inputData = default;
+        public InputType inputType = InputType.None;
+    }
+
+    [Serializable]
+    public class GameStateData
     {
     }
 
-    public PlayerMoveInput(int tick = -1, long sequence = -1, int entityID = -1, SerializableVector3 inputData = default, InputType inputType = InputType.None)
+    [Serializable]
+    public struct RankingData
     {
-        this.tick = tick;
-        this.sequence = sequence;
-        this.entityID = entityID;
-        this.inputData = inputData;
-        this.inputType = inputType;
+        public string entityId;
+        public int ranking;
+
+        public RankingData(string entityId, int ranking)
+        {
+            this.entityId = entityId;
+            this.ranking = ranking;
+        }
     }
 
-    public int tick = -1;
-    public long sequence = -1;
-    public int entityID = -1;
-    public SerializableVector3 inputData = default;
-    public InputType inputType = InputType.None;
-}
-
-[Serializable]
-public class GameStateData
-{
-}
-
-[Serializable]
-public struct RankingData
-{
-    public string entityId;
-    public int ranking;
-
-    public RankingData(string entityId, int ranking)
+    #region Protocols (Server to Client)
+    [Serializable]
+    public class SC_EnterRoom : IPhotonEventMessage
     {
-        this.entityId = entityId;
-        this.ranking = ranking;
-    }
-}
+        public int senderID { get; set; }
+        public int m_nEntityID;
+        public SerializableVector3 m_vec3Position;
+        public SerializableVector3 m_vec3Rotation;
+        public int m_nCurrentTick;
 
-#region Protocols (Server to Client)
-[Serializable]
-public class SC_EnterRoom : IPhotonEventMessage
-{
-    public int senderID { get; set; }
-    public int m_nEntityID;
-	public SerializableVector3 m_vec3Position;
-	public SerializableVector3 m_vec3Rotation;
-	public int m_nCurrentTick;
-
-	public byte GetEventID()
-	{
-		return PhotonEvent.SC_EnterRoom;
-	}
-}
-
-[Serializable]
-public class SC_ProcessInputData : IPhotonEventMessage
-{
-    public int senderID { get; set; }
-    public int tick;
-    public string type;
-    public long sequence;
-
-    public byte GetEventID()
-    {
-        return PhotonEvent.SC_ProcessInputData;
-    }
-}
-
-[Serializable]
-public class SC_EntitySkillInfo : IPhotonEventMessage
-{
-    public int senderID { get; set; }
-    public int m_nEntityID = -1;
-	public Dictionary<int, float> m_dicSkillInfo = new Dictionary<int, float>();
-
-	public byte GetEventID()
-	{
-		return PhotonEvent.SC_EntitySkillInfo;
-	}
-}
-
-[Serializable]
-public class SC_EmotionExpression : IPhotonEventMessage
-{
-    public int senderID { get; set; }
-    public int m_nEntityID;
-	public int m_nEmotionExpressionID;
-
-	public byte GetEventID()
-	{
-		return PhotonEvent.SC_EmotionExpression;
-	}
-}
-
-[Serializable]
-public class SC_EntityAppear : IPhotonEventMessage
-{
-    public int senderID { get; set; }
-    public List<EntitySnapInfo> m_listEntitySnapInfo;
-	public float m_fGameTime;
-
-	public byte GetEventID()
-	{
-		return PhotonEvent.SC_EntityAppear;
-	}
-}
-
-[Serializable]
-public class SC_EntityDisAppear : IPhotonEventMessage
-{
-    public int senderID { get; set; }
-    public List<int> m_listEntityID;
-
-	public byte GetEventID()
-	{
-		return PhotonEvent.SC_EntityDisAppear;
-	}
-}
-
-[Serializable]
-public class SC_Ping : IPhotonEventMessage
-{
-    public int senderID { get; set; }
-    public byte GetEventID()
-	{
-		return PhotonEvent.SC_Ping;
-	}
-}
-
-[Serializable]
-public class SC_SelectableFirstStatusCount : IPhotonEventMessage
-{
-    public int senderID { get; set; }
-    public int m_nSelectableFirstStatusCount;
-
-	public SC_SelectableFirstStatusCount(int nSelectableFirstStatusCount)
-	{
-		m_nSelectableFirstStatusCount = nSelectableFirstStatusCount;
-	}
-
-	public byte GetEventID()
-	{
-		return PhotonEvent.SC_SelectableFirstStatusCount;
-	}
-}
-
-[Serializable]
-public class SC_CharacterStatusChange : IPhotonEventMessage
-{
-    public int senderID { get; set; }
-    public FirstStatus m_FirstStatus;
-	public SecondStatus m_SecondStatus;
-
-	public SC_CharacterStatusChange(FirstStatus firstStatus, SecondStatus secondStatus)
-	{
-		m_FirstStatus = firstStatus;
-		m_SecondStatus = secondStatus;
-	}
-
-	public byte GetEventID()
-	{
-		return PhotonEvent.SC_CharacterStatusChange;
-	}
-}
-
-[Serializable]
-public class SC_SelectableAbilityInfo : IPhotonEventMessage
-{
-    public int senderID { get; set; }
-    public List<int> m_SelectableAbilityIDs = new List<int>();
-
-	public SC_SelectableAbilityInfo(List<int> selectableAbilityIDs)
-	{
-		m_SelectableAbilityIDs = selectableAbilityIDs;
-	}
-
-	public byte GetEventID()
-	{
-		return PhotonEvent.SC_SelectableAbilityInfo;
-	}
-}
-
-[Serializable]
-public class SC_GameEvents : IPhotonEventMessage
-{
-    public int senderID { get; set; }
-    public List<IGameEvent> gameEvents = new List<IGameEvent>();
-
-    public SC_GameEvents(List<IGameEvent> gameEvents)
-    {
-        this.gameEvents = gameEvents;
+        public byte GetEventID()
+        {
+            return PhotonEvent.SC_EnterRoom;
+        }
     }
 
-    public byte GetEventID()
+    [Serializable]
+    public class SC_ProcessInputData : IPhotonEventMessage
     {
-        return PhotonEvent.SC_GameEvents;
-    }
-}
+        public int senderID { get; set; }
+        public int tick;
+        public string type;
+        public long sequence;
 
-[Serializable]
-public class SC_SyncTick : IPhotonEventMessage
-{
-    public int senderID { get; set; }
-    public int tick;
-
-    public SC_SyncTick(int tick)
-    {
-        this.tick = tick;
+        public byte GetEventID()
+        {
+            return PhotonEvent.SC_ProcessInputData;
+        }
     }
 
-    public byte GetEventID()
+    [Serializable]
+    public class SC_EntitySkillInfo : IPhotonEventMessage
     {
-        return PhotonEvent.SC_SyncTick;
-    }
-}
+        public int senderID { get; set; }
+        public int m_nEntityID = -1;
+        public Dictionary<int, float> m_dicSkillInfo = new Dictionary<int, float>();
 
-[Serializable]
-public class SC_Synchronization : IPhotonEventMessage, IPoolable
-{
-    public int senderID { get; set; }
-    public List<ISnap> snaps = new List<ISnap>();
-
-    public byte GetEventID()
-    {
-        return PhotonEvent.SC_Synchronization;
+        public byte GetEventID()
+        {
+            return PhotonEvent.SC_EntitySkillInfo;
+        }
     }
 
-    public void Clear()
+    [Serializable]
+    public class SC_EmotionExpression : IPhotonEventMessage
     {
-        snaps.Clear();
-    }
-}
+        public int senderID { get; set; }
+        public int m_nEntityID;
+        public int m_nEmotionExpressionID;
 
-[Serializable]
-public class SC_GameState : IPhotonEventMessage
-{
-    public int senderID { get; set; }
-    public string gameState;
-    public GameStateData gameStateData;
-
-    public byte GetEventID()
-    {
-        return PhotonEvent.SC_GameState;
-    }
-}
-
-[Serializable]
-public class SC_GameEnd : IPhotonEventMessage
-{
-    public int senderID { get; set; }
-    public List<int> winnerEntityIds = new List<int>();
-    public List<int> loserEntityIds = new List<int>();
-    public List<RankingData> rankingDataList = new List<RankingData>();
-
-    public byte GetEventID()
-    {
-        return PhotonEvent.SC_GameEnd;
-    }
-}
-#endregion
-
-#region Protocols (Client to Server)
-[Serializable]
-public class CS_NotifyMoveInputData : IPhotonEventMessage
-{
-    public int senderID { get; set; }
-    public PlayerMoveInput m_PlayerMoveInput;
-
-	public byte GetEventID()
-	{
-		return PhotonEvent.CS_NotifyMoveInputData;
-	}
-}
-
-[Serializable]
-public class CS_NotifyPlayerLookAtPosition : IPhotonEventMessage
-{
-    public int senderID { get; set; }
-    public SerializableVector3 m_vec3Position;
-
-	public byte GetEventID()
-	{
-		return PhotonEvent.CS_NotifyPlayerLookAtPosition;
-	}
-}
-
-[Serializable]
-public class CS_NotifySkillInputData : IPhotonEventMessage
-{
-    public int senderID { get; set; }
-    public SkillInputData m_SkillInputData;
-
-	public byte GetEventID()
-	{
-		return PhotonEvent.CS_NotifySkillInputData;
-	}
-}
-
-[Serializable]
-public class CS_NotifyJumpInputData : IPhotonEventMessage
-{
-    public int senderID { get; set; }
-    public JumpInputData jumpInputData;
-
-    public byte GetEventID()
-    {
-        return PhotonEvent.CS_NotifyJumpInputData;
-    }
-}
-
-[Serializable]
-public class CS_RequestEmotionExpression : IPhotonEventMessage
-{
-    public int senderID { get; set; }
-    public int m_nEmotionExpressionID;
-
-	public CS_RequestEmotionExpression(int nEmotionExpressionID)
-	{
-		m_nEmotionExpressionID = nEmotionExpressionID;
-	}
-
-	public byte GetEventID()
-	{
-		return PhotonEvent.CS_RequestEmotionExpression;
-	}
-}
-
-[Serializable]
-public class CS_Ping : IPhotonEventMessage
-{
-    public int senderID { get; set; }
-    public byte GetEventID()
-	{
-		return PhotonEvent.CS_Ping;
-	}
-}
-
-[Serializable]
-public class CS_FirstStatusSelection : IPhotonEventMessage
-{
-    public int senderID { get; set; }
-    public int m_nEntityID;
-	public FirstStatusElement m_FirstStatusElement;
-
-	public CS_FirstStatusSelection(int nEntityID, FirstStatusElement firstStatusElement)
-	{
-		m_nEntityID = nEntityID;
-		m_FirstStatusElement = firstStatusElement;
-	}
-
-	public byte GetEventID()
-	{
-		return PhotonEvent.CS_FirstStatusSelection;
-	}
-}
-
-[Serializable]
-public class CS_AbilitySelection : IPhotonEventMessage
-{
-    public int senderID { get; set; }
-    public int m_nEntityID;
-	public int m_nAbilityID;
-
-	public CS_AbilitySelection(int nEntityID, int nAbilityID)
-	{
-		m_nEntityID = nEntityID;
-		m_nAbilityID = nAbilityID;
-	}
-
-	public byte GetEventID()
-	{
-		return PhotonEvent.CS_AbilitySelection;
-	}
-}
-
-[Serializable]
-public class CS_GamePreparation : IPhotonEventMessage
-{
-    public int senderID { get; set; }
-    public int entityID;
-    public float preparation;
-
-    public CS_GamePreparation(int entityID, int preparation)
-    {
-        this.entityID = entityID;
-        this.preparation = preparation;
+        public byte GetEventID()
+        {
+            return PhotonEvent.SC_EmotionExpression;
+        }
     }
 
-    public byte GetEventID()
+    [Serializable]
+    public class SC_EntityAppear : IPhotonEventMessage
     {
-        return PhotonEvent.CS_GamePreparation;
+        public int senderID { get; set; }
+        public List<EntitySnapInfo> m_listEntitySnapInfo;
+        public float m_fGameTime;
+
+        public byte GetEventID()
+        {
+            return PhotonEvent.SC_EntityAppear;
+        }
     }
+
+    [Serializable]
+    public class SC_EntityDisAppear : IPhotonEventMessage
+    {
+        public int senderID { get; set; }
+        public List<int> m_listEntityID;
+
+        public byte GetEventID()
+        {
+            return PhotonEvent.SC_EntityDisAppear;
+        }
+    }
+
+    [Serializable]
+    public class SC_Ping : IPhotonEventMessage
+    {
+        public int senderID { get; set; }
+        public byte GetEventID()
+        {
+            return PhotonEvent.SC_Ping;
+        }
+    }
+
+    [Serializable]
+    public class SC_SelectableFirstStatusCount : IPhotonEventMessage
+    {
+        public int senderID { get; set; }
+        public int m_nSelectableFirstStatusCount;
+
+        public SC_SelectableFirstStatusCount(int nSelectableFirstStatusCount)
+        {
+            m_nSelectableFirstStatusCount = nSelectableFirstStatusCount;
+        }
+
+        public byte GetEventID()
+        {
+            return PhotonEvent.SC_SelectableFirstStatusCount;
+        }
+    }
+
+    [Serializable]
+    public class SC_CharacterStatusChange : IPhotonEventMessage
+    {
+        public int senderID { get; set; }
+        public FirstStatus m_FirstStatus;
+        public SecondStatus m_SecondStatus;
+
+        public SC_CharacterStatusChange(FirstStatus firstStatus, SecondStatus secondStatus)
+        {
+            m_FirstStatus = firstStatus;
+            m_SecondStatus = secondStatus;
+        }
+
+        public byte GetEventID()
+        {
+            return PhotonEvent.SC_CharacterStatusChange;
+        }
+    }
+
+    [Serializable]
+    public class SC_SelectableAbilityInfo : IPhotonEventMessage
+    {
+        public int senderID { get; set; }
+        public List<int> m_SelectableAbilityIDs = new List<int>();
+
+        public SC_SelectableAbilityInfo(List<int> selectableAbilityIDs)
+        {
+            m_SelectableAbilityIDs = selectableAbilityIDs;
+        }
+
+        public byte GetEventID()
+        {
+            return PhotonEvent.SC_SelectableAbilityInfo;
+        }
+    }
+
+    [Serializable]
+    public class SC_GameEvents : IPhotonEventMessage
+    {
+        public int senderID { get; set; }
+        public List<IGameEvent> gameEvents = new List<IGameEvent>();
+
+        public SC_GameEvents(List<IGameEvent> gameEvents)
+        {
+            this.gameEvents = gameEvents;
+        }
+
+        public byte GetEventID()
+        {
+            return PhotonEvent.SC_GameEvents;
+        }
+    }
+
+    [Serializable]
+    public class SC_SyncTick : IPhotonEventMessage
+    {
+        public int senderID { get; set; }
+        public int tick;
+
+        public SC_SyncTick(int tick)
+        {
+            this.tick = tick;
+        }
+
+        public byte GetEventID()
+        {
+            return PhotonEvent.SC_SyncTick;
+        }
+    }
+
+    [Serializable]
+    public class SC_Synchronization : IPhotonEventMessage, IPoolable
+    {
+        public int senderID { get; set; }
+        public List<ISnap> snaps = new List<ISnap>();
+
+        public byte GetEventID()
+        {
+            return PhotonEvent.SC_Synchronization;
+        }
+
+        public void Clear()
+        {
+            snaps.Clear();
+        }
+    }
+
+    [Serializable]
+    public class SC_GameState : IPhotonEventMessage
+    {
+        public int senderID { get; set; }
+        public string gameState;
+        public GameStateData gameStateData;
+
+        public byte GetEventID()
+        {
+            return PhotonEvent.SC_GameState;
+        }
+    }
+
+    [Serializable]
+    public class SC_GameEnd : IPhotonEventMessage
+    {
+        public int senderID { get; set; }
+        public List<int> winnerEntityIds = new List<int>();
+        public List<int> loserEntityIds = new List<int>();
+        public List<RankingData> rankingDataList = new List<RankingData>();
+
+        public byte GetEventID()
+        {
+            return PhotonEvent.SC_GameEnd;
+        }
+    }
+    #endregion
+
+    #region Protocols (Client to Server)
+    [Serializable]
+    public class CS_NotifyMoveInputData : IPhotonEventMessage
+    {
+        public int senderID { get; set; }
+        public PlayerMoveInput m_PlayerMoveInput;
+
+        public byte GetEventID()
+        {
+            return PhotonEvent.CS_NotifyMoveInputData;
+        }
+    }
+
+    [Serializable]
+    public class CS_NotifyPlayerLookAtPosition : IPhotonEventMessage
+    {
+        public int senderID { get; set; }
+        public SerializableVector3 m_vec3Position;
+
+        public byte GetEventID()
+        {
+            return PhotonEvent.CS_NotifyPlayerLookAtPosition;
+        }
+    }
+
+    [Serializable]
+    public class CS_NotifySkillInputData : IPhotonEventMessage
+    {
+        public int senderID { get; set; }
+        public SkillInputData m_SkillInputData;
+
+        public byte GetEventID()
+        {
+            return PhotonEvent.CS_NotifySkillInputData;
+        }
+    }
+
+    [Serializable]
+    public class CS_NotifyJumpInputData : IPhotonEventMessage
+    {
+        public int senderID { get; set; }
+        public JumpInputData jumpInputData;
+
+        public byte GetEventID()
+        {
+            return PhotonEvent.CS_NotifyJumpInputData;
+        }
+    }
+
+    [Serializable]
+    public class CS_RequestEmotionExpression : IPhotonEventMessage
+    {
+        public int senderID { get; set; }
+        public int m_nEmotionExpressionID;
+
+        public CS_RequestEmotionExpression(int nEmotionExpressionID)
+        {
+            m_nEmotionExpressionID = nEmotionExpressionID;
+        }
+
+        public byte GetEventID()
+        {
+            return PhotonEvent.CS_RequestEmotionExpression;
+        }
+    }
+
+    [Serializable]
+    public class CS_Ping : IPhotonEventMessage
+    {
+        public int senderID { get; set; }
+        public byte GetEventID()
+        {
+            return PhotonEvent.CS_Ping;
+        }
+    }
+
+    [Serializable]
+    public class CS_FirstStatusSelection : IPhotonEventMessage
+    {
+        public int senderID { get; set; }
+        public int m_nEntityID;
+        public FirstStatusElement m_FirstStatusElement;
+
+        public CS_FirstStatusSelection(int nEntityID, FirstStatusElement firstStatusElement)
+        {
+            m_nEntityID = nEntityID;
+            m_FirstStatusElement = firstStatusElement;
+        }
+
+        public byte GetEventID()
+        {
+            return PhotonEvent.CS_FirstStatusSelection;
+        }
+    }
+
+    [Serializable]
+    public class CS_AbilitySelection : IPhotonEventMessage
+    {
+        public int senderID { get; set; }
+        public int m_nEntityID;
+        public int m_nAbilityID;
+
+        public CS_AbilitySelection(int nEntityID, int nAbilityID)
+        {
+            m_nEntityID = nEntityID;
+            m_nAbilityID = nAbilityID;
+        }
+
+        public byte GetEventID()
+        {
+            return PhotonEvent.CS_AbilitySelection;
+        }
+    }
+
+    [Serializable]
+    public class CS_GamePreparation : IPhotonEventMessage
+    {
+        public int senderID { get; set; }
+        public int entityID;
+        public float preparation;
+
+        public CS_GamePreparation(int entityID, int preparation)
+        {
+            this.entityID = entityID;
+            this.preparation = preparation;
+        }
+
+        public byte GetEventID()
+        {
+            return PhotonEvent.CS_GamePreparation;
+        }
+    }
+
+    [Serializable]
+    public class CS_SubGamePreparation : IPhotonEventMessage
+    {
+        public int senderID { get; set; }
+        public int entityID;
+        public float preparation;
+
+        public CS_SubGamePreparation(int entityID, int preparation)
+        {
+            this.entityID = entityID;
+            this.preparation = preparation;
+        }
+
+        public byte GetEventID()
+        {
+            return PhotonEvent.CS_SubGamePreparation;
+        }
+    }
+    #endregion
+
 }
-
-[Serializable]
-public class CS_SubGamePreparation : IPhotonEventMessage
-{
-    public int senderID { get; set; }
-    public int entityID;
-    public float preparation;
-
-    public CS_SubGamePreparation(int entityID, int preparation)
-    {
-        this.entityID = entityID;
-        this.preparation = preparation;
-    }
-
-    public byte GetEventID()
-    {
-        return PhotonEvent.CS_SubGamePreparation;
-    }
-}
-#endregion

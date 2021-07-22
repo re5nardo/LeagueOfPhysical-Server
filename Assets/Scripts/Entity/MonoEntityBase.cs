@@ -4,6 +4,7 @@ using System;
 using System.Linq;
 using GameFramework;
 using EntityCommand;
+using NetworkModel.Mirror;
 
 namespace Entity
 {
@@ -85,15 +86,15 @@ namespace Entity
 
         public virtual EntitySnapInfo GetEntitySnapInfo()
         {
-            EntitySnapInfo entitySnapInfo = new EntitySnapInfo();
+            var entitySnapInfo = new EntitySnapInfo();
 
-            entitySnapInfo.m_nEntityID = EntityID;
-            entitySnapInfo.m_EntityType = EntityType;
-            entitySnapInfo.m_EntityRole = EntityRole;
-            entitySnapInfo.m_Position = Position;
-            entitySnapInfo.m_Rotation = Rotation;
-            entitySnapInfo.m_Velocity = Velocity;
-            entitySnapInfo.m_AngularVelocity = AngularVelocity;
+            entitySnapInfo.entityId = EntityID;
+            entitySnapInfo.entityType = EntityType;
+            entitySnapInfo.entityRole = EntityRole;
+            entitySnapInfo.position = Position;
+            entitySnapInfo.rotation = Rotation;
+            entitySnapInfo.velocity = Velocity;
+            entitySnapInfo.angularVelocity = AngularVelocity;
 
             return entitySnapInfo;
         }

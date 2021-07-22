@@ -11,12 +11,12 @@ public class EntityTransformSnap : ISnap
     public int Tick { get; set; }
     public int entityId;
 
-    public SerializableVector3 position;
-    public SerializableVector3 rotation;
-    public SerializableVector3 velocity;
-    public SerializableVector3 angularVelocity;
-    public SerializableVector3 destPosition;
-    public SerializableVector3 destRotation;
+    public Vector3 position;
+    public Vector3 rotation;
+    public Vector3 velocity;
+    public Vector3 angularVelocity;
+    public Vector3 destPosition;
+    public Vector3 destRotation;
 
     public EntityTransformSnap() { }
 
@@ -30,10 +30,10 @@ public class EntityTransformSnap : ISnap
         angularVelocity = entity.AngularVelocity;
 
         var move = entity.GetEntityComponent<Move>();
-        destPosition = move != null ? (SerializableVector3)move.GetDestination() : position;
+        destPosition = move != null ? move.GetDestination() : position;
 
         var rot = entity.GetEntityComponent<Rotation>();
-        destRotation = rot != null ? (SerializableVector3)rot.GetDestination() : rotation;
+        destRotation = rot != null ? rot.GetDestination() : rotation;
     }
 
     public bool EqualsCore(ISnap snap)
@@ -80,10 +80,10 @@ public class EntityTransformSnap : ISnap
         angularVelocity = entityTransformSynchronization.Entity.AngularVelocity;
 
         var move = entityTransformSynchronization.Entity.GetEntityComponent<Move>();
-        destPosition = move != null ? (SerializableVector3)move.GetDestination() : position;
+        destPosition = move != null ? move.GetDestination() : position;
 
         var rot = entityTransformSynchronization.Entity.GetEntityComponent<Rotation>();
-        destRotation = rot != null ? (SerializableVector3)rot.GetDestination() : rotation;
+        destRotation = rot != null ? rot.GetDestination() : rotation;
 
         return this;
     }

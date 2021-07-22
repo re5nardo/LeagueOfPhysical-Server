@@ -16,7 +16,7 @@ public class RoomNetwork : MonoSingleton<RoomNetwork>, INetwork
 	{
 		base.Awake();
 
-        NetworkImpl = gameObject.AddComponent<RoomNetworkImpl_PUN>();
+        NetworkImpl = gameObject.AddComponent<RoomNetworkImpl_Mirror>();
 	}
 
 	public void Send(IMessage msg, int targetId, bool reliable = true, bool instant = false)

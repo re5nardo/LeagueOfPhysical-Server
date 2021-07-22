@@ -8,7 +8,7 @@ using Behavior;
 [Serializable]
 public class MoveSnap : BehaviorSnap
 {
-    public SerializableVector3 destination;
+    public Vector3 destination;
 
     public MoveSnap() { }
     public MoveSnap(BehaviorBase behavior) : base(behavior) { }

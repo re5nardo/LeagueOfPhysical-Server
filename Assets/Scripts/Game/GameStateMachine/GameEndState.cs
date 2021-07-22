@@ -4,6 +4,7 @@ using UnityEngine;
 using GameFramework.FSM;
 using System;
 using System.Linq;
+using NetworkModel.Mirror;
 
 public class GameEndState : MonoStateBase
 {
@@ -13,10 +14,10 @@ public class GameEndState : MonoStateBase
 
         //  send result to players
         //  ...
-        SC_GameEnd gameEnd = new SC_GameEnd();
-        gameEnd.winnerEntityIds = new List<int>();
-        gameEnd.loserEntityIds = new List<int>();
-        gameEnd.rankingDataList = new List<RankingData>();
+        var gameEnd = new SC_GameEnd();
+        gameEnd.listWinnerEntityId = new List<int>();
+        gameEnd.listLoserEntityId = new List<int>();
+        gameEnd.listRankingData = new List<RankingData>();
 
         RoomNetwork.Instance.SendToAll(gameEnd);
 

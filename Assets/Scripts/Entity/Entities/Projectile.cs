@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using NetworkModel.Mirror;
 
 namespace Entity
 {
@@ -74,18 +75,18 @@ namespace Entity
 
 		public override EntitySnapInfo GetEntitySnapInfo()
 		{
-			ProjectileSnapInfo entitySnapInfo = new ProjectileSnapInfo();
+			var entitySnapInfo = new ProjectileSnapInfo();
 
-			entitySnapInfo.m_nEntityID = EntityID;
-			entitySnapInfo.m_EntityType = EntityType;
-            entitySnapInfo.m_EntityRole = EntityRole;
-            entitySnapInfo.m_nMasterDataID = projectileBasicData.MasterDataID;
-			entitySnapInfo.m_Position = Position;
-			entitySnapInfo.m_Rotation = Rotation;
-			entitySnapInfo.m_Velocity = Velocity;
-			entitySnapInfo.m_AngularVelocity = AngularVelocity;
-			entitySnapInfo.m_strModel = projectileBasicData.ModelId;
-			entitySnapInfo.m_fMovementSpeed = projectileBasicData.MovementSpeed;
+			entitySnapInfo.entityId = EntityID;
+			entitySnapInfo.entityType = EntityType;
+            entitySnapInfo.entityRole = EntityRole;
+            entitySnapInfo.masterDataId = projectileBasicData.MasterDataID;
+			entitySnapInfo.position = Position;
+			entitySnapInfo.rotation = Rotation;
+			entitySnapInfo.velocity = Velocity;
+			entitySnapInfo.angularVelocity = AngularVelocity;
+			entitySnapInfo.model = projectileBasicData.ModelId;
+			entitySnapInfo.movementSpeed = projectileBasicData.MovementSpeed;
 
 			return entitySnapInfo;
 		}

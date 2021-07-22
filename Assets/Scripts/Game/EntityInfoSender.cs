@@ -3,6 +3,7 @@ using UnityEngine;
 using System;
 using GameFramework;
 using Entity;
+using NetworkModel.Mirror;
 
 public class EntityInfoSender : MonoSingleton<EntityInfoSender>
 {
@@ -67,10 +68,10 @@ public class EntityInfoSender : MonoSingleton<EntityInfoSender>
 				continue;
 			}
 
-			SC_EntitySkillInfo entitySkillInfo = new SC_EntitySkillInfo();
-			entitySkillInfo.m_nEntityID = entity.EntityID;
+			var entitySkillInfo = new SC_EntitySkillInfo();
+			entitySkillInfo.entityId = entity.EntityID;
 			SkillController controller = entity.GetEntityComponent<SkillController>();
-			entitySkillInfo.m_dicSkillInfo = controller.GetEntitySkillInfo();
+			entitySkillInfo.dicSkillInfo = controller.GetEntitySkillInfo();
 
 			RoomNetwork.Instance.Send(entitySkillInfo, photonPlayer.ID);
         }

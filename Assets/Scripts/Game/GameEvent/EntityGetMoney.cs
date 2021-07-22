@@ -12,11 +12,11 @@ namespace GameEvent
         public int Seq { get; }
         public int Tick { get; set; }
         public int entityID;
-        public SerializableVector3 position;
+        public Vector3 position;
         public int money;
         public int afterMoney;
 
-        public EntityGetMoney(int entityID, SerializableVector3 position, int money, int afterMoney)
+        public EntityGetMoney(int entityID, Vector3 position, int money, int afterMoney)
         {
             Seq = LOP.Game.Current.GameEventManager.GenerateSeq();
             Tick = Game.Current.CurrentTick;

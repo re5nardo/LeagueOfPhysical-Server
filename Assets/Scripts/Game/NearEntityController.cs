@@ -4,6 +4,7 @@ using System;
 using GameFramework;
 using Entity;
 using System.Linq;
+using NetworkModel.Mirror;
 
 public class NearEntityController : MonoComponentBase
 {
@@ -328,18 +329,16 @@ public class NearEntityController : MonoComponentBase
         //  Don't send Local Entities
         entityIDs.RemoveAll(entityID => Entities.Get<MonoEntityBase>(entityID).IsLocalEntity);
 
-        SC_EntityAppear entityAppear = new SC_EntityAppear();
-		entityAppear.m_listEntitySnapInfo = new List<EntitySnapInfo>(entityIDs.Count);
+        var entityAppear = new SC_EntityAppear();
+		entityAppear.listEntitySnapInfo = new List<EntitySnapInfo>(entityIDs.Count);
 		foreach (int entityID in entityIDs)
 		{
 			IEntity entity = Entities.Get(entityID);
-			entityAppear.m_listEntitySnapInfo.Add(EntityHelper.GetEntitySnapInfo(entity));
+			entityAppear.listEntitySnapInfo.Add(EntityHelper.GetEntitySnapInfo(entity));
 		}
-		entityAppear.m_fGameTime = Game.Current.GameTime;
+		entityAppear.tick = Game.Current.CurrentTick;
 
-		int actorID = PhotonHelper.GetActorID(Entity.EntityID);
-
-		RoomNetwork.Instance.Send(entityAppear, actorID);
+		RoomNetwork.Instance.Send(entityAppear, LOP.Game.Current.EntityIdConnId[Entity.EntityID]);
 	}
 
 	private void SendEntityDisAppear(List<int> entityIDs)
@@ -350,11 +349,9 @@ public class NearEntityController : MonoComponentBase
         //  Don't send Local Entities
         entityIDs.RemoveAll(entityID => Entities.Get<MonoEntityBase>(entityID).IsLocalEntity);
 
-        SC_EntityDisAppear entityDisAppear = new SC_EntityDisAppear();
-		entityDisAppear.m_listEntityID = entityIDs;
+        var entityDisAppear = new SC_EntityDisAppear();
+		entityDisAppear.listEntityId = entityIDs;
 
-		int actorID = PhotonHelper.GetActorID(Entity.EntityID);
-
-		RoomNetwork.Instance.Send(entityDisAppear, actorID);
+		RoomNetwork.Instance.Send(entityDisAppear, LOP.Game.Current.EntityIdConnId[Entity.EntityID]);
 	}
 }
