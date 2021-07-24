@@ -51,7 +51,10 @@ public class PlayerInputController : MonoComponentBase
             processInputData.type = "jump";
             processInputData.sequence = notifyJumpInputData.jumpInputData.sequence;
 
-            RoomNetwork.Instance.Send(processInputData, notifyJumpInputData.Sender);
+            if (IDMap.TryGetConnectionIdByEntityId(notifyJumpInputData.jumpInputData.entityId, out var connectionId))
+            {
+                RoomNetwork.Instance.Send(processInputData, connectionId);
+            }
         }
 
         if (notifyMoveInputDatas.Count > 0)
@@ -77,7 +80,10 @@ public class PlayerInputController : MonoComponentBase
             processInputData.type = "move";
             processInputData.sequence = notifyMoveInputData.playerMoveInput.sequence;
 
-            RoomNetwork.Instance.Send(processInputData, notifyMoveInputData.Sender);
+            if (IDMap.TryGetConnectionIdByEntityId(notifyMoveInputData.playerMoveInput.entityId, out var connectionId))
+            {
+                RoomNetwork.Instance.Send(processInputData, connectionId);
+            }
         }
     }
 

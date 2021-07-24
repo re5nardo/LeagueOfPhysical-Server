@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using GameFramework;
 using System;
-using Mirror;
 
 //  IPoolable 때문에, 매개변수가 없는 기본 생성자 필요 & nullable 한 녀석들은 조심해서 사용 (ex. List, Dictionary 등등..)
 namespace NetworkModel.Mirror
@@ -33,7 +32,6 @@ namespace NetworkModel.Mirror
     [Serializable]
     public class SC_EnterRoom : IMirrorMessage
     {
-        public int Sender { get; set; }
         public int tick;
         public int entityId;
         public Vector3 position;
@@ -48,7 +46,6 @@ namespace NetworkModel.Mirror
 
         public void Clear()
         {
-            Sender = default;
             tick = default;
             entityId = default;
             position = default;
@@ -59,7 +56,6 @@ namespace NetworkModel.Mirror
     [Serializable]
     public class SC_ProcessInputData : IMirrorMessage
     {
-        public int Sender { get; set; }
         public int tick;
         public string type;
         public long sequence;
@@ -73,7 +69,6 @@ namespace NetworkModel.Mirror
 
         public void Clear()
         {
-            Sender = default;
             tick = default;
             type = default;
             sequence = default;
@@ -83,7 +78,6 @@ namespace NetworkModel.Mirror
     [Serializable]
     public class SC_EntitySkillInfo : IMirrorMessage
     {
-        public int Sender { get; set; }
         public int entityId;
         public Dictionary<int, float> dicSkillInfo = new Dictionary<int, float>();
 
@@ -96,7 +90,6 @@ namespace NetworkModel.Mirror
 
         public void Clear()
         {
-            Sender = default;
             entityId = default;
             dicSkillInfo.Clear();
         }
@@ -105,7 +98,6 @@ namespace NetworkModel.Mirror
     [Serializable]
     public class SC_EmotionExpression : IMirrorMessage
     {
-        public int Sender { get; set; }
         public int entityId;
         public int emotionExpressionId;
 
@@ -118,7 +110,6 @@ namespace NetworkModel.Mirror
 
         public void Clear()
         {
-            Sender = default;
             entityId = default;
             emotionExpressionId = default;
         }
@@ -127,7 +118,6 @@ namespace NetworkModel.Mirror
     [Serializable]
     public class SC_EntityAppear : IMirrorMessage
     {
-        public int Sender { get; set; }
         public int tick;
         public List<EntitySnapInfo> listEntitySnapInfo = new List<EntitySnapInfo>();
 
@@ -140,7 +130,6 @@ namespace NetworkModel.Mirror
 
         public void Clear()
         {
-            Sender = default;
             tick = default;
             listEntitySnapInfo.Clear();
         }
@@ -149,7 +138,6 @@ namespace NetworkModel.Mirror
     [Serializable]
     public class SC_EntityDisAppear : IMirrorMessage
     {
-        public int Sender { get; set; }
         public List<int> listEntityId = new List<int>();
 
         public SC_EntityDisAppear() { }
@@ -161,7 +149,6 @@ namespace NetworkModel.Mirror
 
         public void Clear()
         {
-            Sender = default;
             listEntityId.Clear();
         }
     }
@@ -169,7 +156,6 @@ namespace NetworkModel.Mirror
     [Serializable]
     public class SC_GameEvents : IMirrorMessage
     {
-        public int Sender { get; set; }
         public List<IGameEvent> listGameEvent = new List<IGameEvent>();
 
         public SC_GameEvents() { }
@@ -186,7 +172,6 @@ namespace NetworkModel.Mirror
 
         public void Clear()
         {
-            Sender = default;
             listGameEvent.Clear();
         }
     }
@@ -194,7 +179,6 @@ namespace NetworkModel.Mirror
     [Serializable]
     public class SC_SyncTick : IMirrorMessage
     {
-        public int Sender { get; set; }
         public int tick;
 
         public SC_SyncTick() { }
@@ -211,7 +195,6 @@ namespace NetworkModel.Mirror
 
         public void Clear()
         {
-            Sender = default;
             tick = default;
         }
     }
@@ -219,7 +202,6 @@ namespace NetworkModel.Mirror
     [Serializable]
     public class SC_Synchronization : IMirrorMessage
     {
-        public int Sender { get; set; }
         public List<ISnap> listSnap = new List<ISnap>();
 
         public SC_Synchronization() { }
@@ -231,7 +213,6 @@ namespace NetworkModel.Mirror
 
         public void Clear()
         {
-            Sender = default;
             listSnap.Clear();
         }
     }
@@ -239,7 +220,6 @@ namespace NetworkModel.Mirror
     [Serializable]
     public class SC_GameState : IMirrorMessage
     {
-        public int Sender { get; set; }
         public string gameState;
         public GameStateData gameStateData;
 
@@ -252,7 +232,6 @@ namespace NetworkModel.Mirror
 
         public void Clear()
         {
-            Sender = default;
             gameState = default;
             gameStateData = default;
         }
@@ -261,7 +240,6 @@ namespace NetworkModel.Mirror
     [Serializable]
     public class SC_GameEnd : IMirrorMessage
     {
-        public int Sender { get; set; }
         public List<int> listWinnerEntityId = new List<int>();
         public List<int> listLoserEntityId = new List<int>();
         public List<RankingData> listRankingData = new List<RankingData>();
@@ -275,7 +253,6 @@ namespace NetworkModel.Mirror
 
         public void Clear()
         {
-            Sender = default;
             listWinnerEntityId.Clear();
             listLoserEntityId.Clear();
             listRankingData.Clear();
@@ -287,7 +264,6 @@ namespace NetworkModel.Mirror
     [Serializable]
     public class CS_NotifyMoveInputData : IMirrorMessage
     {
-        public int Sender { get; set; }
         public PlayerMoveInput playerMoveInput;
 
         public CS_NotifyMoveInputData() { }
@@ -299,7 +275,6 @@ namespace NetworkModel.Mirror
 
         public void Clear()
         {
-            Sender = default;
             playerMoveInput = default;
         }
     }
@@ -307,7 +282,6 @@ namespace NetworkModel.Mirror
     [Serializable]
     public class CS_NotifySkillInputData : IMirrorMessage
     {
-        public int Sender { get; set; }
         public SkillInputData skillInputData;
 
         public CS_NotifySkillInputData() { }
@@ -319,7 +293,6 @@ namespace NetworkModel.Mirror
 
         public void Clear()
         {
-            Sender = default;
             skillInputData = default;
         }
     }
@@ -327,7 +300,6 @@ namespace NetworkModel.Mirror
     [Serializable]
     public class CS_NotifyJumpInputData : IMirrorMessage
     {
-        public int Sender { get; set; }
         public JumpInputData jumpInputData;
 
         public CS_NotifyJumpInputData() { }
@@ -339,7 +311,6 @@ namespace NetworkModel.Mirror
 
         public void Clear()
         {
-            Sender = default;
             jumpInputData = default;
         }
     }
@@ -347,13 +318,14 @@ namespace NetworkModel.Mirror
     [Serializable]
     public class CS_RequestEmotionExpression : IMirrorMessage
     {
-        public int Sender { get; set; }
+        public int entityId;
         public int emotionExpressionId;
 
         public CS_RequestEmotionExpression() { }
 
-        public CS_RequestEmotionExpression(int emotionExpressionId)
+        public CS_RequestEmotionExpression(int entityId, int emotionExpressionId)
         {
+            this.entityId = entityId;
             this.emotionExpressionId = emotionExpressionId;
         }
 
@@ -364,7 +336,7 @@ namespace NetworkModel.Mirror
 
         public void Clear()
         {
-            Sender = default;
+            entityId = default;
             emotionExpressionId = default;
         }
     }
@@ -372,7 +344,6 @@ namespace NetworkModel.Mirror
     [Serializable]
     public class CS_GamePreparation : IMirrorMessage
     {
-        public int Sender { get; set; }
         public int entityId;
         public float preparation;
 
@@ -391,7 +362,6 @@ namespace NetworkModel.Mirror
 
         public void Clear()
         {
-            Sender = default;
             entityId = default;
             preparation = default;
         }
@@ -400,7 +370,6 @@ namespace NetworkModel.Mirror
     [Serializable]
     public class CS_SubGamePreparation : IMirrorMessage
     {
-        public int Sender { get; set; }
         public int entityId;
         public float preparation;
 
@@ -419,7 +388,6 @@ namespace NetworkModel.Mirror
 
         public void Clear()
         {
-            Sender = default;
             entityId = default;
             preparation = default;
         }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Entity;
 using UnityEngine;
 using GameFramework;
+using NetworkModel.PUN;
 
 public class CharacterStatusData : MonoComponentBase
 {

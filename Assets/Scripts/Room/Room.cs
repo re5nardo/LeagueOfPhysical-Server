@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using GameFramework;
 using UnityEngine;
+using Mirror;
 
 namespace LOP
 {
@@ -9,7 +10,6 @@ namespace LOP
         [SerializeField] private Game game = null;
 
         private RoomProtocolDispatcher roomProtocolDispatcher = null;
-        private RoomPunBehaviour roomPunBehaviour = null;
 
         #region MonoBehaviour
         private IEnumerator Start()
@@ -17,6 +17,9 @@ namespace LOP
             yield return Initialize();
 
             PhotonNetwork.isMessageQueueRunning = true;
+
+            //UNetTransport.ServerListenPort = 7777;
+            NetworkManager.singleton.StartServer();
 
             game.Run();
 
@@ -34,9 +37,6 @@ namespace LOP
         private IEnumerator Initialize()
         {
             roomProtocolDispatcher = gameObject.AddComponent<RoomProtocolDispatcher>();
-            roomPunBehaviour = gameObject.AddComponent<RoomPunBehaviour>();
-
-            roomProtocolDispatcher[typeof(CS_Ping)] = CS_PingHandler.Handle;
 
             yield return game.Initialize();
         }

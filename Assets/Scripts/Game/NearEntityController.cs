@@ -338,8 +338,11 @@ public class NearEntityController : MonoComponentBase
 		}
 		entityAppear.tick = Game.Current.CurrentTick;
 
-		RoomNetwork.Instance.Send(entityAppear, LOP.Game.Current.EntityIdConnId[Entity.EntityID]);
-	}
+        if (IDMap.TryGetConnectionIdByEntityId(Entity.EntityID, out var connectionId))
+        {
+            RoomNetwork.Instance.Send(entityAppear, connectionId);
+        }
+    }
 
 	private void SendEntityDisAppear(List<int> entityIDs)
 	{
@@ -352,6 +355,9 @@ public class NearEntityController : MonoComponentBase
         var entityDisAppear = new SC_EntityDisAppear();
 		entityDisAppear.listEntityId = entityIDs;
 
-		RoomNetwork.Instance.Send(entityDisAppear, LOP.Game.Current.EntityIdConnId[Entity.EntityID]);
+        if (IDMap.TryGetConnectionIdByEntityId(Entity.EntityID, out var connectionId))
+        {
+            RoomNetwork.Instance.Send(entityDisAppear, connectionId);
+        }
 	}
 }

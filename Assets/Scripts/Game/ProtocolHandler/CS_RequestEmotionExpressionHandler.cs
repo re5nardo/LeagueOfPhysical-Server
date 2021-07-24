@@ -11,7 +11,7 @@ public class CS_RequestEmotionExpressionHandler
     {
         CS_RequestEmotionExpression requestEmotionExpression = msg as CS_RequestEmotionExpression;
 
-        IEntity senderEntity = Entities.Get(LOP.Game.Current.ConnIdEntityId[requestEmotionExpression.Sender]);
+        IEntity senderEntity = Entities.Get(requestEmotionExpression.entityId);
 
         EmotionExpressionData emotionExpressionData = senderEntity.GetEntityComponent<EmotionExpressionData>();
         if (!emotionExpressionData.m_listEmotionExpressionID.Exists(x => x == requestEmotionExpression.emotionExpressionId))

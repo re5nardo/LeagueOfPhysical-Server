@@ -37,9 +37,9 @@ public class RoomNetworkImpl_Mirror : MonoBehaviour, INetworkImpl
 
     public void SendToAll(IMessage msg, bool reliable = true, bool instant = false)
     {
-        foreach (var client in NetworkServer.connections.Values)
+        foreach (var connectionId in NetworkServer.connections.Keys)
         {
-            Send(msg, client.connectionId, reliable, instant);
+            Send(msg, connectionId, reliable, instant);
         }
     }
 
@@ -47,12 +47,9 @@ public class RoomNetworkImpl_Mirror : MonoBehaviour, INetworkImpl
     {
         foreach (IEntity entity in Entities.Get(center, radius, EntityRole.Player))
         {
-            if (LOP.Game.Current.EntityIdConnId.TryGetValue(entity.EntityID, out var connId))
+            if (IDMap.TryGetConnectionIdByEntityId(entity.EntityID, out var connectionId))
             {
-                if (NetworkServer.connections.ContainsKey(connId))
-                {
-                    Send(msg, connId, reliable, instant);
-                }
+                Send(msg, connectionId, reliable, instant);
             }
         }
     }
@@ -68,7 +65,7 @@ public class RoomNetworkImpl_Mirror : MonoBehaviour, INetworkImpl
         {
             message.sender = conn.connectionId;
             InternalOnMessage(message.payload);
-        }, false);
+        });
     }
 
     private void UnregisterMessage()

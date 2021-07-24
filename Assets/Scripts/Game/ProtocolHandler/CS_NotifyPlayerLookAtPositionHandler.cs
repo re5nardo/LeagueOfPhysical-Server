@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using GameFramework;
+using NetworkModel.PUN;
 
 public class CS_NotifyPlayerLookAtPositionHandler
 {

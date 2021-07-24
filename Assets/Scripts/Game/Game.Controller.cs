@@ -5,7 +5,8 @@ using Entity;
 using GameEvent;
 using EntityCommand;
 using GameFramework;
-using System;
+using NetworkModel.Mirror;
+using Mirror;
 
 namespace LOP
 {
@@ -13,106 +14,91 @@ namespace LOP
     {
         private void OnPlayerEnter(object param)
         {
-            PhotonPlayer newPlayer = (PhotonPlayer)param;
+            var conn = (NetworkConnection)param;
+            var customProperties = conn.authenticationData as CustomProperties;
 
-            playerUserIDPhotonPlayer[newPlayer.UserId] = new WeakReference(newPlayer);
-
-            if (playerUserIDEntityID.ContainsKey(newPlayer.UserId))
+            if (IDMap.UserIdEntityId.TryGetEntityId(customProperties.userId, out var entityId))
             {
-                MonoEntityBase userEntity = Entities.Get<MonoEntityBase>(playerUserIDEntityID[newPlayer.UserId]);
+                MonoEntityBase userEntity = Entities.Get<MonoEntityBase>(entityId);
 
-                SC_EnterRoom enterRoom = new SC_EnterRoom();
-                enterRoom.m_nEntityID = userEntity.EntityID;
-                enterRoom.m_vec3Position = userEntity.Position;
-                enterRoom.m_vec3Rotation = userEntity.Rotation;
-                enterRoom.m_nCurrentTick = Game.Current.CurrentTick;
+                var enterRoom = new SC_EnterRoom();
+                enterRoom.tick = Game.Current.CurrentTick;
+                enterRoom.entityId = userEntity.EntityID;
+                enterRoom.position = userEntity.Position;
+                enterRoom.rotation = userEntity.Rotation;
 
-                RoomNetwork.Instance.Send(enterRoom, newPlayer.ID);
+                RoomNetwork.Instance.Send(enterRoom, conn.connectionId);
 
                 //  NearEntityController
                 userEntity.AttachComponent(userEntity.gameObject.AddComponent<NearEntityController>());
 
                 //  Entity Skill Info
                 SkillController controller = userEntity.GetComponent<SkillController>();
-                SC_EntitySkillInfo entitySkillInfo = new SC_EntitySkillInfo();
-                entitySkillInfo.m_nEntityID = userEntity.EntityID;
-                entitySkillInfo.m_dicSkillInfo = controller.GetEntitySkillInfo();
+                var entitySkillInfo = new SC_EntitySkillInfo();
+                entitySkillInfo.entityId = userEntity.EntityID;
+                entitySkillInfo.dicSkillInfo = controller.GetEntitySkillInfo();
 
-                RoomNetwork.Instance.Send(entitySkillInfo, newPlayer.ID);
+                RoomNetwork.Instance.Send(entitySkillInfo, conn.connectionId);
             }
             else
             {
-                if (!newPlayer.CustomProperties.TryGetValue("CharacterID", out object characterId))
+                //  Create character(Player)
+                Character character = EntityHelper.CreatePlayerCharacter(customProperties.characterId);
+
+                IDMap.UserIdEntityId.Set(customProperties.userId, character.EntityID);
+
+                var enterRoom = new SC_EnterRoom();
+                enterRoom.tick = Game.Current.CurrentTick;
+                enterRoom.entityId = character.EntityID;
+                enterRoom.position = character.Position;
+                enterRoom.rotation = character.Rotation;
+
+                RoomNetwork.Instance.Send(enterRoom, conn.connectionId);
+
+                //  EntityAdditionalDatas
+                CharacterGrowthData characterGrowthData = EntityAdditionalDataInitializer.Instance.Initialize(new CharacterGrowthData());
+                character.AttachComponent(characterGrowthData);
+
+                EmotionExpressionData emotionExpressionData = EntityAdditionalDataInitializer.Instance.Initialize(new EmotionExpressionData(), character.EntityID);
+                character.AttachComponent(emotionExpressionData);
+
+                EntityInventory entityInventory = EntityAdditionalDataInitializer.Instance.Initialize(new EntityInventory(), character.EntityID);
+                character.AttachComponent(entityInventory);
+
+                character.AttachComponent(character.gameObject.AddComponent<NearEntityController>());
+                character.AttachComponent(character.gameObject.AddComponent<PlayerInputController>());
+
+                character.AttachComponent(character.gameObject.AddComponent<PlayerView>());
+
+                //  Entity Skill Info
+                //  (should receive data from server db?)
+                SkillController controller = character.GetComponent<SkillController>();
+                foreach (int nSkillID in character.MasterData.SkillIDs)
                 {
-                    Debug.LogError("CharacterID does not exist!");
+                    controller.AddSkill(nSkillID);
                 }
-                else
-                {
-                    //  Create character(Player)
-                    Character character = EntityHelper.CreatePlayerCharacter((int)characterId);
 
-                    playerUserIDEntityID.Add(newPlayer.UserId, character.EntityID);
-                    entityIDPlayerUserID.Add(character.EntityID, newPlayer.UserId);
+                var entitySkillInfo = new SC_EntitySkillInfo();
+                entitySkillInfo.entityId = character.EntityID;
+                entitySkillInfo.dicSkillInfo = controller.GetEntitySkillInfo();
 
-                    SC_EnterRoom enterRoom = new SC_EnterRoom();
-                    enterRoom.m_nEntityID = character.EntityID;
-                    enterRoom.m_vec3Position = character.Position;
-                    enterRoom.m_vec3Rotation = character.Rotation;
-                    enterRoom.m_nCurrentTick = Game.Current.CurrentTick;
-
-                    RoomNetwork.Instance.Send(enterRoom, newPlayer.ID);
-
-                    //  EntityAdditionalDatas
-                    CharacterGrowthData characterGrowthData = EntityAdditionalDataInitializer.Instance.Initialize(new CharacterGrowthData());
-                    character.AttachComponent(characterGrowthData);
-
-                    EmotionExpressionData emotionExpressionData = EntityAdditionalDataInitializer.Instance.Initialize(new EmotionExpressionData(), character.EntityID);
-                    character.AttachComponent(emotionExpressionData);
-
-                    EntityInventory entityInventory = EntityAdditionalDataInitializer.Instance.Initialize(new EntityInventory(), character.EntityID);
-                    character.AttachComponent(entityInventory);
-
-                    character.AttachComponent(character.gameObject.AddComponent<NearEntityController>());
-                    character.AttachComponent(character.gameObject.AddComponent<PlayerInputController>());
-
-                    character.AttachComponent(character.gameObject.AddComponent<PlayerView>());
-
-                    //  Entity Skill Info
-                    //  (should receive data from server db?)
-                    SkillController controller = character.GetComponent<SkillController>();
-                    foreach (int nSkillID in character.MasterData.SkillIDs)
-                    {
-                        controller.AddSkill(nSkillID);
-                    }
-
-                    SC_EntitySkillInfo entitySkillInfo = new SC_EntitySkillInfo();
-                    entitySkillInfo.m_nEntityID = character.EntityID;
-                    entitySkillInfo.m_dicSkillInfo = controller.GetEntitySkillInfo();
-
-                    RoomNetwork.Instance.Send(entitySkillInfo, newPlayer.ID);
-                }
+                RoomNetwork.Instance.Send(entitySkillInfo, conn.connectionId);
             }
         }
 
         private void OnPlayerLeave(object param)
         {
-            PhotonPlayer photonPlayer = (PhotonPlayer)param;
+            var conn = (NetworkConnection)param;
+            var customProperties = conn.authenticationData as CustomProperties;
 
-            int entityID = playerUserIDEntityID[photonPlayer.UserId];
+            IDMap.UserIdEntityId.TryGetEntityId(customProperties.userId, out var entityId);
 
-            IEntity entity = Entities.Get(entityID);
+            IEntity entity = Entities.Get(entityId);
 
             NearEntityController nearEntityController = entity.GetEntityComponent<NearEntityController>();
             entity.DetachComponent(nearEntityController);
 
             Destroy(nearEntityController);
-
-            playerUserIDPhotonPlayer.Remove(photonPlayer.UserId);
-
-            //  Start AI
-            //  ...
-
-            //  m_dicPlayerUserIDEntityID 제거하는 로직 필요.. Entity destroy될 때 체크해야 할 듯?
         }
 
         public Rect GetMapRect()

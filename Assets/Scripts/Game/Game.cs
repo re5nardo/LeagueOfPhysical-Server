@@ -4,6 +4,7 @@ using UnityEngine;
 using System;
 using System.Collections.ObjectModel;
 using GameFramework;
+using NetworkModel.Mirror;
 
 namespace LOP
 {
@@ -37,17 +38,14 @@ namespace LOP
             EntityIDPlayerUserID = new ReadOnlyDictionary<int, string>(entityIDPlayerUserID);
             PlayerUserIDPhotonPlayer = new ReadOnlyDictionary<string, WeakReference>(playerUserIDPhotonPlayer);
 
-            tickUpdater = gameObject.AddComponent<TickUpdater>();
+            tickUpdater = gameObject.AddComponent<LOPTickUpdater>();
             roomProtocolDispatcher = gameObject.AddComponent<RoomProtocolDispatcher>();
             gameEventManager = gameObject.AddComponent<GameEventManager>();
             gameManager = gameObject.AddComponent<GameManager>();
 
-            roomProtocolDispatcher[typeof(CS_NotifyPlayerLookAtPosition)]   = CS_NotifyPlayerLookAtPositionHandler.Handle;
             roomProtocolDispatcher[typeof(CS_NotifySkillInputData)]         = CS_NotifySkillInputDataHandler.Handle;
             roomProtocolDispatcher[typeof(CS_NotifyJumpInputData)]          = CS_NotifyJumpInputDataHandler.Handle;
             roomProtocolDispatcher[typeof(CS_RequestEmotionExpression)]     = CS_RequestEmotionExpressionHandler.Handle;
-            roomProtocolDispatcher[typeof(CS_FirstStatusSelection)]         = CS_FirstStatusSelectionHandler.Handle;
-            roomProtocolDispatcher[typeof(CS_AbilitySelection)]             = CS_AbilitySelectionHandler.Handle;
             roomProtocolDispatcher[typeof(CS_NotifyMoveInputData)]          = CS_NotifyMoveInputDataHandler.Handle;
 
             RoomPubSubService.AddSubscriber(RoomMessageKey.PlayerEnter, OnPlayerEnter);

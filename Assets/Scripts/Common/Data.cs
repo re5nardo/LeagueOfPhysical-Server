@@ -145,3 +145,11 @@ public struct MatchSetting
         this.mapId = mapId;
     }
 }
+
+[Serializable]
+public class CustomProperties
+{
+    public string userId;
+    public string token;
+    public int characterId;
+}
