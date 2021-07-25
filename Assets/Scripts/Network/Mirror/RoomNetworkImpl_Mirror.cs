@@ -27,7 +27,7 @@ public class RoomNetworkImpl_Mirror : MonoBehaviour, INetworkImpl
         customMirrorMessage.id = mirrorMessage.GetMessageId();
         customMirrorMessage.payload = mirrorMessage;
 
-        NetworkServer.SendToAll(customMirrorMessage);
+        NetworkServer.connections[targetId].Send(customMirrorMessage);
     }
 
     public void Send(IMessage msg, ulong targetId, bool reliable = true, bool instant = false)
