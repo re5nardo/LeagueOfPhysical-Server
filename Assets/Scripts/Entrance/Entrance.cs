@@ -2,7 +2,7 @@
 using UnityEngine.SceneManagement;
 using Photon;
 using UnityEngine.UI;
-using System;
+using System.Collections;
 
 public class Entrance : PunBehaviour
 {
@@ -12,9 +12,11 @@ public class Entrance : PunBehaviour
     [SerializeField] private bool autoCreateRoom = true;
 
 #region MonoBehaviour
-    private void Start()
+    private IEnumerator Start()
     {
-#if UNITY_STANDALONE && !UNITY_EDITOR
+        yield return new WaitUntil(() => LOP.Application.IsInitialized);
+
+#if !UNITY_EDITOR
         var arguments = Environment.GetCommandLineArgs();
         var preferredRegion = Util.TryEnumParse(arguments[1], CloudRegionCode.kr);
 
@@ -96,21 +98,24 @@ public class Entrance : PunBehaviour
 	{
         textState.text = "로비에 접속하였습니다.";
 
-#if UNITY_STANDALONE && !UNITY_EDITOR
-        var arguments = Environment.GetCommandLineArgs();
-        string roomName = arguments[2];
-        //string[] expectedUsers = new string[arguments.Length - 3];
-        //for (int i = 3; i < arguments.Length; ++i)
-        //{
-        //    expectedUsers[i - 3] = arguments[i];
-        //}
+#if !UNITY_EDITOR
+       var arguments = Environment.GetCommandLineArgs();
+        string roomId = arguments[2];
+        string matchId = arguments[3];
+        int port = int.Parse(arguments[4]);
 
         var matchSettingData = AppDataContainer.Get<MatchSettingData>();
-        matchSettingData.matchSetting.matchType = Util.TryEnumParse(arguments[3], MatchType.Friendly);
-        matchSettingData.matchSetting.subGameId = arguments[4];
-        matchSettingData.matchSetting.mapId = arguments[5];
-        
-        CreateRoom(roomName, null);
+        matchSettingData.matchSetting.matchType = Util.TryEnumParse(arguments[5], MatchType.Friendly);
+        matchSettingData.matchSetting.subGameId = arguments[6];
+        matchSettingData.matchSetting.mapId = arguments[7];
+
+        string[] expectedUsers = new string[arguments.Length - 8];
+        for (int i = 8; i < arguments.Length; ++i)
+        {
+            expectedUsers[i - 8] = arguments[i];
+        }
+
+        CreateRoom(roomId, null);
 #else
         if (autoCreateRoom)
         {

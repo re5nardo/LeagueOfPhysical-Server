@@ -226,7 +226,22 @@ public class LOPNetworkManager : NetworkManager
     /// This is invoked when a server is started - including when a host is started.
     /// <para>StartServer has multiple signatures, but they all cause this hook to be called.</para>
     /// </summary>
-    public override void OnStartServer() { }
+    public override void OnStartServer()
+    {
+        Debug.Log($"[OnStartServer]");
+
+        NotifyStartServerRequest request = new NotifyStartServerRequest
+        {
+            roomId = LOP.Room.Instance.RoomId,
+            matchId = LOP.Room.Instance.MatchId,
+            expectedPlayerList = LOP.Room.Instance.ExpectedPlayerList,
+            matchSetting = LOP.Room.Instance.MatchSetting,
+            ip = LOP.Application.IP,
+            port = LOP.Room.Instance.Port,
+        };
+
+        LOPWebAPI.NotifyStartServer(request);
+    }
 
     /// <summary>
     /// This is invoked when the client is started.
@@ -241,7 +256,12 @@ public class LOPNetworkManager : NetworkManager
     /// <summary>
     /// This is called when a server is stopped - including when a host is stopped.
     /// </summary>
-    public override void OnStopServer() { }
+    public override void OnStopServer()
+    {
+        Debug.Log($"[OnStopServer]");
+
+        LOPWebAPI.NotifyStopServer(LOP.Room.Instance.RoomId);
+    }
 
     /// <summary>
     /// This is called when a client is stopped.
