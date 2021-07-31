@@ -24,13 +24,7 @@ public class GamePrepareState : MonoStateBase
 
         roomProtocolDispatcher[typeof(CS_GamePreparation)] = OnGamePreparation;
 
-        if (PhotonNetwork.room.ExpectedUsers != null)
-        {
-            foreach (var expectedUser in PhotonNetwork.room.ExpectedUsers)
-            {
-                playerPrepareStates.Add(expectedUser, 0);
-            }
-        }
+        //playerPrepareStates.Add(expectedUser, 0);
 
         StopCoroutine("Procedure");
         StartCoroutine("Procedure");

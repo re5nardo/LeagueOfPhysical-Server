@@ -2,7 +2,6 @@
 using GameFramework;
 using UnityEngine;
 using Mirror;
-using System;
 
 namespace LOP
 {
@@ -50,21 +49,21 @@ namespace LOP
 
 #if !UNITY_EDITOR
             var arguments = Environment.GetCommandLineArgs();
-            RoomId = arguments[2];
-            MatchId = arguments[3];
-            Port = ushort.Parse(arguments[4]);
+            RoomId = arguments[1];
+            MatchId = arguments[2];
+            Port = ushort.Parse(arguments[3]);
 
             var matchSetting = new MatchSetting();
-            matchSetting.matchType = Util.TryEnumParse(arguments[5], MatchType.Friendly);
-            matchSetting.subGameId = arguments[6];
-            matchSetting.mapId = arguments[7];
+            matchSetting.matchType = Util.TryEnumParse(arguments[4], MatchType.Friendly);
+            matchSetting.subGameId = arguments[5];
+            matchSetting.mapId = arguments[6];
 
             MatchSetting = matchSetting;
 
-            string[] expectedUsers = new string[arguments.Length - 8];
-            for (int i = 8; i < arguments.Length; ++i)
+            string[] expectedUsers = new string[arguments.Length - 7];
+            for (int i = 7; i < arguments.Length; ++i)
             {
-                expectedUsers[i - 8] = arguments[i];
+                expectedUsers[i - 7] = arguments[i];
             }
             ExpectedPlayerList = expectedUsers;
 #else

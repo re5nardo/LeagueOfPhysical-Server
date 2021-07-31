@@ -21,6 +21,12 @@ public class RoomNetworkImpl_Mirror : MonoBehaviour, INetworkImpl
 
     public void Send(IMessage msg, int targetId, bool reliable = true, bool instant = false)
     {
+        if (!NetworkServer.connections[targetId].isAuthenticated)
+        {
+            Debug.Log($"Target is not authenticated. targetId: {targetId}");
+            return;
+        }
+
         IMirrorMessage mirrorMessage = msg as IMirrorMessage;
 
         CustomMirrorMessage customMirrorMessage = new CustomMirrorMessage();
