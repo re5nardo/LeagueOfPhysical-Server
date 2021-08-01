@@ -5,29 +5,57 @@ using GameFramework;
 
 public class AppDataContainer : MonoSingleton<AppDataContainer>
 {
-    private MonoDataContainerImpl containerImpl = null;
+    private Dictionary<Type, object> dataComponents = new Dictionary<Type, object>();
 
-    protected override void Awake()
+    private void Start()
     {
-        base.Awake();
-
         DontDestroyOnLoad(this);
-
-        containerImpl = gameObject.AddComponent<MonoDataContainerImpl>();
     }
 
-    public static T Get<T>() where T : IDataComponent
+    public static T Get<T>()
     {
-        return Instance.containerImpl.Get<T>();
+        return Instance.GetInternal<T>();
     }
 
-    public static IDataComponent Get(Type type)
+    public static void Remove<T>()
     {
-        return Instance.containerImpl.Get(type);
+        Instance.RemoveInternal<T>();
     }
 
-    public static void OnUpdate(IDataSource source)
+    private T GetInternal<T>()
     {
-        Instance.containerImpl.OnUpdate(source);
+        return (T)GetInternal(typeof(T));
+    }
+
+    private object GetInternal(Type type)
+    {
+        if (dataComponents.TryGetValue(type, out var dataComponent))
+        {
+            return dataComponent;
+        }
+
+        object target;
+        if (type.IsSubclassOf(typeof(Component)))
+        {
+            target = gameObject.AddComponent(type);
+        }
+        else
+        {
+            target = Activator.CreateInstance(type);
+        }
+
+        dataComponents.Add(type, target);
+
+        return target;
+    }
+
+    private void RemoveInternal<T>()
+    {
+        RemoveInternal(typeof(T));
+    }
+
+    private void RemoveInternal(Type type)
+    {
+        dataComponents.Remove(type);
     }
 }
