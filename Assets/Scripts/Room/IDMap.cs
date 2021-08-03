@@ -34,6 +34,18 @@ public class IDMap
 
             return true;
         }
+
+        public static bool TryGetUserId(int connectionId, out string userId)
+        {
+            if (!connectionIdUserId.TryGetValue(connectionId, out userId))
+            {
+                Debug.LogWarning($"There is no userId matched with the connectionId. connectionId: {connectionId}");
+                userId = "";
+                return false;
+            }
+
+            return true;
+        }
     }
 
     public class UserIdEntityId
@@ -91,6 +103,18 @@ public class IDMap
         }
 
         return ConnectionIdUserId.TryGetConnectionId(userId, out connectionId);
+    }
+
+    public static bool TryGetEntityIdByConnectionId(int connectionId, out int entityId)
+    {
+        if (!ConnectionIdUserId.TryGetUserId(connectionId, out var userId))
+        {
+            Debug.LogWarning($"There is no userId matched with the connectionId. connectionId: {connectionId}");
+            entityId = int.MinValue;
+            return false;
+        }
+
+        return UserIdEntityId.TryGetEntityId(userId, out entityId);
     }
     #endregion
 }

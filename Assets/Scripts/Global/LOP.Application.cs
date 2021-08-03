@@ -29,9 +29,6 @@ namespace LOP
             behaviorManager.UpdateInterval = BehaviorDesigner.Runtime.UpdateIntervalType.Manual;
             UnityEngine.Object.DontDestroyOnLoad(behaviorManager);
 
-            //  PhotonType Register
-            PhotonTypeRegister.Register();
-
             MasterDataManager.Instantiate();
 
             yield return GlobalMonoBehavior.StartCoroutine(GetPublicIP());

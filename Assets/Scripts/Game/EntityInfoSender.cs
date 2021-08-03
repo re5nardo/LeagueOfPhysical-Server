@@ -4,6 +4,7 @@ using System;
 using GameFramework;
 using Entity;
 using NetworkModel.Mirror;
+using Mirror;
 
 public class EntityInfoSender : MonoSingleton<EntityInfoSender>
 {
@@ -52,28 +53,19 @@ public class EntityInfoSender : MonoSingleton<EntityInfoSender>
 
     private void SendPlayerSkillInfo()
     {
-        foreach (KeyValuePair<string, WeakReference> kv in LOP.Game.Current.PlayerUserIDPhotonPlayer)
+        foreach (var connectionId in NetworkServer.connections.Keys)
         {
-            if (!kv.Value.IsAlive)
+            if (IDMap.TryGetEntityIdByConnectionId(connectionId, out var entityId))
             {
-                continue;
+                IEntity entity = Entities.Get(entityId);
+
+                var entitySkillInfo = new SC_EntitySkillInfo();
+                entitySkillInfo.entityId = entity.EntityID;
+                SkillController controller = entity.GetEntityComponent<SkillController>();
+                entitySkillInfo.dicSkillInfo = controller.GetEntitySkillInfo();
+
+                RoomNetwork.Instance.Send(entitySkillInfo, connectionId);
             }
-
-            string strPlayerUserID = kv.Key;
-            PhotonPlayer photonPlayer = kv.Value.Target as PhotonPlayer;
-            IEntity entity = Entities.Get(LOP.Game.Current.PlayerUserIDEntityID[strPlayerUserID]);
-			if(entity == null)
-			{
-				//	Already removed
-				continue;
-			}
-
-			var entitySkillInfo = new SC_EntitySkillInfo();
-			entitySkillInfo.entityId = entity.EntityID;
-			SkillController controller = entity.GetEntityComponent<SkillController>();
-			entitySkillInfo.dicSkillInfo = controller.GetEntitySkillInfo();
-
-			RoomNetwork.Instance.Send(entitySkillInfo, photonPlayer.ID);
         }
     }
 
