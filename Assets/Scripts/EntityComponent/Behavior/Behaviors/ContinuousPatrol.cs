@@ -16,8 +16,6 @@ namespace Behavior
         #region BehaviorBase
         protected override bool OnBehaviorUpdate()
         {
-            Entity.Position = GetPositionByTick();
-
             return true;
         }
 
@@ -31,7 +29,12 @@ namespace Behavior
         }
         #endregion
 
-        public Vector3 GetPositionByTick()
+        private void Update()
+        {
+            Entity.Position = GetPositionByTime();
+        }
+
+        private Vector3 GetPositionByTime()
         {
             var halfMagnitude = (halfwayPoint - startPoint).magnitude;
             var distance = Entity.FactoredMovementSpeed * (Game.Current.GameTime + timeOffset);

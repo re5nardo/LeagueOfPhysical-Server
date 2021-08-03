@@ -15,8 +15,6 @@ namespace Behavior
         #region BehaviorBase
         protected override bool OnBehaviorUpdate()
         {
-            Entity.Rotation = GetRotationByTick();
-
             return true;
         }
 
@@ -29,7 +27,12 @@ namespace Behavior
         }
         #endregion
 
-        public Vector3 GetRotationByTick()
+        private void Update()
+        {
+            Entity.Rotation = GetRotationByTime();
+        }
+
+        private Vector3 GetRotationByTime()
         {
             var value = startRotation + Entity.AngularVelocity * (Game.Current.GameTime + timeOffset);
 
