@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using System.Collections.ObjectModel;
-using GameFramework;
 using NetworkModel.Mirror;
 
 namespace LOP
@@ -51,7 +50,7 @@ namespace LOP
             RoomPubSubService.AddSubscriber(RoomMessageKey.PlayerEnter, OnPlayerEnter);
             RoomPubSubService.AddSubscriber(RoomMessageKey.PlayerLeave, OnPlayerLeave);
 
-            tickUpdater.Initialize(1 / 30f, false, 0, OnTick, OnTickEnd);
+            tickUpdater.Initialize(1 / 30f, false, 0, OnTick, OnTickEnd, OnUpdateElapsedTime);
 
             EntityInfoSender.Instantiate();
             EntityManager.Instantiate();
@@ -86,12 +85,6 @@ namespace LOP
             TickPubSubService.Publish("EarlyTick", tick);
             TickPubSubService.Publish("Tick", tick);
             TickPubSubService.Publish("LateTick", tick);
-
-            TickPubSubService.Publish("BeforePhysicsSimulation", tick);
-           
-            Physics.Simulate(TickInterval);
-
-            TickPubSubService.Publish("AfterPhysicsSimulation", tick);
         }
 
         private void OnTickEnd(int tick)
@@ -103,6 +96,15 @@ namespace LOP
             if (gameManager.IsGameEnd)
             {
             }
+        }
+
+        private void OnUpdateElapsedTime(float time)
+        {
+            TickPubSubService.Publish("BeforePhysicsSimulation", CurrentTick);
+
+            Physics.Simulate(time);
+
+            TickPubSubService.Publish("AfterPhysicsSimulation", CurrentTick);
         }
     }
 }
