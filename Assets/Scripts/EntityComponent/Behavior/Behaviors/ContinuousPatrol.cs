@@ -9,10 +9,6 @@ namespace Behavior
         private Vector3 halfwayPoint;
         private float timeOffset;
 
-        #region ISynchronizable
-        public override bool Enable => false;
-        #endregion
-
         #region BehaviorBase
         protected override bool OnBehaviorUpdate()
         {

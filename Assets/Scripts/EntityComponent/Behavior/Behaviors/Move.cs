@@ -10,11 +10,6 @@ namespace Behavior
         private Vector3 m_vec3Destination;
         private int remainCount = 3;
 
-        #region ISynchronizable
-        protected override ISnap LastSendSnap { get; set; } = new MoveSnap();
-        protected override ISnap CurrentSnap { get; set; } = new MoveSnap();
-        #endregion
-
         #region BehaviorBase
         protected override void OnBehaviorStart()
         {

@@ -42,10 +42,7 @@ namespace LOP
             gameEventManager = gameObject.AddComponent<GameEventManager>();
             gameManager = gameObject.AddComponent<GameManager>();
 
-            roomProtocolDispatcher[typeof(CS_NotifySkillInputData)]         = CS_NotifySkillInputDataHandler.Handle;
-            roomProtocolDispatcher[typeof(CS_NotifyJumpInputData)]          = CS_NotifyJumpInputDataHandler.Handle;
             roomProtocolDispatcher[typeof(CS_RequestEmotionExpression)]     = CS_RequestEmotionExpressionHandler.Handle;
-            roomProtocolDispatcher[typeof(CS_NotifyMoveInputData)]          = CS_NotifyMoveInputDataHandler.Handle;
 
             RoomPubSubService.AddSubscriber(RoomMessageKey.PlayerEnter, OnPlayerEnter);
             RoomPubSubService.AddSubscriber(RoomMessageKey.PlayerLeave, OnPlayerLeave);

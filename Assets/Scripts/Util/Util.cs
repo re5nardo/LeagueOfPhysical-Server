@@ -15,6 +15,21 @@ public partial class Util
 
 			return value;
 	    }
+
+        public static Vector3 RotateClamp(Vector3 start, Vector3 angularVelocity, float elapsed, Vector3 maximum)
+        {
+            var rotated = start + angularVelocity * elapsed;
+
+            var currentDegreesDelta = Vector3.Angle(Quaternion.Euler(start) * Vector3.forward, Quaternion.Euler(rotated) * Vector3.forward);
+            var maxDegreesDelta = Vector3.Angle(Quaternion.Euler(start) * Vector3.forward, Quaternion.Euler(maximum) * Vector3.forward);
+
+            if (currentDegreesDelta > maxDegreesDelta)
+            {
+                return maximum;
+            }
+
+            return rotated;
+        }
     }
 
     public static void Parse(string text, char delim, List<string> output)

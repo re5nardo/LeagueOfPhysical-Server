@@ -5,10 +5,6 @@ namespace Behavior
 {
     public class Jump : BehaviorBase
     {
-        #region ISynchronizable
-        public override bool Enable => false;
-        #endregion
-
         #region BehaviorBase
         protected override void OnBehaviorStart()
         {
