@@ -47,6 +47,7 @@ namespace NetworkModel.Mirror
                 case MessageIds.CS_RequestEmotionExpression: return Util.CommonDataCompressionDeserialize(data) as CS_RequestEmotionExpression;
                 case MessageIds.CS_GamePreparation: return Util.CommonDataCompressionDeserialize(data) as CS_GamePreparation;
                 case MessageIds.CS_SubGamePreparation: return Util.CommonDataCompressionDeserialize(data) as CS_SubGamePreparation;
+                case MessageIds.CS_Synchronization: return Util.CommonDataCompressionDeserialize(data) as CS_Synchronization;
             }
 
             Debug.LogError($"The id is invalid! id: {id}");

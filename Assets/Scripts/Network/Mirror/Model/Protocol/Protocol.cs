@@ -20,12 +20,13 @@ namespace NetworkModel.Mirror
         public const byte SC_GameState = 10;
         public const byte SC_GameEnd = 11;
 
-        public const byte CS_NotifyMoveInputData = 12;
-        public const byte CS_NotifySkillInputData = 13;
-        public const byte CS_NotifyJumpInputData = 14;
-        public const byte CS_RequestEmotionExpression = 15;
-        public const byte CS_GamePreparation = 16;
-        public const byte CS_SubGamePreparation = 17;
+        public const byte CS_NotifyMoveInputData = 112;
+        public const byte CS_NotifySkillInputData = 113;
+        public const byte CS_NotifyJumpInputData = 114;
+        public const byte CS_RequestEmotionExpression = 115;
+        public const byte CS_GamePreparation = 116;
+        public const byte CS_SubGamePreparation = 117;
+        public const byte CS_Synchronization = 118;
     }
 
     #region Protocols (Server to Client)
@@ -390,6 +391,22 @@ namespace NetworkModel.Mirror
         {
             entityId = default;
             preparation = default;
+        }
+    }
+
+    [Serializable]
+    public class CS_Synchronization : IMirrorMessage
+    {
+        public List<ISnap> listSnap = new List<ISnap>();
+
+        public byte GetMessageId()
+        {
+            return MessageIds.CS_Synchronization;
+        }
+
+        public void Clear()
+        {
+            listSnap.Clear();
         }
     }
     #endregion
