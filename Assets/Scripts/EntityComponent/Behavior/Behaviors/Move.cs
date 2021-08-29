@@ -23,6 +23,10 @@ namespace Behavior
         protected override bool OnBehaviorUpdate()
         {
 			Vector3 toMove = m_vec3Destination.XZ() - Entity.Position.XZ();
+            if (toMove == Vector3.zero)
+            {
+                return false;
+            }
 
             if (Entity.ModelRigidbody.isKinematic)
             {
