@@ -45,6 +45,8 @@ namespace LOP
                 //  Create character(Player)
                 Character character = EntityHelper.CreatePlayerCharacter(customProperties.characterId);
 
+                character.HasAuthority = false;
+
                 IDMap.UserIdEntityId.Set(customProperties.userId, character.EntityID);
 
                 var enterRoom = new SC_EnterRoom();
@@ -68,6 +70,12 @@ namespace LOP
                 character.AttachComponent(character.gameObject.AddComponent<NearEntityController>());
 
                 character.AttachComponent(character.gameObject.AddComponent<PlayerView>());
+
+                character.gameObject.AddComponent<TransformController>();
+                if (character.ModelAnimator != null)
+                {
+                    character.gameObject.AddComponent<EntityAnimatorController>();
+                }
 
                 //  Entity Skill Info
                 //  (should receive data from server db?)

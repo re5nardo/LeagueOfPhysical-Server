@@ -17,16 +17,15 @@ public class EntityBasicView : MonoViewComponentBase
     public Transform ModelTransform => m_trModel;
     public Rigidbody ModelRigidbody => m_RigidbodyModel;
     public Collider ModelCollider => m_ColliderModel;
+    public Animator ModelAnimator => m_AnimatorModel;
+
+    private Vector3 positionBeforePhysics;
 
     public override void OnAttached(IEntity entity)
     {
         base.OnAttached(entity);
 
         AddCommandHandler(typeof(ModelChanged), OnModelChanged);
-        AddCommandHandler(typeof(PositionChanged), OnPositionChanged);
-        AddCommandHandler(typeof(RotationChanged), OnRotationChanged);
-        AddCommandHandler(typeof(VelocityChanged), OnVelocityChanged);
-        AddCommandHandler(typeof(AngularVelocityChanged), OnAngularVelocityChanged);
         AddCommandHandler(typeof(AnimatorSetTrigger), OnAnimatorSetTrigger);
         AddCommandHandler(typeof(AnimatorSetFloat), OnAnimatorSetFloat);
         AddCommandHandler(typeof(AnimatorSetBool), OnAnimatorSetBool);
@@ -41,10 +40,6 @@ public class EntityBasicView : MonoViewComponentBase
         base.OnDetached();
 
         RemoveCommandHandler(typeof(ModelChanged), OnModelChanged);
-        RemoveCommandHandler(typeof(PositionChanged), OnPositionChanged);
-        RemoveCommandHandler(typeof(RotationChanged), OnRotationChanged);
-        RemoveCommandHandler(typeof(VelocityChanged), OnVelocityChanged);
-        RemoveCommandHandler(typeof(AngularVelocityChanged), OnAngularVelocityChanged);
         RemoveCommandHandler(typeof(AnimatorSetTrigger), OnAnimatorSetTrigger);
         RemoveCommandHandler(typeof(AnimatorSetFloat), OnAnimatorSetFloat);
         RemoveCommandHandler(typeof(AnimatorSetBool), OnAnimatorSetBool);
@@ -61,46 +56,6 @@ public class EntityBasicView : MonoViewComponentBase
 
         ClearModel();
         SetModel(cmd.name);
-    }
-
-    private void OnPositionChanged(ICommand command)
-    {
-        if (m_RigidbodyModel != null && m_RigidbodyModel.isKinematic)
-        {
-            m_RigidbodyModel.MovePosition(Entity.Position);
-        }
-        else if (m_trModel != null)
-        {
-            m_trModel.position = Entity.Position;
-        }
-    }
-
-    private void OnRotationChanged(ICommand command)
-    {
-        if (m_RigidbodyModel != null && m_RigidbodyModel.isKinematic)
-        {
-            m_RigidbodyModel.MoveRotation(Quaternion.Euler(Entity.Rotation));
-        }
-        else if (m_trModel != null)
-        {
-            m_trModel.rotation = Quaternion.Euler(Entity.Rotation);
-        }
-    }
-
-    private void OnVelocityChanged(ICommand command)
-    {
-        if (m_RigidbodyModel != null)
-        {
-            m_RigidbodyModel.velocity = Entity.Velocity;
-        }
-    }
-
-    private void OnAngularVelocityChanged(ICommand command)
-    {
-        if (m_RigidbodyModel != null)
-        {
-            m_RigidbodyModel.angularVelocity = Entity.AngularVelocity;
-        }
     }
 
     private void OnAnimatorSetTrigger(ICommand command)
@@ -259,33 +214,14 @@ public class EntityBasicView : MonoViewComponentBase
     #region PhysicsSimulation
     public virtual void OnBeforePhysicsSimulation(int tick)
     {
+        positionBeforePhysics = Entity.Position;
     }
     
     public virtual void OnAfterPhysicsSimulation(int tick)
     {
-        if (m_RigidbodyModel == null)
+        if (positionBeforePhysics != Entity.Position)
         {
-            return;
-        }
-
-        if (Entity.Position != m_RigidbodyModel.position)
-        {
-            Entity.Position = m_RigidbodyModel.position;
-        }
-
-        if (Entity.Rotation != m_RigidbodyModel.rotation.eulerAngles)
-        {
-            Entity.Rotation = m_RigidbodyModel.rotation.eulerAngles;
-        }
-
-        if (Entity.Velocity != m_RigidbodyModel.velocity)
-        {
-            Entity.Velocity = m_RigidbodyModel.velocity;
-        }
-
-        if (Entity.AngularVelocity != m_RigidbodyModel.angularVelocity)
-        {
-            Entity.AngularVelocity = m_RigidbodyModel.angularVelocity;
+            GamePubSubService.Publish(GameMessageKey.EntityMove, new object[] { Entity.EntityID });
         }
     }
     #endregion
