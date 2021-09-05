@@ -4,7 +4,7 @@ using UnityEngine;
 using GameFramework;
 using NetworkModel.PUN;
 
-public class CharacterAbilityData : MonoComponentBase
+public class CharacterAbilityData : MonoEntityComponentBase
 {
 	private int m_nSelectableAbilityCount;
 	private List<int> m_SelectableAbilityIDs = new List<int>();

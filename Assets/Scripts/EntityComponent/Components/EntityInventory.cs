@@ -1,6 +1,6 @@
 ﻿using GameFramework;
 
-public class EntityInventory : ComponentBase
+public class EntityInventory : EntityComponentBase
 {
 	public int m_nMoney;
 }

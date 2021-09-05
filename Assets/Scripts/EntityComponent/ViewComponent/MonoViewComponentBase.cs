@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using GameFramework;
 
-public class MonoViewComponentBase : MonoComponentBase
+public class MonoViewComponentBase : MonoEntityComponentBase
 {
 }
 

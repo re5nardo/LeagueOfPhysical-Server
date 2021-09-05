@@ -3,7 +3,7 @@ using Behavior;
 using State;
 using GameFramework;
 
-public class BehaviorController : MonoComponentBase
+public class BehaviorController : MonoEntityComponentBase
 {
     public void Move(Vector3 vec3Destination)
     {
@@ -17,7 +17,7 @@ public class BehaviorController : MonoComponentBase
         else
         {
             Move move = BehaviorFactory.Instance.CreateBehavior(gameObject, Define.MasterData.BehaviorID.MOVE) as Move;
-            Entity.AttachComponent(move);
+            Entity.AttachEntityComponent(move);
             move.SetData(Define.MasterData.BehaviorID.MOVE, vec3Destination);
             move.onBehaviorEnd += BehaviorHelper.BehaviorDestroyer;
 
@@ -32,7 +32,7 @@ public class BehaviorController : MonoComponentBase
         else
         {
             Rotation rotation = BehaviorFactory.Instance.CreateBehavior(gameObject, Define.MasterData.BehaviorID.ROTATION) as Rotation;
-            Entity.AttachComponent(rotation);
+            Entity.AttachEntityComponent(rotation);
             rotation.SetData(Define.MasterData.BehaviorID.ROTATION, vec3Direction);
             rotation.onBehaviorEnd += BehaviorHelper.BehaviorDestroyer;
 
@@ -43,7 +43,7 @@ public class BehaviorController : MonoComponentBase
     public void Jump()
     {
         Jump jump = BehaviorFactory.Instance.CreateBehavior(gameObject, Define.MasterData.BehaviorID.JUMP) as Jump;
-        Entity.AttachComponent(jump);
+        Entity.AttachEntityComponent(jump);
         jump.SetData(Define.MasterData.BehaviorID.JUMP);
         jump.onBehaviorEnd += BehaviorHelper.BehaviorDestroyer;
 
@@ -70,7 +70,7 @@ public class BehaviorController : MonoComponentBase
     public void StartBehavior(int nBehaviorMasterID, params object[] param)
     {
         BehaviorBase behavior = BehaviorFactory.Instance.CreateBehavior(gameObject, nBehaviorMasterID);
-        Entity.AttachComponent(behavior);
+        Entity.AttachEntityComponent(behavior);
         behavior.SetData(nBehaviorMasterID, param);
         behavior.onBehaviorEnd += BehaviorHelper.BehaviorDestroyer;
 

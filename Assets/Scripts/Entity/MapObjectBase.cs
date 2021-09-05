@@ -36,7 +36,7 @@ namespace Entity
         {
             base.InitComponents();
 
-            entityBasicView = AttachComponent(gameObject.AddComponent<EntityBasicView>());
+            entityBasicView = AttachEntityComponent(gameObject.AddComponent<EntityBasicView>());
         }
     }
 }

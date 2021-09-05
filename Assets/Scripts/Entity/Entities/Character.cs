@@ -44,17 +44,17 @@ namespace Entity
 		{
 			base.InitComponents();
 
-            characterBasicData = AttachComponent(gameObject.AddComponent<CharacterBasicData>());
-            characterStatusData = AttachComponent(gameObject.AddComponent<CharacterStatusData>());
-            characterAbilityData = AttachComponent(gameObject.AddComponent<CharacterAbilityData>());
+            characterBasicData = AttachEntityComponent(gameObject.AddComponent<CharacterBasicData>());
+            characterStatusData = AttachEntityComponent(gameObject.AddComponent<CharacterStatusData>());
+            characterAbilityData = AttachEntityComponent(gameObject.AddComponent<CharacterAbilityData>());
 
-            entityBasicView = AttachComponent(gameObject.AddComponent<CharacterView>());
+            entityBasicView = AttachEntityComponent(gameObject.AddComponent<CharacterView>());
 
-            behaviorController = AttachComponent(gameObject.AddComponent<BehaviorController>());
-            stateController = AttachComponent(gameObject.AddComponent<StateController>());
-            skillController = AttachComponent(gameObject.AddComponent<SkillController>());
-            characterStatusController = AttachComponent(gameObject.AddComponent<CharacterStatusController>());
-            characterAbilityController = AttachComponent(gameObject.AddComponent<CharacterAbilityController>());
+            behaviorController = AttachEntityComponent(gameObject.AddComponent<BehaviorController>());
+            stateController = AttachEntityComponent(gameObject.AddComponent<StateController>());
+            skillController = AttachEntityComponent(gameObject.AddComponent<SkillController>());
+            characterStatusController = AttachEntityComponent(gameObject.AddComponent<CharacterStatusController>());
+            characterAbilityController = AttachEntityComponent(gameObject.AddComponent<CharacterAbilityController>());
 		}
 
 		public override void Initialize(params object[] param)

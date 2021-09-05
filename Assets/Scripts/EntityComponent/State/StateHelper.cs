@@ -7,7 +7,7 @@ public class StateHelper
 {
 	public static void StateDestroyer(StateBase state)
 	{
-		state.Entity.DetachComponent(state);
+		state.Entity.DetachEntityComponent(state);
 
 		Object.Destroy(state);
 	}

@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-public class CharacterAbilityController : MonoComponentBase
+public class CharacterAbilityController : MonoEntityComponentBase
 {
 	public override void OnAttached(IEntity entity)
 	{

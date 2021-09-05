@@ -5,7 +5,7 @@ using UnityEngine;
 using GameFramework;
 using NetworkModel.PUN;
 
-public class CharacterStatusData : MonoComponentBase
+public class CharacterStatusData : MonoEntityComponentBase
 {
 	private FirstStatus m_FirstStatus;
 	private SecondStatus m_SecondStatus;

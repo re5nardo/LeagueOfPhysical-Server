@@ -2,7 +2,7 @@
 using Entity;
 using GameEvent;
 
-public class CharacterGrowthData : ComponentBase
+public class CharacterGrowthData : EntityComponentBase
 {
 	private int m_nLevel;
 	public int m_nExp;

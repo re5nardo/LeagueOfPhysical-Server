@@ -2,7 +2,7 @@
 using Skill;
 using GameFramework;
 
-public class SkillController : MonoComponentBase
+public class SkillController : MonoEntityComponentBase
 {
 	public Dictionary<int, float> GetEntitySkillInfo()
 	{
@@ -21,7 +21,7 @@ public class SkillController : MonoComponentBase
 		SkillBase skill = SkillFactory.Instance.CreateSkill(gameObject, nSkillMasterID);
 		if (skill != null)
 		{
-			Entity.AttachComponent(skill);
+			Entity.AttachEntityComponent(skill);
 			skill.SetData(nSkillMasterID);
             skill.StartSkill();
 
@@ -40,7 +40,7 @@ public class SkillController : MonoComponentBase
 
 		for (int i = found.Count - 1; i >= 0; --i)
 		{
-			Entity.DetachComponent(found[i]);
+			Entity.DetachEntityComponent(found[i]);
 			Destroy(found[i]);
 		}
 	}

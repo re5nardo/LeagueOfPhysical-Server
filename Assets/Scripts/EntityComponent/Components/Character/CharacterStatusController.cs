@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using Entity;
 
-public class CharacterStatusController : MonoComponentBase
+public class CharacterStatusController : MonoEntityComponentBase
 {
 	public override void OnAttached(IEntity entity)
 	{

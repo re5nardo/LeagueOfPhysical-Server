@@ -5,7 +5,7 @@ using System;
 using GameFramework;
 using Entity;
 
-public class EntityBasicData : MonoComponentBase
+public class EntityBasicData : MonoEntityComponentBase
 {
 	protected string modelId = "";
     public string ModelId => modelId;

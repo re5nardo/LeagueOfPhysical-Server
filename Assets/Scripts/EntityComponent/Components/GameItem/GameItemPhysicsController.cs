@@ -3,7 +3,7 @@ using Entity;
 using EntityCommand;
 using GameFramework;
 
-public class GameItemPhysicsController : MonoComponentBase
+public class GameItemPhysicsController : MonoEntityComponentBase
 {
     public override void OnAttached(IEntity entity)
     {

@@ -39,13 +39,13 @@ namespace Entity
 		{
 			base.InitComponents();
 
-            projectileBasicData = AttachComponent(gameObject.AddComponent<ProjectileBasicData>());
+            projectileBasicData = AttachEntityComponent(gameObject.AddComponent<ProjectileBasicData>());
 
-            entityBasicView = AttachComponent(gameObject.AddComponent<ProjectileView>());
+            entityBasicView = AttachEntityComponent(gameObject.AddComponent<ProjectileView>());
 
-            behaviorController = AttachComponent(gameObject.AddComponent<BehaviorController>());
-            stateController = AttachComponent(gameObject.AddComponent<StateController>());
-            projectilePhysicsController = AttachComponent(gameObject.AddComponent<ProjectilePhysicsController>());
+            behaviorController = AttachEntityComponent(gameObject.AddComponent<BehaviorController>());
+            stateController = AttachEntityComponent(gameObject.AddComponent<StateController>());
+            projectilePhysicsController = AttachEntityComponent(gameObject.AddComponent<ProjectilePhysicsController>());
         }
 
 		public override void Initialize(params object[] param)

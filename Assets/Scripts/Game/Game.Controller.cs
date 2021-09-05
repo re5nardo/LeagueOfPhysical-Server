@@ -30,7 +30,7 @@ namespace LOP
                 RoomNetwork.Instance.Send(enterRoom, conn.connectionId);
 
                 //  NearEntityController
-                userEntity.AttachComponent(userEntity.gameObject.AddComponent<NearEntityController>());
+                userEntity.AttachEntityComponent(userEntity.gameObject.AddComponent<NearEntityController>());
 
                 //  Entity Skill Info
                 SkillController controller = userEntity.GetComponent<SkillController>();
@@ -59,17 +59,17 @@ namespace LOP
 
                 //  EntityAdditionalDatas
                 CharacterGrowthData characterGrowthData = EntityAdditionalDataInitializer.Instance.Initialize(new CharacterGrowthData());
-                character.AttachComponent(characterGrowthData);
+                character.AttachEntityComponent(characterGrowthData);
 
                 EmotionExpressionData emotionExpressionData = EntityAdditionalDataInitializer.Instance.Initialize(new EmotionExpressionData(), character.EntityID);
-                character.AttachComponent(emotionExpressionData);
+                character.AttachEntityComponent(emotionExpressionData);
 
                 EntityInventory entityInventory = EntityAdditionalDataInitializer.Instance.Initialize(new EntityInventory(), character.EntityID);
-                character.AttachComponent(entityInventory);
+                character.AttachEntityComponent(entityInventory);
 
-                character.AttachComponent(character.gameObject.AddComponent<NearEntityController>());
+                character.AttachEntityComponent(character.gameObject.AddComponent<NearEntityController>());
 
-                character.AttachComponent(character.gameObject.AddComponent<PlayerView>());
+                character.AttachEntityComponent(character.gameObject.AddComponent<PlayerView>());
 
                 character.gameObject.AddComponent<TransformController>();
                 if (character.ModelAnimator != null)
@@ -103,7 +103,7 @@ namespace LOP
             IEntity entity = Entities.Get(entityId);
 
             NearEntityController nearEntityController = entity.GetEntityComponent<NearEntityController>();
-            entity.DetachComponent(nearEntityController);
+            entity.DetachEntityComponent(nearEntityController);
 
             Destroy(nearEntityController);
         }
