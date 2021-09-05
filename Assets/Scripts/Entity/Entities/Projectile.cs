@@ -35,9 +35,9 @@ namespace Entity
 		}
 
 		#region MonoEntityBase
-		protected override void InitComponents()
+		protected override void InitEntityComponents()
 		{
-			base.InitComponents();
+			base.InitEntityComponents();
 
             projectileBasicData = AttachEntityComponent(gameObject.AddComponent<ProjectileBasicData>());
 

@@ -254,7 +254,6 @@ GameObject:
   - component: {fileID: 6815141702133197854}
   - component: {fileID: 6902761179049318076}
   - component: {fileID: 7131969079562301309}
-  - component: {fileID: 5663990099524396491}
   m_Layer: 0
   m_Name: TreasureBox
   m_TagString: Untagged
@@ -311,22 +310,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0.4, z: 0}
---- !u!54 &5663990099524396491
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6816628186022947184}
-  serializedVersion: 2
-  m_Mass: 5
-  m_Drag: 1
-  m_AngularDrag: 0.05
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 112
-  m_CollisionDetection: 0
 --- !u!1 &6816628186139802358
 GameObject:
   m_ObjectHideFlags: 0

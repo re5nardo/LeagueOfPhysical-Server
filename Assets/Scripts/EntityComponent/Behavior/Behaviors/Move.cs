@@ -28,7 +28,7 @@ namespace Behavior
                 return false;
             }
 
-            if (Entity.ModelRigidbody.isKinematic)
+            if (Entity.Rigidbody.isKinematic)
             {
                 Vector3 moved = toMove.normalized * Entity.FactoredMovementSpeed * DeltaTime;
 
@@ -46,13 +46,13 @@ namespace Behavior
             else
             {
                 var xz = toMove.XZ().normalized * Entity.FactoredMovementSpeed;
-                Entity.ModelRigidbody.velocity = new Vector3(xz.x, Entity.ModelRigidbody.velocity.y, xz.z);
+                Entity.Rigidbody.velocity = new Vector3(xz.x, Entity.Rigidbody.velocity.y, xz.z);
 
-                if (Entity.ModelRigidbody.velocity.XZ().magnitude >= Entity.FactoredMovementSpeed)
+                if (Entity.Rigidbody.velocity.XZ().magnitude >= Entity.FactoredMovementSpeed)
                 {
-                    xz = Entity.ModelRigidbody.velocity.XZ().normalized * Entity.FactoredMovementSpeed;
+                    xz = Entity.Rigidbody.velocity.XZ().normalized * Entity.FactoredMovementSpeed;
 
-                    Entity.ModelRigidbody.velocity = new Vector3(xz.x, Entity.ModelRigidbody.velocity.y, xz.z);
+                    Entity.Rigidbody.velocity = new Vector3(xz.x, Entity.Rigidbody.velocity.y, xz.z);
                 }
 
                 return --remainCount > 0;

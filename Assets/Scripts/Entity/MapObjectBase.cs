@@ -21,6 +21,14 @@ namespace Entity
             EntityManager.Instance.RegisterEntity(this);
         }
 
+        protected override void InitEntity()
+        {
+            base.InitEntity();
+
+            Rigidbody.isKinematic = true;
+            Rigidbody.useGravity = false;
+        }
+
         public override void Initialize(params object[] param)
         {
             base.Initialize(param);
@@ -32,9 +40,9 @@ namespace Entity
             entityBasicView.SetModel(model);
         }
 
-        protected override void InitComponents()
+        protected override void InitEntityComponents()
         {
-            base.InitComponents();
+            base.InitEntityComponents();
 
             entityBasicView = AttachEntityComponent(gameObject.AddComponent<EntityBasicView>());
         }

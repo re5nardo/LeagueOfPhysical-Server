@@ -17,7 +17,7 @@ namespace Behavior
 
         protected override bool OnBehaviorUpdate()
         {
-            Entity.ModelRigidbody.AddForce(Vector3.up * SubGameBase.Current.SubGameEnvironment.JumpPowerFactor, ForceMode.VelocityChange);
+            Entity.Rigidbody.AddForce(Vector3.up * SubGameBase.Current.SubGameEnvironment.JumpPowerFactor, ForceMode.VelocityChange);
 
             return false;
         }

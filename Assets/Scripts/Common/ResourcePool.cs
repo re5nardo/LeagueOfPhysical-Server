@@ -19,7 +19,6 @@ public class ResourcePool : MonoSingleton<ResourcePool>
         if (m_dicResource[strPath].Count > 0)
         {
             target = m_dicResource[strPath].Last.Value;
-            target.SetActive(true);
 
             m_dicResource[strPath].RemoveLast();
         }
@@ -35,6 +34,8 @@ public class ResourcePool : MonoSingleton<ResourcePool>
         target.transform.localRotation = Quaternion.identity;
         target.transform.localScale = Vector3.one;
 
+        target.SetActive(true);
+
         return target;
     }
 
@@ -42,6 +43,11 @@ public class ResourcePool : MonoSingleton<ResourcePool>
     {
         if (m_dicBeingUsed.ContainsKey(go))
         {
+            go.transform.SetParent(transform);
+            go.transform.localPosition = Vector3.zero;
+            go.transform.localRotation = Quaternion.identity;
+            go.transform.localScale = Vector3.one;
+
             go.SetActive(false);
 
             m_dicResource[m_dicBeingUsed[go]].AddLast(go);

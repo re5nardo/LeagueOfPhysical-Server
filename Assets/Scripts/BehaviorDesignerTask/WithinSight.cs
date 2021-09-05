@@ -32,15 +32,13 @@ public class WithinSight : Conditional
 
 	public override TaskStatus OnUpdate()
     {
-		EntityBasicView entityBasicView = Entity.GetComponent<EntityBasicView>();
-
-		List<IEntity> listEntity = Entities.Get(entityBasicView.ModelTransform, fieldOfViewAngle, viewMagnitude, EntityRole.Player, new HashSet<int> { Entity.EntityID });
+		List<IEntity> listEntity = Entities.Get(Entity.Transform, fieldOfViewAngle, viewMagnitude, EntityRole.Player, new HashSet<int> { Entity.EntityID });
 		listEntity.RemoveAll(x => !(x is Character));
 
 		if (listEntity.Count > 0)
         {
 			// set the target so other tasks will know which transform is within sight
-			target.Value = (listEntity[0] as Character).ModelTransform;	//	temp.. select just first item
+			target.Value = (listEntity[0] as Character).Transform;	//	temp.. select just first item
 			return TaskStatus.Success;
 		}
        
