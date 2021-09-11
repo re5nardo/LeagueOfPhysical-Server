@@ -110,18 +110,26 @@ namespace Behavior
 			float fMovementSpeed = (Entity as Character).FirstStatus.DEX;
 			Vector3 vec3Velocity = Entity.Forward * fMovementSpeed;
 
-			return Projectile.Builder()
-                .SetMasterDataID(m_nProjectileID)
+			var projectile =  Projectile.Builder()
+                .SetEntityId(EntityManager.Instance.GenerateEntityID())
+                .SetMasterDataId(m_nProjectileID)
                 .SetPosition(vec3StartPosition)
                 .SetRotation(vec3StartRotation)
                 .SetVelocity(vec3Velocity)
 				.SetAngularVelocity(Vector3.zero)
-				.SetModelPath(masterData.ModelResID)
-                .SetProjectorID(Entity.EntityID)
+				.SetModelId(masterData.ModelResID)
+                .SetProjectorId(Entity.EntityID)
                 .SetLifespan(m_fProjectileLifespan)
 				.SetMovementSpeed(fMovementSpeed)
+                .SetEntityType(EntityType.Projectile)
                 .SetEntityRole(EntityRole.NPC)
-				.Build();
+                .SetHasAuthority(true)
+                .Build();
+
+            StateController stateController = projectile.GetComponent<StateController>();
+            stateController.StartState(Define.MasterData.StateID.EntitySelfDestroy, m_fProjectileLifespan);
+
+            return projectile;
         }
     }
 }

@@ -5,11 +5,11 @@ using NetworkModel.Mirror;
 
 public class EntityHelper
 {
-    public static EntitySnapInfo GetEntitySnapInfo(IEntity entity)
+    public static EntitySnap GetEntitySnap(IEntity entity)
 	{
-		if(entity is MonoEntityBase)
+		if(entity is MonoEntityBase monoEntity)
 		{
-			return (entity as MonoEntityBase).GetEntitySnapInfo();
+			return monoEntity.GetEntitySnap();
 		}
 
 		Debug.LogWarning("entity type is not vaild! type : " + entity.GetType());
@@ -29,16 +29,18 @@ public class EntityHelper
         FirstStatus firstStatus = new FirstStatus(firstStatusMasterData);
 
         return Character.Builder()
-            .SetMasterDataID(nCharacterID)
+            .SetEntityId(EntityManager.Instance.GenerateEntityID())
+            .SetMasterDataId(nCharacterID)
             .SetPosition(vec3StartPosition)
             .SetRotation(vec3StartRotation)
             .SetVelocity(Vector3.zero)
             .SetAngularVelocity(Vector3.zero)
-            .SetModelPath(characterMasterData.ModelResID)
+            .SetModelId(characterMasterData.ModelResID)
             .SetFirstStatus(firstStatus)
             .SetSecondStatus(new SecondStatus(firstStatus, secondStatusMasterData))
-            .SetSelectableFirstStatusCount(8)
+            .SetEntityType(EntityType.Character)
             .SetEntityRole(EntityRole.Player)
+            .SetHasAuthority(false)
             .Build();
     }
 }

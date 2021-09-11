@@ -141,18 +141,26 @@ namespace Skill
 			float fMovementSpeed = (Entity as Character).FirstStatus.DEX;
 			Vector3 vec3Velocity = Entity.Forward * fMovementSpeed;
 
-            return Projectile.Builder()
-                .SetMasterDataID(Define.MasterData.ProjectileID.PLASMA_1)
+            var projectile = Projectile.Builder()
+                .SetEntityId(EntityManager.Instance.GenerateEntityID())
+                .SetMasterDataId(Define.MasterData.ProjectileID.PLASMA_1)
                 .SetPosition(vec3StartPosition)
                 .SetRotation(vec3StartRotation)
                 .SetVelocity(vec3Velocity)
 				.SetAngularVelocity(Vector3.zero)
-				.SetModelPath(masterData.ModelResID)
-                .SetProjectorID(Entity.EntityID)
+				.SetModelId(masterData.ModelResID)
+                .SetProjectorId(Entity.EntityID)
                 .SetLifespan(m_fTargetProjectileLifespan)
 				.SetMovementSpeed(fMovementSpeed)
+                .SetEntityType(EntityType.Projectile)
                 .SetEntityRole(EntityRole.NPC)
+                .SetHasAuthority(true)
                 .Build();
+
+            StateController stateController = projectile.GetComponent<StateController>();
+            stateController.StartState(Define.MasterData.StateID.EntitySelfDestroy, m_fTargetProjectileLifespan);
+
+            return projectile;
         }
 
 		#region Message Handler

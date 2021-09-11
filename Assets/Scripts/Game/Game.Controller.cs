@@ -263,15 +263,21 @@ namespace LOP
                 MasterData.GameItem masterData = MasterDataManager.Instance.GetMasterData<MasterData.GameItem>(Define.MasterData.GameItemID.RED_POTION);
 
                 var item = GameItem.Builder()
-                    .SetMasterDataID(Define.MasterData.GameItemID.RED_POTION)
+                    .SetEntityId(EntityManager.Instance.GenerateEntityID())
+                    .SetMasterDataId(Define.MasterData.GameItemID.RED_POTION)
                     .SetPosition(gameItem.Position)
                     .SetRotation(Vector3.zero)
                     .SetVelocity(Vector3.zero)
                     .SetAngularVelocity(Vector3.zero)
-                    .SetModelPath(masterData.ModelResID)
+                    .SetModelId(masterData.ModelResID)
                     .SetLifespan(masterData.Lifespan)
+                    .SetEntityType(EntityType.GameItem)
                     .SetEntityRole(EntityRole.NPC)
+                    .SetHasAuthority(true)
                     .Build();
+
+                StateController stateController = item.GetComponent<StateController>();
+                stateController.StartState(Define.MasterData.StateID.EntitySelfDestroy, masterData.Lifespan);
             }
         }
 

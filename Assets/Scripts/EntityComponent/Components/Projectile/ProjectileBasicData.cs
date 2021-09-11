@@ -6,18 +6,25 @@ using System.Collections.Generic;
 
 public class ProjectileBasicData : EntityBasicData
 {
-	private int m_nMasterDataID = -1;
+    public string ModelId { get; private set; }
+    private int m_nMasterDataID = -1;
 	private int m_nProjectorID = -1;
 	private float m_fMovementSpeed = 0f;
 
-	public override void Initialize(params object[] param)
+	public override void Initialize(EntityCreationData entityCreationData)
 	{
-		base.Initialize(param[2]);
+		base.Initialize(entityCreationData);
 
-		m_nProjectorID = (int)param[0];
-		m_nMasterDataID = (int)param[1];
-		m_fMovementSpeed = (float)param[3];
-	}
+        ProjectileCreationData projectileCreationData = entityCreationData as ProjectileCreationData;
+
+        m_nMasterDataID = projectileCreationData.masterDataId;
+        m_nProjectorID = projectileCreationData.projectorId;
+        m_fMovementSpeed = projectileCreationData.movementSpeed;
+
+        ModelId = projectileCreationData.modelId;
+
+        Entity.SendCommandToViews(new ModelChanged(ModelId));
+    }
 
 	public int MasterDataID { get { return m_nMasterDataID; } }
 

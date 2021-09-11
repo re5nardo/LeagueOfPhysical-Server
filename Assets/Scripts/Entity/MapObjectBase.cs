@@ -12,11 +12,17 @@ namespace Entity
         {
             base.Awake();
 
-            Initialize();
-            Position = model.transform.position;
-            Rotation = model.transform.rotation.eulerAngles;
-            Velocity = Vector3.zero;
-            AngularVelocity = Vector3.zero;
+            EntityCreationData entityCreationData = new EntityCreationData();
+            entityCreationData.entityId = EntityManager.Instance.GenerateLocalEntityID();
+            entityCreationData.position = model.transform.position;
+            entityCreationData.rotation = model.transform.rotation.eulerAngles;
+            entityCreationData.velocity = Vector3.zero;
+            entityCreationData.angularVelocity = Vector3.zero;
+            entityCreationData.entityType = EntityType.MapObject;
+            entityCreationData.entityRole = EntityRole.NPC;
+            entityCreationData.hasAuthority = true;
+
+            Initialize(entityCreationData);
 
             EntityManager.Instance.RegisterEntity(this);
         }
@@ -29,22 +35,18 @@ namespace Entity
             Rigidbody.useGravity = false;
         }
 
-        public override void Initialize(params object[] param)
-        {
-            base.Initialize(param);
-
-            EntityID = EntityManager.Instance.GenerateLocalEntityID();
-            EntityType = EntityType.MapObject;
-            EntityRole = EntityRole.NPC;
-            
-            entityBasicView.SetModel(model);
-        }
-
         protected override void InitEntityComponents()
         {
             base.InitEntityComponents();
 
             entityBasicView = AttachEntityComponent(gameObject.AddComponent<EntityBasicView>());
+        }
+
+        public override void Initialize(EntityCreationData entityCreationData)
+        {
+            base.Initialize(entityCreationData);
+
+            entityBasicView.SetModel(model);
         }
     }
 }

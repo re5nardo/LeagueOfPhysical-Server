@@ -12,14 +12,15 @@ public class CharacterStatusData : MonoEntityComponentBase
 
 	private int m_nSelectableFirstStatusCount;
 
-	public override void Initialize(params object[] param)
+	public override void Initialize(EntityCreationData entityCreationData)
 	{
-		base.Initialize(param);
+		base.Initialize(entityCreationData);
 
-		m_FirstStatus = (FirstStatus)param[0];
-		m_SecondStatus = (SecondStatus)param[1];
-		m_nSelectableFirstStatusCount = (int)param[2];
-	}
+        CharacterCreationData characterCreationData = entityCreationData as CharacterCreationData;
+
+        m_FirstStatus = characterCreationData.firstStatus;
+        m_SecondStatus = characterCreationData.secondStatus;
+    }
 
 	public FirstStatus FirstStatus { get { return m_FirstStatus; } }
 	public SecondStatus SecondStatus { get { return m_SecondStatus; } }

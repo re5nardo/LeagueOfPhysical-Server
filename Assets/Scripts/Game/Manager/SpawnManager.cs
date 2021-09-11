@@ -80,17 +80,19 @@ public class SpawnManager : MonoBehaviour
 		FirstStatus firstStatus = new FirstStatus(firstStatusMasterData);
 
 		var monster = Character.Builder()
-            .SetMasterDataID(characterID)
+            .SetEntityId(EntityManager.Instance.GenerateEntityID())
+            .SetMasterDataId(characterID)
             .SetPosition(vec3StartPosition)
             .SetRotation(vec3StartRotation)
 			.SetVelocity(Vector3.zero)
 			.SetAngularVelocity(Vector3.zero)
-			.SetModelPath(characterMasterData.ModelResID)
+			.SetModelId(characterMasterData.ModelResID)
             .SetFirstStatus(firstStatus)
 			.SetSecondStatus(new SecondStatus(firstStatus, secondStatusMasterData))
-			.SetSelectableFirstStatusCount(0)
+            .SetEntityType(EntityType.Character)
             .SetEntityRole(EntityRole.Monster)
-			.Build();
+            .SetHasAuthority(true)
+            .Build();
 
 		return monster;
 	}
@@ -104,17 +106,23 @@ public class SpawnManager : MonoBehaviour
 		Vector3 vec3StartRotation = new Vector3(0, UnityEngine.Random.Range(0, 360), 0);
 
 		var treasureBox = GameItem.Builder()
-			.SetMasterDataID(Define.MasterData.GameItemID.TREASURE_BOX)
+            .SetEntityId(EntityManager.Instance.GenerateEntityID())
+            .SetMasterDataId(Define.MasterData.GameItemID.TREASURE_BOX)
 			.SetPosition(vec3StartPosition)
 			.SetRotation(vec3StartRotation)
 			.SetVelocity(Vector3.zero)
 			.SetAngularVelocity(Vector3.zero)
-			.SetModelPath(masterData.ModelResID)
+			.SetModelId(masterData.ModelResID)
 			.SetLifespan(masterData.Lifespan)
+            .SetEntityType(EntityType.GameItem)
             .SetEntityRole(EntityRole.NPC)
+            .SetHasAuthority(true)
             .Build();
 
-		return treasureBox;
+        StateController stateController = treasureBox.GetComponent<StateController>();
+        stateController.StartState(Define.MasterData.StateID.EntitySelfDestroy, masterData.Lifespan);
+
+        return treasureBox;
 	}
 
 	#region Message Handler

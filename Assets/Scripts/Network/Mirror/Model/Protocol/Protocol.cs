@@ -120,7 +120,7 @@ namespace NetworkModel.Mirror
     public class SC_EntityAppear : IMirrorMessage
     {
         public int tick;
-        public List<EntitySnapInfo> listEntitySnapInfo = new List<EntitySnapInfo>();
+        public List<EntitySnap> listEntitySnap = new List<EntitySnap>();
 
         public SC_EntityAppear() { }
 
@@ -132,7 +132,7 @@ namespace NetworkModel.Mirror
         public void Clear()
         {
             tick = default;
-            listEntitySnapInfo.Clear();
+            listEntitySnap.Clear();
         }
     }
 

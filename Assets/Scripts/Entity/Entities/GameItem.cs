@@ -48,15 +48,11 @@ namespace Entity
             gameItemPhysicsController = AttachEntityComponent(gameObject.AddComponent<GameItemPhysicsController>());
         }
 
-		public override void Initialize(params object[] param)
+		public override void Initialize(EntityCreationData entityCreationData)
 		{
-            base.Initialize(param);
+            base.Initialize(entityCreationData);
 
-            EntityID = EntityManager.Instance.GenerateEntityID();
-			EntityType = EntityType.GameItem;
-            EntityRole = (EntityRole)param[2];
-
-            gameItemBasicData.Initialize(param);
+            gameItemBasicData.Initialize(entityCreationData);
 		}
         #endregion
 
@@ -66,23 +62,25 @@ namespace Entity
         public override float MovementSpeed => gameItemBasicData.MovementSpeed;
         public override float FactoredMovementSpeed => gameItemBasicData.MovementSpeed * SubGameBase.Current.SubGameEnvironment.MoveSpeedFactor;
 
-        public override EntitySnapInfo GetEntitySnapInfo()
+        public override EntitySnap GetEntitySnap()
 		{
-			var entitySnapInfo = new GameItemSnapInfo();
+			var entitySnap = new GameItemSnap();
 
-			entitySnapInfo.entityId = EntityID;
-			entitySnapInfo.entityType = EntityType;
-            entitySnapInfo.entityRole = EntityRole;
-            entitySnapInfo.masterDataId = gameItemBasicData.MasterDataID;
-			entitySnapInfo.position = Position;
-			entitySnapInfo.rotation = Rotation;
-			entitySnapInfo.velocity = Velocity;
-			entitySnapInfo.angularVelocity = AngularVelocity;
-			entitySnapInfo.model = gameItemBasicData.ModelId;
-			entitySnapInfo.HP = gameItemBasicData.CurrentHP;
-			entitySnapInfo.maximumHP = gameItemBasicData.MaximumHP;
+            entitySnap.entityId = EntityID;
+            entitySnap.entityType = EntityType;
+            entitySnap.entityRole = EntityRole;
+            entitySnap.masterDataId = gameItemBasicData.MasterDataID;
+            entitySnap.position = Position;
+            entitySnap.rotation = Rotation;
+            entitySnap.velocity = Velocity;
+            entitySnap.angularVelocity = AngularVelocity;
+            entitySnap.modelId = gameItemBasicData.ModelId;
+            entitySnap.HP = gameItemBasicData.CurrentHP;
+            entitySnap.maximumHP = gameItemBasicData.MaximumHP;
+            entitySnap.hasAuthority = HasAuthority;
 
-			return entitySnapInfo;
+
+            return entitySnap;
 		}
 
 		public int CurrentHP

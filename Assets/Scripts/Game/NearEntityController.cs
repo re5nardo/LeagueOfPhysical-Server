@@ -330,11 +330,11 @@ public class NearEntityController : MonoEntityComponentBase
         entityIDs.RemoveAll(entityID => Entities.Get<MonoEntityBase>(entityID).IsLocalEntity);
 
         var entityAppear = new SC_EntityAppear();
-		entityAppear.listEntitySnapInfo = new List<EntitySnapInfo>(entityIDs.Count);
+		entityAppear.listEntitySnap = new List<EntitySnap>(entityIDs.Count);
 		foreach (int entityID in entityIDs)
 		{
 			IEntity entity = Entities.Get(entityID);
-			entityAppear.listEntitySnapInfo.Add(EntityHelper.GetEntitySnapInfo(entity));
+			entityAppear.listEntitySnap.Add(EntityHelper.GetEntitySnap(entity));
 		}
 		entityAppear.tick = Game.Current.CurrentTick;
 

@@ -47,51 +47,54 @@ namespace NetworkModel.Mirror
         }
     }
 
+    #region EntitySnap
     [Serializable]
-    public class EntitySnapInfo
+    public class EntitySnap
     {
         public int entityId = -1;
         public EntityType entityType;
         public EntityRole entityRole;
+        public bool hasAuthority;
         public Vector3 position;
         public Vector3 rotation;
         public Vector3 velocity;
         public Vector3 angularVelocity;
 
-        public EntitySnapInfo() { }
+        public EntitySnap() { }
     }
 
     [Serializable]
-    public class CharacterSnapInfo : EntitySnapInfo
+    public class CharacterSnap : EntitySnap
     {
         public int masterDataId = -1;
-        public string model;
+        public string modelId;
         public FirstStatus firstStatus;
         public SecondStatus secondStatus;
 
-        public CharacterSnapInfo() { }
+        public CharacterSnap() { }
     }
 
     [Serializable]
-    public class ProjectileSnapInfo : EntitySnapInfo
+    public class ProjectileSnap : EntitySnap
     {
         public int masterDataId = -1;
-        public string model;
+        public string modelId;
         public float movementSpeed;
 
-        public ProjectileSnapInfo() { }
+        public ProjectileSnap() { }
     }
 
     [Serializable]
-    public class GameItemSnapInfo : EntitySnapInfo
+    public class GameItemSnap : EntitySnap
     {
         public int masterDataId = -1;
-        public string model;
+        public string modelId;
         public int HP;
         public int maximumHP;
 
-        public GameItemSnapInfo() { }
+        public GameItemSnap() { }
     }
+    #endregion
 
     [Serializable]
     public class SkillInputData

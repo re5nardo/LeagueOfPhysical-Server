@@ -41,9 +41,17 @@ namespace Entity
 		{
         }
 
-		public virtual void Initialize(params object[] param)
+		public virtual void Initialize(EntityCreationData entityCreationData)
 		{
-		}
+            EntityID = entityCreationData.entityId;
+            Position = entityCreationData.position;
+            Rotation = entityCreationData.rotation;
+            Velocity = entityCreationData.velocity;
+            AngularVelocity = entityCreationData.angularVelocity;
+            EntityType = entityCreationData.entityType;
+            EntityRole = entityCreationData.entityRole;
+            HasAuthority = entityCreationData.hasAuthority;
+        }
 
         public virtual void OnTick(int tick)
         {
@@ -90,19 +98,20 @@ namespace Entity
         public Vector3 Up { get { return (Quaternion.Euler(Rotation) * Vector3.up).normalized; } }
         public Vector3 Down { get { return (Quaternion.Euler(Rotation) * Vector3.down).normalized; } }
 
-        public virtual EntitySnapInfo GetEntitySnapInfo()
+        public virtual EntitySnap GetEntitySnap()
         {
-            var entitySnapInfo = new EntitySnapInfo();
+            var entitySnap = new EntitySnap();
 
-            entitySnapInfo.entityId = EntityID;
-            entitySnapInfo.entityType = EntityType;
-            entitySnapInfo.entityRole = EntityRole;
-            entitySnapInfo.position = Position;
-            entitySnapInfo.rotation = Rotation;
-            entitySnapInfo.velocity = Velocity;
-            entitySnapInfo.angularVelocity = AngularVelocity;
+            entitySnap.entityId = EntityID;
+            entitySnap.entityType = EntityType;
+            entitySnap.entityRole = EntityRole;
+            entitySnap.hasAuthority = HasAuthority;
+            entitySnap.position = Position;
+            entitySnap.rotation = Rotation;
+            entitySnap.velocity = Velocity;
+            entitySnap.angularVelocity = AngularVelocity;
 
-            return entitySnapInfo;
+            return entitySnap;
         }
         #endregion
 

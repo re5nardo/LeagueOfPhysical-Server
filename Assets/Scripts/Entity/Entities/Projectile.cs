@@ -48,15 +48,11 @@ namespace Entity
             projectilePhysicsController = AttachEntityComponent(gameObject.AddComponent<ProjectilePhysicsController>());
         }
 
-		public override void Initialize(params object[] param)
+		public override void Initialize(EntityCreationData entityCreationData)
 		{
-            base.Initialize(param);
+            base.Initialize(entityCreationData);
 
-			EntityID = EntityManager.Instance.GenerateEntityID();
-			EntityType = EntityType.Projectile;
-            EntityRole = (EntityRole)param[4];
-
-            projectileBasicData.Initialize(param);
+            projectileBasicData.Initialize(entityCreationData);
 		}
 		#endregion
 
@@ -69,22 +65,23 @@ namespace Entity
             behaviorController.Move(vec3Destination);
 		}
 
-		public override EntitySnapInfo GetEntitySnapInfo()
+		public override EntitySnap GetEntitySnap()
 		{
-			var entitySnapInfo = new ProjectileSnapInfo();
+			var entitySnap = new ProjectileSnap();
 
-			entitySnapInfo.entityId = EntityID;
-			entitySnapInfo.entityType = EntityType;
-            entitySnapInfo.entityRole = EntityRole;
-            entitySnapInfo.masterDataId = projectileBasicData.MasterDataID;
-			entitySnapInfo.position = Position;
-			entitySnapInfo.rotation = Rotation;
-			entitySnapInfo.velocity = Velocity;
-			entitySnapInfo.angularVelocity = AngularVelocity;
-			entitySnapInfo.model = projectileBasicData.ModelId;
-			entitySnapInfo.movementSpeed = projectileBasicData.MovementSpeed;
+            entitySnap.entityId = EntityID;
+            entitySnap.entityType = EntityType;
+            entitySnap.entityRole = EntityRole;
+            entitySnap.masterDataId = projectileBasicData.MasterDataID;
+            entitySnap.position = Position;
+            entitySnap.rotation = Rotation;
+            entitySnap.velocity = Velocity;
+            entitySnap.angularVelocity = AngularVelocity;
+            entitySnap.modelId = projectileBasicData.ModelId;
+            entitySnap.movementSpeed = projectileBasicData.MovementSpeed;
+            entitySnap.hasAuthority = HasAuthority;
 
-			return entitySnapInfo;
+            return entitySnap;
 		}
 		#endregion
 	}

@@ -57,16 +57,12 @@ namespace Entity
             characterAbilityController = AttachEntityComponent(gameObject.AddComponent<CharacterAbilityController>());
 		}
 
-		public override void Initialize(params object[] param)
+		public override void Initialize(EntityCreationData entityCreationData)
 		{
-            base.Initialize(param);
+            base.Initialize(entityCreationData);
 
-            EntityID = EntityManager.Instance.GenerateEntityID();
-			EntityType = EntityType.Character;
-            EntityRole = (EntityRole)param[5];
-
-            characterBasicData.Initialize(param[0], param[1]);
-            characterStatusData.Initialize(param[2], param[3], param[4]);
+            characterBasicData.Initialize(entityCreationData);
+            characterStatusData.Initialize(entityCreationData);
 		}
 		#endregion
 
@@ -88,23 +84,24 @@ namespace Entity
 
 		public SecondStatus SecondStatus { get { return characterStatusData.SecondStatus; } }
 
-		public override EntitySnapInfo GetEntitySnapInfo()
+		public override EntitySnap GetEntitySnap()
 		{
-			var entitySnapInfo = new CharacterSnapInfo();
+			var entitySnap = new CharacterSnap();
 
-			entitySnapInfo.entityId = EntityID;
-			entitySnapInfo.entityType = EntityType;
-            entitySnapInfo.entityRole = EntityRole;
-            entitySnapInfo.masterDataId = characterBasicData.MasterDataID;
-			entitySnapInfo.position = Position;
-			entitySnapInfo.rotation = Rotation;
-			entitySnapInfo.velocity = Velocity;
-			entitySnapInfo.angularVelocity = AngularVelocity;
-			entitySnapInfo.model = characterBasicData.ModelId;
-			entitySnapInfo.firstStatus = characterStatusData.FirstStatus;
-			entitySnapInfo.secondStatus = characterStatusData.SecondStatus;
+            entitySnap.entityId = EntityID;
+            entitySnap.entityType = EntityType;
+            entitySnap.entityRole = EntityRole;
+            entitySnap.masterDataId = characterBasicData.MasterDataID;
+            entitySnap.position = Position;
+            entitySnap.rotation = Rotation;
+            entitySnap.velocity = Velocity;
+            entitySnap.angularVelocity = AngularVelocity;
+            entitySnap.modelId = characterBasicData.ModelId;
+            entitySnap.firstStatus = characterStatusData.FirstStatus;
+            entitySnap.secondStatus = characterStatusData.SecondStatus;
+            entitySnap.hasAuthority = HasAuthority;
 
-			return entitySnapInfo;
+            return entitySnap;
 		}
 		#endregion
 	}

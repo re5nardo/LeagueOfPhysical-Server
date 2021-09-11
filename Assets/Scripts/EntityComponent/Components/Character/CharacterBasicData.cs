@@ -1,15 +1,23 @@
 ﻿using UnityEngine;
+using EntityCommand;
 
 public class CharacterBasicData : EntityBasicData
 {
-	private int m_nMasterDataID = -1;
+    public string ModelId { get; private set; }
+    private int m_nMasterDataID = -1;
 
-	public override void Initialize(params object[] param)
+	public override void Initialize(EntityCreationData entityCreationData)
 	{
-		base.Initialize(param[1]);
+		base.Initialize(entityCreationData);
 
-		m_nMasterDataID = (int)param[0];
-	}
+        CharacterCreationData characterCreationData = entityCreationData as CharacterCreationData;
+
+        m_nMasterDataID = characterCreationData.masterDataId;
+
+        ModelId = characterCreationData.modelId;
+
+        Entity.SendCommandToViews(new ModelChanged(ModelId));
+    }
 
 	public int MasterDataID { get { return m_nMasterDataID; } }
 }
