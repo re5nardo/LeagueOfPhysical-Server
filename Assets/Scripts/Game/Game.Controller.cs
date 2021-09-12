@@ -141,9 +141,9 @@ namespace LOP
                 return;
             }
 
-            character.CurrentHP += heal;
+            character.HP += heal;
 
-            LOP.Game.Current.GameEventManager.SendToNear(new EntityHeal(healingEntityID, healedEntityID, heal, character.CurrentHP), character.Position);
+            LOP.Game.Current.GameEventManager.SendToNear(new EntityHeal(healingEntityID, healedEntityID, heal, character.HP), character.Position);
         }
 
         public void EntityGetMoney(int entityID, int money, Vector3 position)
@@ -169,17 +169,17 @@ namespace LOP
             CharacterGrowthData characterGrowthData = entity.GetComponent<CharacterGrowthData>();
             if (characterGrowthData != null)
             {
-                characterGrowthData.m_nExp += exp;
+                characterGrowthData.Exp += exp;
 
-                while (characterGrowthData.m_nExp >= 100)
+                while (characterGrowthData.Exp >= 100)
                 {
                     characterGrowthData.Level++;
-                    characterGrowthData.m_nExp -= 100;
+                    characterGrowthData.Exp -= 100;
                 }
 
                 if (entity.EntityRole == EntityRole.Player)
                 {
-                    LOP.Game.Current.GameEventManager.Send(new EntityGetExp(entityID, exp, characterGrowthData.m_nExp), PhotonHelper.GetPhotonPlayer(entityID).ID);
+                    LOP.Game.Current.GameEventManager.Send(new EntityGetExp(entityID, exp, characterGrowthData.Exp), PhotonHelper.GetPhotonPlayer(entityID).ID);
                 }
             }
         }
@@ -230,11 +230,11 @@ namespace LOP
             if (!entity.IsAlive)
                 return;
 
-            entity.CurrentHP = entity.CurrentHP - nDamage;
+            entity.HP = entity.HP - nDamage;
 
-            LOP.Game.Current.GameEventManager.SendToNear(new EntityDamage(nAttackerID, nAttackedID, nDamage, entity.CurrentHP), entity.Position);
+            LOP.Game.Current.GameEventManager.SendToNear(new EntityDamage(nAttackerID, nAttackedID, nDamage, entity.HP), entity.Position);
 
-            if (entity.CurrentHP <= 0)
+            if (entity.HP <= 0)
             {
                 EntityDie(nAttackerID, nAttackedID);
             }
@@ -250,11 +250,11 @@ namespace LOP
             if (!gameItem.IsAlive || gameItem.MasterData.ID != Define.MasterData.GameItemID.TREASURE_BOX)
                 return;
 
-            gameItem.CurrentHP = gameItem.CurrentHP - nDamage;
+            gameItem.HP = gameItem.HP - nDamage;
 
-            LOP.Game.Current.GameEventManager.SendToNear(new EntityDamage(nAttackerID, nAttackedID, nDamage, gameItem.CurrentHP), gameItem.Position);
+            LOP.Game.Current.GameEventManager.SendToNear(new EntityDamage(nAttackerID, nAttackedID, nDamage, gameItem.HP), gameItem.Position);
 
-            if (gameItem.CurrentHP <= 0)
+            if (gameItem.HP <= 0)
             {
                 //	Destroy treasure box
                 DestroyEntity(nAttackedID);

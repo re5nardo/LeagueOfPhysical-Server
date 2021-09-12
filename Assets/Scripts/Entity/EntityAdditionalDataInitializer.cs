@@ -4,7 +4,8 @@ public class EntityAdditionalDataInitializer : MonoSingleton<EntityAdditionalDat
 {
     public CharacterGrowthData Initialize(CharacterGrowthData data)
     {
-        data.Initialize(1, 0);
+        data.Level = 1;
+        data.Exp = 0;
 
         return data;
     }

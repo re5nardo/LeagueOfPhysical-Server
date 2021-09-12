@@ -27,7 +27,7 @@ namespace Entity
 			{
 				if (masterData == null)
 				{
-                    masterData = MasterDataManager.Instance.GetMasterData<MasterData.GameItem>(gameItemBasicData.MasterDataID);
+                    masterData = MasterDataManager.Instance.GetMasterData<MasterData.GameItem>(gameItemBasicData.MasterDataId);
 				}
 
 				return masterData;
@@ -54,39 +54,38 @@ namespace Entity
 
             gameItemBasicData.Initialize(entityCreationData);
 		}
-        #endregion
-
-        #region Interface For Convenience
-        public bool IsAlive { get { return gameItemBasicData.CurrentHP > 0; } }
-
-        public override float MovementSpeed => gameItemBasicData.MovementSpeed;
-        public override float FactoredMovementSpeed => gameItemBasicData.MovementSpeed * SubGameBase.Current.SubGameEnvironment.MoveSpeedFactor;
 
         public override EntitySnap GetEntitySnap()
-		{
-			var entitySnap = new GameItemSnap();
+        {
+            var entitySnap = new GameItemSnap();
 
             entitySnap.entityId = EntityID;
             entitySnap.entityType = EntityType;
             entitySnap.entityRole = EntityRole;
-            entitySnap.masterDataId = gameItemBasicData.MasterDataID;
+            entitySnap.masterDataId = gameItemBasicData.MasterDataId;
             entitySnap.position = Position;
             entitySnap.rotation = Rotation;
             entitySnap.velocity = Velocity;
             entitySnap.angularVelocity = AngularVelocity;
             entitySnap.modelId = gameItemBasicData.ModelId;
-            entitySnap.HP = gameItemBasicData.CurrentHP;
+            entitySnap.HP = gameItemBasicData.HP;
             entitySnap.maximumHP = gameItemBasicData.MaximumHP;
             entitySnap.hasAuthority = HasAuthority;
 
-
             return entitySnap;
-		}
+        }
+        #endregion
 
-		public int CurrentHP
+        #region Interface For Convenience
+        public bool IsAlive => gameItemBasicData.HP > 0;
+
+        public override float MovementSpeed => gameItemBasicData.MovementSpeed;
+        public override float FactoredMovementSpeed => MovementSpeed * SubGameBase.Current.SubGameEnvironment.MoveSpeedFactor;
+
+		public int HP
 		{
-			get { return gameItemBasicData.CurrentHP; }
-			set { gameItemBasicData.CurrentHP = value; }
+            get => gameItemBasicData.HP;
+            set => gameItemBasicData.HP = value;
 		}
 		#endregion
 	}

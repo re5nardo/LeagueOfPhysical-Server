@@ -3,8 +3,18 @@ using EntityCommand;
 
 public class CharacterBasicData : EntityBasicData
 {
-    public string ModelId { get; private set; }
-    private int m_nMasterDataID = -1;
+    public int MasterDataId { get; private set; } = -1;
+
+    private string modelId;
+    public string ModelId
+    {
+        get => modelId;
+        private set
+        {
+            modelId = value;
+            Entity.SendCommandToViews(new ModelChanged(value));
+        }
+    }
 
 	public override void Initialize(EntityCreationData entityCreationData)
 	{
@@ -12,12 +22,7 @@ public class CharacterBasicData : EntityBasicData
 
         CharacterCreationData characterCreationData = entityCreationData as CharacterCreationData;
 
-        m_nMasterDataID = characterCreationData.masterDataId;
-
+        MasterDataId = characterCreationData.masterDataId;
         ModelId = characterCreationData.modelId;
-
-        Entity.SendCommandToViews(new ModelChanged(ModelId));
     }
-
-	public int MasterDataID { get { return m_nMasterDataID; } }
 }

@@ -8,11 +8,14 @@ namespace GameFramework
     {
         public IEntity Entity { get; private set; }
 
-        private SimplePubSubService<Type, ICommand> commandHandler = new SimplePubSubService<Type, ICommand>();
+        private Dictionary<Type, Action<ICommand>> commandHandlers = new Dictionary<Type, Action<ICommand>>();
 
         public void OnCommand(ICommand command)
         {
-            commandHandler.Publish(command.GetType(), command);
+            if (commandHandlers.TryGetValue(command.GetType(), out var handler))
+            {
+                handler?.Invoke(command);
+            }
         }
 
         public virtual void OnAttached(IEntity entity)
@@ -27,12 +30,24 @@ namespace GameFramework
 
         protected void AddCommandHandler(Type type, Action<ICommand> handler)
         {
-            commandHandler.AddSubscriber(type, handler);
+            if (commandHandlers.ContainsKey(type))
+            {
+                Debug.LogWarning("There is already handler! type : " + type);
+                return;
+            }
+
+            commandHandlers.Add(type, handler);
         }
 
         protected void RemoveCommandHandler(Type type, Action<ICommand> handler)
         {
-            commandHandler.RemoveSubscriber(type, handler);
+            if (!commandHandlers.ContainsKey(type))
+            {
+                Debug.LogWarning("There is no handler! type : " + type);
+                return;
+            }
+
+            commandHandlers.Remove(type);
         }
 
         public virtual void Initialize(EntityCreationData entityCreationData)

@@ -32,7 +32,7 @@ namespace Entity
 			{
 				if (masterData == null)
 				{
-                    masterData = MasterDataManager.Instance.GetMasterData<MasterData.Character>(characterBasicData.MasterDataID);
+                    masterData = MasterDataManager.Instance.GetMasterData<MasterData.Character>(characterBasicData.MasterDataId);
 				}
 
 				return masterData;
@@ -64,34 +64,15 @@ namespace Entity
             characterBasicData.Initialize(entityCreationData);
             characterStatusData.Initialize(entityCreationData);
 		}
-		#endregion
 
-		#region Interface For Convenience
-		public int CurrentHP
-		{
-			get { return characterStatusData.CurrentHP; }
-			set { characterStatusData.CurrentHP = value; }
-		}
-
-		public bool IsAlive { get { return characterStatusData.CurrentHP > 0; } }
-
-		public bool IsSelectableFirstStatus { get { return characterStatusData.SelectableFirstStatusCount > 0; } }
-
-        public override float MovementSpeed => characterStatusData.MovementSpeed;
-        public override float FactoredMovementSpeed => characterStatusData.MovementSpeed * SubGameBase.Current.SubGameEnvironment.MoveSpeedFactor;
-
-		public FirstStatus FirstStatus { get { return characterStatusData.FirstStatus; } }
-
-		public SecondStatus SecondStatus { get { return characterStatusData.SecondStatus; } }
-
-		public override EntitySnap GetEntitySnap()
-		{
-			var entitySnap = new CharacterSnap();
+        public override EntitySnap GetEntitySnap()
+        {
+            var entitySnap = new CharacterSnap();
 
             entitySnap.entityId = EntityID;
             entitySnap.entityType = EntityType;
             entitySnap.entityRole = EntityRole;
-            entitySnap.masterDataId = characterBasicData.MasterDataID;
+            entitySnap.masterDataId = characterBasicData.MasterDataId;
             entitySnap.position = Position;
             entitySnap.rotation = Rotation;
             entitySnap.velocity = Velocity;
@@ -102,7 +83,23 @@ namespace Entity
             entitySnap.hasAuthority = HasAuthority;
 
             return entitySnap;
-		}
+        }
+        #endregion
+
+        #region Interface For Convenience
+        public int HP
+        {
+			get => characterStatusData.HP;
+            set => characterStatusData.HP = value;
+        }
+
+		public bool IsAlive => characterStatusData.HP > 0;
+
+        public override float MovementSpeed => characterStatusData.MovementSpeed;
+        public override float FactoredMovementSpeed => MovementSpeed * SubGameBase.Current.SubGameEnvironment.MoveSpeedFactor;
+
+		public FirstStatus FirstStatus => characterStatusData.FirstStatus;
+        public SecondStatus SecondStatus => characterStatusData.SecondStatus;
 		#endregion
 	}
 }

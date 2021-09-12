@@ -4,26 +4,24 @@ using GameEvent;
 
 public class CharacterGrowthData : EntityComponentBase
 {
-	private int m_nLevel;
-	public int m_nExp;
-
+    private int level = 1;
     public int Level
     {
-        get
-        {
-            return m_nLevel;
-        }
+        get => level;
         set
         {
-            int pre = m_nLevel;
+            var levelUp = level < value;
 
-            m_nLevel = value;
+            level = value;
 
-            if (pre < value)
+            if (levelUp)
             {
                 if ((Entity as MonoEntityBase).EntityRole == EntityRole.Player)
                 {
-                    LOP.Game.Current.GameEventManager.Send(new EntityLevelUp(Entity.EntityID, value), PhotonHelper.GetPhotonPlayer(Entity.EntityID).ID);
+                    if (IDMap.TryGetConnectionIdByEntityId(Entity.EntityID, out var connectionId))
+                    {
+                        LOP.Game.Current.GameEventManager.Send(new EntityLevelUp(Entity.EntityID, value), connectionId);
+                    }
                 }
 
                 GamePubSubService.Publish(GameMessageKey.LevelUp, new object[] { Entity.EntityID, value });
@@ -31,9 +29,5 @@ public class CharacterGrowthData : EntityComponentBase
         }
     }
 
-    public void Initialize(int level, int exp)
-    {
-        m_nLevel = level;
-        m_nExp = exp;
-    }
+	public int Exp { get; set; }
 }

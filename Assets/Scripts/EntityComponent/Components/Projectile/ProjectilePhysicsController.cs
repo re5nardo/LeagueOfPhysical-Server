@@ -26,7 +26,7 @@ public class ProjectilePhysicsController : MonoEntityComponentBase
     {
         ModelTriggerEnter cmd = command as ModelTriggerEnter;
 
-        int projectorID = Entity.GetEntityComponent<ProjectileBasicData>().ProjectorID;
+        int projectorId = Entity.GetEntityComponent<ProjectileBasicData>().ProjectorId;
 
         IEntity target = Entities.Get(cmd.targetEntityID);
         if (target == null)
@@ -36,7 +36,7 @@ public class ProjectilePhysicsController : MonoEntityComponentBase
         }
         else if (target is Character)
         {
-            if (target.EntityID == projectorID || !(target as Character).IsAlive)
+            if (target.EntityID == projectorId || !(target as Character).IsAlive)
             {
                 return;
             }
@@ -55,7 +55,7 @@ public class ProjectilePhysicsController : MonoEntityComponentBase
 
         if (!attackList.Contains(target.EntityID))
         {
-            LOP.Game.Current.AttackEntity(projectorID, target.EntityID);
+            LOP.Game.Current.AttackEntity(projectorId, target.EntityID);
 
             LOP.Game.Current.DestroyEntity(Entity.EntityID);
 

@@ -12,7 +12,7 @@ namespace GameFramework
 
         public virtual void OnCommand(ICommand command)
         {
-            if (commandHandlers.TryGetValue(command.GetType(), out Action<ICommand> handler))
+            if (commandHandlers.TryGetValue(command.GetType(), out var handler))
             {
                 handler?.Invoke(command);
             }
@@ -28,11 +28,7 @@ namespace GameFramework
             Entity = null;
         }
 
-        public virtual void Initialize(params object[] param)
-        {
-        }
-
-        protected void CommandHandlerOn(Type type, Action<ICommand> handler)
+        protected void AddCommandHandler(Type type, Action<ICommand> handler)
         {
             if (commandHandlers.ContainsKey(type))
             {
@@ -43,7 +39,7 @@ namespace GameFramework
             commandHandlers.Add(type, handler);
         }
 
-        protected void CommandHandlerOff(Type type)
+        protected void RemoveCommandHandler(Type type)
         {
             if (!commandHandlers.ContainsKey(type))
             {
@@ -52,6 +48,10 @@ namespace GameFramework
             }
 
             commandHandlers.Remove(type);
+        }
+
+        public virtual void Initialize(EntityCreationData entityCreationData)
+        {
         }
     }
 }

@@ -27,7 +27,7 @@ namespace Entity
 			{
 				if (masterData == null)
 				{
-                    masterData = MasterDataManager.Instance.GetMasterData<MasterData.Projectile>(projectileBasicData.MasterDataID);
+                    masterData = MasterDataManager.Instance.GetMasterData<MasterData.Projectile>(projectileBasicData.MasterDataId);
 				}
 
 				return masterData;
@@ -54,25 +54,15 @@ namespace Entity
 
             projectileBasicData.Initialize(entityCreationData);
 		}
-		#endregion
 
-		#region Interface For Convenience
-		public override float MovementSpeed => projectileBasicData.MovementSpeed;
-        public override float FactoredMovementSpeed => projectileBasicData.MovementSpeed * SubGameBase.Current.SubGameEnvironment.MoveSpeedFactor;
-
-        public void Move(Vector3 vec3Destination)
-		{
-            behaviorController.Move(vec3Destination);
-		}
-
-		public override EntitySnap GetEntitySnap()
-		{
-			var entitySnap = new ProjectileSnap();
+        public override EntitySnap GetEntitySnap()
+        {
+            var entitySnap = new ProjectileSnap();
 
             entitySnap.entityId = EntityID;
             entitySnap.entityType = EntityType;
             entitySnap.entityRole = EntityRole;
-            entitySnap.masterDataId = projectileBasicData.MasterDataID;
+            entitySnap.masterDataId = projectileBasicData.MasterDataId;
             entitySnap.position = Position;
             entitySnap.rotation = Rotation;
             entitySnap.velocity = Velocity;
@@ -82,6 +72,16 @@ namespace Entity
             entitySnap.hasAuthority = HasAuthority;
 
             return entitySnap;
+        }
+        #endregion
+
+        #region Interface For Convenience
+        public override float MovementSpeed => projectileBasicData.MovementSpeed;
+        public override float FactoredMovementSpeed => MovementSpeed * SubGameBase.Current.SubGameEnvironment.MoveSpeedFactor;
+
+        public void Move(Vector3 vec3Destination)
+		{
+            behaviorController.Move(vec3Destination);
 		}
 		#endregion
 	}

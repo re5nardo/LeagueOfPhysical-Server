@@ -1,15 +1,24 @@
 ﻿using UnityEngine;
-using Entity;
 using EntityCommand;
-using GameFramework;
-using System.Collections.Generic;
 
 public class ProjectileBasicData : EntityBasicData
 {
-    public string ModelId { get; private set; }
-    private int m_nMasterDataID = -1;
-	private int m_nProjectorID = -1;
-	private float m_fMovementSpeed = 0f;
+    public int MasterDataId { get; private set; } = -1;
+
+    private string modelId;
+    public string ModelId
+    {
+        get => modelId;
+        private set
+        {
+            modelId = value;
+            Entity.SendCommandToViews(new ModelChanged(value));
+        }
+    }
+
+    public int ProjectorId { get; private set; } = -1;
+
+    public float MovementSpeed { get; private set; }
 
 	public override void Initialize(EntityCreationData entityCreationData)
 	{
@@ -17,18 +26,9 @@ public class ProjectileBasicData : EntityBasicData
 
         ProjectileCreationData projectileCreationData = entityCreationData as ProjectileCreationData;
 
-        m_nMasterDataID = projectileCreationData.masterDataId;
-        m_nProjectorID = projectileCreationData.projectorId;
-        m_fMovementSpeed = projectileCreationData.movementSpeed;
-
+        MasterDataId = projectileCreationData.masterDataId;
         ModelId = projectileCreationData.modelId;
-
-        Entity.SendCommandToViews(new ModelChanged(ModelId));
+        ProjectorId = projectileCreationData.projectorId;
+        MovementSpeed = projectileCreationData.movementSpeed;
     }
-
-	public int MasterDataID { get { return m_nMasterDataID; } }
-
-	public int ProjectorID { get { return m_nProjectorID; } }
-
-	public float MovementSpeed { get { return m_fMovementSpeed; } }
 }
