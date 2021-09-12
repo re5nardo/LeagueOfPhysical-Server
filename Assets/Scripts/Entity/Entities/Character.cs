@@ -78,8 +78,8 @@ namespace Entity
             entitySnap.velocity = Velocity;
             entitySnap.angularVelocity = AngularVelocity;
             entitySnap.modelId = characterBasicData.ModelId;
-            entitySnap.firstStatus = characterStatusData.FirstStatus;
-            entitySnap.secondStatus = characterStatusData.SecondStatus;
+            entitySnap.firstStatus = characterStatusData.firstStatus;
+            entitySnap.secondStatus = characterStatusData.secondStatus;
             entitySnap.hasAuthority = HasAuthority;
 
             return entitySnap;
@@ -98,8 +98,8 @@ namespace Entity
         public override float MovementSpeed => characterStatusData.MovementSpeed;
         public override float FactoredMovementSpeed => MovementSpeed * SubGameBase.Current.SubGameEnvironment.MoveSpeedFactor;
 
-		public FirstStatus FirstStatus => characterStatusData.FirstStatus;
-        public SecondStatus SecondStatus => characterStatusData.SecondStatus;
+		public FirstStatus FirstStatus => characterStatusData.firstStatus;
+        public SecondStatus SecondStatus => characterStatusData.secondStatus;
 		#endregion
 	}
 }
