@@ -21,6 +21,8 @@ namespace LOP
             {
                 MonoEntityBase userEntity = Entities.Get<MonoEntityBase>(entityId);
 
+                userEntity.OwnerId = customProperties.userId;
+
                 var enterRoom = new SC_EnterRoom();
                 enterRoom.tick = Game.Current.CurrentTick;
                 enterRoom.entityId = userEntity.EntityID;
@@ -98,7 +100,9 @@ namespace LOP
 
             IDMap.UserIdEntityId.TryGetEntityId(customProperties.userId, out var entityId);
 
-            IEntity entity = Entities.Get(entityId);
+            var entity = Entities.Get<MonoEntityBase>(entityId);
+
+            entity.OwnerId = "server";
 
             NearEntityController nearEntityController = entity.GetEntityComponent<NearEntityController>();
             entity.DetachEntityComponent(nearEntityController);

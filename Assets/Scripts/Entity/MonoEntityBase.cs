@@ -15,7 +15,7 @@ namespace Entity
         public bool IsValid => EntityManager.Instance.IsRegistered(EntityID);
         public bool IsLocalEntity => EntityID < 0;
 
-        public string OwnerId { get; private set; } = "server";
+        public string OwnerId { get; set; } = "server";
         public bool HasAuthority => OwnerId == "server" || OwnerId == "local";
 
         private List<IEntityComponent> entityComponents = new List<IEntityComponent>();
