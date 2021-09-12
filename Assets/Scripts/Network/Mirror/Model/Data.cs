@@ -54,7 +54,7 @@ namespace NetworkModel.Mirror
         public int entityId = -1;
         public EntityType entityType;
         public EntityRole entityRole;
-        public bool hasAuthority;
+        public string ownerId;
         public Vector3 position;
         public Vector3 rotation;
         public Vector3 velocity;

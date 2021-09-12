@@ -49,9 +49,9 @@ public abstract class EntityBuilder<Builder, Entity, Data> where Builder : Entit
         return this as Builder;
     }
 
-    public Builder SetHasAuthority(bool hasAuthority)
+    public Builder SetOwnerId(string ownerId)
     {
-        entityCreationData.hasAuthority = hasAuthority;
+        entityCreationData.ownerId = ownerId;
         return this as Builder;
     }
 

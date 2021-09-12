@@ -91,7 +91,7 @@ public class SpawnManager : MonoBehaviour
 			.SetSecondStatus(new SecondStatus(firstStatus, secondStatusMasterData))
             .SetEntityType(EntityType.Character)
             .SetEntityRole(EntityRole.Monster)
-            .SetHasAuthority(true)
+            .SetOwnerId("server")
             .Build();
 
 		return monster;
@@ -116,7 +116,7 @@ public class SpawnManager : MonoBehaviour
 			.SetLifespan(masterData.Lifespan)
             .SetEntityType(EntityType.GameItem)
             .SetEntityRole(EntityRole.NPC)
-            .SetHasAuthority(true)
+            .SetOwnerId("server")
             .Build();
 
         StateController stateController = treasureBox.GetComponent<StateController>();

@@ -20,7 +20,7 @@ namespace Entity
             entityCreationData.angularVelocity = Vector3.zero;
             entityCreationData.entityType = EntityType.MapObject;
             entityCreationData.entityRole = EntityRole.NPC;
-            entityCreationData.hasAuthority = true;
+            entityCreationData.ownerId = "local";
 
             Initialize(entityCreationData);
 

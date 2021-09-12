@@ -70,7 +70,7 @@ namespace Entity
             entitySnap.modelId = gameItemBasicData.ModelId;
             entitySnap.HP = gameItemBasicData.HP;
             entitySnap.maximumHP = gameItemBasicData.MaximumHP;
-            entitySnap.hasAuthority = HasAuthority;
+            entitySnap.ownerId = OwnerId;
 
             return entitySnap;
         }

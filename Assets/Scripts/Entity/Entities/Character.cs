@@ -80,7 +80,7 @@ namespace Entity
             entitySnap.modelId = characterBasicData.ModelId;
             entitySnap.firstStatus = characterStatusData.firstStatus;
             entitySnap.secondStatus = characterStatusData.secondStatus;
-            entitySnap.hasAuthority = HasAuthority;
+            entitySnap.ownerId = OwnerId;
 
             return entitySnap;
         }

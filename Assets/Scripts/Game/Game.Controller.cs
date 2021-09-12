@@ -43,9 +43,7 @@ namespace LOP
             else
             {
                 //  Create character(Player)
-                Character character = EntityHelper.CreatePlayerCharacter(customProperties.characterId);
-
-                character.HasAuthority = false;
+                Character character = EntityHelper.CreatePlayerCharacter(customProperties.userId, customProperties.characterId);
 
                 IDMap.UserIdEntityId.Set(customProperties.userId, character.EntityID);
 
@@ -273,7 +271,7 @@ namespace LOP
                     .SetLifespan(masterData.Lifespan)
                     .SetEntityType(EntityType.GameItem)
                     .SetEntityRole(EntityRole.NPC)
-                    .SetHasAuthority(true)
+                    .SetOwnerId("server")
                     .Build();
 
                 StateController stateController = item.GetComponent<StateController>();

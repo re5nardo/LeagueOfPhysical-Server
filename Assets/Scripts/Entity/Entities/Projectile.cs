@@ -69,7 +69,7 @@ namespace Entity
             entitySnap.angularVelocity = AngularVelocity;
             entitySnap.modelId = projectileBasicData.ModelId;
             entitySnap.movementSpeed = projectileBasicData.MovementSpeed;
-            entitySnap.hasAuthority = HasAuthority;
+            entitySnap.ownerId = OwnerId;
 
             return entitySnap;
         }

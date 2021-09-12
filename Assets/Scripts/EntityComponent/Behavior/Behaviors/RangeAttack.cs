@@ -123,7 +123,7 @@ namespace Behavior
 				.SetMovementSpeed(fMovementSpeed)
                 .SetEntityType(EntityType.Projectile)
                 .SetEntityRole(EntityRole.NPC)
-                .SetHasAuthority(true)
+                .SetOwnerId("server")
                 .Build();
 
             StateController stateController = projectile.GetComponent<StateController>();

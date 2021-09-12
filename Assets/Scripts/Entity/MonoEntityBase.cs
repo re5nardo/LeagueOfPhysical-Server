@@ -15,7 +15,8 @@ namespace Entity
         public bool IsValid => EntityManager.Instance.IsRegistered(EntityID);
         public bool IsLocalEntity => EntityID < 0;
 
-        public bool HasAuthority { get; set; }
+        public string OwnerId { get; private set; } = "server";
+        public bool HasAuthority => OwnerId == "server" || OwnerId == "local";
 
         private List<IEntityComponent> entityComponents = new List<IEntityComponent>();
 
@@ -50,7 +51,7 @@ namespace Entity
             AngularVelocity = entityCreationData.angularVelocity;
             EntityType = entityCreationData.entityType;
             EntityRole = entityCreationData.entityRole;
-            HasAuthority = entityCreationData.hasAuthority;
+            OwnerId = entityCreationData.ownerId;
         }
 
         public virtual void OnTick(int tick)
@@ -87,6 +88,22 @@ namespace Entity
             }
         }
 
+        public virtual EntitySnap GetEntitySnap()
+        {
+            var entitySnap = new EntitySnap();
+
+            entitySnap.entityId = EntityID;
+            entitySnap.entityType = EntityType;
+            entitySnap.entityRole = EntityRole;
+            entitySnap.ownerId = OwnerId;
+            entitySnap.position = Position;
+            entitySnap.rotation = Rotation;
+            entitySnap.velocity = Velocity;
+            entitySnap.angularVelocity = AngularVelocity;
+
+            return entitySnap;
+        }
+
         #region Interface For Convenience
         public abstract float MovementSpeed { get; }
         public abstract float FactoredMovementSpeed { get; }
@@ -97,22 +114,6 @@ namespace Entity
         public Vector3 Forward { get { return (Quaternion.Euler(Rotation) * Vector3.forward).normalized; } }
         public Vector3 Up { get { return (Quaternion.Euler(Rotation) * Vector3.up).normalized; } }
         public Vector3 Down { get { return (Quaternion.Euler(Rotation) * Vector3.down).normalized; } }
-
-        public virtual EntitySnap GetEntitySnap()
-        {
-            var entitySnap = new EntitySnap();
-
-            entitySnap.entityId = EntityID;
-            entitySnap.entityType = EntityType;
-            entitySnap.entityRole = EntityRole;
-            entitySnap.hasAuthority = HasAuthority;
-            entitySnap.position = Position;
-            entitySnap.rotation = Rotation;
-            entitySnap.velocity = Velocity;
-            entitySnap.angularVelocity = AngularVelocity;
-
-            return entitySnap;
-        }
         #endregion
 
         #region IEntity

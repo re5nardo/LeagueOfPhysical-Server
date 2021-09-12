@@ -11,7 +11,7 @@ public class EntityCreationData
     public Vector3 angularVelocity;
     public EntityType entityType;
     public EntityRole entityRole;
-    public bool hasAuthority;
+    public string ownerId;
 
     public virtual void Clear()
     {
@@ -22,7 +22,7 @@ public class EntityCreationData
         angularVelocity = default;
         entityType = default;
         entityRole = default;
-        hasAuthority = default;
+        ownerId = default;
     }
 }
 
