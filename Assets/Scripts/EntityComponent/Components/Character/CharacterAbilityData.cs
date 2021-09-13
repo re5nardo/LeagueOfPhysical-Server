@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using GameFramework;
-using NetworkModel.PUN;
+using System;
 
 public class CharacterAbilityData : MonoEntityComponentBase
 {
@@ -13,11 +13,7 @@ public class CharacterAbilityData : MonoEntityComponentBase
 
 	public void IncreaseSelectableAbilityCount()
 	{
-		m_nSelectableAbilityCount++;
-
-		m_SelectableAbilityIDs = AbilityManager.Instance.GenerateAbilityIDs(Entity.EntityID);
-		
-		RoomNetwork.Instance.Send(new SC_SelectableAbilityInfo(m_SelectableAbilityIDs), PhotonHelper.GetActorID(Entity.EntityID));
+        throw new NotImplementedException();
 	}
 
 	public void DecreaseSelectableAbilityCount()

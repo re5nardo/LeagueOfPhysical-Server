@@ -160,7 +160,10 @@ namespace LOP
 
             if (entity.EntityRole == EntityRole.Player)
             {
-                LOP.Game.Current.GameEventManager.Send(new EntityGetMoney(entityID, position, money, entityInventory.m_nMoney), PhotonHelper.GetPhotonPlayer(entityID).ID);
+                if (IDMap.TryGetConnectionIdByEntityId(entityID, out var connectionId))
+                {
+                    LOP.Game.Current.GameEventManager.Send(new EntityGetMoney(entityID, position, money, entityInventory.m_nMoney), connectionId);
+                }
             }
         }
 
@@ -181,7 +184,10 @@ namespace LOP
 
                 if (entity.EntityRole == EntityRole.Player)
                 {
-                    LOP.Game.Current.GameEventManager.Send(new EntityGetExp(entityID, exp, characterGrowthData.Exp), PhotonHelper.GetPhotonPlayer(entityID).ID);
+                    if (IDMap.TryGetConnectionIdByEntityId(entityID, out var connectionId))
+                    {
+                        LOP.Game.Current.GameEventManager.Send(new EntityGetExp(entityID, exp, characterGrowthData.Exp), connectionId);
+                    }
                 }
             }
         }
