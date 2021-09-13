@@ -17,16 +17,16 @@ public class WithinSight : Conditional
     [Tooltip("Returns success if this object becomes within sight")]
     public SharedTransform target;
 
-	private MonoEntityBase Entity__ = null;
-	private MonoEntityBase Entity
+	private LOPEntityBase entity = null;
+	private LOPEntityBase Entity
 	{
 		get
 		{
-			if (Entity__ == null)
+			if (entity == null)
 			{
-				Entity__ = gameObject.GetComponent<MonoEntityBase>();
+                entity = gameObject.GetComponent<LOPEntityBase>();
 			}
-			return Entity__;
+			return entity;
 		}
 	}
 

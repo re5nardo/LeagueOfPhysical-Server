@@ -3,7 +3,7 @@ using NetworkModel.Mirror;
 
 namespace Entity
 {
-	public class Projectile : MonoEntityBase
+	public class Projectile : LOPEntityBase
     {
 		#region Builder
 		private static ProjectileBuilder projectileBuilder = new ProjectileBuilder();

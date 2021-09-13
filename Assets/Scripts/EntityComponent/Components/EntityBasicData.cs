@@ -7,13 +7,13 @@ using Entity;
 
 public class EntityBasicData : MonoEntityComponentBase
 {
-    new protected MonoEntityBase Entity = null;
+    new protected LOPEntityBase Entity = null;
 
     public override void OnAttached(IEntity entity)
     {
         base.OnAttached(entity);
 
-        Entity = entity as MonoEntityBase;
+        Entity = entity as LOPEntityBase;
     }
 
     public override void OnDetached()

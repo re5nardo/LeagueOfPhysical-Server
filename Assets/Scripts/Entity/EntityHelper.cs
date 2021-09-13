@@ -7,9 +7,9 @@ public class EntityHelper
 {
     public static EntitySnap GetEntitySnap(IEntity entity)
 	{
-		if(entity is MonoEntityBase monoEntity)
+		if(entity is LOPEntityBase lopEntity)
 		{
-			return monoEntity.GetEntitySnap();
+			return lopEntity.GetEntitySnap();
 		}
 
 		Debug.LogWarning("entity type is not vaild! type : " + entity.GetType());

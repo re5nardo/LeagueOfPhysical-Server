@@ -39,7 +39,7 @@ namespace Behavior
             }
         }
 
-        new protected MonoEntityBase Entity = null;
+        new protected LOPEntityBase Entity = null;
 
         private MasterData.Behavior masterData = null;
         public MasterData.Behavior MasterData
@@ -60,7 +60,7 @@ namespace Behavior
         {
             base.OnAttached(entity);
 
-            Entity = entity as MonoEntityBase;
+            Entity = entity as LOPEntityBase;
         }
 
         public override void OnDetached()

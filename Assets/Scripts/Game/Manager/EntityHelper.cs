@@ -54,7 +54,7 @@ public class Entities
         return EntityManager.Instance.GetAllEntities<T>();
     }
 
-    public static List<T> GetAll<T>(EntityRole role) where T : MonoEntityBase
+    public static List<T> GetAll<T>(EntityRole role) where T : LOPEntityBase
     {
         List<T> targets = new List<T>();
 

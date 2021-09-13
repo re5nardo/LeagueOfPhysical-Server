@@ -94,7 +94,7 @@ public class EntityManager : GameFramework.EntityManager
         {
             entity =>
             {
-                return ((entity as MonoEntityBase).EntityRole & entityRoleFlag) != 0;
+                return ((entity as LOPEntityBase).EntityRole & entityRoleFlag) != 0;
             },
             entity =>
             {
@@ -109,7 +109,7 @@ public class EntityManager : GameFramework.EntityManager
         {
             entity =>
             {
-                return ((entity as MonoEntityBase).EntityRole & entityRoleFlag) != 0;
+                return ((entity as LOPEntityBase).EntityRole & entityRoleFlag) != 0;
             },
             entity =>
             {
@@ -123,7 +123,7 @@ public class EntityManager : GameFramework.EntityManager
         //  sort
         //  ...
 
-        GetAllEntities<MonoEntityBase>()?.ForEach(entity =>
+        GetAllEntities<LOPEntityBase>()?.ForEach(entity =>
         {
             if (entity.IsValid)
             {

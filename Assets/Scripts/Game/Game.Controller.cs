@@ -19,7 +19,7 @@ namespace LOP
 
             if (IDMap.UserIdEntityId.TryGetEntityId(customProperties.userId, out var entityId))
             {
-                MonoEntityBase userEntity = Entities.Get<MonoEntityBase>(entityId);
+                LOPEntityBase userEntity = Entities.Get<LOPEntityBase>(entityId);
 
                 userEntity.OwnerId = customProperties.userId;
 
@@ -100,7 +100,7 @@ namespace LOP
 
             IDMap.UserIdEntityId.TryGetEntityId(customProperties.userId, out var entityId);
 
-            var entity = Entities.Get<MonoEntityBase>(entityId);
+            var entity = Entities.Get<LOPEntityBase>(entityId);
 
             entity.OwnerId = "server";
 
@@ -150,7 +150,7 @@ namespace LOP
 
         public void EntityGetMoney(int entityID, int money, Vector3 position)
         {
-            MonoEntityBase entity = Entities.Get<MonoEntityBase>(entityID);
+            LOPEntityBase entity = Entities.Get<LOPEntityBase>(entityID);
 
             EntityInventory entityInventory = entity.GetComponent<EntityInventory>();
             if (entityInventory != null)
@@ -169,7 +169,7 @@ namespace LOP
 
         public void EntityGetExp(int entityID, int exp)
         {
-            MonoEntityBase entity = Entities.Get<MonoEntityBase>(entityID);
+            LOPEntityBase entity = Entities.Get<LOPEntityBase>(entityID);
 
             CharacterGrowthData characterGrowthData = entity.GetComponent<CharacterGrowthData>();
             if (characterGrowthData != null)
@@ -197,8 +197,8 @@ namespace LOP
             int attackDamage = 0;
             int armor = 0;
 
-            MonoEntityBase attacker = Entities.Get<MonoEntityBase>(nAttackerID);
-            MonoEntityBase attacked = Entities.Get<MonoEntityBase>(nAttackedID);
+            LOPEntityBase attacker = Entities.Get<LOPEntityBase>(nAttackerID);
+            LOPEntityBase attacked = Entities.Get<LOPEntityBase>(nAttackedID);
 
             //	AttackDamage
             if (attacker.EntityType == EntityType.Character)
@@ -327,7 +327,7 @@ namespace LOP
 
         public void DestroyEntity(int nEntityID)
         {
-            MonoEntityBase entity = Entities.Get<MonoEntityBase>(nEntityID);
+            LOPEntityBase entity = Entities.Get<LOPEntityBase>(nEntityID);
 
             entity.SendCommandToAll(new Destroying());
 
