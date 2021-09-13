@@ -99,18 +99,6 @@ namespace Entity
             return entitySnap;
         }
 
-        #region Interface For Convenience
-        public abstract float MovementSpeed { get; }
-        public abstract float FactoredMovementSpeed { get; }
-
-        public Collider ModelCollider => entityBasicView.ModelCollider;
-        public Animator ModelAnimator => entityBasicView.ModelAnimator;
-
-        public Vector3 Forward { get { return (Quaternion.Euler(Rotation) * Vector3.forward).normalized; } }
-        public Vector3 Up { get { return (Quaternion.Euler(Rotation) * Vector3.up).normalized; } }
-        public Vector3 Down { get { return (Quaternion.Euler(Rotation) * Vector3.down).normalized; } }
-        #endregion
-
         #region IEntity
         public override Vector3 Position
         {
@@ -149,6 +137,18 @@ namespace Entity
                 Rigidbody.angularVelocity = value;
             }
         }
+        #endregion
+
+        #region Interface For Convenience
+        public abstract float MovementSpeed { get; }
+        public abstract float FactoredMovementSpeed { get; }
+
+        public Collider ModelCollider => entityBasicView.ModelCollider;
+        public Animator ModelAnimator => entityBasicView.ModelAnimator;
+
+        public Vector3 Forward => (Quaternion.Euler(Rotation) * Vector3.forward).normalized;
+        public Vector3 Up => (Quaternion.Euler(Rotation) * Vector3.up).normalized;
+        public Vector3 Down => (Quaternion.Euler(Rotation) * Vector3.down).normalized;
         #endregion
     }
 }
