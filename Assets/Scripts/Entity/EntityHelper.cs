@@ -7,7 +7,7 @@ public class EntityHelper
 {
     public static EntitySnap GetEntitySnap(IEntity entity)
 	{
-		if(entity is LOPEntityBase lopEntity)
+		if(entity is LOPMonoEntityBase lopEntity)
 		{
 			return lopEntity.GetEntitySnap();
 		}

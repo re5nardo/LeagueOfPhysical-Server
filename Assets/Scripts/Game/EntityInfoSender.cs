@@ -84,7 +84,7 @@ public class EntityInfoSender : MonoSingleton<EntityInfoSender>
     {
         int nEntityID = (int)param[0];
 
-        LOPEntityBase entity = Entities.Get<LOPEntityBase>(nEntityID);
+        var entity = Entities.Get<LOPMonoEntityBase>(nEntityID);
 
         //	Player's entity
         if (entity.EntityRole == EntityRole.Player)

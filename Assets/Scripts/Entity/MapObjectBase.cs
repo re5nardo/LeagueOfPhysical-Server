@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Entity
 {
-    public abstract class MapObjectBase : LOPEntityBase
+    public abstract class MapObjectBase : LOPMonoEntityBase
     {
         [SerializeField] private GameObject model = null;
 

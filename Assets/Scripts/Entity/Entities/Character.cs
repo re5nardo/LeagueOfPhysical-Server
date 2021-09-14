@@ -4,7 +4,7 @@ using NetworkModel.Mirror;
 
 namespace Entity
 {
-	public class Character : LOPEntityBase
+	public class Character : LOPMonoEntityBase
     {
 		#region Builder
 		private static CharacterBuilder characterBuilder = new CharacterBuilder();

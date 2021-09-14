@@ -43,7 +43,7 @@ namespace State
             }
         }
 
-        new protected LOPEntityBase Entity = null;
+        new protected LOPMonoEntityBase Entity = null;
 
         private MasterData.State masterData = null;
         public MasterData.State MasterData
@@ -64,7 +64,7 @@ namespace State
         {
             base.OnAttached(entity);
 
-            Entity = entity as LOPEntityBase;
+            Entity = entity as LOPMonoEntityBase;
         }
 
         public override void OnDetached()

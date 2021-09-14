@@ -11,14 +11,14 @@ public class Seek : Action
     [Tooltip("The target that the agent is seeking")]
     public SharedTransform target;
 
-	private LOPEntityBase entity = null;
-	private LOPEntityBase Entity
+	private LOPMonoEntityBase entity = null;
+	private LOPMonoEntityBase Entity
 	{
 		get
 		{
 			if (entity == null)
 			{
-                entity = gameObject.GetComponent<LOPEntityBase>();
+                entity = gameObject.GetComponent<LOPMonoEntityBase>();
 			}
 			return entity;
 		}

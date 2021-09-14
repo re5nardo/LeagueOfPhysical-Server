@@ -1,10 +1,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 using NetworkModel.Mirror;
+using UniRx;
 
 namespace Entity
 {
-    public abstract class LOPEntityBase : MonoEntityBase
+    public abstract class LOPMonoEntityBase : MonoEntityBase
     {
         public EntityType EntityType { get; protected set; } = EntityType.None;
         public EntityRole EntityRole { get; protected set; } = EntityRole.None;

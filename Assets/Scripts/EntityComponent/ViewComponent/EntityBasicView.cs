@@ -18,13 +18,13 @@ public class EntityBasicView : MonoViewComponentBase
 
     private Vector3 positionBeforePhysics;
 
-    protected LOPEntityBase lopEntity;
+    protected LOPMonoEntityBase lopEntity;
 
     public override void OnAttached(IEntity entity)
     {
         base.OnAttached(entity);
 
-        lopEntity = entity as LOPEntityBase;
+        lopEntity = entity as LOPMonoEntityBase;
 
         AddCommandHandler(typeof(ModelChanged), OnModelChanged);
         AddCommandHandler(typeof(AnimatorSetTrigger), OnAnimatorSetTrigger);

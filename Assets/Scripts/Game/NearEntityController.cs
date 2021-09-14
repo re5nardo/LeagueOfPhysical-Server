@@ -295,7 +295,7 @@ public class NearEntityController : MonoEntityComponentBase
         {
             m_hashNearEntityID.Add(entityID);
 
-            LOPEntityBase entity = Entities.Get<LOPEntityBase>(entityID);
+            var entity = Entities.Get<LOPMonoEntityBase>(entityID);
             if (entity.EntityRole == EntityRole.Player)
             {
                 m_hashNearPlayerEntityID.Add(entityID);
@@ -327,7 +327,7 @@ public class NearEntityController : MonoEntityComponentBase
 			return;
 
         //  Don't send Local Entities
-        entityIDs.RemoveAll(entityID => Entities.Get<LOPEntityBase>(entityID).IsLocalEntity);
+        entityIDs.RemoveAll(entityID => Entities.Get<LOPMonoEntityBase>(entityID).IsLocalEntity);
 
         var entityAppear = new SC_EntityAppear();
 		entityAppear.listEntitySnap = new List<EntitySnap>(entityIDs.Count);
@@ -350,7 +350,7 @@ public class NearEntityController : MonoEntityComponentBase
 			return;
 
         //  Don't send Local Entities
-        entityIDs.RemoveAll(entityID => Entities.Get<LOPEntityBase>(entityID).IsLocalEntity);
+        entityIDs.RemoveAll(entityID => Entities.Get<LOPMonoEntityBase>(entityID).IsLocalEntity);
 
         var entityDisAppear = new SC_EntityDisAppear();
 		entityDisAppear.listEntityId = entityIDs;

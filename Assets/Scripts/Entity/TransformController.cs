@@ -7,14 +7,14 @@ using GameFramework;
 
 public class TransformController : MonoBehaviour
 {
-    private LOPEntityBase entity;
+    private LOPMonoEntityBase entity;
     private RoomProtocolDispatcher roomProtocolDispatcher;
     private List<EntityTransformSnap> entityTransformSnaps = new List<EntityTransformSnap>();
     private AverageQueue latencies = new AverageQueue();
 
     private void Awake()
     {
-        entity = GetComponent<LOPEntityBase>();
+        entity = GetComponent<LOPMonoEntityBase>();
 
         roomProtocolDispatcher = gameObject.AddComponent<RoomProtocolDispatcher>();
         roomProtocolDispatcher[typeof(CS_Synchronization)] = OnCS_Synchronization;

@@ -4,9 +4,9 @@ using Entity;
 
 public abstract class ControllerBase : MonoBehaviour
 {
-    protected LOPEntityBase Entity = null;
+    protected LOPMonoEntityBase Entity = null;
 
-    public void Possess(LOPEntityBase entity)
+    public void Possess(LOPMonoEntityBase entity)
     {
 		Entity = entity;
 
