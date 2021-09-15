@@ -16,7 +16,7 @@ public class CharacterGrowthData : LOPEntityComponentBase
 
             if (levelUp)
             {
-                if ((Entity as LOPMonoEntityBase).EntityRole == EntityRole.Player)
+                if (Entity.EntityRole == EntityRole.Player)
                 {
                     if (IDMap.TryGetConnectionIdByEntityId(Entity.EntityID, out var connectionId))
                     {

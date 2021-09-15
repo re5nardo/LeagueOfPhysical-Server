@@ -6,7 +6,7 @@ using GameFramework;
 
 public class LOPMonoEntityComponentBase : MonoEntityComponentBase
 {
-    public new LOPMonoEntityBase Entity { get; protected set; }
+    public new LOPMonoEntityBase Entity { get; private set; }
 
     public override void OnAttached(IEntity entity)
     {

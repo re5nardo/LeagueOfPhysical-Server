@@ -39,8 +39,6 @@ namespace Behavior
             }
         }
 
-        new protected LOPMonoEntityBase Entity = null;
-
         private MasterData.Behavior masterData = null;
         public MasterData.Behavior MasterData
         {
@@ -54,22 +52,6 @@ namespace Behavior
                 return masterData;
             }
         }
-
-        #region IComponent
-        public override void OnAttached(IEntity entity)
-        {
-            base.OnAttached(entity);
-
-            Entity = entity as LOPMonoEntityBase;
-        }
-
-        public override void OnDetached()
-        {
-            base.OnDetached();
-
-            Entity = null;
-        }
-        #endregion
 
         public virtual void SetData(int behaviorMasterID, params object[] param)
         {
