@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
 using Entity;
-using EntityCommand;
+using EntityMessage;
 using GameFramework;
 using System.Collections.Generic;
+using UniRx;
 
 public class ProjectilePhysicsController : LOPMonoEntityComponentBase
 {
@@ -12,23 +13,14 @@ public class ProjectilePhysicsController : LOPMonoEntityComponentBase
     {
         base.OnAttached(entity);
 
-        AddCommandHandler(typeof(ModelTriggerEnter), OnModelTriggerEnter);
+        Entity.MessageBroker.Receive<ModelTriggerEnter>().Where(_ => IsValid).Subscribe(OnModelTriggerEnter);
     }
 
-    public override void OnDetached()
+    private void OnModelTriggerEnter(ModelTriggerEnter message)
     {
-        base.OnDetached();
-
-        RemoveCommandHandler(typeof(ModelTriggerEnter), OnModelTriggerEnter);
-    }
-
-    private void OnModelTriggerEnter(ICommand command)
-    {
-        ModelTriggerEnter cmd = command as ModelTriggerEnter;
-
         int projectorId = Entity.GetEntityComponent<ProjectileBasicData>().ProjectorId;
 
-        IEntity target = Entities.Get(cmd.targetEntityID);
+        IEntity target = Entities.Get(message.targetEntityID);
         if (target == null)
         {
             //  Already destroyed

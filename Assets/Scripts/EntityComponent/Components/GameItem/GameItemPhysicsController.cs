@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using Entity;
-using EntityCommand;
+using EntityMessage;
 using GameFramework;
+using UniRx;
 
 public class GameItemPhysicsController : LOPMonoEntityComponentBase
 {
@@ -9,21 +10,12 @@ public class GameItemPhysicsController : LOPMonoEntityComponentBase
     {
         base.OnAttached(entity);
 
-        AddCommandHandler(typeof(ModelTriggerEnter), OnModelTriggerEnter);
+        Entity.MessageBroker.Receive<ModelTriggerEnter>().Where(_ => IsValid).Subscribe(OnModelTriggerEnter);
     }
 
-    public override void OnDetached()
+    private void OnModelTriggerEnter(ModelTriggerEnter message)
     {
-        base.OnDetached();
-
-        RemoveCommandHandler(typeof(ModelTriggerEnter), OnModelTriggerEnter);
-    }
-
-    private void OnModelTriggerEnter(ICommand command)
-    {
-        ModelTriggerEnter cmd = command as ModelTriggerEnter;
-
-        Character target = Entities.Get<Character>(cmd.targetEntityID);
+        Character target = Entities.Get<Character>(message.targetEntityID);
         if (target == null || !target.IsAlive)
             return;
 

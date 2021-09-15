@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using GameFramework;
 using GameEvent;
-using EntityCommand;
+using EntityMessage;
 
 namespace Behavior
 {
@@ -17,7 +17,7 @@ namespace Behavior
 
             LOP.Game.Current.GameEventManager.SendToNear(new EntityBehaviorStart(Entity.EntityID, MasterData.ID, m_vec3Destination), Entity.Position);
 
-            Entity.SendCommandToViews(new AnimatorSetBool("Move", true));
+            Entity.MessageBroker.Publish(new AnimatorSetBool("Move", true));
         }
 
         protected override bool OnBehaviorUpdate()
@@ -63,7 +63,7 @@ namespace Behavior
         {
             base.OnBehaviorEnd();
 
-            Entity.SendCommandToViews(new AnimatorSetBool("Move", false));
+            Entity.MessageBroker.Publish(new AnimatorSetBool("Move", false));
         }
 
         public override void SetData(int nBehaviorMasterID, params object[] param)

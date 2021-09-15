@@ -21,10 +21,17 @@ namespace Entity
         public Transform Transform { get; private set; }
         public Rigidbody Rigidbody { get; private set; }
 
+        public MessageBroker MessageBroker { get; } = new MessageBroker();
+
         protected virtual void Awake()
         {
             InitEntity();
             InitEntityComponents();
+        }
+
+        protected virtual void OnDestroy()
+        {
+            MessageBroker.Dispose();
         }
 
         protected virtual void InitEntity()

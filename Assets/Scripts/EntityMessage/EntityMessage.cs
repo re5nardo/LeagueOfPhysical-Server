@@ -1,24 +1,23 @@
-﻿using GameFramework;
-
-namespace EntityCommand
+﻿
+namespace EntityMessage
 {
-    public class PositionChanged : ICommand
+    public class PositionChanged
     {
     }
 
-    public class RotationChanged : ICommand
+    public class RotationChanged
     {
     }
 
-    public class VelocityChanged : ICommand
+    public class VelocityChanged
     {
     }
 
-    public class AngularVelocityChanged : ICommand
+    public class AngularVelocityChanged
     {
     }
 
-    public class ModelTriggerEnter : ICommand
+    public class ModelTriggerEnter
     {
         public int targetEntityID;
 
@@ -28,7 +27,7 @@ namespace EntityCommand
         }
     }
 
-    public class ModelChanged : ICommand
+    public class ModelChanged
     {
         public string name;
 
@@ -38,7 +37,7 @@ namespace EntityCommand
         }
     }
 
-    public class AnimatorSetTrigger : ICommand
+    public class AnimatorSetTrigger
     {
         public string name;
 
@@ -48,7 +47,7 @@ namespace EntityCommand
         }
     }
 
-    public class AnimatorSetFloat : ICommand
+    public class AnimatorSetFloat
     {
         public string name;
         public float value;
@@ -60,7 +59,7 @@ namespace EntityCommand
         }
     }
 
-    public class AnimatorSetBool : ICommand
+    public class AnimatorSetBool
     {
         public string name;
         public bool value;
@@ -72,7 +71,7 @@ namespace EntityCommand
         }
     }
 
-    public class Destroying : ICommand
+    public class Destroying
     {
     }
 }

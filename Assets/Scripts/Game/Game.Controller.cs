@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Entity;
 using GameEvent;
-using EntityCommand;
+using EntityMessage;
 using GameFramework;
 using NetworkModel.Mirror;
 using Mirror;
@@ -329,7 +329,7 @@ namespace LOP
         {
             var entity = Entities.Get<LOPMonoEntityBase>(nEntityID);
 
-            entity.SendCommandToAll(new Destroying());
+            entity.MessageBroker.Publish(new Destroying());
 
             GamePubSubService.Publish(GameMessageKey.EntityDestroy, new object[] { nEntityID });
 

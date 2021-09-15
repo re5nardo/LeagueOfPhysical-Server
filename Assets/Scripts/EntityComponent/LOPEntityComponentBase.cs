@@ -7,6 +7,7 @@ using Entity;
 public class LOPEntityComponentBase : EntityComponentBase
 {
     public new LOPMonoEntityBase Entity { get; private set; }
+    public bool IsValid => Entity != null;
 
     public override void OnAttached(IEntity entity)
     {

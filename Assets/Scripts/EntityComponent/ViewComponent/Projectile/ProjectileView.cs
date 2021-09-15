@@ -1,8 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
-using System;
-using EntityCommand;
-using GameFramework;
+using EntityMessage;
 
 public class ProjectileView : EntityBasicView
 {
@@ -15,7 +13,7 @@ public class ProjectileView : EntityBasicView
 			return;
 		}
 
-		Entity.SendCommandToAll(new ModelTriggerEnter(entityIDTag.GetEntityID()));
+		Entity.MessageBroker.Publish(new ModelTriggerEnter(entityIDTag.GetEntityID()));
 	}
 	#endregion
 }

@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-using EntityCommand;
+using EntityMessage;
 using GameFramework;
-using Entity;
+using UniRx;
 
 public class EntityBasicView : MonoViewComponentBase
 {
@@ -22,11 +22,11 @@ public class EntityBasicView : MonoViewComponentBase
     {
         base.OnAttached(entity);
 
-        AddCommandHandler(typeof(ModelChanged), OnModelChanged);
-        AddCommandHandler(typeof(AnimatorSetTrigger), OnAnimatorSetTrigger);
-        AddCommandHandler(typeof(AnimatorSetFloat), OnAnimatorSetFloat);
-        AddCommandHandler(typeof(AnimatorSetBool), OnAnimatorSetBool);
-        AddCommandHandler(typeof(Destroying), OnDestroying);
+        Entity.MessageBroker.Receive<ModelChanged>().Where(_ => IsValid).Subscribe(OnModelChanged);
+        Entity.MessageBroker.Receive<AnimatorSetTrigger>().Where(_ => IsValid).Subscribe(OnAnimatorSetTrigger);
+        Entity.MessageBroker.Receive<AnimatorSetFloat>().Where(_ => IsValid).Subscribe(OnAnimatorSetFloat);
+        Entity.MessageBroker.Receive<AnimatorSetBool>().Where(_ => IsValid).Subscribe(OnAnimatorSetBool);
+        Entity.MessageBroker.Receive<Destroying>().Where(_ => IsValid).Subscribe(OnDestroying);
 
         TickPubSubService.AddSubscriber("BeforePhysicsSimulation", OnBeforePhysicsSimulation);
         TickPubSubService.AddSubscriber("AfterPhysicsSimulation", OnAfterPhysicsSimulation);
@@ -36,45 +36,33 @@ public class EntityBasicView : MonoViewComponentBase
     {
         base.OnDetached();
 
-        RemoveCommandHandler(typeof(ModelChanged), OnModelChanged);
-        RemoveCommandHandler(typeof(AnimatorSetTrigger), OnAnimatorSetTrigger);
-        RemoveCommandHandler(typeof(AnimatorSetFloat), OnAnimatorSetFloat);
-        RemoveCommandHandler(typeof(AnimatorSetBool), OnAnimatorSetBool);
-        RemoveCommandHandler(typeof(Destroying), OnDestroying);
-
         TickPubSubService.RemoveSubscriber("BeforePhysicsSimulation", OnBeforePhysicsSimulation);
         TickPubSubService.RemoveSubscriber("AfterPhysicsSimulation", OnAfterPhysicsSimulation);
     }
 
     #region Command Handlers
-    private void OnModelChanged(ICommand command)
+    private void OnModelChanged(ModelChanged message)
     {
-        ModelChanged cmd = command as ModelChanged;
-
         ClearModel();
-        SetModel(cmd.name);
+        SetModel(message.name);
     }
 
-    private void OnAnimatorSetTrigger(ICommand command)
+    private void OnAnimatorSetTrigger(AnimatorSetTrigger message)
     {
-        Animator_SetTrigger((command as AnimatorSetTrigger).name);
+        Animator_SetTrigger(message.name);
     }
 
-    private void OnAnimatorSetFloat(ICommand command)
+    private void OnAnimatorSetFloat(AnimatorSetFloat message)
     {
-        AnimatorSetFloat cmd = command as AnimatorSetFloat;
-
-        Animator_SetFloat(cmd.name, cmd.value);
+        Animator_SetFloat(message.name, message.value);
     }
 
-    private void OnAnimatorSetBool(ICommand command)
+    private void OnAnimatorSetBool(AnimatorSetBool message)
     {
-        AnimatorSetBool cmd = command as AnimatorSetBool;
-
-        Animator_SetBool(cmd.name, cmd.value);
+        Animator_SetBool(message.name, message.value);
     }
 
-    private void OnDestroying(ICommand command)
+    private void OnDestroying(Destroying message)
     {
         Clear();
     }

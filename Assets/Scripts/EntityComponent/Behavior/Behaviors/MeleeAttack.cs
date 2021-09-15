@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using Entity;
-using EntityCommand;
+using EntityMessage;
 using GameFramework;
 using GameEvent;
 using NetworkModel.Mirror;
@@ -22,7 +22,7 @@ namespace Behavior
         {
             base.OnBehaviorStart();
 
-			Entity.SendCommandToViews(new AnimatorSetTrigger("Attack"));
+			Entity.MessageBroker.Publish(new AnimatorSetTrigger("Attack"));
 
             LOP.Game.Current.GameEventManager.SendToNear(new EntityBehaviorStart(Entity.EntityID, MasterData.ID), Entity.Position);
         }
