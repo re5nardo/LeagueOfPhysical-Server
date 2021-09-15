@@ -2,7 +2,7 @@
 using Entity;
 using GameEvent;
 
-public class CharacterGrowthData : EntityComponentBase
+public class CharacterGrowthData : LOPEntityComponentBase
 {
     private int level = 1;
     public int Level

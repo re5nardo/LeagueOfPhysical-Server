@@ -1,5 +1,5 @@
 ﻿using GameFramework;
 
-public class ViewComponentBase : EntityComponentBase
+public class ViewComponentBase : LOPEntityComponentBase
 {
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 using GameFramework;
 using System;
 
-public class CharacterAbilityData : MonoEntityComponentBase
+public class CharacterAbilityData : LOPMonoEntityComponentBase
 {
 	private int m_nSelectableAbilityCount;
 	private List<int> m_SelectableAbilityIDs = new List<int>();

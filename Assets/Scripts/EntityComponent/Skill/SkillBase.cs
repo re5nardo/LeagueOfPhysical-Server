@@ -5,7 +5,7 @@ using NetworkModel.Mirror;
 
 namespace Skill
 {
-    public abstract class SkillBase : MonoEntityComponentBase
+    public abstract class SkillBase : LOPMonoEntityComponentBase
     {
         protected abstract void OnSkillUpdate();
 

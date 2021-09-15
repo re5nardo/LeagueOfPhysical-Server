@@ -4,7 +4,7 @@ using EntityCommand;
 using GameFramework;
 using System.Collections.Generic;
 
-public class ProjectilePhysicsController : MonoEntityComponentBase
+public class ProjectilePhysicsController : LOPMonoEntityComponentBase
 {
     private HashSet<int> attackList = new HashSet<int>();
 

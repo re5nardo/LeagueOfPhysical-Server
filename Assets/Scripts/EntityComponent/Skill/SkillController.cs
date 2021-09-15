@@ -2,7 +2,7 @@
 using Skill;
 using GameFramework;
 
-public class SkillController : MonoEntityComponentBase
+public class SkillController : LOPMonoEntityComponentBase
 {
 	public Dictionary<int, float> GetEntitySkillInfo()
 	{

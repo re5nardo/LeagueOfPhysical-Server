@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-public class CharacterStatusController : MonoEntityComponentBase
+public class CharacterStatusController : LOPMonoEntityComponentBase
 {
 	public void OnFirstStatusSelection(FirstStatusElement element)
 	{

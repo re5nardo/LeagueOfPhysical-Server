@@ -6,7 +6,7 @@ using Entity;
 using System.Linq;
 using NetworkModel.Mirror;
 
-public class NearEntityController : MonoEntityComponentBase
+public class NearEntityController : LOPMonoEntityComponentBase
 {
 	public enum CellSeenState
 	{

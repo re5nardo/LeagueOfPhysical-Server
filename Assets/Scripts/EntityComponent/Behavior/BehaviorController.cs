@@ -3,7 +3,7 @@ using Behavior;
 using State;
 using GameFramework;
 
-public class BehaviorController : MonoEntityComponentBase
+public class BehaviorController : LOPMonoEntityComponentBase
 {
     public void Move(Vector3 vec3Destination)
     {

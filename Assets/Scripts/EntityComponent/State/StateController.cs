@@ -2,7 +2,7 @@
 using State;
 using GameFramework;
 
-public class StateController : MonoEntityComponentBase
+public class StateController : LOPMonoEntityComponentBase
 {
     public void StartState(int nStateMasterID, params object[] param)
     {
