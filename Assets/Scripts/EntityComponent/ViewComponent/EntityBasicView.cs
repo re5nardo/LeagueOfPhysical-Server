@@ -4,7 +4,7 @@ using EntityMessage;
 using GameFramework;
 using UniRx;
 
-public class EntityBasicView : MonoViewComponentBase
+public class EntityBasicView : LOPMonoEntityComponentBase
 {
 	private GameObject m_goModel = null;
     private Collider m_ColliderModel = null;

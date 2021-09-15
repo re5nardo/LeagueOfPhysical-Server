@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using GameFramework;
 
-public class PlayerView : MonoViewComponentBase
+public class PlayerView : LOPMonoEntityComponentBase
 {
 	void OnDrawGizmos()
 	{
