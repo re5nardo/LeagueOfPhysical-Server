@@ -12,9 +12,9 @@ namespace LOP
 {
     public partial class Game
     {
-        private void OnPlayerEnter(object param)
+        private void OnPlayerEnter(RoomMessage.PlayerEnter message)
         {
-            var conn = (NetworkConnection)param;
+            var conn = message.networkConnection;
             var customProperties = conn.authenticationData as CustomProperties;
 
             if (IDMap.UserIdEntityId.TryGetEntityId(customProperties.userId, out var entityId))
@@ -93,9 +93,9 @@ namespace LOP
             }
         }
 
-        private void OnPlayerLeave(object param)
+        private void OnPlayerLeave(RoomMessage.PlayerLeave message)
         {
-            var conn = (NetworkConnection)param;
+            var conn = message.networkConnection;
             var customProperties = conn.authenticationData as CustomProperties;
 
             IDMap.UserIdEntityId.TryGetEntityId(customProperties.userId, out var entityId);
@@ -331,7 +331,7 @@ namespace LOP
 
             entity.MessageBroker.Publish(new Destroying());
 
-            GamePubSubService.Publish(GameMessageKey.EntityDestroy, new object[] { nEntityID });
+            SceneMessageBroker.Publish(new GameMessage.EntityDestroy(nEntityID));
 
             if (entity.EntityRole == EntityRole.Player)
             {

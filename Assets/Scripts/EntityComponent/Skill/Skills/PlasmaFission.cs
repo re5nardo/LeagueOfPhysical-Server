@@ -35,12 +35,12 @@ namespace Skill
             coolTime = 0f;
             m_State = State.Ready;
 
-            GamePubSubService.AddSubscriber(GameMessageKey.EntityDestroy, OnEntityDestroy);
+            SceneMessageBroker.AddSubscriber<GameMessage.EntityDestroy>(OnEntityDestroy);
 		}
 
         private void OnDestroy()
         {
-            GamePubSubService.RemoveSubscriber(GameMessageKey.EntityDestroy, OnEntityDestroy);
+            SceneMessageBroker.RemoveSubscriber<GameMessage.EntityDestroy>(OnEntityDestroy);
         }
 
         protected override void OnSkillUpdate()
@@ -164,11 +164,9 @@ namespace Skill
         }
 
 		#region Message Handler
-		private void OnEntityDestroy(object[] param)
+		private void OnEntityDestroy(GameMessage.EntityDestroy message)
         {
-			int nEntityID = (int)param[0];
-
-			if (m_nFirstProjectileEntityID == nEntityID)
+			if (m_nFirstProjectileEntityID == message.entityId)
             {
                 Splitting();
 

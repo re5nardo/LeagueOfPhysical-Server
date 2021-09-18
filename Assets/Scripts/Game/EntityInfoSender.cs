@@ -18,22 +18,20 @@ public class EntityInfoSender : MonoSingleton<EntityInfoSender>
     {
         base.Awake();
 
-        GamePubSubService.AddSubscriber(GameMessageKey.EntityDestroy, OnEntityDestroy);
-
-        TickPubSubService.AddSubscriber("TickEnd", OnTickEnd);
+        SceneMessageBroker.AddSubscriber<GameMessage.EntityDestroy>(OnEntityDestroy);
+        SceneMessageBroker.AddSubscriber<TickMessage.TickEnd>(OnTickEnd);
     }
 
     protected override void OnDestroy()
     {
         base.OnDestroy();
 
-        GamePubSubService.RemoveSubscriber(GameMessageKey.EntityDestroy, OnEntityDestroy);
-
-        TickPubSubService.RemoveSubscriber("TickEnd", OnTickEnd);
+        SceneMessageBroker.RemoveSubscriber<GameMessage.EntityDestroy>(OnEntityDestroy);
+        SceneMessageBroker.RemoveSubscriber<TickMessage.TickEnd>(OnTickEnd);
     }
     #endregion
 
-    private void OnTickEnd(int tick)
+    private void OnTickEnd(TickMessage.TickEnd message)
     {
         SendInfo();
     }
@@ -80,16 +78,14 @@ public class EntityInfoSender : MonoSingleton<EntityInfoSender>
     }
 
 	#region Message Handler
-    private void OnEntityDestroy(object[] param)
+    private void OnEntityDestroy(GameMessage.EntityDestroy message)
     {
-        int nEntityID = (int)param[0];
-
-        var entity = Entities.Get<LOPMonoEntityBase>(nEntityID);
+        var entity = Entities.Get<LOPMonoEntityBase>(message.entityId);
 
         //	Player's entity
         if (entity.EntityRole == EntityRole.Player)
         {
-            string playerUserID = LOP.Game.Current.EntityIDPlayerUserID[nEntityID];
+            string playerUserID = LOP.Game.Current.EntityIDPlayerUserID[message.entityId];
 
             m_dicPlayerUserIDLookAtPosition.Remove(playerUserID);
         }

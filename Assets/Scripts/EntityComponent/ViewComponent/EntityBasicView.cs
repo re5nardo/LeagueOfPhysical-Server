@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-using EntityMessage;
 using GameFramework;
-using UniRx;
 
 public class EntityBasicView : LOPMonoEntityComponentBase
 {
@@ -22,47 +20,53 @@ public class EntityBasicView : LOPMonoEntityComponentBase
     {
         base.OnAttached(entity);
 
-        Entity.MessageBroker.Receive<ModelChanged>().Where(_ => IsValid).Subscribe(OnModelChanged);
-        Entity.MessageBroker.Receive<AnimatorSetTrigger>().Where(_ => IsValid).Subscribe(OnAnimatorSetTrigger);
-        Entity.MessageBroker.Receive<AnimatorSetFloat>().Where(_ => IsValid).Subscribe(OnAnimatorSetFloat);
-        Entity.MessageBroker.Receive<AnimatorSetBool>().Where(_ => IsValid).Subscribe(OnAnimatorSetBool);
-        Entity.MessageBroker.Receive<Destroying>().Where(_ => IsValid).Subscribe(OnDestroying);
+        Entity.MessageBroker.AddSubscriber<EntityMessage.ModelChanged>(OnModelChanged);
+        Entity.MessageBroker.AddSubscriber<EntityMessage.AnimatorSetTrigger>(OnAnimatorSetTrigger);
+        Entity.MessageBroker.AddSubscriber<EntityMessage.AnimatorSetFloat>(OnAnimatorSetFloat);
+        Entity.MessageBroker.AddSubscriber<EntityMessage.AnimatorSetBool>(OnAnimatorSetBool);
+        Entity.MessageBroker.AddSubscriber<EntityMessage.Destroying>(OnDestroying);
 
-        TickPubSubService.AddSubscriber("BeforePhysicsSimulation", OnBeforePhysicsSimulation);
-        TickPubSubService.AddSubscriber("AfterPhysicsSimulation", OnAfterPhysicsSimulation);
+        SceneMessageBroker.AddSubscriber<TickMessage.BeforePhysicsSimulation>(OnBeforePhysicsSimulation);
+        SceneMessageBroker.AddSubscriber<TickMessage.AfterPhysicsSimulation>(OnAfterPhysicsSimulation);
     }
 
     public override void OnDetached()
     {
         base.OnDetached();
 
-        TickPubSubService.RemoveSubscriber("BeforePhysicsSimulation", OnBeforePhysicsSimulation);
-        TickPubSubService.RemoveSubscriber("AfterPhysicsSimulation", OnAfterPhysicsSimulation);
+        Entity.MessageBroker.RemoveSubscriber<EntityMessage.ModelChanged>(OnModelChanged);
+        Entity.MessageBroker.RemoveSubscriber<EntityMessage.AnimatorSetTrigger>(OnAnimatorSetTrigger);
+        Entity.MessageBroker.RemoveSubscriber<EntityMessage.AnimatorSetFloat>(OnAnimatorSetFloat);
+        Entity.MessageBroker.RemoveSubscriber<EntityMessage.AnimatorSetBool>(OnAnimatorSetBool);
+        Entity.MessageBroker.RemoveSubscriber<EntityMessage.Destroying>(OnDestroying);
+
+        SceneMessageBroker.RemoveSubscriber<TickMessage.BeforePhysicsSimulation>(OnBeforePhysicsSimulation);
+        SceneMessageBroker.RemoveSubscriber<TickMessage.AfterPhysicsSimulation>(OnAfterPhysicsSimulation);
     }
 
     #region Command Handlers
-    private void OnModelChanged(ModelChanged message)
+    private void OnModelChanged(EntityMessage.ModelChanged message)
     {
         ClearModel();
         SetModel(message.name);
     }
 
-    private void OnAnimatorSetTrigger(AnimatorSetTrigger message)
+    private void OnAnimatorSetTrigger(EntityMessage.AnimatorSetTrigger message)
     {
         Animator_SetTrigger(message.name);
     }
 
-    private void OnAnimatorSetFloat(AnimatorSetFloat message)
+    private void OnAnimatorSetFloat(EntityMessage.AnimatorSetFloat message)
     {
         Animator_SetFloat(message.name, message.value);
     }
 
-    private void OnAnimatorSetBool(AnimatorSetBool message)
+    private void OnAnimatorSetBool(EntityMessage.AnimatorSetBool message)
     {
         Animator_SetBool(message.name, message.value);
     }
 
-    private void OnDestroying(Destroying message)
+    private void OnDestroying(EntityMessage.Destroying message)
     {
         Clear();
     }
@@ -196,16 +200,16 @@ public class EntityBasicView : LOPMonoEntityComponentBase
     #endregion
 
     #region PhysicsSimulation
-    public virtual void OnBeforePhysicsSimulation(int tick)
+    public virtual void OnBeforePhysicsSimulation(TickMessage.BeforePhysicsSimulation message)
     {
         positionBeforePhysics = Entity.Position;
     }
     
-    public virtual void OnAfterPhysicsSimulation(int tick)
+    public virtual void OnAfterPhysicsSimulation(TickMessage.AfterPhysicsSimulation message)
     {
         if (positionBeforePhysics != Entity.Position)
         {
-            GamePubSubService.Publish(GameMessageKey.EntityMove, new object[] { Entity.EntityID });
+            SceneMessageBroker.Publish(new GameMessage.EntityMove(Entity.EntityID));
         }
     }
     #endregion

@@ -12,19 +12,17 @@ public class JumpWang : SubGameBase
 
     private void Start()
     {
-        GamePubSubService.AddSubscriber(GameMessageKey.EntityRegister, OnEntityRegister);
+        SceneMessageBroker.AddSubscriber<GameMessage.EntityRegister>(OnEntityRegister);
     }
 
     private void OnDestroy()
     {
-        GamePubSubService.RemoveSubscriber(GameMessageKey.EntityRegister, OnEntityRegister);
+        SceneMessageBroker.RemoveSubscriber<GameMessage.EntityRegister>(OnEntityRegister);
     }
 
-    private void OnEntityRegister(object[] param)
+    private void OnEntityRegister(GameMessage.EntityRegister message)
     {
-        int entityId = (int)param[0];
-
-        var entity = Entities.Get<LOPMonoEntityBase>(entityId);
+        var entity = Entities.Get<LOPMonoEntityBase>(message.entityId);
 
         entity.Rigidbody.constraints = RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation;
 

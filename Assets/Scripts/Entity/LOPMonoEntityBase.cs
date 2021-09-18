@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using NetworkModel.Mirror;
-using UniRx;
+using GameFramework;
 
 namespace Entity
 {
@@ -21,7 +21,7 @@ namespace Entity
         public Transform Transform { get; private set; }
         public Rigidbody Rigidbody { get; private set; }
 
-        public MessageBroker MessageBroker { get; } = new MessageBroker();
+        public SimplePubSubService MessageBroker { get; } = new SimplePubSubService();
 
         protected virtual void Awake()
         {
@@ -31,7 +31,7 @@ namespace Entity
 
         protected virtual void OnDestroy()
         {
-            MessageBroker.Dispose();
+            MessageBroker.Clear();
         }
 
         protected virtual void InitEntity()
@@ -113,9 +113,9 @@ namespace Entity
             get => Transform.position;
             set
             {
-                GamePubSubService.Publish(GameMessageKey.EntityMove, new object[] { EntityID });
-
                 Transform.position = value;
+
+                SceneMessageBroker.Publish(new GameMessage.EntityMove(EntityID));
             }
         }
 

@@ -14,16 +14,14 @@ public class SpawnManager : MonoBehaviour
 
 	private void Awake()
     {
-        GamePubSubService.AddSubscriber(GameMessageKey.EntityDestroy, OnEntityDestroy);
-
-        TickPubSubService.AddSubscriber("Tick", OnTick);
+        SceneMessageBroker.AddSubscriber<GameMessage.EntityDestroy>(OnEntityDestroy);
+        SceneMessageBroker.AddSubscriber<TickMessage.Tick>(OnTick);
 	}
 
     private void OnDestroy()
     {
-        GamePubSubService.RemoveSubscriber(GameMessageKey.EntityDestroy, OnEntityDestroy);
-
-        TickPubSubService.RemoveSubscriber("Tick", OnTick);
+        SceneMessageBroker.RemoveSubscriber<GameMessage.EntityDestroy>(OnEntityDestroy);
+        SceneMessageBroker.RemoveSubscriber<TickMessage.Tick>(OnTick);
     }
 
     public void StartSpawn()
@@ -45,7 +43,7 @@ public class SpawnManager : MonoBehaviour
 		}
 	}
 
-    private void OnTick(int tick)
+    private void OnTick(TickMessage.Tick message)
     {
         if (m_fSpawnElapsedTime > SPAWN_INTERVAL && MAX_ENTITY_COUNT > Entities.AllIDs.Count)
         {
@@ -126,19 +124,17 @@ public class SpawnManager : MonoBehaviour
 	}
 
 	#region Message Handler
-	private void OnEntityDestroy(object[] param)
+	private void OnEntityDestroy(GameMessage.EntityDestroy message)
 	{
-		int nEntityID = (int)param[0];
-
-		if (m_dicEntityIDController.ContainsKey(nEntityID))
+		if (m_dicEntityIDController.ContainsKey(message.entityId))
 		{
-			ControllerBase ai = m_dicEntityIDController[nEntityID];
+			ControllerBase ai = m_dicEntityIDController[message.entityId];
 
 			ai.UnPossess();
 
 			Destroy(ai.gameObject);
 
-			m_dicEntityIDController.Remove(nEntityID);
+			m_dicEntityIDController.Remove(message.entityId);
 		}
 	}
 	#endregion

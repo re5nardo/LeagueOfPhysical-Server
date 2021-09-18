@@ -44,8 +44,8 @@ namespace LOP
 
             roomProtocolDispatcher[typeof(CS_RequestEmotionExpression)]     = CS_RequestEmotionExpressionHandler.Handle;
 
-            RoomPubSubService.AddSubscriber(RoomMessageKey.PlayerEnter, OnPlayerEnter);
-            RoomPubSubService.AddSubscriber(RoomMessageKey.PlayerLeave, OnPlayerLeave);
+            SceneMessageBroker.AddSubscriber<RoomMessage.PlayerEnter>(OnPlayerEnter);
+            SceneMessageBroker.AddSubscriber<RoomMessage.PlayerLeave>(OnPlayerLeave);
 
             tickUpdater.Initialize(1 / 30f, false, 0, OnTick, OnTickEnd, OnUpdateElapsedTime);
 
@@ -67,9 +67,9 @@ namespace LOP
             playerUserIDEntityID = null;
             entityIDPlayerUserID = null;
             playerUserIDPhotonPlayer = null;
-    
-            RoomPubSubService.RemoveSubscriber(RoomMessageKey.PlayerEnter, OnPlayerEnter);
-            RoomPubSubService.RemoveSubscriber(RoomMessageKey.PlayerLeave, OnPlayerLeave);
+
+            SceneMessageBroker.RemoveSubscriber<RoomMessage.PlayerEnter>(OnPlayerEnter);
+            SceneMessageBroker.RemoveSubscriber<RoomMessage.PlayerLeave>(OnPlayerLeave);
         }
 
         protected override void OnBeforeRun()
@@ -79,16 +79,16 @@ namespace LOP
 
         private void OnTick(int tick)
         {
-            TickPubSubService.Publish("EarlyTick", tick);
-            TickPubSubService.Publish("Tick", tick);
-            TickPubSubService.Publish("LateTick", tick);
+            SceneMessageBroker.Publish(new TickMessage.EarlyTick(tick));
+            SceneMessageBroker.Publish(new TickMessage.Tick(tick));
+            SceneMessageBroker.Publish(new TickMessage.LateTick(tick));
         }
 
         private void OnTickEnd(int tick)
         {
-            TickPubSubService.Publish("EarlyTickEnd", tick);
-            TickPubSubService.Publish("TickEnd", tick);
-            TickPubSubService.Publish("LateTickEnd", tick);
+            SceneMessageBroker.Publish(new TickMessage.EarlyTickEnd(tick));
+            SceneMessageBroker.Publish(new TickMessage.TickEnd(tick));
+            SceneMessageBroker.Publish(new TickMessage.LateTickEnd(tick));
 
             if (gameManager.IsGameEnd)
             {
@@ -97,11 +97,11 @@ namespace LOP
 
         private void OnUpdateElapsedTime(float time)
         {
-            TickPubSubService.Publish("BeforePhysicsSimulation", CurrentTick);
+            SceneMessageBroker.Publish(new TickMessage.BeforePhysicsSimulation(CurrentTick));
 
             Physics.Simulate(time);
 
-            TickPubSubService.Publish("AfterPhysicsSimulation", CurrentTick);
+            SceneMessageBroker.Publish(new TickMessage.AfterPhysicsSimulation(CurrentTick));
         }
     }
 }

@@ -3,7 +3,6 @@ using Entity;
 using EntityMessage;
 using GameFramework;
 using System.Collections.Generic;
-using UniRx;
 
 public class ProjectilePhysicsController : LOPMonoEntityComponentBase
 {
@@ -13,14 +12,21 @@ public class ProjectilePhysicsController : LOPMonoEntityComponentBase
     {
         base.OnAttached(entity);
 
-        Entity.MessageBroker.Receive<ModelTriggerEnter>().Where(_ => IsValid).Subscribe(OnModelTriggerEnter);
+        Entity.MessageBroker.AddSubscriber<ModelTriggerEnter>(OnModelTriggerEnter);
+    }
+
+    public override void OnDetached()
+    {
+        base.OnDetached();
+
+        Entity.MessageBroker.RemoveSubscriber<ModelTriggerEnter>(OnModelTriggerEnter);
     }
 
     private void OnModelTriggerEnter(ModelTriggerEnter message)
     {
         int projectorId = Entity.GetEntityComponent<ProjectileBasicData>().ProjectorId;
 
-        IEntity target = Entities.Get(message.targetEntityID);
+        IEntity target = Entities.Get(message.targetEntityId);
         if (target == null)
         {
             //  Already destroyed

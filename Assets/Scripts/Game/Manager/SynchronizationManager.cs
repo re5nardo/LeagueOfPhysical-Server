@@ -12,14 +12,14 @@ public class SynchronizationManager : MonoSingleton<SynchronizationManager>
     {
         base.Awake();
 
-        TickPubSubService.AddSubscriber("LateTickEnd", OnLateTickEnd);
+        SceneMessageBroker.AddSubscriber<TickMessage.LateTickEnd>(OnLateTickEnd);
     }
 
     protected override void OnDestroy()
     {
         base.OnDestroy();
 
-        TickPubSubService.RemoveSubscriber("LateTickEnd", OnLateTickEnd);
+        SceneMessageBroker.RemoveSubscriber<TickMessage.LateTickEnd>(OnLateTickEnd);
     }
 
     public static void SendSnap(ISnap snap)
@@ -38,7 +38,7 @@ public class SynchronizationManager : MonoSingleton<SynchronizationManager>
         snaps.Add(snap);
     }
 
-    private void OnLateTickEnd(int tick)
+    private void OnLateTickEnd(TickMessage.LateTickEnd message)
     {
         if (snaps.Count > 0)
         {

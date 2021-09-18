@@ -134,7 +134,7 @@ public class LOPNetworkManager : NetworkManager
 
         IDMap.ConnectionIdUserId.Set(conn.connectionId, customProperties.userId);
 
-        RoomPubSubService.Publish(RoomMessageKey.PlayerEnter, conn);
+        SceneMessageBroker.Publish(new RoomMessage.PlayerEnter(conn));
 
         Debug.Log($"[OnServerConnect] userId: {customProperties.userId}, connectionId: {conn.connectionId}");
     }
@@ -172,7 +172,7 @@ public class LOPNetworkManager : NetworkManager
 
         IDMap.ConnectionIdUserId.Remove(conn.connectionId);
 
-        RoomPubSubService.Publish(RoomMessageKey.PlayerLeave, conn);
+        SceneMessageBroker.Publish(new RoomMessage.PlayerLeave(conn));
 
         Debug.Log($"[OnServerDisconnect] userId: {customProperties.userId}, connectionId: {conn.connectionId}");
     }

@@ -44,16 +44,14 @@ public class EntityManager : GameFramework.EntityManager
 
         positionGrid.SetGrid(10);
 
-        GamePubSubService.AddSubscriber(GameMessageKey.EntityMove, OnEntityMove);
-
-        TickPubSubService.AddSubscriber("Tick", OnTick);
+        SceneMessageBroker.AddSubscriber<GameMessage.EntityMove>(OnEntityMove);
+        SceneMessageBroker.AddSubscriber<TickMessage.Tick>(OnTick);
     }
 
     private void OnDestroy()
     {
-        GamePubSubService.RemoveSubscriber(GameMessageKey.EntityMove, OnEntityMove);
-
-        TickPubSubService.RemoveSubscriber("Tick", OnTick);
+        SceneMessageBroker.RemoveSubscriber<GameMessage.EntityMove>(OnEntityMove);
+        SceneMessageBroker.RemoveSubscriber<TickMessage.Tick>(OnTick);
     }
 
     public override void Clear()
@@ -62,29 +60,27 @@ public class EntityManager : GameFramework.EntityManager
 
         positionGrid = null;
 
-        GamePubSubService.RemoveSubscriber(GameMessageKey.EntityMove, OnEntityMove);
+        SceneMessageBroker.RemoveSubscriber<GameMessage.EntityMove>(OnEntityMove);
     }
 
     public override void RegisterEntity(IEntity entity)
     {
         base.RegisterEntity(entity);
 
-        GamePubSubService.Publish(GameMessageKey.EntityRegister, new object[] { entity.EntityID });
+        SceneMessageBroker.Publish(new GameMessage.EntityRegister(entity.EntityID));
     }
 
     public override void UnregisterEntity(int nEntityID)
     {
         base.UnregisterEntity(nEntityID);
 
-        GamePubSubService.Publish(GameMessageKey.EntityUnregister, new object[] { nEntityID });
+        SceneMessageBroker.Publish(new GameMessage.EntityUnregister(nEntityID));
     }
 
     #region Message Handler
-    private void OnEntityMove(object[] param)
+    private void OnEntityMove(GameMessage.EntityMove message)
     {
-        int nEntityID = (int)param[0];
-
-        positionGrid.Move(nEntityID);
+        positionGrid.Move(message.entityId);
     }
     #endregion
 
@@ -118,7 +114,7 @@ public class EntityManager : GameFramework.EntityManager
         });
     }
 
-    private void OnTick(int tick)
+    private void OnTick(TickMessage.Tick message)
     {
         //  sort
         //  ...
@@ -127,7 +123,7 @@ public class EntityManager : GameFramework.EntityManager
         {
             if (entity.IsValid)
             {
-                entity.OnTick(tick);
+                entity.OnTick(message.tick);
             }
         });
     }

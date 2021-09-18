@@ -44,9 +44,9 @@ public class NearEntityController : LOPMonoEntityComponentBase
 		//	m_hashLastSubscribeCellPosition.Add(cell.m_vec2Position);
 		//}
 
-		GridPubSubService.AddSubscriber(GameMessageKey.EntityAddedToGrid, OnEntityAddedToGrid);
-		GridPubSubService.AddSubscriber(GameMessageKey.EntityRemovedFromGrid, OnEntityRemovedFromGrid);
-		GridPubSubService.AddSubscriber(GameMessageKey.EntityMoveCell, OnEntityMoveCell);
+        SceneMessageBroker.AddSubscriber<GameMessage.EntityAddedToGrid>(OnEntityAddedToGrid);
+        SceneMessageBroker.AddSubscriber<GameMessage.EntityRemovedFromGrid>(OnEntityRemovedFromGrid);
+        SceneMessageBroker.AddSubscriber<GameMessage.EntityMoveCell>(OnEntityMoveCell);
 
 		UpdateMyEntityCellPosition(vec2CellPosition);
 	}
@@ -55,55 +55,45 @@ public class NearEntityController : LOPMonoEntityComponentBase
     {
         base.OnDetached();
 
-        GridPubSubService.RemoveSubscriber(GameMessageKey.EntityAddedToGrid, OnEntityAddedToGrid);
-        GridPubSubService.RemoveSubscriber(GameMessageKey.EntityRemovedFromGrid, OnEntityRemovedFromGrid);
-        GridPubSubService.RemoveSubscriber(GameMessageKey.EntityMoveCell, OnEntityMoveCell);
+        SceneMessageBroker.RemoveSubscriber<GameMessage.EntityAddedToGrid>(OnEntityAddedToGrid);
+        SceneMessageBroker.RemoveSubscriber<GameMessage.EntityRemovedFromGrid>(OnEntityRemovedFromGrid);
+        SceneMessageBroker.RemoveSubscriber<GameMessage.EntityMoveCell>(OnEntityMoveCell);
     }
 
 	#region Message Handler
-	private void OnEntityAddedToGrid(object[] param)
+	private void OnEntityAddedToGrid(GameMessage.EntityAddedToGrid message)
 	{
-		int nEntityID = (int)param[0];
-		Vector2Int pos = (Vector2Int)param[1];
-
-		if (nEntityID == Entity.EntityID)
+		if (message.entityId == Entity.EntityID)
 		{
-			OnMyEntityAddedToGrid(pos);
+			OnMyEntityAddedToGrid(message.cellPosition);
 		}
 		else
 		{
-			OnOtherEntityAddedToGrid(nEntityID, pos);
+			OnOtherEntityAddedToGrid(message.entityId, message.cellPosition);
 		}
 	}
 
-	private void OnEntityRemovedFromGrid(object[] param)
+	private void OnEntityRemovedFromGrid(GameMessage.EntityRemovedFromGrid message)
 	{
-		int nEntityID = (int)param[0];
-		Vector2Int pos = (Vector2Int)param[1];
-
-		if (nEntityID == Entity.EntityID)
+		if (message.entityId == Entity.EntityID)
 		{
-			OnMyEntityRemovedFromGrid(nEntityID, pos);
+			OnMyEntityRemovedFromGrid(message.entityId, message.cellPosition);
 		}
 		else
 		{
-			OnOtherEntityRemovedFromGrid(nEntityID, pos);
+			OnOtherEntityRemovedFromGrid(message.entityId, message.cellPosition);
 		}
 	}
 
-	private void OnEntityMoveCell(object[] param)
+	private void OnEntityMoveCell(GameMessage.EntityMoveCell message)
 	{
-		int nEntityID = (int)param[0];
-		Vector2Int from = (Vector2Int)param[1];
-		Vector2Int to = (Vector2Int)param[2];
-
-		if (nEntityID == Entity.EntityID)
+		if (message.entityId == Entity.EntityID)
 		{
-			OnMyEntityMoveCell(to);
+			OnMyEntityMoveCell(message.cur);
 		}
 		else
 		{
-			OnOtherEntityMoveCell(nEntityID, from, to);
+			OnOtherEntityMoveCell(message.entityId, message.pre, message.cur);
 		}
 	}
 	#endregion
