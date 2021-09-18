@@ -4,20 +4,6 @@ using System.Collections.Generic;
 
 public class CharacterAbilityController : LOPMonoEntityComponentBase
 {
-	public override void OnAttached(IEntity entity)
-	{
-		base.OnAttached(entity);
-
-        GamePubSubService.AddSubscriber(GameMessageKey.LevelUp, OnLevelUp);
-	}
-
-	public override void OnDetached()
-	{
-		base.OnDetached();
-
-        GamePubSubService.RemoveSubscriber(GameMessageKey.LevelUp, OnLevelUp);
-	}
-
 	#region Message Handler
 	private void OnLevelUp(object[] param)
 	{

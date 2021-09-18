@@ -23,8 +23,6 @@ public class CharacterGrowthData : LOPEntityComponentBase
                         LOP.Game.Current.GameEventManager.Send(new EntityLevelUp(Entity.EntityID, value), connectionId);
                     }
                 }
-
-                GamePubSubService.Publish(GameMessageKey.LevelUp, new object[] { Entity.EntityID, value });
             }
         }
     }
