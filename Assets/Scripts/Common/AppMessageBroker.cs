@@ -23,6 +23,11 @@ public class AppMessageBroker : MonoSingleton<AppMessageBroker>
         Instance.DefaultMessageBroker.Publish(message);
     }
 
+    public static void Publish(Type type, object message)
+    {
+        Instance.DefaultMessageBroker.Publish(type, message);
+    }
+
     public static void AddSubscriber<T>(Action<T> subscriber)
     {
         Instance.DefaultMessageBroker.AddSubscriber(subscriber);

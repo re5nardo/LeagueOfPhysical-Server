@@ -18,6 +18,11 @@ public class SceneMessageBroker : MonoSingleton<SceneMessageBroker>
         Instance.DefaultMessageBroker.Publish(message);
     }
 
+    public static void Publish(Type type, object message)
+    {
+        Instance.DefaultMessageBroker.Publish(type, message);
+    }
+
     public static void AddSubscriber<T>(Action<T> subscriber)
     {
         Instance.DefaultMessageBroker.AddSubscriber(subscriber);
