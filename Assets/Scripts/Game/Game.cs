@@ -25,7 +25,6 @@ namespace LOP
         public GameEventManager GameEventManager => gameEventManager;
         public GameManager GameManager => gameManager;
 
-        private RoomProtocolDispatcher roomProtocolDispatcher = null;
         private GameEventManager gameEventManager = null;
         private GameManager gameManager = null;
 
@@ -38,12 +37,10 @@ namespace LOP
             PlayerUserIDPhotonPlayer = new ReadOnlyDictionary<string, WeakReference>(playerUserIDPhotonPlayer);
 
             tickUpdater = gameObject.AddComponent<LOPTickUpdater>();
-            roomProtocolDispatcher = gameObject.AddComponent<RoomProtocolDispatcher>();
             gameEventManager = gameObject.AddComponent<GameEventManager>();
             gameManager = gameObject.AddComponent<GameManager>();
 
-            roomProtocolDispatcher[typeof(CS_RequestEmotionExpression)]     = CS_RequestEmotionExpressionHandler.Handle;
-
+            SceneMessageBroker.AddSubscriber<CS_RequestEmotionExpression>(CS_RequestEmotionExpressionHandler.Handle);
             SceneMessageBroker.AddSubscriber<RoomMessage.PlayerEnter>(OnPlayerEnter);
             SceneMessageBroker.AddSubscriber<RoomMessage.PlayerLeave>(OnPlayerLeave);
 
@@ -68,6 +65,7 @@ namespace LOP
             entityIDPlayerUserID = null;
             playerUserIDPhotonPlayer = null;
 
+            SceneMessageBroker.RemoveSubscriber<CS_RequestEmotionExpression>(CS_RequestEmotionExpressionHandler.Handle);
             SceneMessageBroker.RemoveSubscriber<RoomMessage.PlayerEnter>(OnPlayerEnter);
             SceneMessageBroker.RemoveSubscriber<RoomMessage.PlayerLeave>(OnPlayerLeave);
         }

@@ -4,25 +4,18 @@ using UnityEngine;
 using GameFramework.FSM;
 using System;
 using System.Linq;
-using GameFramework;
 using NetworkModel.Mirror;
 
 public class GamePrepareState : MonoStateBase
 {
-    private RoomProtocolDispatcher roomProtocolDispatcher = null;
     private Dictionary<string, float> playerPrepareStates = new Dictionary<string, float>();
     private bool resourceLoaded = false;
-
-    private void Awake()
-    {
-        roomProtocolDispatcher = gameObject.AddComponent<RoomProtocolDispatcher>();
-    }
 
     public override void Enter()
     {
         base.Enter();
 
-        roomProtocolDispatcher[typeof(CS_GamePreparation)] = OnGamePreparation;
+        SceneMessageBroker.AddSubscriber<CS_GamePreparation>(OnGamePreparation);
 
         //playerPrepareStates.Add(expectedUser, 0);
 
@@ -44,7 +37,7 @@ public class GamePrepareState : MonoStateBase
     {
         base.Exit();
 
-        roomProtocolDispatcher.Clear();
+        SceneMessageBroker.RemoveSubscriber<CS_GamePreparation>(OnGamePreparation);
 
         StopCoroutine("Procedure");
     }
@@ -75,14 +68,12 @@ public class GamePrepareState : MonoStateBase
         yield break;
     }
 
-    private void OnGamePreparation(IMessage msg)
+    private void OnGamePreparation(CS_GamePreparation gamePreparation)
     {
         if (!IsCurrent)
         {
             return;
         }
-
-        CS_GamePreparation gamePreparation = msg as CS_GamePreparation;
 
         var playerUserID = LOP.Game.Current.EntityIDPlayerUserID[gamePreparation.entityId];
 

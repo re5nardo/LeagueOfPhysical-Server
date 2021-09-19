@@ -4,12 +4,10 @@ using UnityEngine;
 using System.Linq;
 using Entity;
 using NetworkModel.Mirror;
-using GameFramework;
 
 public class EntityAnimatorController : MonoBehaviour
 {
     private LOPMonoEntityBase entity;
-    private RoomProtocolDispatcher roomProtocolDispatcher;
 
     // Note: not an object[] array because otherwise initialization is real annoying
     private int[] lastIntParameters;
@@ -26,8 +24,7 @@ public class EntityAnimatorController : MonoBehaviour
     {
         entity = GetComponent<LOPMonoEntityBase>();
 
-        roomProtocolDispatcher = gameObject.AddComponent<RoomProtocolDispatcher>();
-        roomProtocolDispatcher[typeof(CS_Synchronization)] = OnCS_Synchronization;
+        SceneMessageBroker.AddSubscriber<CS_Synchronization>(OnCS_Synchronization);
 
         // store the animator parameters in a variable - the "Animator.parameters" getter allocates
         // a new parameter array every time it is accessed so we should avoid doing it in a loop
@@ -41,14 +38,17 @@ public class EntityAnimatorController : MonoBehaviour
         layerWeight = new float[entity.ModelAnimator.layerCount];
     }
 
-    private void OnCS_Synchronization(IMessage msg)
+    private void OnDestroy()
+    {
+        SceneMessageBroker.RemoveSubscriber<CS_Synchronization>(OnCS_Synchronization);
+    }
+
+    private void OnCS_Synchronization(CS_Synchronization synchronization)
     {
         if (entity.HasAuthority)
         {
             return;
         }
-
-        CS_Synchronization synchronization = msg as CS_Synchronization;
 
         synchronization.listSnap?.ForEach(snap =>
         {
