@@ -8,6 +8,7 @@ public class LOPEntityComponentBase : EntityComponentBase
 {
     public new LOPMonoEntityBase Entity { get; private set; }
     public bool IsValid => Entity != null;
+    public bool Initialized { get; private set; }
 
     public override void OnAttached(IEntity entity)
     {
@@ -23,7 +24,14 @@ public class LOPEntityComponentBase : EntityComponentBase
         Entity = null;
     }
 
-    public virtual void Initialize(EntityCreationData entityCreationData)
+    public void Initialize(EntityCreationData entityCreationData)
+    {
+        OnInitialize(entityCreationData);
+
+        Initialized = true;
+    }
+
+    protected virtual void OnInitialize(EntityCreationData entityCreationData)
     {
     }
 }

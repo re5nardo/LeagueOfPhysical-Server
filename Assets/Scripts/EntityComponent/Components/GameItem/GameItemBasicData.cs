@@ -30,9 +30,9 @@ public class GameItemBasicData : EntityBasicData
 
     public float MovementSpeed => 0;
 
-    public override void Initialize(EntityCreationData entityCreationData)
+    protected override void OnInitialize(EntityCreationData entityCreationData)
 	{
-		base.Initialize(entityCreationData);
+		base.OnInitialize(entityCreationData);
 
         GameItemCreationData gameItemCreationData = entityCreationData as GameItemCreationData;
 

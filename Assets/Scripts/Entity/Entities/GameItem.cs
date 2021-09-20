@@ -48,9 +48,9 @@ namespace Entity
             gameItemPhysicsController = AttachEntityComponent(gameObject.AddComponent<GameItemPhysicsController>());
         }
 
-		public override void Initialize(EntityCreationData entityCreationData)
+		protected override void OnInitialize(EntityCreationData entityCreationData)
 		{
-            base.Initialize(entityCreationData);
+            base.OnInitialize(entityCreationData);
 
             gameItemBasicData.Initialize(entityCreationData);
 		}

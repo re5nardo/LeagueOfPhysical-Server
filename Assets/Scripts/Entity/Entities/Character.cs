@@ -57,9 +57,9 @@ namespace Entity
             characterAbilityController = AttachEntityComponent(gameObject.AddComponent<CharacterAbilityController>());
 		}
 
-		public override void Initialize(EntityCreationData entityCreationData)
+        protected override void OnInitialize(EntityCreationData entityCreationData)
 		{
-            base.Initialize(entityCreationData);
+            base.OnInitialize(entityCreationData);
 
             characterBasicData.Initialize(entityCreationData);
             characterStatusData.Initialize(entityCreationData);

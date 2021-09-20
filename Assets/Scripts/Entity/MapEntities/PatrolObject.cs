@@ -15,9 +15,9 @@ namespace Entity
         public override float MovementSpeed => speed;
         public override float FactoredMovementSpeed => speed * SubGameBase.Current.SubGameEnvironment.MoveSpeedFactor;
 
-        public override void Initialize(EntityCreationData entityCreationData)
+        protected override void OnInitialize(EntityCreationData entityCreationData)
         {
-            base.Initialize(entityCreationData);
+            base.OnInitialize(entityCreationData);
             
             ContinuousPatrol continuousPatrol = BehaviorFactory.Instance.CreateBehavior(gameObject, Define.MasterData.BehaviorID.CONTINUOUS_PATROL) as ContinuousPatrol;
             AttachEntityComponent(continuousPatrol);

@@ -42,9 +42,9 @@ namespace Entity
             entityBasicView = AttachEntityComponent(gameObject.AddComponent<EntityBasicView>());
         }
 
-        public override void Initialize(EntityCreationData entityCreationData)
+        protected override void OnInitialize(EntityCreationData entityCreationData)
         {
-            base.Initialize(entityCreationData);
+            base.OnInitialize(entityCreationData);
 
             entityBasicView.SetModel(model);
         }
