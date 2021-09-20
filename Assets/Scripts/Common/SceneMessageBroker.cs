@@ -23,9 +23,9 @@ public class SceneMessageBroker : MonoSingleton<SceneMessageBroker>
         Instance.DefaultMessageBroker.Publish(type, message);
     }
 
-    public static void AddSubscriber<T>(Action<T> subscriber)
+    public static GenericHandler<T> AddSubscriber<T>(Action<T> subscriber)
     {
-        Instance.DefaultMessageBroker.AddSubscriber(subscriber);
+        return Instance.DefaultMessageBroker.AddSubscriber(subscriber);
     }
 
     public static void RemoveSubscriber<T>(Action<T> subscriber)
