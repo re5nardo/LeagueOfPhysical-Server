@@ -24,7 +24,7 @@ public class EntityAnimatorController : MonoBehaviour
     {
         entity = GetComponent<LOPMonoEntityBase>();
 
-        SceneMessageBroker.AddSubscriber<CS_Synchronization>(OnCS_Synchronization);
+        SceneMessageBroker.AddSubscriber<EntityAnimatorSnap>(OnEntityAnimatorSnap).Where(snap => snap.entityId == entity.EntityID);
 
         // store the animator parameters in a variable - the "Animator.parameters" getter allocates
         // a new parameter array every time it is accessed so we should avoid doing it in a loop
@@ -40,28 +40,22 @@ public class EntityAnimatorController : MonoBehaviour
 
     private void OnDestroy()
     {
-        SceneMessageBroker.RemoveSubscriber<CS_Synchronization>(OnCS_Synchronization);
+        SceneMessageBroker.RemoveSubscriber<EntityAnimatorSnap>(OnEntityAnimatorSnap);
     }
 
-    private void OnCS_Synchronization(CS_Synchronization synchronization)
+    private void OnEntityAnimatorSnap(EntityAnimatorSnap entityAnimatorSnap)
     {
         if (entity.HasAuthority)
         {
             return;
         }
 
-        synchronization.listSnap?.ForEach(snap =>
-        {
-            if (snap is EntityAnimatorSnap entityAnimatorSnap && entityAnimatorSnap.entityId == entity.EntityID)
-            {
-                var synchronization = ObjectPool.Instance.GetObject<SC_Synchronization>();
-                synchronization.listSnap.Add(entityAnimatorSnap);
+        var synchronization = ObjectPool.Instance.GetObject<SC_Synchronization>();
+        synchronization.listSnap.Add(entityAnimatorSnap);
 
-                RoomNetwork.Instance.SendToAll(synchronization, instant: true);
+        RoomNetwork.Instance.SendToAll(synchronization, instant: true);
 
-                SyncAnimator(entityAnimatorSnap);
-            }
-        });
+        SyncAnimator(entityAnimatorSnap);
     }
 
     private void SyncAnimator(EntityAnimatorSnap entityAnimatorSnap)

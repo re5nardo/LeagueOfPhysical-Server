@@ -14,41 +14,35 @@ public class TransformController : MonoBehaviour
     {
         entity = GetComponent<LOPMonoEntityBase>();
 
-        SceneMessageBroker.AddSubscriber<CS_Synchronization>(OnCS_Synchronization);
+        SceneMessageBroker.AddSubscriber<EntityTransformSnap>(OnEntityTransformSnap).Where(snap => snap.entityId == entity.EntityID);
     }
 
     private void OnDestroy()
     {
-        SceneMessageBroker.RemoveSubscriber<CS_Synchronization>(OnCS_Synchronization);
+        SceneMessageBroker.RemoveSubscriber<EntityTransformSnap>(OnEntityTransformSnap);
     }
 
-    private void OnCS_Synchronization(CS_Synchronization synchronization)
+    private void OnEntityTransformSnap(EntityTransformSnap entityTransformSnap)
     {
         if (entity.HasAuthority)
         {
             return;
         }
 
-        synchronization.listSnap?.ForEach(snap =>
+        entityTransformSnaps.Add(entityTransformSnap);
+
+        if (entityTransformSnaps.Count > 100)
         {
-            if (snap is EntityTransformSnap entityTransformSnap && entityTransformSnap.entityId == entity.EntityID)
-            {
-                entityTransformSnaps.Add(entityTransformSnap);
+            entityTransformSnaps.RemoveRange(0, entityTransformSnaps.Count - 100);
+        }
 
-                if (entityTransformSnaps.Count > 100)
-                {
-                    entityTransformSnaps.RemoveRange(0, entityTransformSnaps.Count - 100);
-                }
+        latencies.Add((float)(Mirror.NetworkTime.time - entityTransformSnap.GameTime));
 
-                latencies.Add((float)(Mirror.NetworkTime.time - entityTransformSnap.GameTime));
+        //  Broadcast EntityTransformSnap
+        var synchronization = ObjectPool.Instance.GetObject<SC_Synchronization>();
+        synchronization.listSnap.Add(entityTransformSnap);
 
-                //  Broadcast EntityTransformSnap
-                var synchronization = ObjectPool.Instance.GetObject<SC_Synchronization>();
-                synchronization.listSnap.Add(entityTransformSnap);
-
-                RoomNetwork.Instance.SendToAll(synchronization, instant: true);
-            }
-        });
+        RoomNetwork.Instance.SendToAll(synchronization, instant: true);
     }
 
     private void LateUpdate()

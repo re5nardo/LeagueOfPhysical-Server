@@ -2,15 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 using GameFramework;
-using System.Linq;
 using NetworkModel.Mirror;
 
 public class CS_RequestEmotionExpressionHandler
 {
-    public static void Handle(IMessage msg)
+    public static void Handle(CS_RequestEmotionExpression requestEmotionExpression)
     {
-        CS_RequestEmotionExpression requestEmotionExpression = msg as CS_RequestEmotionExpression;
-
         IEntity senderEntity = Entities.Get(requestEmotionExpression.entityId);
 
         EmotionExpressionData emotionExpressionData = senderEntity.GetEntityComponent<EmotionExpressionData>();

@@ -41,6 +41,7 @@ namespace LOP
             gameManager = gameObject.AddComponent<GameManager>();
 
             SceneMessageBroker.AddSubscriber<CS_RequestEmotionExpression>(CS_RequestEmotionExpressionHandler.Handle);
+            SceneMessageBroker.AddSubscriber<CS_Synchronization>(CS_SynchronizationHandler.Handle);
             SceneMessageBroker.AddSubscriber<RoomMessage.PlayerEnter>(OnPlayerEnter);
             SceneMessageBroker.AddSubscriber<RoomMessage.PlayerLeave>(OnPlayerLeave);
 
@@ -66,6 +67,7 @@ namespace LOP
             playerUserIDPhotonPlayer = null;
 
             SceneMessageBroker.RemoveSubscriber<CS_RequestEmotionExpression>(CS_RequestEmotionExpressionHandler.Handle);
+            SceneMessageBroker.RemoveSubscriber<CS_Synchronization>(CS_SynchronizationHandler.Handle);
             SceneMessageBroker.RemoveSubscriber<RoomMessage.PlayerEnter>(OnPlayerEnter);
             SceneMessageBroker.RemoveSubscriber<RoomMessage.PlayerLeave>(OnPlayerLeave);
         }
