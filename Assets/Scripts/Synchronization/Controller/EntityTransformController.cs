@@ -1,30 +1,31 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Entity;
+using GameFramework;
 using NetworkModel.Mirror;
 
-public class TransformController : MonoBehaviour
+public class EntityTransformController : LOPMonoEntityComponentBase
 {
-    private LOPMonoEntityBase entity;
     private List<EntityTransformSnap> entityTransformSnaps = new List<EntityTransformSnap>();
     private AverageQueue latencies = new AverageQueue();
 
-    private void Awake()
+    public override void OnAttached(IEntity entity)
     {
-        entity = GetComponent<LOPMonoEntityBase>();
+        base.OnAttached(entity);
 
-        SceneMessageBroker.AddSubscriber<EntityTransformSnap>(OnEntityTransformSnap).Where(snap => snap.entityId == entity.EntityID);
+        SceneMessageBroker.AddSubscriber<EntityTransformSnap>(OnEntityTransformSnap).Where(snap => snap.entityId == Entity.EntityID);
     }
 
-    private void OnDestroy()
+    public override void OnDetached()
     {
+        base.OnDetached();
+
         SceneMessageBroker.RemoveSubscriber<EntityTransformSnap>(OnEntityTransformSnap);
     }
 
     private void OnEntityTransformSnap(EntityTransformSnap entityTransformSnap)
     {
-        if (entity.HasAuthority)
+        if (Entity.HasAuthority)
         {
             return;
         }
@@ -47,7 +48,7 @@ public class TransformController : MonoBehaviour
 
     private void LateUpdate()
     {
-        if (!entity.HasAuthority)
+        if (!Entity.HasAuthority)
         {
             SyncTransform();
         }
@@ -69,19 +70,19 @@ public class TransformController : MonoBehaviour
         {
             float t = (before.GameTime == next.GameTime) ? 0 : (syncTime - before.GameTime) / (next.GameTime - before.GameTime);
 
-            entity.Position = Vector3.Lerp(before.position, next.position, t);
-            entity.Rotation = Quaternion.Lerp(Quaternion.Euler(before.rotation), Quaternion.Euler(next.rotation), t).eulerAngles;
-            entity.Velocity = Vector3.Lerp(before.velocity, next.velocity, t);
-            entity.AngularVelocity = Vector3.Lerp(before.angularVelocity, next.angularVelocity, t);
+            Entity.Position = Vector3.Lerp(before.position, next.position, t);
+            Entity.Rotation = Quaternion.Lerp(Quaternion.Euler(before.rotation), Quaternion.Euler(next.rotation), t).eulerAngles;
+            Entity.Velocity = Vector3.Lerp(before.velocity, next.velocity, t);
+            Entity.AngularVelocity = Vector3.Lerp(before.angularVelocity, next.angularVelocity, t);
         }
         else if (before != null)
         {
             float elapsed = syncTime - before.GameTime;
 
-            entity.Position = before.position + before.velocity * elapsed;
-            entity.Rotation = before.rotation;
-            entity.Velocity = before.velocity;
-            entity.AngularVelocity = before.angularVelocity;
+            Entity.Position = before.position + before.velocity * elapsed;
+            Entity.Rotation = before.rotation;
+            Entity.Velocity = before.velocity;
+            Entity.AngularVelocity = before.angularVelocity;
         }
     }
 }

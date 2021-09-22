@@ -71,10 +71,10 @@ namespace LOP
 
                 character.AttachEntityComponent(character.gameObject.AddComponent<PlayerView>());
 
-                character.gameObject.AddComponent<TransformController>();
+                character.AttachEntityComponent(character.gameObject.AddComponent<EntityTransformController>());
                 if (character.ModelAnimator != null)
                 {
-                    character.gameObject.AddComponent<EntityAnimatorController>();
+                    character.AttachEntityComponent(character.gameObject.AddComponent<EntityAnimatorController>());
                 }
 
                 //  Entity Skill Info
