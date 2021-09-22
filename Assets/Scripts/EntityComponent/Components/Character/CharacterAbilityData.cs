@@ -23,18 +23,6 @@ public class CharacterAbilityData : LOPMonoEntityComponentBase
 
 	public void SelectAbility(int nAbilityID)
 	{
-		if (m_nSelectableAbilityCount == 0)
-		{
-			Debug.LogWarning("Can't select Ability. m_nSelectableAbilityCount is 0!");
-			return;
-		}
-
-		if(!m_SelectableAbilityIDs.Contains(nAbilityID))
-		{
-			Debug.LogWarning("nAbilityID is invalid! nAbilityID : " + nAbilityID);
-			return;
-		}
-
-		AbilityManager.Instance.ApplyAbility(Entity.EntityID, nAbilityID);
+        throw new NotImplementedException();
 	}
 }
