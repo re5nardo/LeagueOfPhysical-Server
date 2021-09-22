@@ -19,6 +19,7 @@ namespace NetworkModel.Mirror
         public const byte SC_Synchronization = 9;
         public const byte SC_GameState = 10;
         public const byte SC_GameEnd = 11;
+        public const byte SC_OwnerChanged = 12;
 
         public const byte CS_NotifyMoveInputData = 112;
         public const byte CS_NotifySkillInputData = 113;
@@ -257,6 +258,26 @@ namespace NetworkModel.Mirror
             listWinnerEntityId.Clear();
             listLoserEntityId.Clear();
             listRankingData.Clear();
+        }
+    }
+
+    [Serializable]
+    public class SC_OwnerChanged : IMirrorMessage
+    {
+        public int entityId;
+        public string ownerId;
+
+        public SC_OwnerChanged() { }
+
+        public byte GetMessageId()
+        {
+            return MessageIds.SC_OwnerChanged;
+        }
+
+        public void Clear()
+        {
+            entityId = default;
+            ownerId = default;
         }
     }
     #endregion

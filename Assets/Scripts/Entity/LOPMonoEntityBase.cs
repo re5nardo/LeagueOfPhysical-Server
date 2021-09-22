@@ -14,7 +14,24 @@ namespace Entity
         public bool IsLocalEntity => EntityID < 0;
         public bool Initialized { get; private set; }
 
-        public string OwnerId { get; set; } = "server";
+        private string ownerId = "server";
+        public string OwnerId
+        {
+            get => ownerId;
+            set
+            {
+                ownerId = value;
+
+                SC_OwnerChanged message = ObjectPool.Instance.GetObject<SC_OwnerChanged>();
+                message.entityId = EntityID;
+                message.ownerId = ownerId;
+
+                RoomNetwork.Instance.SendToAll(message);
+
+                ObjectPool.Instance.ReturnObject(message);
+            }
+        }
+
         public bool HasAuthority => OwnerId == "server" || OwnerId == "local";
 
         protected EntityBasicView entityBasicView;
