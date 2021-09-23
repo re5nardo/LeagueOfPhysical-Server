@@ -55,14 +55,14 @@ public class BehaviorController : LOPMonoEntityComponentBase
         var behaviors = Entity.GetEntityComponents<BehaviorBase>();
         foreach (var behavior in behaviors)
         {
-            if (behavior.IsPlaying())
+            if (behavior.IsPlaying)
                 behavior.StopBehavior();
         }
 
         var states = Entity.GetEntityComponents<StateBase>();
         foreach (var state in states)
         {
-            if (state.IsPlaying())
+            if (state.IsPlaying)
                 state.StopState();
         }
     }
@@ -83,7 +83,7 @@ public class BehaviorController : LOPMonoEntityComponentBase
 
         behaviors?.ForEach(behavior =>
         {
-            if (behavior.GetBehaviorMasterID() == nBehaviorMasterID)
+            if (behavior.MasterDataId == nBehaviorMasterID)
             {
                 behavior.StopBehavior();
             }

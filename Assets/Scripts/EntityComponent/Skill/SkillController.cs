@@ -10,7 +10,7 @@ public class SkillController : LOPMonoEntityComponentBase
 
 		foreach (Skill.SkillBase skill in GetComponents<Skill.SkillBase>())
 		{
-			dicSkillInfo[skill.GetSkillMasterID()] = skill.CoolTime;
+			dicSkillInfo[skill.MasterDataId] = skill.CoolTime;
 		}
 
 		return dicSkillInfo;
@@ -34,7 +34,7 @@ public class SkillController : LOPMonoEntityComponentBase
 		if (skills == null)
 			return;
 
-		var found = skills.FindAll(x => x.GetSkillMasterID() == nSkillMasterID);
+		var found = skills.FindAll(x => x.MasterDataId == nSkillMasterID);
 		if (found == null)
 			return;
 

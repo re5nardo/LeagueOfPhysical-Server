@@ -1,6 +1,5 @@
 ﻿using System;
 using GameFramework;
-using Entity;
 using UnityEngine;
 
 namespace State
@@ -11,37 +10,17 @@ namespace State
 
         protected virtual void OnStateStart() { }
         protected abstract bool OnStateUpdate();         //  False : Finish
-        protected virtual void OnStateEnd() { }          //  중간에 Stop 된 경우에도 호출됨
+        protected virtual void OnStateEnd() { }
 
-        protected int m_nStateMasterID = -1;
+        public int MasterDataId { get; protected set; } = -1;
+        public bool IsPlaying { get; private set; } = false;
+
         protected int startTick = -1;
         protected int lastTick = -1;
 
-        private bool isPlaying = false;
-
-        protected float DeltaTime
-        {
-            get
-            {
-                return lastTick == -1 ? CurrentUpdateTime : CurrentUpdateTime - LastUpdateTime;
-            }
-        }
-
-        protected float CurrentUpdateTime
-        {
-            get
-            {
-                return Game.Current.CurrentTick == 0 ? 0 : (Game.Current.CurrentTick - startTick + 1) * Game.Current.TickInterval;
-            }
-        }
-
-        protected float LastUpdateTime
-        {
-            get
-            {
-                return lastTick == -1 ? -1 : (lastTick - startTick + 1) * Game.Current.TickInterval;
-            }
-        }
+        protected float DeltaTime => lastTick == -1 ? CurrentUpdateTime : CurrentUpdateTime - LastUpdateTime;
+        protected float CurrentUpdateTime => Game.Current.CurrentTick == 0 ? 0 : (Game.Current.CurrentTick - startTick + 1) * Game.Current.TickInterval;
+        protected float LastUpdateTime => lastTick == -1 ? -1 : (lastTick - startTick + 1) * Game.Current.TickInterval;
 
         private MasterData.State masterData = null;
         public MasterData.State MasterData
@@ -50,27 +29,27 @@ namespace State
             {
                 if (masterData == null)
                 {
-                    masterData = MasterDataManager.Instance.GetMasterData<MasterData.State>(m_nStateMasterID);
+                    masterData = MasterDataManager.Instance.GetMasterData<MasterData.State>(MasterDataId);
                 }
 
                 return masterData;
             }
         }
 
-        public virtual void SetData(int nStateMasterID, params object[] param)
+        public virtual void SetData(int masterDataId, params object[] param)
         {
-            m_nStateMasterID = nStateMasterID;
+            this.MasterDataId = masterDataId;
         }
 
         public void StartState()
         {
-            if (isPlaying == true)
+            if (IsPlaying == true)
             {
                 Debug.LogWarning("State is playing, StartState() is ignored!");
                 return;
             }
 
-            isPlaying = true;
+            IsPlaying = true;
 
             //SC_EntityBehaviorStartEvent entityBehaviorStartEvent = new SC_EntityBehaviorStartEvent(m_Entity.GetEntityID(), m_nBehaviorMasterID, m_Entity.GetPosition(), m_Entity.GetRotation());
             //RoomNetwork.Instance.SendToNear(entityBehaviorStartEvent, m_Entity.GetPosition(), GameRoom.BROADCAST_SCOPE_RADIUS);
@@ -87,7 +66,6 @@ namespace State
         {
             if (lastTick == tick)
             {
-                //Debug.LogWarning("Tick() is ignored! lastTick == tick");
                 return;
             }
 
@@ -101,7 +79,7 @@ namespace State
 
         private void EndState()
         {
-            isPlaying = false;
+            IsPlaying = false;
 
             if (!LOP.Application.IsApplicationQuitting)
             {
@@ -118,7 +96,7 @@ namespace State
 
         public void StopState()
         {
-            if (isPlaying == false)
+            if (IsPlaying == false)
             {
                 Debug.LogWarning("State is not playing, StopState() is ignored!");
                 return;
@@ -127,19 +105,9 @@ namespace State
             EndState();
         }
 
-        public bool IsPlaying()
-        {
-            return isPlaying;
-        }
-
-        public int GetStateMasterID()
-        {
-            return m_nStateMasterID;
-        }
-
         private void OnDisable()
         {
-            if (IsPlaying())
+            if (IsPlaying)
             {
                 StopState();
             }

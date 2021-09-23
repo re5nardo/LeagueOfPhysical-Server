@@ -1,5 +1,4 @@
-﻿using Entity;
-using GameFramework;
+﻿using GameFramework;
 using UnityEngine;
 using NetworkModel.Mirror;
 
@@ -9,34 +8,17 @@ namespace Skill
     {
         protected abstract void OnSkillUpdate();
 
-        protected int skillMasterID = -1;
-        protected float coolTime = 0f;
+        public int MasterDataId { get; protected set; } = -1;
+
+        public float CoolTime { get; protected set; }
+        public bool IsCoolTime => CoolTime > 0;
+
         protected int startTick = -1;
         protected int lastTick = -1;
 
         protected float DeltaTime => Game.Current.CurrentTick == 0 ? 0 : Game.Current.TickInterval;
-
-        protected float CurrentUpdateTime
-        {
-            get
-            {
-                return Game.Current.CurrentTick == 0 ? 0 : (Game.Current.CurrentTick - startTick + 1) * Game.Current.TickInterval;
-            }
-        }
-
-        protected float LastUpdateTime
-        {
-            get
-            {
-                return lastTick == -1 ? -1 : (lastTick - startTick + 1) * Game.Current.TickInterval;
-            }
-        }
-
-        public float CoolTime => coolTime;
-        public bool IsCoolTime()
-        {
-            return CoolTime > 0;
-        }
+        protected float CurrentUpdateTime => Game.Current.CurrentTick == 0 ? 0 : (Game.Current.CurrentTick - startTick + 1) * Game.Current.TickInterval;
+        protected float LastUpdateTime => lastTick == -1 ? -1 : (lastTick - startTick + 1) * Game.Current.TickInterval;
 
         private MasterData.Skill masterData = null;
         public MasterData.Skill MasterData
@@ -45,7 +27,7 @@ namespace Skill
             {
                 if (masterData == null)
                 {
-                    masterData = MasterDataManager.Instance.GetMasterData<MasterData.Skill>(skillMasterID);
+                    masterData = MasterDataManager.Instance.GetMasterData<MasterData.Skill>(MasterDataId);
                 }
 
                 return masterData;
@@ -58,9 +40,9 @@ namespace Skill
         }
         #endregion
 
-        public virtual void SetData(int skillMasterID, params object[] param)
+        public virtual void SetData(int masterDataId, params object[] param)
         {
-            this.skillMasterID = skillMasterID;
+            this.MasterDataId = masterDataId;
         }
 
         public void StartSkill()
@@ -71,20 +53,14 @@ namespace Skill
             OnTick(Game.Current.CurrentTick);
         }
 
-        public int GetSkillMasterID()
-        {
-            return skillMasterID;
-        }
-
         public void OnTick(int tick)
         {
             if (lastTick == tick)
             {
-                //Debug.LogWarning("Tick() is ignored! lastTick == tick");
                 return;
             }
 
-            coolTime = Mathf.Max(0, CoolTime - DeltaTime);
+            CoolTime = Mathf.Max(0, CoolTime - DeltaTime);
 
             OnSkillUpdate();
 

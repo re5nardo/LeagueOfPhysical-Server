@@ -30,7 +30,7 @@ public class Attack : Action
         var behaviors = Entity.GetComponents<Behavior.BehaviorBase>();
         foreach(var behavior in behaviors)
         {
-            if(behavior.GetBehaviorMasterID() == attackID && behavior.IsPlaying())
+            if(behavior.MasterDataId == attackID && behavior.IsPlaying)
             {
                 return TaskStatus.Running;
             }

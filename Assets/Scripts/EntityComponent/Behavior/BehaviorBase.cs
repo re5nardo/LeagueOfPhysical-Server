@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using GameFramework;
-using Entity;
 using UnityEngine;
 using System;
 using GameEvent;
@@ -15,29 +14,15 @@ namespace Behavior
         protected abstract bool OnBehaviorUpdate();			//  False : Finish
         protected virtual void OnBehaviorEnd() { }
 
-        protected int behaviorMasterID = -1;
+        public int MasterDataId { get; protected set; } = -1;
+        public bool IsPlaying { get; private set; } = false;
+
         protected int startTick = -1;
         protected int lastTick = -1;
 
-        private bool isPlaying = false;
-
         protected float DeltaTime => Game.Current.CurrentTick == 0 ? 0 : Game.Current.TickInterval;
-
-        protected float CurrentUpdateTime
-        {
-            get
-            {
-                return Game.Current.CurrentTick == 0 ? 0 : (Game.Current.CurrentTick - startTick + 1) * Game.Current.TickInterval;
-            }
-        }
-
-        protected float LastUpdateTime
-        {
-            get
-            {
-                return lastTick == -1 ? -1 : (lastTick - startTick + 1) * Game.Current.TickInterval;
-            }
-        }
+        protected float CurrentUpdateTime => Game.Current.CurrentTick == 0 ? 0 : (Game.Current.CurrentTick - startTick + 1) * Game.Current.TickInterval;
+        protected float LastUpdateTime => lastTick == -1 ? -1 : (lastTick - startTick + 1) * Game.Current.TickInterval;
 
         private MasterData.Behavior masterData = null;
         public MasterData.Behavior MasterData
@@ -46,27 +31,27 @@ namespace Behavior
             {
                 if (masterData == null)
                 {
-                    masterData = MasterDataManager.Instance.GetMasterData<MasterData.Behavior>(behaviorMasterID);
+                    masterData = MasterDataManager.Instance.GetMasterData<MasterData.Behavior>(MasterDataId);
                 }
 
                 return masterData;
             }
         }
 
-        public virtual void SetData(int behaviorMasterID, params object[] param)
+        public virtual void SetData(int masterDataId, params object[] param)
         {
-            this.behaviorMasterID = behaviorMasterID;
+            this.MasterDataId = masterDataId;
         }
 
         public void StartBehavior()
         {
-            if (isPlaying == true)
+            if (IsPlaying == true)
             {
                 Debug.LogWarning("Behavior is playing, StartBehavior() is ignored!");
                 return;
             }
 
-            isPlaying = true;
+            IsPlaying = true;
 
             StopPreviousBehaviors();
          
@@ -82,11 +67,11 @@ namespace Behavior
         {
             var behaviors = GetComponents<BehaviorBase>().ToList();
             behaviors.Remove(this);
-            behaviors.RemoveAll(x => !x.IsPlaying());
+            behaviors.RemoveAll(x => !x.IsPlaying);
 
             foreach (var behavior in behaviors)
             {
-                if (!MasterData.CompatibleBehaviorIDs.Contains(behavior.GetBehaviorMasterID()))
+                if (!MasterData.CompatibleBehaviorIDs.Contains(behavior.MasterDataId))
                 {
                     behavior.StopBehavior();
                 }
@@ -97,7 +82,6 @@ namespace Behavior
         {
             if (lastTick == tick)
             {
-                //Debug.LogWarning("Tick() is ignored! lastTick == tick");
                 return;
             }
 
@@ -111,7 +95,7 @@ namespace Behavior
 
         private void EndBehavior()
         {
-            isPlaying = false;
+            IsPlaying = false;
 
             LOP.Game.Current?.GameEventManager.SendToNear(new EntityBehaviorEnd(Entity.EntityID, MasterData.ID), Entity.Position);
 
@@ -124,7 +108,7 @@ namespace Behavior
 
         public void StopBehavior()
         {
-            if (isPlaying == false)
+            if (IsPlaying == false)
             {
                 Debug.LogWarning("Behavior is not playing, StopBehavior() is ignored!");
                 return;
@@ -133,19 +117,9 @@ namespace Behavior
             EndBehavior();
         }
 
-        public bool IsPlaying()
-        {
-            return isPlaying;
-        }
-
-        public int GetBehaviorMasterID()
-        {
-            return behaviorMasterID;
-        }
-
         private void OnDisable()
         {
-            if (IsPlaying())
+            if (IsPlaying)
             {
                 StopBehavior();
             }

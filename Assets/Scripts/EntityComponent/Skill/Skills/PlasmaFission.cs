@@ -31,8 +31,8 @@ namespace Skill
 
 		private void Awake()
         {
-            skillMasterID = Define.MasterData.SkillID.PLASMA_FISSION;
-            coolTime = 0f;
+            MasterDataId = Define.MasterData.SkillID.PLASMA_FISSION;
+            CoolTime = 0f;
             m_State = State.Ready;
 
             SceneMessageBroker.AddSubscriber<GameMessage.EntityDestroy>(OnEntityDestroy);
@@ -45,7 +45,7 @@ namespace Skill
 
         protected override void OnSkillUpdate()
         {
-            if (IsCoolTime())
+            if (IsCoolTime)
             {
                 return;
             }
@@ -100,7 +100,7 @@ namespace Skill
         {
             base.OnReceiveSkillInputData(skillInputData);
 
-            if (IsCoolTime())
+            if (IsCoolTime)
             {
                 return;
             }
@@ -173,7 +173,7 @@ namespace Skill
                 m_FireSkillElapsedTime = 0f;
 
                 //  Cooltime
-                coolTime = MasterData.CoolTime;
+                CoolTime = MasterData.CoolTime;
 
                 m_State = State.CoolTime;
             }

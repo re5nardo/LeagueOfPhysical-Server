@@ -34,7 +34,7 @@ namespace Skill
         {
             base.OnReceiveSkillInputData(skillInputData);
 
-            if (IsCoolTime())
+            if (IsCoolTime)
             {
                 return;
             }
@@ -46,7 +46,7 @@ namespace Skill
 
         protected override void OnSkillUpdate()
         {
-            if (IsCoolTime())
+            if (IsCoolTime)
             {
                 return;
             }
@@ -56,7 +56,7 @@ namespace Skill
                 BehaviorController behaviorController = Entity.GetComponent<BehaviorController>();
                 behaviorController?.StartBehavior(targetBehaviorID, skillInputData);
 
-                coolTime = MasterData.CoolTime;
+                CoolTime = MasterData.CoolTime;
             }
         }
     }
