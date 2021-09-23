@@ -15,16 +15,6 @@ public class EntityAnimatorSnap : ISnap
 
     public EntityAnimatorSnap() { }
 
-    public bool EqualsCore(ISnap snap)
-    {
-        return false;
-    }
-
-    public bool EqualsValue(ISnap snap)
-    {
-        return false;
-    }
-
     public ISnap Clone()
     {
         EntityAnimatorSnap clone = new EntityAnimatorSnap();

@@ -43,7 +43,7 @@ public class EntityTransformController : LOPMonoEntityComponentBase
         var synchronization = ObjectPool.Instance.GetObject<SC_Synchronization>();
         synchronization.listSnap.Add(entityTransformSnap);
 
-        RoomNetwork.Instance.SendToAll(synchronization, instant: true);
+        RoomNetwork.Instance.SendToNear(synchronization, Entity.Position, LOP.Game.BROADCAST_SCOPE_RADIUS, instant: true);
     }
 
     private void LateUpdate()

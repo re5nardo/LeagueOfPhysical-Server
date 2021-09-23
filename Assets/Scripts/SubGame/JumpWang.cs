@@ -38,11 +38,6 @@ public class JumpWang : SubGameBase
 
         foreach (var entity in Entities.GetAll<LOPMonoEntityBase>())
         {
-            if (entity is MapObjectBase)
-            {
-                continue;
-            }
-
             entity.Rigidbody.constraints = RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation;
         }
 

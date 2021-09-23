@@ -22,8 +22,6 @@ public class EntityAnimatorController : LOPMonoEntityComponentBase
     {
         base.OnAttached(entity);
 
-        SceneMessageBroker.AddSubscriber<EntityAnimatorSnap>(OnEntityAnimatorSnap).Where(snap => snap.entityId == Entity.EntityID);
-
         // store the animator parameters in a variable - the "Animator.parameters" getter allocates
         // a new parameter array every time it is accessed so we should avoid doing it in a loop
         parameters = Entity.ModelAnimator.parameters.Where(par => !Entity.ModelAnimator.IsParameterControlledByCurve(par.nameHash)).ToArray();
@@ -34,6 +32,8 @@ public class EntityAnimatorController : LOPMonoEntityComponentBase
         animationHash = new int[Entity.ModelAnimator.layerCount];
         transitionHash = new int[Entity.ModelAnimator.layerCount];
         layerWeight = new float[Entity.ModelAnimator.layerCount];
+
+        SceneMessageBroker.AddSubscriber<EntityAnimatorSnap>(OnEntityAnimatorSnap).Where(snap => snap.entityId == Entity.EntityID);
     }
 
     public override void OnDetached()
@@ -53,7 +53,7 @@ public class EntityAnimatorController : LOPMonoEntityComponentBase
         var synchronization = ObjectPool.Instance.GetObject<SC_Synchronization>();
         synchronization.listSnap.Add(entityAnimatorSnap);
 
-        RoomNetwork.Instance.SendToAll(synchronization, instant: true);
+        RoomNetwork.Instance.SendToNear(synchronization, Entity.Position, LOP.Game.BROADCAST_SCOPE_RADIUS, instant: true);
 
         SyncAnimator(entityAnimatorSnap);
     }

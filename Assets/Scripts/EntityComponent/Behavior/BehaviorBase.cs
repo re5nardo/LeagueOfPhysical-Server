@@ -113,7 +113,7 @@ namespace Behavior
         {
             isPlaying = false;
 
-            LOP.Game.Current.GameEventManager.SendToNear(new EntityBehaviorEnd(Entity.EntityID, MasterData.ID), Entity.Position);
+            LOP.Game.Current?.GameEventManager.SendToNear(new EntityBehaviorEnd(Entity.EntityID, MasterData.ID), Entity.Position);
 
             OnBehaviorEnd();
 
