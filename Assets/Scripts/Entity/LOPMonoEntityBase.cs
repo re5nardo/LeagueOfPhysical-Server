@@ -153,22 +153,18 @@ namespace Entity
             }
         }
 
+        private Vector3 velocity;
         public override Vector3 Velocity
         {
-            get => Rigidbody.velocity;
-            set
-            {
-                Rigidbody.velocity = value;
-            }
+            get => Rigidbody.isKinematic ? velocity : Rigidbody.velocity;
+            set => Rigidbody.velocity = velocity = value;
         }
 
+        private Vector3 angularVelocity;
         public override Vector3 AngularVelocity
         {
-            get => Rigidbody.angularVelocity;
-            set
-            {
-                Rigidbody.angularVelocity = value;
-            }
+            get => Rigidbody.isKinematic ? angularVelocity : Rigidbody.angularVelocity;
+            set => Rigidbody.angularVelocity = angularVelocity = value;
         }
         #endregion
 
