@@ -21,7 +21,7 @@ namespace Entity
             
             ContinuousPatrol continuousPatrol = BehaviorFactory.Instance.CreateBehavior(gameObject, Define.MasterData.BehaviorID.CONTINUOUS_PATROL) as ContinuousPatrol;
             AttachEntityComponent(continuousPatrol);
-            continuousPatrol.SetData(Define.MasterData.BehaviorID.CONTINUOUS_PATROL, startPoint, halfwayPoint, timeOffset);
+            continuousPatrol.Initialize(new ContinuousPatrolBehaviorParam(Define.MasterData.BehaviorID.CONTINUOUS_PATROL, startPoint, halfwayPoint, timeOffset));
             continuousPatrol.onBehaviorEnd += BehaviorHelper.BehaviorDestroyer;
 
             continuousPatrol.StartBehavior();

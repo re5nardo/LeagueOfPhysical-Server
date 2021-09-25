@@ -7,7 +7,8 @@ namespace Behavior
 {
     public class Move : BehaviorBase
     {
-        private Vector3 m_vec3Destination;
+        public Vector3 Destination { get; private set; }
+
         private int remainCount = 3;
 
         #region BehaviorBase
@@ -15,14 +16,14 @@ namespace Behavior
         {
             base.OnBehaviorStart();
 
-            LOP.Game.Current.GameEventManager.SendToNear(new EntityBehaviorStart(Entity.EntityID, MasterData.ID, m_vec3Destination), Entity.Position);
+            LOP.Game.Current.GameEventManager.SendToNear(new EntityBehaviorStart(Entity.EntityID, MasterData.ID, Destination), Entity.Position);
 
             Entity.MessageBroker.Publish(new AnimatorSetBool("Move", true));
         }
 
         protected override bool OnBehaviorUpdate()
         {
-			Vector3 toMove = m_vec3Destination.XZ() - Entity.Position.XZ();
+			Vector3 toMove = Destination.XZ() - Entity.Position.XZ();
             if (toMove == Vector3.zero)
             {
                 return false;
@@ -34,7 +35,7 @@ namespace Behavior
 
                 if (Util.Approximately(toMove.sqrMagnitude, moved.sqrMagnitude) || toMove.sqrMagnitude <= moved.sqrMagnitude)
                 {
-                    Entity.Position = m_vec3Destination;
+                    Entity.Position = Destination;
                     return false;
                 }
                 else
@@ -66,24 +67,21 @@ namespace Behavior
             Entity.MessageBroker.Publish(new AnimatorSetBool("Move", false));
         }
 
-        public override void SetData(int nBehaviorMasterID, params object[] param)
+        public override void Initialize(BehaviorParam behaviorParam)
         {
-            base.SetData(nBehaviorMasterID);
+            base.Initialize(behaviorParam);
 
-            m_vec3Destination = (Vector3)param[0];
+            var moveBehaviorParam = behaviorParam as MoveBehaviorParam;
+
+            Destination = moveBehaviorParam.destination;
             remainCount = 3;
         }
         #endregion
 
-        public void SetDestination(Vector3 vec3Destination)
+        public void SetDestination(Vector3 destination)
         {
-            m_vec3Destination = vec3Destination;
+            Destination = destination;
             remainCount = 3;
-        }
-
-        public Vector3 GetDestination()
-        {
-            return m_vec3Destination;
         }
     }
 }

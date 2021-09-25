@@ -41,9 +41,11 @@ namespace Behavior
             return CurrentUpdateTime < m_fLifespan;
         }
 
-        public override void SetData(int nBehaviorMasterID, params object[] param)
+        public override void Initialize(BehaviorParam behaviorParam)
         {
-            base.SetData(nBehaviorMasterID);
+            base.Initialize(behaviorParam);
+
+            var attackBehaviorParam = behaviorParam as AttackBehaviorParam;
 
             m_fLifespan = MasterData.Lifespan;
             m_fAttackTime = float.Parse(MasterData.ClassParams.Find(x => x.Contains("AttackTime")).Split(':')[1]);
@@ -51,51 +53,51 @@ namespace Behavior
             m_fProjectileHeight = float.Parse(MasterData.ClassParams.Find(x => x.Contains("ProjectileHeight")).Split(':')[1]);
             m_fProjectileLifespan = float.Parse(MasterData.ClassParams.Find(x => x.Contains("ProjectileLifespan")).Split(':')[1]);
 
-            if (param.Length > 0 && param[0] is SkillInputData)
+            if (attackBehaviorParam.skillInputData == null)
             {
-                SkillInputData data = param[0] as SkillInputData;
+                return;
+            }
 
-                if (data.inputData == Vector3.zero)
+            if (attackBehaviorParam.skillInputData.inputData == Vector3.zero)
+            {
+                //  Auto aiming
+                List<IEntity> targets = Entities.Get(Entity.Position, 20, EntityRole.All, new HashSet<int> { Entity.EntityID });
+                List<IEntity> candidates = new List<IEntity>();
+                foreach (IEntity target in targets)
                 {
-                    //  Auto aiming
-                    List<IEntity> targets = Entities.Get(Entity.Position, 20, EntityRole.All, new HashSet<int> { Entity.EntityID });
-                    List<IEntity> candidates = new List<IEntity>();
-                    foreach (IEntity target in targets)
+                    if (target is Character)
                     {
-                        if (target is Character)
-                        {
-                            if (!(target as Character).IsAlive)
-                            {
-                                continue;
-                            }
-                        }
-                        else if (target is GameItem)
-                        {
-                            if (!(target as GameItem).IsAlive)
-                            {
-                                continue;
-                            }
-                        }
-                        else
+                        if (!(target as Character).IsAlive)
                         {
                             continue;
                         }
-
-                        candidates.Add(target);
                     }
-
-                    //  Find best suitable one
-                    if (candidates.Count > 0)
+                    else if (target is GameItem)
                     {
-                        candidates.Sort((x, y) => (x.Position - Entity.Position).sqrMagnitude.CompareTo((y.Position - Entity.Position).sqrMagnitude));
-
-                        Entity.Rotation = Quaternion.LookRotation(candidates[0].Position - Entity.Position).eulerAngles;
+                        if (!(target as GameItem).IsAlive)
+                        {
+                            continue;
+                        }
                     }
+                    else
+                    {
+                        continue;
+                    }
+
+                    candidates.Add(target);
                 }
-                else
+
+                //  Find best suitable one
+                if (candidates.Count > 0)
                 {
-                    Entity.Rotation = Quaternion.LookRotation(data.inputData).eulerAngles;
+                    candidates.Sort((x, y) => (x.Position - Entity.Position).sqrMagnitude.CompareTo((y.Position - Entity.Position).sqrMagnitude));
+
+                    Entity.Rotation = Quaternion.LookRotation(candidates[0].Position - Entity.Position).eulerAngles;
                 }
+            }
+            else
+            {
+                Entity.Rotation = Quaternion.LookRotation(attackBehaviorParam.skillInputData.inputData).eulerAngles;
             }
         }
         #endregion

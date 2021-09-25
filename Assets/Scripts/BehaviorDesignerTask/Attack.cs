@@ -45,7 +45,7 @@ public class Attack : Action
         }
         else if (vec3Direction.sqrMagnitude < 5)
         {
-            behaviorController?.StartBehavior(attackID);
+            behaviorController?.StartBehavior(new AttackBehaviorParam(attackID, null));
 			return TaskStatus.Running;
         }
 

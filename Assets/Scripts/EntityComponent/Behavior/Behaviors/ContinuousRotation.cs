@@ -14,12 +14,14 @@ namespace Behavior
             return true;
         }
 
-        public override void SetData(int nBehaviorMasterID, params object[] param)
+        public override void Initialize(BehaviorParam behaviorParam)
         {
-            base.SetData(nBehaviorMasterID);
+            base.Initialize(behaviorParam);
 
-            startRotation = (Vector3)param[0];
-            timeOffset = (float)param[1];
+            var continuousRotationBehaviorParam = behaviorParam as ContinuousRotationBehaviorParam;
+
+            startRotation = continuousRotationBehaviorParam.startRotation;
+            timeOffset = continuousRotationBehaviorParam.timeOffset;
         }
         #endregion
 

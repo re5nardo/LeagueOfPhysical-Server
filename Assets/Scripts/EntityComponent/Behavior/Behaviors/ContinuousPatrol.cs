@@ -15,13 +15,15 @@ namespace Behavior
             return true;
         }
 
-        public override void SetData(int nBehaviorMasterID, params object[] param)
+        public override void Initialize(BehaviorParam behaviorParam)
         {
-            base.SetData(nBehaviorMasterID);
+            base.Initialize(behaviorParam);
 
-            startPoint = (Vector3)param[0];
-            halfwayPoint = (Vector3)param[1];
-            timeOffset = (float)param[2];
+            var continuousPatrolBehaviorParam = behaviorParam as ContinuousPatrolBehaviorParam;
+
+            startPoint = continuousPatrolBehaviorParam.startPoint;
+            halfwayPoint = continuousPatrolBehaviorParam.halfwayPoint;
+            timeOffset = continuousPatrolBehaviorParam.timeOffset;
         }
         #endregion
 

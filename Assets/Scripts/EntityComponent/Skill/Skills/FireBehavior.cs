@@ -53,8 +53,8 @@ namespace Skill
 
             if (LastUpdateTime < FireTime && FireTime <= CurrentUpdateTime)
             {
-                BehaviorController behaviorController = Entity.GetComponent<BehaviorController>();
-                behaviorController?.StartBehavior(targetBehaviorID, skillInputData);
+                //BehaviorController behaviorController = Entity.GetComponent<BehaviorController>();
+                //behaviorController?.StartBehavior(new BehaviorParam(targetBehaviorID));
 
                 CoolTime = MasterData.CoolTime;
             }

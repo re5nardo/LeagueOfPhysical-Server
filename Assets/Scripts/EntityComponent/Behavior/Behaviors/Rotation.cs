@@ -5,7 +5,8 @@ namespace Behavior
 {
     public class Rotation : BehaviorBase
     {
-        private Vector3 m_vec3Direction;
+        public Vector3 Direction { get; set; }
+        public Vector3 Destination => Quaternion.LookRotation(Direction).eulerAngles;
 
         // Angular speed in degrees per sec.
 		private float m_fAngularSpeed = 360 * 2;
@@ -15,12 +16,12 @@ namespace Behavior
         {
             base.OnBehaviorStart();
 
-            LOP.Game.Current.GameEventManager.SendToNear(new EntityBehaviorStart(Entity.EntityID, MasterData.ID, m_vec3Direction), Entity.Position);
+            LOP.Game.Current.GameEventManager.SendToNear(new EntityBehaviorStart(Entity.EntityID, MasterData.ID, Direction), Entity.Position);
         }
 
         protected override bool OnBehaviorUpdate()
         {
-            float toRotate = Vector3.SignedAngle(Entity.Forward, m_vec3Direction, Vector3.up);
+            float toRotate = Vector3.SignedAngle(Entity.Forward, Direction, Vector3.up);
 			if (toRotate == 0)
             {
                 return false;
@@ -32,7 +33,7 @@ namespace Behavior
 
             if (Util.Approximately(toRotate, rotated) || Mathf.Abs(toRotate) <= Mathf.Abs(rotated))
             {
-                Entity.Rotation = Quaternion.LookRotation(m_vec3Direction).eulerAngles;
+                Entity.Rotation = Quaternion.LookRotation(Direction).eulerAngles;
                 return false;
             }
             else
@@ -42,22 +43,15 @@ namespace Behavior
             }
 		}
 
-		public override void SetData(int nBehaviorMasterID, params object[] param)
+		public override void Initialize(BehaviorParam behaviorParam)
         {
-            base.SetData(nBehaviorMasterID);
+            base.Initialize(behaviorParam);
 
-			m_vec3Direction = (Vector3)param[0];
-		}
+            var rotationBehaviorParam = behaviorParam as RotationBehaviorParam;
+
+            Direction = rotationBehaviorParam.direction;
+
+        }
         #endregion
-
-        public void SetDirection(Vector3 vec3Direction)
-        {
-			m_vec3Direction = vec3Direction;
-        }
-
-        public Vector3 GetDestination()
-        {
-            return Quaternion.LookRotation(m_vec3Direction).eulerAngles;
-        }
     }
 }

@@ -18,7 +18,7 @@ public class BehaviorController : LOPMonoEntityComponentBase
         {
             Move move = BehaviorFactory.Instance.CreateBehavior(gameObject, Define.MasterData.BehaviorID.MOVE) as Move;
             Entity.AttachEntityComponent(move);
-            move.SetData(Define.MasterData.BehaviorID.MOVE, vec3Destination);
+            move.Initialize(new MoveBehaviorParam(Define.MasterData.BehaviorID.MOVE, vec3Destination));
             move.onBehaviorEnd += BehaviorHelper.BehaviorDestroyer;
 
             move.StartBehavior();
@@ -27,13 +27,13 @@ public class BehaviorController : LOPMonoEntityComponentBase
         Rotation oldRotation = Entity.GetEntityComponent<Rotation>();
         if (oldRotation != null)
         {
-            oldRotation.SetDirection(vec3Direction);
+            oldRotation.Direction = vec3Direction;
         }
         else
         {
             Rotation rotation = BehaviorFactory.Instance.CreateBehavior(gameObject, Define.MasterData.BehaviorID.ROTATION) as Rotation;
             Entity.AttachEntityComponent(rotation);
-            rotation.SetData(Define.MasterData.BehaviorID.ROTATION, vec3Direction);
+            rotation.Initialize(new RotationBehaviorParam(Define.MasterData.BehaviorID.ROTATION, vec3Direction));
             rotation.onBehaviorEnd += BehaviorHelper.BehaviorDestroyer;
 
             rotation.StartBehavior();
@@ -44,7 +44,7 @@ public class BehaviorController : LOPMonoEntityComponentBase
     {
         Jump jump = BehaviorFactory.Instance.CreateBehavior(gameObject, Define.MasterData.BehaviorID.JUMP) as Jump;
         Entity.AttachEntityComponent(jump);
-        jump.SetData(Define.MasterData.BehaviorID.JUMP);
+        jump.Initialize(new BehaviorParam(Define.MasterData.BehaviorID.JUMP));
         jump.onBehaviorEnd += BehaviorHelper.BehaviorDestroyer;
 
         jump.StartBehavior();
@@ -67,11 +67,11 @@ public class BehaviorController : LOPMonoEntityComponentBase
         }
     }
 
-    public void StartBehavior(int nBehaviorMasterID, params object[] param)
+    public void StartBehavior(BehaviorParam behaviorParam)
     {
-        BehaviorBase behavior = BehaviorFactory.Instance.CreateBehavior(gameObject, nBehaviorMasterID);
+        BehaviorBase behavior = BehaviorFactory.Instance.CreateBehavior(gameObject, behaviorParam.masterDataId);
         Entity.AttachEntityComponent(behavior);
-        behavior.SetData(nBehaviorMasterID, param);
+        behavior.Initialize(behaviorParam);
         behavior.onBehaviorEnd += BehaviorHelper.BehaviorDestroyer;
 
         behavior.StartBehavior();

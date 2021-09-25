@@ -38,9 +38,9 @@ namespace Behavior
             }
         }
 
-        public virtual void SetData(int masterDataId, params object[] param)
+        public virtual void Initialize(BehaviorParam behaviorParam)
         {
-            this.MasterDataId = masterDataId;
+            this.MasterDataId = behaviorParam.masterDataId;
         }
 
         public void StartBehavior()
