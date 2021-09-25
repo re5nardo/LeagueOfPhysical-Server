@@ -36,9 +36,9 @@ namespace State
             }
         }
 
-        public virtual void SetData(int masterDataId, params object[] param)
+        public virtual void Initialize(StateParam stateParam)
         {
-            this.MasterDataId = masterDataId;
+            this.MasterDataId = stateParam.masterDataId;
         }
 
         public void StartState()

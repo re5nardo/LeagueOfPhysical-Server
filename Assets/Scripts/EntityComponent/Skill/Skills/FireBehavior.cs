@@ -19,9 +19,9 @@ namespace Skill
         public float FireTime => fireStartTick * Game.Current.TickInterval + fireTime;
 
         #region SkillBase
-        public override void SetData(int nSkillMasterID, params object[] param)
+        public override void Initialize(SkillParam skillParam)
         {
-            base.SetData(nSkillMasterID, param);
+            base.Initialize(skillParam);
 
             string[] splitted = MasterData.ClassParams[0].Split(':');
             targetBehaviorID = int.Parse(splitted[0]);

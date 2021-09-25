@@ -285,7 +285,7 @@ namespace LOP
                     .Build();
 
                 StateController stateController = item.GetComponent<StateController>();
-                stateController.StartState(Define.MasterData.StateID.EntitySelfDestroy, masterData.Lifespan);
+                stateController.StartState(new BasicStateParam(Define.MasterData.StateID.EntitySelfDestroy, masterData.Lifespan));
             }
         }
 

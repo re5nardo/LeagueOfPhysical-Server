@@ -11,14 +11,9 @@ public class BehaviorParam
     {
         this.masterDataId = masterDataId;
     }
-
-    public virtual void Clear()
-    {
-        masterDataId = -1;
-    }
 }
 
-class MoveBehaviorParam : BehaviorParam
+public class MoveBehaviorParam : BehaviorParam
 {
     public Vector3 destination;
 
@@ -26,16 +21,9 @@ class MoveBehaviorParam : BehaviorParam
     {
         this.destination = destination;
     }
-
-    public override void Clear()
-    {
-        base.Clear();
-
-        destination = default;
-    }
 }
 
-class RotationBehaviorParam : BehaviorParam
+public class RotationBehaviorParam : BehaviorParam
 {
     public Vector3 direction;
 
@@ -43,16 +31,9 @@ class RotationBehaviorParam : BehaviorParam
     {
         this.direction = direction;
     }
-
-    public override void Clear()
-    {
-        base.Clear();
-
-        direction = default;
-    }
 }
 
-class ContinuousPatrolBehaviorParam : BehaviorParam
+public class ContinuousPatrolBehaviorParam : BehaviorParam
 {
     public Vector3 startPoint;
     public Vector3 halfwayPoint;
@@ -64,18 +45,9 @@ class ContinuousPatrolBehaviorParam : BehaviorParam
         this.halfwayPoint = halfwayPoint;
         this.timeOffset = timeOffset;
     }
-
-    public override void Clear()
-    {
-        base.Clear();
-
-        startPoint = default;
-        halfwayPoint = default;
-        timeOffset = default;
-    }
 }
 
-class ContinuousRotationBehaviorParam : BehaviorParam
+public class ContinuousRotationBehaviorParam : BehaviorParam
 {
     public Vector3 startRotation;
     public float timeOffset;
@@ -85,29 +57,14 @@ class ContinuousRotationBehaviorParam : BehaviorParam
         this.startRotation = startRotation;
         this.timeOffset = timeOffset;
     }
-
-    public override void Clear()
-    {
-        base.Clear();
-
-        startRotation = default;
-        timeOffset = default;
-    }
 }
 
-class AttackBehaviorParam : BehaviorParam
+public class AttackBehaviorParam : BehaviorParam
 {
     public SkillInputData skillInputData;
 
     public AttackBehaviorParam(int masterDataId, SkillInputData skillInputData) : base(masterDataId)
     {
         this.skillInputData = skillInputData;
-    }
-
-    public override void Clear()
-    {
-        base.Clear();
-
-        skillInputData = default;
     }
 }

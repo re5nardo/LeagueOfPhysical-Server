@@ -16,18 +16,13 @@ namespace State
             return CurrentUpdateTime < lifespan;
         }
 
-        public override void SetData(int nStateMasterID, params object[] param)
+        public override void Initialize(StateParam stateParam)
         {
-            base.SetData(nStateMasterID, param);
+            base.Initialize(stateParam);
 
-            if (param.Length > 0)
-            {
-                lifespan = (float)param[0];
-            }
-            else
-            {
-                lifespan = MasterData.Lifespan;
-            }
+            var basicStateParam = stateParam as BasicStateParam;
+
+            lifespan = basicStateParam.lifespan;
         }
         #endregion
     }

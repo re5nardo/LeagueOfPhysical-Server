@@ -4,11 +4,11 @@ using GameFramework;
 
 public class StateController : LOPMonoEntityComponentBase
 {
-    public void StartState(int nStateMasterID, params object[] param)
+    public void StartState(StateParam stateParam)
     {
-        StateBase state = StateFactory.Instance.CreateState(gameObject, nStateMasterID);
+        StateBase state = StateFactory.Instance.CreateState(gameObject, stateParam.masterDataId);
         Entity.AttachEntityComponent(state);
-        state.SetData(nStateMasterID, param);
+        state.Initialize(stateParam);
         state.onStateEnd += StateHelper.StateDestroyer;
 
         state.StartState();

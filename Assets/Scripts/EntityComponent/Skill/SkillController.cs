@@ -22,7 +22,7 @@ public class SkillController : LOPMonoEntityComponentBase
 		if (skill != null)
 		{
 			Entity.AttachEntityComponent(skill);
-			skill.SetData(nSkillMasterID);
+			skill.Initialize(new SkillParam(nSkillMasterID));
             skill.StartSkill();
 
         }

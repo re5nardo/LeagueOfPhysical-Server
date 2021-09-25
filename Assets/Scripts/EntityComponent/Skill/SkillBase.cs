@@ -40,9 +40,9 @@ namespace Skill
         }
         #endregion
 
-        public virtual void SetData(int masterDataId, params object[] param)
+        public virtual void Initialize(SkillParam skillParam)
         {
-            this.MasterDataId = masterDataId;
+            this.MasterDataId = skillParam.masterDataId;
         }
 
         public void StartSkill()
