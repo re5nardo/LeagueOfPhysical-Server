@@ -40,6 +40,13 @@ namespace Entity
 		}
 
         #region LOPEntityBase
+        protected override void InitEntity()
+        {
+            base.InitEntity();
+
+            Rigidbody.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
+        }
+
         protected override void InitEntityComponents()
 		{
 			base.InitEntityComponents();
