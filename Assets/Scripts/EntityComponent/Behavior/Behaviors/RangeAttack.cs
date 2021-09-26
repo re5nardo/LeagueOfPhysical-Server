@@ -34,9 +34,11 @@ namespace Behavior
             {
                 Projectile projectile = CreateProjectile();
 
-				Vector3 vec3Destination = projectile.Position + projectile.Forward * projectile.FactoredMovementSpeed * m_fProjectileLifespan;
-				projectile.Move(vec3Destination);
-			}
+                Vector3 destination = projectile.Position + projectile.Forward * projectile.FactoredMovementSpeed * m_fProjectileLifespan;
+
+                var behaviorController = projectile.GetEntityComponent<BehaviorController>();
+                behaviorController.Move(destination);
+            }
 
             return CurrentUpdateTime < m_fLifespan;
         }

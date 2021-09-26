@@ -78,11 +78,6 @@ namespace Entity
         #region Interface For Convenience
         public override float MovementSpeed => projectileBasicData.MovementSpeed;
         public override float FactoredMovementSpeed => MovementSpeed * SubGameBase.Current.SubGameEnvironment.MoveSpeedFactor;
-
-        public void Move(Vector3 vec3Destination)
-		{
-            behaviorController.Move(vec3Destination);
-		}
 		#endregion
 	}
 }

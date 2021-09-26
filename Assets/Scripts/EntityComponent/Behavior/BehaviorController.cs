@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using Behavior;
 using State;
-using GameFramework;
 
 public class BehaviorController : LOPMonoEntityComponentBase
 {
