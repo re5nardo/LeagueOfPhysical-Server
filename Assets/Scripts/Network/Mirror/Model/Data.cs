@@ -1,52 +1,8 @@
 using UnityEngine;
 using System;
-using GameFramework;
 
 namespace NetworkModel.Mirror
 {
-    [Serializable]
-    public class EntityTransformInfo : IPoolable
-    {
-        public int tick = -1;
-        public int entityId = -1;
-        public Vector3 position;
-        public Vector3 rotation;
-        public Vector3 velocity;
-        public Vector3 angularVelocity;
-
-        public EntityTransformInfo() { }
-
-        public EntityTransformInfo(int tick, IEntity entity)
-        {
-            this.tick = tick;
-            entityId = entity.EntityID;
-            position = entity.Position;
-            rotation = entity.Rotation;
-            velocity = entity.Velocity;
-            angularVelocity = entity.AngularVelocity;
-        }
-
-        public void SetEntityTransformInfo(int tick, IEntity entity)
-        {
-            this.tick = tick;
-            entityId = entity.EntityID;
-            position = entity.Position;
-            rotation = entity.Rotation;
-            velocity = entity.Velocity;
-            angularVelocity = entity.AngularVelocity;
-        }
-
-        public void Clear()
-        {
-            tick = -1;
-            entityId = -1;
-            position = default;
-            rotation = default;
-            velocity = default;
-            angularVelocity = default;
-        }
-    }
-
     #region EntitySnap
     [Serializable]
     public class EntitySnap
