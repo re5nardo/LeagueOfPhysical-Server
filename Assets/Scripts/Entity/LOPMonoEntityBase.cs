@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using NetworkModel.Mirror;
 using GameFramework;
+using System.Linq;
 
 namespace Entity
 {
@@ -107,12 +108,12 @@ namespace Entity
         {
             get
             {
-                float ySize = 0.01f;
-                float maxDistance = 0.05f;
-                var center = Position + Up * ySize;
-                var halfExtents = new Vector3(ModelCollider.bounds.extents.x, ySize / 2, ModelCollider.bounds.extents.z);
+                var halfExtents = new Vector3(ModelCollider.bounds.extents.x, 0.05f, ModelCollider.bounds.extents.z);
 
-                return Physics.BoxCast(center, halfExtents, Down, Quaternion.Euler(Rotation), maxDistance);
+                var colliders = Physics.OverlapBox(Position, halfExtents, Quaternion.Euler(Rotation)).ToList();
+                colliders.Remove(ModelCollider);
+
+                return colliders.Count > 0;
             }
         }
 
