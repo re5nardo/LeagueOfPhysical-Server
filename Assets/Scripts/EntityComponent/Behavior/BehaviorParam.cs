@@ -23,6 +23,18 @@ public class MoveBehaviorParam : BehaviorParam
     }
 }
 
+public class JumpBehaviorParam : BehaviorParam
+{
+    public float normalizedPower;
+    public Vector3 direction;
+
+    public JumpBehaviorParam(int masterDataId, float normalizedPower, Vector3 direction) : base(masterDataId)
+    {
+        this.normalizedPower = normalizedPower;
+        this.direction = direction;
+    }
+}
+
 public class RotationBehaviorParam : BehaviorParam
 {
     public Vector3 direction;

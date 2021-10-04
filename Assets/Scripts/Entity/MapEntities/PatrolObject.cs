@@ -13,7 +13,7 @@ namespace Entity
         [SerializeField] private float timeOffset;
 
         public override float MovementSpeed => speed;
-        public override float FactoredMovementSpeed => speed * SubGameBase.Current.SubGameEnvironment.MoveSpeedFactor;
+        public override float FactoredMovementSpeed => speed * LOP.Game.Current.GameManager.MapData.mapEnvironment.MoveSpeedFactor;
 
         protected override void OnInitialize(EntityCreationData entityCreationData)
         {

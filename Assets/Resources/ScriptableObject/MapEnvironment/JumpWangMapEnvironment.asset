@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bbdbb22cd3678fc488c56619a9a5caec, type: 3}
-  m_Name: JumpWangEnvironment
+  m_Script: {fileID: 11500000, guid: 0e67f7796b11757429db449aa0cc4048, type: 3}
+  m_Name: JumpWangMapEnvironment
   m_EditorClassIdentifier: 
   MoveSpeedFactor: 1
   JumpPowerFactor: 16

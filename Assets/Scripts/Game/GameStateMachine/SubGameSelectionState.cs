@@ -12,16 +12,17 @@ public class SubGameSelectionState : MonoStateBase
 
         var subGameDatas = SubGameData.GetAll();
 
-        var subGameIndex = UnityEngine.Random.Range(0, subGameDatas.Length);
-        var mapIndex = UnityEngine.Random.Range(0, subGameDatas[subGameIndex].availableMapNames.Length);
+        //var subGameIndex = UnityEngine.Random.Range(0, subGameDatas.Length);
+        //var mapIndex = UnityEngine.Random.Range(0, subGameDatas[subGameIndex].availableMapIds.Length);
 
-        LOP.Game.Current.GameManager.subGameId = subGameDatas[subGameIndex].subGameId;
-        LOP.Game.Current.GameManager.mapName = subGameDatas[subGameIndex].availableMapNames[mapIndex];
-
+        //LOP.Game.Current.GameManager.subGameId = subGameDatas[subGameIndex].subGameId;
+        //LOP.Game.Current.GameManager.mapId = subGameDatas[subGameIndex].availableMapIds[mapIndex];
 
         LOP.Game.Current.GameManager.subGameId = "JumpWang";
-        LOP.Game.Current.GameManager.mapName = "Space";
+        LOP.Game.Current.GameManager.mapId = "JumpWangMap";
 
+        //LOP.Game.Current.GameManager.subGameId = "FallingGame";
+        //LOP.Game.Current.GameManager.mapId = "Falling";
 
         FSM.MoveNext(GameStateInput.StateDone);
     }

@@ -18,6 +18,6 @@ MonoBehaviour:
   sceneName: JumpWang
   minPlayerCount: 2
   maxPlayerCount: 8
-  availableMatchType: 0000000001000000
-  availableMapNames:
-  - Space
+  availableMatchTypes: 0000000001000000
+  availableMapIds:
+  - JumpWangMap

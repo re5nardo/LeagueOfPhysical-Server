@@ -6,9 +6,7 @@ using Entity;
 
 public class JumpWang : SubGameBase
 {
-    private const float TIME_LIMIT = 60 * 2;
-
-    private int spawnIndex = 0;
+    private const float TIME_LIMIT = 60 * 2 * 60;
 
     private void Start()
     {
@@ -28,20 +26,22 @@ public class JumpWang : SubGameBase
 
         if (entity.EntityRole == EntityRole.Player)
         {
-            entity.Position = new Vector3(spawnIndex++ * 10, 0, 0);
+            var spawnPoint = LOP.Game.Current.GameManager.MapData.spawnPoints[Random.Range(0, LOP.Game.Current.GameManager.MapData.spawnPoints.Length)];
+            entity.Position = spawnPoint.position;
+            entity.Rotation = spawnPoint.rotation;
         }
     }
 
     protected override IEnumerator OnInitialize()
     {
-        yield return SceneManager.LoadSceneAsync(LOP.Game.Current.GameManager.mapName, LoadSceneMode.Additive);
+        yield return SceneManager.LoadSceneAsync(LOP.Game.Current.GameManager.MapData.sceneName, LoadSceneMode.Additive);
 
         foreach (var entity in Entities.GetAll<LOPMonoEntityBase>())
         {
             entity.Rigidbody.constraints = RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation;
         }
 
-        Physics.gravity *= SubGameEnvironment.GravityFactor;
+        Physics.gravity *= LOP.Game.Current.GameManager.MapData.mapEnvironment.GravityFactor;
     }
     
     protected override void OnGameStart()
@@ -50,7 +50,9 @@ public class JumpWang : SubGameBase
 
         foreach (var playerCharacter in playerCharacters)
         {
-            playerCharacter.Position = new Vector3(spawnIndex++ * 10, 0, 0);
+            var spawnPoint = LOP.Game.Current.GameManager.MapData.spawnPoints[Random.Range(0, LOP.Game.Current.GameManager.MapData.spawnPoints.Length)];
+            playerCharacter.Position = spawnPoint.position;
+            playerCharacter.Rotation = spawnPoint.rotation;
         }
     }
 

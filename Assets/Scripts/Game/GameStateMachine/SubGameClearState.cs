@@ -44,7 +44,7 @@ public class SubGameClearState : MonoStateBase
         yield return SceneManager.UnloadSceneAsync(LOP.Game.Current.GameManager.SubGameData.sceneName, UnloadSceneOptions.UnloadAllEmbeddedSceneObjects);
 
         LOP.Game.Current.GameManager.subGameId = null;
-        LOP.Game.Current.GameManager.mapName = null;
+        LOP.Game.Current.GameManager.mapId = null;
 
         FSM.MoveNext(GameStateInput.StateDone);
     }

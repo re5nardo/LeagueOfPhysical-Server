@@ -21,6 +21,9 @@ EditorBuildSettings:
     path: Assets/Scenes/Maps/Falling.unity
     guid: 17c8b6cbf72835b47bd2e1633433e4d9
   - enabled: 1
+    path: Assets/Scenes/Maps/JumpWangMap.unity
+    guid: b82a8cfc6854f7048bc5e5af01ecb156
+  - enabled: 1
     path: Assets/Scenes/SubGame/Dodgeball.unity
     guid: 1c361ba0b1ade2d43932e4f7cfd5cef7
   - enabled: 1

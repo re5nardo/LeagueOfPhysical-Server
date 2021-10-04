@@ -77,7 +77,7 @@ namespace Entity
 
         #region Interface For Convenience
         public override float MovementSpeed => projectileBasicData.MovementSpeed;
-        public override float FactoredMovementSpeed => MovementSpeed * SubGameBase.Current.SubGameEnvironment.MoveSpeedFactor;
+        public override float FactoredMovementSpeed => MovementSpeed * LOP.Game.Current.GameManager.MapData.mapEnvironment.MoveSpeedFactor;
 		#endregion
 	}
 }

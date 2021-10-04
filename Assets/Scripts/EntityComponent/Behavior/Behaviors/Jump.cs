@@ -5,7 +5,21 @@ namespace Behavior
 {
     public class Jump : BehaviorBase
     {
+        private float normalizedPower;
+        private Vector3 direction;
+
         #region BehaviorBase
+        public override void Initialize(BehaviorParam behaviorParam)
+        {
+            base.Initialize(behaviorParam);
+
+            var jumpBehaviorParam = behaviorParam as JumpBehaviorParam;
+
+            normalizedPower = jumpBehaviorParam.normalizedPower;
+            direction = jumpBehaviorParam.direction;
+        }
+
+
         protected override void OnBehaviorStart()
         {
             base.OnBehaviorStart();
@@ -17,7 +31,7 @@ namespace Behavior
 
         protected override bool OnBehaviorUpdate()
         {
-            Entity.Rigidbody.AddForce(Vector3.up * SubGameBase.Current.SubGameEnvironment.JumpPowerFactor, ForceMode.VelocityChange);
+            Entity.Rigidbody.AddForce(normalizedPower * direction.normalized * LOP.Game.Current.GameManager.MapData.mapEnvironment.JumpPowerFactor, ForceMode.VelocityChange);
 
             return false;
         }

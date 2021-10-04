@@ -11,6 +11,6 @@ public class SubGameData : ScriptableObjectWrapper<SubGameData>
     public string sceneName;
     public int minPlayerCount = 2;
     public int maxPlayerCount = 8;
-    public MatchType[] availableMatchType;
-    public string[] availableMapNames;
+    public MatchType[] availableMatchTypes;
+    public string[] availableMapIds;
 }

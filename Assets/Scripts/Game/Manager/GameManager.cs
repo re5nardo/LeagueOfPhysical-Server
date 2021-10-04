@@ -9,8 +9,9 @@ namespace LOP
         private GameStateMachine gameStateMachine = null;
 
         public string subGameId;
-        public string mapName;
+        public string mapId;
         public SubGameData SubGameData => SubGameData.Get(subGameId);
+        public MapData MapData => MapData.Get(mapId);
 
         public bool IsGameEnd => gameStateMachine.CurrentState is GameEndState;
 
