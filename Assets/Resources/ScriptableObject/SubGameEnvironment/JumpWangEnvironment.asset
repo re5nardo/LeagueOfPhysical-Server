@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: JumpWangEnvironment
   m_EditorClassIdentifier: 
   MoveSpeedFactor: 1
-  JumpPowerFactor: 15
+  JumpPowerFactor: 16
   GravityFactor: 2
