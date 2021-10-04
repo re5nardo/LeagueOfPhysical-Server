@@ -8,8 +8,7 @@ namespace Behavior
     public class Move : BehaviorBase
     {
         public Vector3 Destination { get; private set; }
-
-        private int remainCount = 3;
+        private Vector3 startPosition;
 
         #region BehaviorBase
         protected override void OnBehaviorStart()
@@ -23,40 +22,41 @@ namespace Behavior
 
         protected override bool OnBehaviorUpdate()
         {
-			Vector3 toMove = Destination.XZ() - Entity.Position.XZ();
-            if (toMove == Vector3.zero)
-            {
-                return false;
-            }
-
             if (Entity.Rigidbody.isKinematic)
             {
-                Vector3 moved = toMove.normalized * Entity.FactoredMovementSpeed * DeltaTime;
-
-                if (Util.Approximately(toMove.sqrMagnitude, moved.sqrMagnitude) || toMove.sqrMagnitude <= moved.sqrMagnitude)
+                if ((Destination - startPosition).sqrMagnitude <= (Entity.Position - startPosition).sqrMagnitude)
                 {
                     Entity.Position = Destination;
                     return false;
                 }
                 else
                 {
+                    Vector3 moved = (Destination - startPosition).normalized * Entity.FactoredMovementSpeed * DeltaTime;
                     Entity.Position += moved;
                     return true;
                 }
             }
             else
             {
-                var xz = toMove.XZ().normalized * Entity.FactoredMovementSpeed;
-                Entity.Rigidbody.velocity = new Vector3(xz.x, Entity.Rigidbody.velocity.y, xz.z);
-
-                if (Entity.Rigidbody.velocity.XZ().magnitude >= Entity.FactoredMovementSpeed)
+                if ((Destination - startPosition).sqrMagnitude <= (Entity.Position - startPosition).sqrMagnitude)
                 {
-                    xz = Entity.Rigidbody.velocity.XZ().normalized * Entity.FactoredMovementSpeed;
-
-                    Entity.Rigidbody.velocity = new Vector3(xz.x, Entity.Rigidbody.velocity.y, xz.z);
+                    Entity.Position = Destination;
+                    return false;
                 }
+                else
+                {
+                    var xz = (Destination.XZ() - startPosition.XZ()).normalized * Entity.FactoredMovementSpeed;
+                    Entity.Velocity = new Vector3(xz.x, Entity.Velocity.y, xz.z);
 
-                return --remainCount > 0;
+                    if (Entity.Velocity.XZ().magnitude >= Entity.FactoredMovementSpeed)
+                    {
+                        xz = Entity.Velocity.XZ().normalized * Entity.FactoredMovementSpeed;
+
+                        Entity.Velocity = new Vector3(xz.x, Entity.Velocity.y, xz.z);
+                    }
+
+                    return true;
+                }
             }
         }
 
@@ -74,14 +74,14 @@ namespace Behavior
             var moveBehaviorParam = behaviorParam as MoveBehaviorParam;
 
             Destination = moveBehaviorParam.destination;
-            remainCount = 3;
+            startPosition = Entity.Position;
         }
         #endregion
 
         public void SetDestination(Vector3 destination)
         {
             Destination = destination;
-            remainCount = 3;
+            startPosition = Entity.Position;
         }
     }
 }

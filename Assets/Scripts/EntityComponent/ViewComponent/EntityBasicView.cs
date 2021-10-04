@@ -199,13 +199,13 @@ public class EntityBasicView : LOPMonoEntityComponentBase
 	}
     #endregion
 
-    #region PhysicsSimulation
-    public virtual void OnBeforePhysicsSimulation(TickMessage.BeforePhysicsSimulation message)
+    #region Physics Simulation
+    protected virtual void OnBeforePhysicsSimulation(TickMessage.BeforePhysicsSimulation message)
     {
         positionBeforePhysics = Entity.Position;
     }
-    
-    public virtual void OnAfterPhysicsSimulation(TickMessage.AfterPhysicsSimulation message)
+
+    protected virtual void OnAfterPhysicsSimulation(TickMessage.AfterPhysicsSimulation message)
     {
         if (positionBeforePhysics != Entity.Position)
         {
