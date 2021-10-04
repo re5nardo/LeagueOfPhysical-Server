@@ -20,19 +20,19 @@ MonoBehaviour:
   maxPlayerCount: 8
   mapEnvironment: {fileID: 11400000, guid: 6d801eb3a73ef6d45b3c6ecb64439f92, type: 2}
   spawnPoints:
-  - position: {x: 0, y: 0, z: 0}
+  - position: {x: 5, y: 0, z: 0}
     rotation: {x: 0, y: 0, z: 0}
-  - position: {x: 0, y: 0, z: 0}
+  - position: {x: 5, y: 0, z: 0}
     rotation: {x: 0, y: 0, z: 0}
-  - position: {x: 0, y: 0, z: 0}
+  - position: {x: 5, y: 0, z: 0}
     rotation: {x: 0, y: 0, z: 0}
-  - position: {x: 0, y: 0, z: 0}
+  - position: {x: 5, y: 0, z: 0}
     rotation: {x: 0, y: 0, z: 0}
-  - position: {x: 0, y: 0, z: 0}
+  - position: {x: 5, y: 0, z: 0}
     rotation: {x: 0, y: 0, z: 0}
-  - position: {x: 0, y: 0, z: 0}
+  - position: {x: 5, y: 0, z: 0}
     rotation: {x: 0, y: 0, z: 0}
-  - position: {x: 0, y: 0, z: 0}
+  - position: {x: 5, y: 0, z: 0}
     rotation: {x: 0, y: 0, z: 0}
-  - position: {x: 0, y: 0, z: 0}
+  - position: {x: 5, y: 0, z: 0}
     rotation: {x: 0, y: 0, z: 0}
