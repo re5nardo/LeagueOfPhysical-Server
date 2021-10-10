@@ -25,18 +25,7 @@ namespace Behavior
         protected float LastUpdateTime => lastTick == -1 ? -1 : (lastTick - startTick + 1) * Game.Current.TickInterval;
 
         private MasterData.Behavior masterData = null;
-        public MasterData.Behavior MasterData
-        {
-            get
-            {
-                if (masterData == null)
-                {
-                    masterData = MasterDataManager.Instance.GetMasterData<MasterData.Behavior>(MasterDataId);
-                }
-
-                return masterData;
-            }
-        }
+        public MasterData.Behavior MasterData => masterData ?? (masterData = MasterDataManager.Instance.GetMasterData<MasterData.Behavior>(MasterDataId));
 
         public virtual void Initialize(BehaviorParam behaviorParam)
         {

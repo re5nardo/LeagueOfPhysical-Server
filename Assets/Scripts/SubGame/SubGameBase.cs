@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using GameFramework;
 
+[DisallowMultipleComponent]
 public abstract class SubGameBase : MonoBehaviour
 {
     public static SubGameBase Current = null;
