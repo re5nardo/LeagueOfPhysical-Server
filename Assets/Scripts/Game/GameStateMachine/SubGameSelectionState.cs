@@ -18,8 +18,8 @@ public class SubGameSelectionState : MonoStateBase
         //LOP.Game.Current.GameManager.subGameId = subGameDatas[subGameIndex].subGameId;
         //LOP.Game.Current.GameManager.mapId = subGameDatas[subGameIndex].availableMapIds[mapIndex];
 
-        LOP.Game.Current.GameManager.subGameId = "JumpWang";
-        LOP.Game.Current.GameManager.mapId = "JumpWangMap";
+        LOP.Game.Current.GameManager.subGameId = "FlapWang";
+        LOP.Game.Current.GameManager.mapId = "FlapWangMap";
 
         //LOP.Game.Current.GameManager.subGameId = "FallingGame";
         //LOP.Game.Current.GameManager.mapId = "Falling";

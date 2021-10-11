@@ -24,11 +24,17 @@ EditorBuildSettings:
     path: Assets/Scenes/Maps/JumpWangMap.unity
     guid: b82a8cfc6854f7048bc5e5af01ecb156
   - enabled: 1
+    path: Assets/Scenes/Maps/FlapWangMap.unity
+    guid: 71696e725f821fe4e96a020fa348c778
+  - enabled: 1
     path: Assets/Scenes/SubGame/Dodgeball.unity
     guid: 1c361ba0b1ade2d43932e4f7cfd5cef7
   - enabled: 1
     path: Assets/Scenes/SubGame/JumpWang.unity
     guid: 95f886fc6c1039c45bd0ff6f26e7e7fc
+  - enabled: 1
+    path: Assets/Scenes/SubGame/FlapWang.unity
+    guid: 4d2b59e81ff49a042bb287831530e88e
   - enabled: 1
     path: Assets/Scenes/SubGame/ObserverAvoid.unity
     guid: 8d242b26dc46f274dac00907e53b4df0
