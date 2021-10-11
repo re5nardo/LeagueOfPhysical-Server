@@ -80,3 +80,13 @@ public class AttackBehaviorParam : BehaviorParam
         this.skillInputData = skillInputData;
     }
 }
+
+public class ContinuousMoveBehaviorParam : BehaviorParam
+{
+    public Vector3 direction;
+
+    public ContinuousMoveBehaviorParam(int masterDataId, Vector3 direction) : base(masterDataId)
+    {
+        this.direction = direction;
+    }
+}

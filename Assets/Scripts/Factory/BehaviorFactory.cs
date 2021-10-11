@@ -15,6 +15,7 @@ public class BehaviorFactory : MonoSingleton<BehaviorFactory>
         typeof(RangeAttack),
         typeof(ContinuousPatrol),
         typeof(ContinuousRotation),
+        typeof(ContinuousMove),
     };
 
     public BehaviorBase CreateBehavior(GameObject goTarget, int nBehaviorMasterID)
