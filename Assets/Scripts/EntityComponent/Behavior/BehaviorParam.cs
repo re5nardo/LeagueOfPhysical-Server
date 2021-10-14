@@ -27,11 +27,13 @@ public class JumpBehaviorParam : BehaviorParam
 {
     public float normalizedPower;
     public Vector3 direction;
+    public Behavior.Jump.JumpType jumpType;
 
-    public JumpBehaviorParam(int masterDataId, float normalizedPower, Vector3 direction) : base(masterDataId)
+    public JumpBehaviorParam(int masterDataId, float normalizedPower, Vector3 direction, Behavior.Jump.JumpType jumpType) : base(masterDataId)
     {
         this.normalizedPower = normalizedPower;
         this.direction = direction;
+        this.jumpType = jumpType;
     }
 }
 

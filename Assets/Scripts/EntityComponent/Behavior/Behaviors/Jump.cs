@@ -5,20 +5,21 @@ namespace Behavior
 {
     public class Jump : BehaviorBase
     {
-        private float normalizedPower;
-        private Vector3 direction;
+        public enum JumpType
+        {
+            AddForce = 0,
+            FlapJump = 1,
+        }
+
+        private JumpBehaviorParam param;
 
         #region BehaviorBase
         public override void Initialize(BehaviorParam behaviorParam)
         {
             base.Initialize(behaviorParam);
 
-            var jumpBehaviorParam = behaviorParam as JumpBehaviorParam;
-
-            normalizedPower = jumpBehaviorParam.normalizedPower;
-            direction = jumpBehaviorParam.direction;
+            param = behaviorParam as JumpBehaviorParam;
         }
-
 
         protected override void OnBehaviorStart()
         {
@@ -31,7 +32,14 @@ namespace Behavior
 
         protected override bool OnBehaviorUpdate()
         {
-            Entity.Rigidbody.AddForce(normalizedPower * direction.normalized * LOP.Game.Current.GameManager.MapData.mapEnvironment.JumpPowerFactor, ForceMode.VelocityChange);
+            if (param.jumpType == JumpType.AddForce)
+            {
+                Entity.Rigidbody.AddForce(param.normalizedPower * param.direction.normalized * LOP.Game.Current.GameManager.MapData.mapEnvironment.JumpPowerFactor, ForceMode.VelocityChange);
+            }
+            else if (param.jumpType == JumpType.FlapJump)
+            {
+                Entity.Velocity = new Vector3(Entity.Velocity.x, LOP.Game.Current.GameManager.MapData.mapEnvironment.JumpPowerFactor, Entity.Velocity.z);
+            }
 
             return false;
         }

@@ -39,11 +39,11 @@ public class BehaviorController : LOPMonoEntityComponentBase
         }
     }
 
-    public void Jump(float normalizedPower, Vector3 direction)
+    public void Jump(float normalizedPower, Vector3 direction, Jump.JumpType jumpType)
     {
         Jump jump = BehaviorFactory.Instance.CreateBehavior(gameObject, Define.MasterData.BehaviorID.JUMP) as Jump;
         Entity.AttachEntityComponent(jump);
-        jump.Initialize(new JumpBehaviorParam(Define.MasterData.BehaviorID.JUMP, normalizedPower, direction));
+        jump.Initialize(new JumpBehaviorParam(Define.MasterData.BehaviorID.JUMP, normalizedPower, direction, jumpType));
         jump.onBehaviorEnd += BehaviorHelper.BehaviorDestroyer;
 
         jump.StartBehavior();
