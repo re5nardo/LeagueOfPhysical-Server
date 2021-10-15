@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e67f7796b11757429db449aa0cc4048, type: 3}
   m_Name: FlapWangMapEnvironment
   m_EditorClassIdentifier: 
-  MoveSpeedFactor: 1.5
+  MoveSpeedFactor: 0.8
   JumpPowerFactor: 12
-  GravityFactor: 3
+  GravityFactor: 4
