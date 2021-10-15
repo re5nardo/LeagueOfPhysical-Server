@@ -107,7 +107,8 @@ public class LOPNetworkAuthenticator : NetworkAuthenticator
         {
             userId = SystemInfo.deviceUniqueIdentifier,
             token = "token",
-            characterId = Random.Range(Define.MasterData.CharacterID.EVELYNN, Define.MasterData.CharacterID.MALPHITE + 1),
+            //characterId = Random.Range(Define.MasterData.CharacterID.EVELYNN, Define.MasterData.CharacterID.MALPHITE + 1),
+            characterId = Define.MasterData.CharacterID.GAREN,
         };
 
         NetworkClient.Send(authRequestMessage);
