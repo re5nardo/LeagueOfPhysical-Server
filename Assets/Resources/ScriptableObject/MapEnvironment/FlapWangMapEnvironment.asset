@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: FlapWangMapEnvironment
   m_EditorClassIdentifier: 
   MoveSpeedFactor: 0.8
-  JumpPowerFactor: 12
+  JumpPowerFactor: 11
   GravityFactor: 4
