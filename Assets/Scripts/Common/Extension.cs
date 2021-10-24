@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using System;
+using System.Text;
 
 public static class Extension
 {
@@ -26,5 +27,10 @@ public static class Extension
         }
 
         return component;
+    }
+
+    public static StringBuilder AppendTab(this StringBuilder stringBuilder)
+    {
+        return stringBuilder.Append("\t");
     }
 }
