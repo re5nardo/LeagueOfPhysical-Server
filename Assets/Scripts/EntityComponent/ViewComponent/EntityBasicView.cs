@@ -4,15 +4,12 @@ using GameFramework;
 
 public class EntityBasicView : LOPMonoEntityComponentBase
 {
-	private GameObject m_goModel = null;
-    private Collider m_ColliderModel = null;
-    private Animator m_AnimatorModel = null;
-	private AnimationEventListener m_AnimationEventListener = null;
-	private List<CollisionReporter> m_listModelCollisionReporter = new List<CollisionReporter>();
-	private List<Renderer> m_listModelRenderer = new List<Renderer>();
+	private GameObject modelGameObject = null;
+	private AnimationEventListener modelAnimationEventListener = null;
+	private List<Renderer> modelRenderers = new List<Renderer>();
 
-    public Collider ModelCollider => m_ColliderModel;
-    public Animator ModelAnimator => m_AnimatorModel;
+    public Collider ModelCollider { get; private set; }
+    public Animator ModelAnimator { get; private set; }
 
     private Vector3 positionBeforePhysics;
 
@@ -91,64 +88,57 @@ public class EntityBasicView : LOPMonoEntityComponentBase
 
     public void SetModel(GameObject model)
     {
-        m_goModel = model;
-        m_goModel.transform.SetParent(Entity.Transform);
-        m_goModel.transform.localPosition = Vector3.zero;
-        m_goModel.transform.localRotation = Quaternion.identity;
-        m_goModel.transform.localScale = Vector3.one;
+        modelGameObject = model;
+        modelGameObject.transform.SetParent(Entity.Transform);
+        modelGameObject.transform.localPosition = Vector3.zero;
+        modelGameObject.transform.localRotation = Quaternion.identity;
+        modelGameObject.transform.localScale = Vector3.one;
 
-        m_goModel.AddComponent<EntityIDTag>().SetEntityID(Entity.EntityID);
+        modelGameObject.AddComponent<EntityIDTag>().SetEntityID(Entity.EntityID);
 
-        m_ColliderModel = m_goModel.GetComponent<Collider>();
-        m_AnimatorModel = m_goModel.GetComponent<Animator>();
+        ModelCollider = modelGameObject.GetComponent<Collider>();
+        ModelAnimator = modelGameObject.GetComponent<Animator>();
 
-        m_AnimationEventListener = m_goModel.GetComponent<AnimationEventListener>();
-        if (m_AnimationEventListener != null)
+        modelAnimationEventListener = modelGameObject.GetComponent<AnimationEventListener>();
+        if (modelAnimationEventListener != null)
         {
-            m_AnimationEventListener.onAnimationEnd += OnAnimationEnd;
+            modelAnimationEventListener.onAnimationEnd += OnAnimationEnd;
         }
 
-        m_goModel.GetComponentsInChildren(true, m_listModelCollisionReporter);
-        foreach (CollisionReporter reporter in m_listModelCollisionReporter)
-        {
-            reporter.onCollisionEnter += OnModelCollisionEnterHandler;
-            reporter.onTriggerEnter += OnModelTriggerEnterHandler;
-            reporter.onTriggerStay += OnModelTriggerStayHandler;
-        }
-        m_goModel.GetComponentsInChildren(true, m_listModelRenderer);
+        Entity.CollisionReporter.onCollisionEnter += OnModelCollisionEnterHandler;
+        Entity.CollisionReporter.onTriggerEnter += OnModelTriggerEnterHandler;
+        Entity.CollisionReporter.onTriggerStay += OnModelTriggerStayHandler;
+
+        modelGameObject.GetComponentsInChildren(true, modelRenderers);
     }
 
 	private void ClearModel()
 	{
-		if (m_goModel != null)
+		if (modelGameObject != null)
 		{
-			Destroy(m_goModel.GetComponent<EntityIDTag>());
+			Destroy(modelGameObject.GetComponent<EntityIDTag>());
 
 			if (ResourcePool.HasInstance())
 			{
-				ResourcePool.Instance.ReturnResource(m_goModel);
+				ResourcePool.Instance.ReturnResource(modelGameObject);
 			}
 		}
 
-		m_goModel = null;
-        m_ColliderModel = null;
-        m_AnimatorModel = null;
+        modelGameObject = null;
+        ModelCollider = null;
+        ModelAnimator = null;
 
-		if (m_AnimationEventListener != null)
+		if (modelAnimationEventListener != null)
 		{
-			m_AnimationEventListener.onAnimationEnd -= OnAnimationEnd;
-			m_AnimationEventListener = null;
+            modelAnimationEventListener.onAnimationEnd -= OnAnimationEnd;
+            modelAnimationEventListener = null;
 		}
 
-		foreach (CollisionReporter reporter in m_listModelCollisionReporter)
-		{
-			reporter.onCollisionEnter -= OnModelCollisionEnterHandler;
-			reporter.onTriggerEnter -= OnModelTriggerEnterHandler;
-			reporter.onTriggerStay -= OnModelTriggerStayHandler;
-		}
+        Entity.CollisionReporter.onCollisionEnter -= OnModelCollisionEnterHandler;
+        Entity.CollisionReporter.onTriggerEnter -= OnModelTriggerEnterHandler;
+        Entity.CollisionReporter.onTriggerStay -= OnModelTriggerStayHandler;
 
-		m_listModelCollisionReporter.Clear();
-		m_listModelRenderer.Clear();
+        modelRenderers.Clear();
 	}
 
 	private void OnAnimationEnd(string strAnimationName)
@@ -162,25 +152,25 @@ public class EntityBasicView : LOPMonoEntityComponentBase
 	#region Animator
 	public void Animator_SetFloat(string name, float value)
 	{
-        if (m_AnimatorModel != null)
+        if (ModelAnimator != null)
         {
-            m_AnimatorModel.SetFloat(name, value);
+            ModelAnimator.SetFloat(name, value);
         }
     }
 
 	public void Animator_SetBool(string name, bool value)
 	{
-        if (m_AnimatorModel != null)
+        if (ModelAnimator != null)
         {
-            m_AnimatorModel.SetBool(name, value);
+            ModelAnimator.SetBool(name, value);
         }
     }
 
 	public void Animator_SetTrigger(string name)
 	{
-        if (m_AnimatorModel != null)
+        if (ModelAnimator != null)
         {
-            m_AnimatorModel.SetTrigger(name);
+            ModelAnimator.SetTrigger(name);
         }
     }
 	#endregion

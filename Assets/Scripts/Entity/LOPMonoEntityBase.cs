@@ -39,6 +39,7 @@ namespace Entity
 
         public Transform Transform { get; private set; }
         public Rigidbody Rigidbody { get; private set; }
+        public CollisionReporter CollisionReporter { get; private set; }
 
         public SimplePubSubService MessageBroker { get; } = new SimplePubSubService();
 
@@ -59,6 +60,7 @@ namespace Entity
             Rigidbody = gameObject.AddComponent<Rigidbody>();
             Rigidbody.constraints = RigidbodyConstraints.FreezeRotation;
             Rigidbody.drag = 0.05f;
+            CollisionReporter = gameObject.AddComponent<CollisionReporter>();
         }
 
         protected virtual void InitEntityComponents()
