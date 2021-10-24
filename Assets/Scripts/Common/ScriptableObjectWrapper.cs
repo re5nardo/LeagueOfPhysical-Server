@@ -12,9 +12,7 @@ public abstract class ScriptableObjectWrapper<T> : ScriptableObject where T : Sc
         {
             if (forceUpdate || cachedScriptableObjects == null)
             {
-                var scriptableObjects = Resources.LoadAll<T>($"ScriptableObject/{typeof(T).Name}") as T[];
-
-                cachedScriptableObjects = scriptableObjects;
+                cachedScriptableObjects = Resources.LoadAll<T>($"ScriptableObject/{typeof(T).Name}");
             }
 
             return cachedScriptableObjects;
@@ -22,21 +20,13 @@ public abstract class ScriptableObjectWrapper<T> : ScriptableObject where T : Sc
         catch (Exception e)
         {
             Debug.LogError(e.Message);
-            return null;
+            return default;
         }
     }
 
-    public static T Get(string name = "", bool forceUpdate = false)
+    public static T Get(string name, bool forceUpdate = false)
     {
-        try
-        {
-            return string.IsNullOrEmpty(name) ? GetAll(forceUpdate).First() : GetAll(forceUpdate).First(x => x.name == name);
-        }
-        catch (Exception e)
-        {
-            Debug.LogError(e.Message);
-            return null;
-        }
+        return Get(x => x.name == name, forceUpdate);
     }
 
     public static T Get(Func<T, bool> predicate, bool forceUpdate = false)
@@ -48,7 +38,7 @@ public abstract class ScriptableObjectWrapper<T> : ScriptableObject where T : Sc
         catch (Exception e)
         {
             Debug.LogError(e.Message);
-            return null;
+            return default;
         }
     }
 }

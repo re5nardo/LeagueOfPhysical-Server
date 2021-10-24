@@ -6,6 +6,7 @@ using NetworkModel.Mirror;
 
 public class EntityTransformController : LOPMonoEntityComponentBase
 {
+    private EntityTransformSnap entityTransformSnap = new EntityTransformSnap();
     private List<EntityTransformSnap> entityTransformSnaps = new List<EntityTransformSnap>();
     private AverageQueue latencies = new AverageQueue();
 
@@ -14,6 +15,7 @@ public class EntityTransformController : LOPMonoEntityComponentBase
         base.OnAttached(entity);
 
         SceneMessageBroker.AddSubscriber<EntityTransformSnap>(OnEntityTransformSnap).Where(snap => snap.entityId == Entity.EntityID);
+        SceneMessageBroker.AddSubscriber<TickMessage.LateTickEnd>(OnLateTickEnd);
     }
 
     public override void OnDetached()
@@ -21,6 +23,7 @@ public class EntityTransformController : LOPMonoEntityComponentBase
         base.OnDetached();
 
         SceneMessageBroker.RemoveSubscriber<EntityTransformSnap>(OnEntityTransformSnap);
+        SceneMessageBroker.RemoveSubscriber<TickMessage.LateTickEnd>(OnLateTickEnd);
     }
 
     private void OnEntityTransformSnap(EntityTransformSnap entityTransformSnap)
@@ -44,6 +47,17 @@ public class EntityTransformController : LOPMonoEntityComponentBase
         synchronization.listSnap.Add(entityTransformSnap);
 
         RoomNetwork.Instance.SendToNear(synchronization, Entity.Position, LOP.Game.BROADCAST_SCOPE_RADIUS, instant: true);
+    }
+
+    private void OnLateTickEnd(TickMessage.LateTickEnd message)
+    {
+        if (Entity.HasAuthority)
+        {
+            var synchronization = ObjectPool.Instance.GetObject<SC_Synchronization>();
+            synchronization.listSnap.Add(entityTransformSnap.Set(Entity));
+
+            RoomNetwork.Instance.SendToNear(synchronization, Entity.Position, LOP.Game.BROADCAST_SCOPE_RADIUS, instant: true);
+        }
     }
 
     private void LateUpdate()
