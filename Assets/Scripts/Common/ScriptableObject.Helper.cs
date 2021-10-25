@@ -14,7 +14,7 @@ public class ScriptableObjects
         {
             if (forceUpdate || !cachedScriptableObjects.ContainsKey(typeof(T)))
             {
-                cachedScriptableObjects[typeof(T)] = Resources.FindObjectsOfTypeAll<T>();
+                cachedScriptableObjects[typeof(T)] = Resources.LoadAll<T>($"ScriptableObject/{typeof(T).Name}");
             }
 
             return cachedScriptableObjects[typeof(T)] as T[];
