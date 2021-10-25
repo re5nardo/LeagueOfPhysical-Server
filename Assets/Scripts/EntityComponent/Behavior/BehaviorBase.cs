@@ -24,8 +24,8 @@ namespace Behavior
         protected float CurrentUpdateTime => Game.Current.CurrentTick == 0 ? 0 : (Game.Current.CurrentTick - startTick + 1) * Game.Current.TickInterval;
         protected float LastUpdateTime => lastTick == -1 ? -1 : (lastTick - startTick + 1) * Game.Current.TickInterval;
 
-        private MasterData.Behavior masterData = null;
-        public MasterData.Behavior MasterData => masterData ?? (masterData = MasterDataManager.Instance.GetMasterData<MasterData.Behavior>(MasterDataId));
+        private BehaviorMasterData masterData = null;
+        public BehaviorMasterData MasterData => masterData ?? (masterData = ScriptableObjects.Get<BehaviorMasterData>(x => x.id == MasterDataId));
 
         public virtual void Initialize(BehaviorParam behaviorParam)
         {
@@ -60,7 +60,7 @@ namespace Behavior
 
             foreach (var behavior in behaviors)
             {
-                if (!MasterData.CompatibleBehaviorIDs.Contains(behavior.MasterDataId))
+                if (!MasterData.compatibleBehaviors.Any(x => x.id == behavior.MasterDataId))
                 {
                     behavior.StopBehavior();
                 }
@@ -86,7 +86,7 @@ namespace Behavior
         {
             IsPlaying = false;
 
-            LOP.Game.Current?.GameEventManager.SendToNear(new EntityBehaviorEnd(Entity.EntityID, MasterData.ID), Entity.Position);
+            LOP.Game.Current?.GameEventManager.SendToNear(new EntityBehaviorEnd(Entity.EntityID, MasterData.id), Entity.Position);
 
             OnBehaviorEnd();
 

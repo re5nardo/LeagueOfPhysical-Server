@@ -4,7 +4,7 @@ using EntityMessage;
 using System.Collections.Generic;
 using GameFramework;
 using GameEvent;
-using NetworkModel.Mirror;
+using System.Linq;
 
 namespace Behavior
 {
@@ -25,7 +25,7 @@ namespace Behavior
 
 			Entity.MessageBroker.Publish(new AnimatorSetTrigger("Attack"));
 
-            LOP.Game.Current.GameEventManager.SendToNear(new EntityBehaviorStart(Entity.EntityID, MasterData.ID), Entity.Position);
+            LOP.Game.Current.GameEventManager.SendToNear(new EntityBehaviorStart(Entity.EntityID, MasterData.id), Entity.Position);
         }
 
         protected override bool OnBehaviorUpdate()
@@ -49,11 +49,11 @@ namespace Behavior
 
             var attackBehaviorParam = behaviorParam as AttackBehaviorParam;
 
-            m_fLifespan = MasterData.Lifespan;
-            m_fAttackTime = float.Parse(MasterData.ClassParams.Find(x => x.Contains("AttackTime")).Split(':')[1]);
-            m_nProjectileID = int.Parse(MasterData.ClassParams.Find(x => x.Contains("ProjectileID")).Split(':')[1]);
-            m_fProjectileHeight = float.Parse(MasterData.ClassParams.Find(x => x.Contains("ProjectileHeight")).Split(':')[1]);
-            m_fProjectileLifespan = float.Parse(MasterData.ClassParams.Find(x => x.Contains("ProjectileLifespan")).Split(':')[1]);
+            m_fLifespan = MasterData.lifespan;
+            m_fAttackTime = float.Parse(MasterData.classParams.First(x => x.Contains("AttackTime")).Split(':')[1]);
+            m_nProjectileID = int.Parse(MasterData.classParams.First(x => x.Contains("ProjectileID")).Split(':')[1]);
+            m_fProjectileHeight = float.Parse(MasterData.classParams.First(x => x.Contains("ProjectileHeight")).Split(':')[1]);
+            m_fProjectileLifespan = float.Parse(MasterData.classParams.First(x => x.Contains("ProjectileLifespan")).Split(':')[1]);
 
             if (attackBehaviorParam.skillInputData == null)
             {

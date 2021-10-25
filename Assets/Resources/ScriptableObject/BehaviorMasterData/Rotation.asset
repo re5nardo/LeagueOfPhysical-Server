@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6aa2e53e10cbb734390638ad77d73ebb, type: 3}
+  m_Name: Rotation
+  m_EditorClassIdentifier: 
+  id: 2
+  className: Behavior.Rotation
+  classParams: []
+  lifespan: -1
+  compatibleBehaviors:
+  - {fileID: 11400000, guid: 3cc27cd75beeb1543a31b0d40d49ca5e, type: 2}
+  - {fileID: 11400000, guid: 59b4c2a89a0d7b24c8d295076bfcc539, type: 2}

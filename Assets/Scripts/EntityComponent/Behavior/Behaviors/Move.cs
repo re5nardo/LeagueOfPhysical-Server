@@ -15,7 +15,7 @@ namespace Behavior
         {
             base.OnBehaviorStart();
 
-            LOP.Game.Current.GameEventManager.SendToNear(new EntityBehaviorStart(Entity.EntityID, MasterData.ID, Destination), Entity.Position);
+            LOP.Game.Current.GameEventManager.SendToNear(new EntityBehaviorStart(Entity.EntityID, MasterData.id, Destination), Entity.Position);
 
             Entity.MessageBroker.Publish(new AnimatorSetBool("Move", true));
         }

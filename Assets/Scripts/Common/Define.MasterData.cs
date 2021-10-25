@@ -30,9 +30,9 @@ namespace Define
             public const int JUMP = 3;
             public const int DIE = 4;
 
-            public const int CONTINUOUS_PATROL = 10000;
-            public const int CONTINUOUS_ROTATION = 10001;
-            public const int CONTINUOUS_MOVE = 10002;
+            public const int CONTINUOUS_PATROL = 1000;
+            public const int CONTINUOUS_ROTATION = 1001;
+            public const int CONTINUOUS_MOVE = 1002;
         }
 
         public class StateID

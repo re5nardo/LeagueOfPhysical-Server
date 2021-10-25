@@ -4,6 +4,7 @@ using Entity;
 using EntityMessage;
 using GameFramework;
 using GameEvent;
+using System.Linq;
 
 namespace Behavior
 {
@@ -23,7 +24,7 @@ namespace Behavior
 
 			Entity.MessageBroker.Publish(new AnimatorSetTrigger("Attack"));
 
-            LOP.Game.Current.GameEventManager.SendToNear(new EntityBehaviorStart(Entity.EntityID, MasterData.ID), Entity.Position);
+            LOP.Game.Current.GameEventManager.SendToNear(new EntityBehaviorStart(Entity.EntityID, MasterData.id), Entity.Position);
         }
 
         protected override bool OnBehaviorUpdate()
@@ -83,8 +84,8 @@ namespace Behavior
 
             var attackBehaviorParam = behaviorParam as AttackBehaviorParam;
 
-            m_fLifespan = MasterData.Lifespan;
-            m_fAttackTime = float.Parse(MasterData.ClassParams.Find(x => x.Contains("AttackTime")).Split(':')[1]);
+            m_fLifespan = MasterData.lifespan;
+            m_fAttackTime = float.Parse(MasterData.classParams.First(x => x.Contains("AttackTime")).Split(':')[1]);
 
             if (attackBehaviorParam.skillInputData == null)
             {
