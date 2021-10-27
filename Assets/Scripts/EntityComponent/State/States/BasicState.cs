@@ -3,26 +3,24 @@ namespace State
 {
     public class BasicState : StateBase
     {
-        private float lifespan;
+        private BasicStateParam param;
 
         #region StateBase
         protected override bool OnStateUpdate()
         {
-            if (lifespan == -1)
+            if (param.lifespan == -1)
             {
                 return true;
             }
 
-            return CurrentUpdateTime < lifespan;
+            return CurrentUpdateTime < param.lifespan;
         }
 
         public override void Initialize(StateParam stateParam)
         {
             base.Initialize(stateParam);
 
-            var basicStateParam = stateParam as BasicStateParam;
-
-            lifespan = basicStateParam.lifespan;
+            param = stateParam as BasicStateParam;
         }
         #endregion
     }

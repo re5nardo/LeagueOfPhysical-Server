@@ -22,8 +22,8 @@ namespace State
         protected float CurrentUpdateTime => Game.Current.CurrentTick == 0 ? 0 : (Game.Current.CurrentTick - startTick + 1) * Game.Current.TickInterval;
         protected float LastUpdateTime => lastTick == -1 ? -1 : (lastTick - startTick + 1) * Game.Current.TickInterval;
 
-        private MasterData.State masterData = null;
-        public MasterData.State MasterData => masterData ?? (masterData = MasterDataManager.Instance.GetMasterData<MasterData.State>(MasterDataId));
+        private StateMasterData masterData = null;
+        public StateMasterData MasterData => masterData ?? (masterData = ScriptableObjects.Get<StateMasterData>(x => x.id == MasterDataId));
 
         public virtual void Initialize(StateParam stateParam)
         {
