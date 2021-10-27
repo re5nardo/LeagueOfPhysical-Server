@@ -23,11 +23,12 @@ public class MasterDataDefineGenerator
     private static void GenerateMasterDataDefine(Type type)
     {
         StringBuilder stringBuilder = new StringBuilder()
+        .AppendLine()
         .AppendLine("namespace Define")
         .AppendLine("{")
         .AppendTab().AppendLine("namespace MasterData")
         .AppendTab().AppendLine("{")
-        .AppendTab().AppendTab().AppendLine($"public class {type.Name}Id")
+        .AppendTab().AppendTab().AppendLine($"public class {type.Name.Replace("MasterData", "")}Id")
         .AppendTab().AppendTab().AppendLine("{")
         ;
 
