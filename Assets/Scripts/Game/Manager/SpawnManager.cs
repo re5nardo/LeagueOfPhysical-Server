@@ -118,7 +118,7 @@ public class SpawnManager : MonoBehaviour
             .Build();
 
         StateController stateController = treasureBox.GetComponent<StateController>();
-        stateController.StartState(new BasicStateParam(Define.MasterData.StateID.EntitySelfDestroy, masterData.Lifespan));
+        stateController.StartState(new BasicStateParam(Define.MasterData.StateId.EntitySelfDestroy, masterData.Lifespan));
 
         return treasureBox;
 	}

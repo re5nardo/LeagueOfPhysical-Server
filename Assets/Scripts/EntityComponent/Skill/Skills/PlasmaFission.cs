@@ -164,7 +164,7 @@ namespace Skill
                 .Build();
 
             StateController stateController = projectile.GetComponent<StateController>();
-            stateController.StartState(new BasicStateParam(Define.MasterData.StateID.EntitySelfDestroy, m_fTargetProjectileLifespan));
+            stateController.StartState(new BasicStateParam(Define.MasterData.StateId.EntitySelfDestroy, m_fTargetProjectileLifespan));
 
             return projectile;
         }

@@ -9,7 +9,7 @@ public class StateFactory : MonoSingleton<StateFactory>
 	{
 		try
 		{
-			var masterData = ScriptableObjects.Get<StateMasterData>(x => x.id == stateMasterId);
+			var masterData = ScriptableObjectUtil.Get<StateMasterData>(x => x.id == stateMasterId);
 
 			return entityGameObject.AddComponent(Type.GetType(masterData.className)) as StateBase;
 		}

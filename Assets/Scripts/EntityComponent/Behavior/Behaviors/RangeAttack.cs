@@ -131,7 +131,7 @@ namespace Behavior
                 .Build();
 
             StateController stateController = projectile.GetComponent<StateController>();
-            stateController.StartState(new BasicStateParam(Define.MasterData.StateID.EntitySelfDestroy, m_fProjectileLifespan));
+            stateController.StartState(new BasicStateParam(Define.MasterData.StateId.EntitySelfDestroy, m_fProjectileLifespan));
 
             return projectile;
         }

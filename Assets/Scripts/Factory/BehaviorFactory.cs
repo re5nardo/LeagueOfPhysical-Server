@@ -9,7 +9,7 @@ public class BehaviorFactory : MonoSingleton<BehaviorFactory>
     {
         try
         {
-            var masterData = ScriptableObjects.Get<BehaviorMasterData>(x => x.id == behaviorMasterId);
+            var masterData = ScriptableObjectUtil.Get<BehaviorMasterData>(x => x.id == behaviorMasterId);
 
             return entityGameObject.AddComponent(Type.GetType(masterData.className)) as BehaviorBase;
         }

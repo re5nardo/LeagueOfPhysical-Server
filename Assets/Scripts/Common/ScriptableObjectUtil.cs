@@ -4,7 +4,7 @@ using UnityEngine;
 using System;
 using System.Linq;
 
-public class ScriptableObjects
+public class ScriptableObjectUtil
 {
     private static Dictionary<Type, ScriptableObject[]> cachedScriptableObjects = new Dictionary<Type, ScriptableObject[]>();
 

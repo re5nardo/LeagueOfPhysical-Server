@@ -22,26 +22,6 @@ namespace Define
             public const int MALPHITE = 8;
         }
 
-        public class BehaviorID
-        {
-            public const int IDLE = 0;
-            public const int MOVE = 1;
-            public const int ROTATION = 2;
-            public const int JUMP = 3;
-            public const int DIE = 4;
-
-            public const int CONTINUOUS_PATROL = 1000;
-            public const int CONTINUOUS_ROTATION = 1001;
-            public const int CONTINUOUS_MOVE = 1002;
-        }
-
-        public class StateID
-        {
-            public const int Invincible = 0;
-            public const int EntitySelfDestroy = 1;
-            public const int Unmovable = 2;
-        }
-
         public class SkillID
         {
             public const int PLASMA_FISSION = 3;

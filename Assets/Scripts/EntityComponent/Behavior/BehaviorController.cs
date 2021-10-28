@@ -15,9 +15,9 @@ public class BehaviorController : LOPMonoEntityComponentBase
         }
         else
         {
-            Move move = BehaviorFactory.Instance.CreateBehavior(gameObject, Define.MasterData.BehaviorID.MOVE) as Move;
+            Move move = BehaviorFactory.Instance.CreateBehavior(gameObject, Define.MasterData.BehaviorId.Move) as Move;
             Entity.AttachEntityComponent(move);
-            move.Initialize(new MoveBehaviorParam(Define.MasterData.BehaviorID.MOVE, vec3Destination));
+            move.Initialize(new MoveBehaviorParam(Define.MasterData.BehaviorId.Move, vec3Destination));
             move.onBehaviorEnd += BehaviorHelper.BehaviorDestroyer;
 
             move.StartBehavior();
@@ -30,9 +30,9 @@ public class BehaviorController : LOPMonoEntityComponentBase
         }
         else
         {
-            Rotation rotation = BehaviorFactory.Instance.CreateBehavior(gameObject, Define.MasterData.BehaviorID.ROTATION) as Rotation;
+            Rotation rotation = BehaviorFactory.Instance.CreateBehavior(gameObject, Define.MasterData.BehaviorId.Rotation) as Rotation;
             Entity.AttachEntityComponent(rotation);
-            rotation.Initialize(new RotationBehaviorParam(Define.MasterData.BehaviorID.ROTATION, vec3Direction));
+            rotation.Initialize(new RotationBehaviorParam(Define.MasterData.BehaviorId.Rotation, vec3Direction));
             rotation.onBehaviorEnd += BehaviorHelper.BehaviorDestroyer;
 
             rotation.StartBehavior();
@@ -41,9 +41,9 @@ public class BehaviorController : LOPMonoEntityComponentBase
 
     public void Jump(float normalizedPower, Vector3 direction, Jump.JumpType jumpType)
     {
-        Jump jump = BehaviorFactory.Instance.CreateBehavior(gameObject, Define.MasterData.BehaviorID.JUMP) as Jump;
+        Jump jump = BehaviorFactory.Instance.CreateBehavior(gameObject, Define.MasterData.BehaviorId.Jump) as Jump;
         Entity.AttachEntityComponent(jump);
-        jump.Initialize(new JumpBehaviorParam(Define.MasterData.BehaviorID.JUMP, normalizedPower, direction, jumpType));
+        jump.Initialize(new JumpBehaviorParam(Define.MasterData.BehaviorId.Jump, normalizedPower, direction, jumpType));
         jump.onBehaviorEnd += BehaviorHelper.BehaviorDestroyer;
 
         jump.StartBehavior();

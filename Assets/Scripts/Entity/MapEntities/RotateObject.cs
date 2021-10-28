@@ -27,9 +27,9 @@ namespace Entity
 
             AngularVelocity = angularVelocity;
 
-            var continuousRotation = BehaviorFactory.Instance.CreateBehavior(gameObject, Define.MasterData.BehaviorID.CONTINUOUS_ROTATION) as ContinuousRotation;
+            var continuousRotation = BehaviorFactory.Instance.CreateBehavior(gameObject, Define.MasterData.BehaviorId.ContinuousRotation) as ContinuousRotation;
             AttachEntityComponent(continuousRotation);
-            continuousRotation.Initialize(new ContinuousRotationBehaviorParam(Define.MasterData.BehaviorID.CONTINUOUS_ROTATION, startRotation, timeOffset));
+            continuousRotation.Initialize(new ContinuousRotationBehaviorParam(Define.MasterData.BehaviorId.ContinuousRotation, startRotation, timeOffset));
             continuousRotation.onBehaviorEnd += BehaviorHelper.BehaviorDestroyer;
 
             continuousRotation.StartBehavior();
