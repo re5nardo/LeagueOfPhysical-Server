@@ -9,18 +9,23 @@ public class StateMasterData : MasterDataBase
     public float lifespan = -1;
     public string[] classParams;
     public OverlapResolveType overlapResolveType;
-    public CrowdControl[] crowdControls;
+    public StatusEffect[] statusEffects;
 }
 
 [Serializable]
-public enum CrowdControl
+public enum StatusEffect
 {
+
+
+
+    #region CrowdControl
     //  Movement modifiers
-    Stun = 0,
+    Stun = 10000,
 
     //  Action/ability rate modifiers
 
     //  Forced action modifiers
+    #endregion
 }
 
 [Serializable]

@@ -14,8 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 2
   className: State.BasicState
-  lifespan: -1
+  lifespan: 1
   classParams: []
-  allowMultiple: 0
   overlapResolveType: 0
-  crowdControls: 00000000
+  statusEffects: 10270000
