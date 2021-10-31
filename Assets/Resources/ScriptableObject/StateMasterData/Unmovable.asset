@@ -16,3 +16,6 @@ MonoBehaviour:
   className: State.BasicState
   lifespan: -1
   classParams: []
+  allowMultiple: 0
+  overlapResolveType: 0
+  crowdControls: 00000000
