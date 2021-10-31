@@ -25,7 +25,7 @@ namespace Behavior
         protected float LastUpdateTime => lastTick == -1 ? -1 : (lastTick - startTick + 1) * Game.Current.TickInterval;
 
         private BehaviorMasterData masterData = null;
-        public BehaviorMasterData MasterData => masterData ?? (masterData = ScriptableObjectUtil.Get<BehaviorMasterData>(x => x.id == MasterDataId));
+        public BehaviorMasterData MasterData => masterData ?? (masterData = MasterDataUtil.Get<BehaviorMasterData>(MasterDataId));
 
         public virtual void Initialize(BehaviorParam behaviorParam)
         {

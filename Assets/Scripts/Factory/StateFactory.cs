@@ -5,11 +5,11 @@ using GameFramework;
 
 public class StateFactory : MonoSingleton<StateFactory>
 {
-	public StateBase CreateState(GameObject entityGameObject, int stateMasterId)
+	public StateBase CreateState(GameObject entityGameObject, int masterDataId)
 	{
 		try
 		{
-			var masterData = ScriptableObjectUtil.Get<StateMasterData>(x => x.id == stateMasterId);
+			var masterData = MasterDataUtil.Get<StateMasterData>(masterDataId);
 
 			return entityGameObject.AddComponent(Type.GetType(masterData.className)) as StateBase;
 		}
