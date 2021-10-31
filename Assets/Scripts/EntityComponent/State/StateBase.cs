@@ -14,6 +14,7 @@ namespace State
 
         public int MasterDataId { get; protected set; } = -1;
         public bool IsPlaying { get; private set; } = false;
+        public float Lifespan { get; protected set; }
 
         protected int startTick = -1;
         protected int lastTick = -1;
@@ -28,6 +29,10 @@ namespace State
         public virtual void Initialize(StateParam stateParam)
         {
             this.MasterDataId = stateParam.masterDataId;
+        }
+
+        public virtual void OnAccumulate(StateParam stateParam)
+        {
         }
 
         public void StartState()

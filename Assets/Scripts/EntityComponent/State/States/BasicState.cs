@@ -8,12 +8,12 @@ namespace State
         #region StateBase
         protected override bool OnStateUpdate()
         {
-            if (param.lifespan == -1)
+            if (Lifespan == -1)
             {
                 return true;
             }
 
-            return CurrentUpdateTime < param.lifespan;
+            return CurrentUpdateTime < Lifespan;
         }
 
         public override void Initialize(StateParam stateParam)
@@ -21,6 +21,14 @@ namespace State
             base.Initialize(stateParam);
 
             param = stateParam as BasicStateParam;
+            Lifespan = param.lifespan;
+        }
+
+        public override void OnAccumulate(StateParam stateParam)
+        {
+            param = stateParam as BasicStateParam;
+
+            Lifespan = param.lifespan == -1 ? -1 : Lifespan + param.lifespan;
         }
         #endregion
     }

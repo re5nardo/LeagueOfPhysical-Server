@@ -3,22 +3,20 @@ namespace State
 {
     public class EntitySelfDestroy : StateBase
     {
-        private float lifespan;
-
         #region StateBase
         protected override bool OnStateUpdate()
         {
-            if (lifespan == -1)
+            if (Lifespan == -1)
             {
                 return true;
             }
 
-            if (CurrentUpdateTime >= lifespan)
+            if (CurrentUpdateTime >= Lifespan)
             {
                 LOP.Game.Current.DestroyEntity(Entity.EntityID);
             }
 
-            return CurrentUpdateTime < lifespan;
+            return CurrentUpdateTime < Lifespan;
         }
 
         public override void Initialize(StateParam stateParam)
@@ -27,7 +25,7 @@ namespace State
 
             var basicStateParam = stateParam as BasicStateParam;
 
-            lifespan = basicStateParam.lifespan;
+            Lifespan = basicStateParam.lifespan;
         }
         #endregion
     }

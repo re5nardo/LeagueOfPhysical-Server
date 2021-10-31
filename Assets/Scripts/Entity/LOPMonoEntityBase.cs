@@ -182,6 +182,17 @@ namespace Entity
         public Vector3 Forward => (Quaternion.Euler(Rotation) * Vector3.forward).normalized;
         public Vector3 Up => (Quaternion.Euler(Rotation) * Vector3.up).normalized;
         public Vector3 Down => (Quaternion.Euler(Rotation) * Vector3.down).normalized;
+
+        public bool HasStatusEffect(StatusEffect statusEffect)
+        {
+            var states = GetEntityComponents<State.StateBase>();
+            return states.Any(x => x.MasterData.statusEffects.Any(x => x == statusEffect));
+        }
+
+        public State.StateBase GetState(int masterDataId)
+        {
+            return GetEntityComponents<State.StateBase>()?.Find(state => state.MasterDataId == masterDataId);
+        }
         #endregion
     }
 }
