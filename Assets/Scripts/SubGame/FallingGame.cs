@@ -49,6 +49,11 @@ public class FallingGame : SubGameBase
         Physics.gravity *= LOP.Game.Current.GameManager.MapData.mapEnvironment.GravityFactor;
     }
 
+    protected override IEnumerator OnFinalize()
+    {
+        yield return SceneManager.UnloadSceneAsync(LOP.Game.Current.GameManager.MapData.sceneName, UnloadSceneOptions.UnloadAllEmbeddedSceneObjects);
+    }
+
     protected override void OnGameStart()
     {
         var playerCharacters = Entities.GetAll<Character>(EntityRole.Player);
