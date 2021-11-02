@@ -18,7 +18,6 @@ namespace Entity
 
         private BehaviorController behaviorController = null;
         private StateController stateController = null;
-        private GameItemPhysicsController gameItemPhysicsController = null;
 
         private MasterData.GameItem masterData = null;
         public MasterData.GameItem MasterData => masterData ?? (masterData = MasterDataManager.Instance.GetMasterData<MasterData.GameItem>(gameItemBasicData.MasterDataId));
@@ -34,7 +33,6 @@ namespace Entity
 
             behaviorController = AttachEntityComponent(gameObject.AddComponent<BehaviorController>());
             stateController = AttachEntityComponent(gameObject.AddComponent<StateController>());
-            gameItemPhysicsController = AttachEntityComponent(gameObject.AddComponent<GameItemPhysicsController>());
         }
 
 		protected override void OnInitialize(EntityCreationData entityCreationData)
