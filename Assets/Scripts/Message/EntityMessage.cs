@@ -1,4 +1,5 @@
-﻿
+﻿using UnityEngine;
+
 namespace EntityMessage
 {
     public struct PositionChanged
@@ -19,11 +20,15 @@ namespace EntityMessage
 
     public struct ModelTriggerEnter
     {
-        public int targetEntityId;
+        public int entityId;
+        public Collider self;
+        public Collider other;
 
-        public ModelTriggerEnter(int targetEntityId)
+        public ModelTriggerEnter(int entityId, Collider self, Collider other)
         {
-            this.targetEntityId = targetEntityId;
+            this.entityId = entityId;
+            this.self = self;
+            this.other = other;
         }
     }
 
