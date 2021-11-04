@@ -16,3 +16,5 @@ MonoBehaviour:
   className: State.BasicState
   lifespan: 5
   classParams: []
+  overlapResolveType: 0
+  statusEffects: 00000000
