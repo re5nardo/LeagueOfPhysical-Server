@@ -13,22 +13,6 @@ public class StateMasterData : MasterDataBase
 }
 
 [Serializable]
-public enum StatusEffect
-{
-
-
-
-    #region CrowdControl
-    //  Movement modifiers
-    Stun = 10000,
-
-    //  Action/ability rate modifiers
-
-    //  Forced action modifiers
-    #endregion
-}
-
-[Serializable]
 public enum OverlapResolveType
 {
     UseNew = 0,

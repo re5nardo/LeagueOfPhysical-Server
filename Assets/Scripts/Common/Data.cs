@@ -153,3 +153,19 @@ public class CustomProperties
     public string token;
     public int characterId;
 }
+
+[Serializable]
+public enum StatusEffect
+{
+	Invincible = 0,
+
+
+	#region CrowdControl
+	//  Movement modifiers
+	Stun = 10000,
+
+	//  Action/ability rate modifiers
+
+	//  Forced action modifiers
+	#endregion
+}
