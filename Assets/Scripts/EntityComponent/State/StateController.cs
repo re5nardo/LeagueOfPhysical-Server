@@ -1,16 +1,20 @@
 ﻿using UnityEngine;
 using State;
+using System;
 
 public class StateController : LOPMonoEntityComponentBase
 {
-    public void StartState(StateParam stateParam)
+    public void StartState(StateParam stateParam, Action<StateBase> onStateEnd = null)
     {
         var oldState = Entity.GetState(stateParam.masterDataId);
         if (oldState == null)
         {
             StateBase state = StateFactory.Instance.CreateState(gameObject, stateParam.masterDataId);
             Entity.AttachEntityComponent(state);
+
+            state.onStateEnd += onStateEnd;
             state.onStateEnd += StateHelper.StateDestroyer;
+
             state.Initialize(stateParam);
             state.StartState();
             return;
@@ -23,7 +27,10 @@ public class StateController : LOPMonoEntityComponentBase
                 {
                     StateBase state = StateFactory.Instance.CreateState(gameObject, stateParam.masterDataId);
                     Entity.AttachEntityComponent(state);
+
+                    state.onStateEnd += onStateEnd;
                     state.onStateEnd += StateHelper.StateDestroyer;
+
                     state.Initialize(stateParam);
                     state.StartState();
                     break;
@@ -38,7 +45,10 @@ public class StateController : LOPMonoEntityComponentBase
 
                     StateBase state = StateFactory.Instance.CreateState(gameObject, stateParam.masterDataId);
                     Entity.AttachEntityComponent(state);
+
+                    state.onStateEnd += onStateEnd;
                     state.onStateEnd += StateHelper.StateDestroyer;
+
                     state.Initialize(stateParam);
                     state.StartState();
                     break;

@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using Behavior;
 using State;
+using System;
 
 public class BehaviorController : LOPMonoEntityComponentBase
 {
@@ -66,13 +67,15 @@ public class BehaviorController : LOPMonoEntityComponentBase
         }
     }
 
-    public void StartBehavior(BehaviorParam behaviorParam)
+    public void StartBehavior(BehaviorParam behaviorParam, Action<BehaviorBase> onBehaviorEnd = null)
     {
         BehaviorBase behavior = BehaviorFactory.Instance.CreateBehavior(gameObject, behaviorParam.masterDataId);
         Entity.AttachEntityComponent(behavior);
-        behavior.Initialize(behaviorParam);
+
+        behavior.onBehaviorEnd += onBehaviorEnd;
         behavior.onBehaviorEnd += BehaviorHelper.BehaviorDestroyer;
 
+        behavior.Initialize(behaviorParam);
         behavior.StartBehavior();
     }
 
