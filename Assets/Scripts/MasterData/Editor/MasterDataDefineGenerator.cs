@@ -46,7 +46,7 @@ public class MasterDataDefineGenerator
         .AppendLine("}")
         ;
 
-        string path = Path.Combine(Path.GetDirectoryName(AssetDatabase.GetAssetPath(Selection.activeObject)), $"Define.{type.Name}.Generated.cs");
+        string path = Path.Combine(Application.dataPath, "Scripts/MasterData/GeneratedSourceCodeFile", $"Define.{type.Name}.Generated.cs");
 
         File.WriteAllText(path, stringBuilder.ToString());
 
