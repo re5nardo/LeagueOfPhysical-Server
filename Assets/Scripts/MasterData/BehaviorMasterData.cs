@@ -7,5 +7,6 @@ public class BehaviorMasterData : MasterDataBase
     public string className;
     public float lifespan = -1;
     public string[] classParams;
+    public StatusEffect[] statusEffects;
     public BehaviorMasterData[] compatibleBehaviors;
 }

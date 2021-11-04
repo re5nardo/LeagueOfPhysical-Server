@@ -10,6 +10,7 @@ public class BehaviorMasterDataEditor : Editor
     private SerializedProperty className;
     private SerializedProperty lifespan;
     private SerializedProperty classParams;
+    private SerializedProperty statusEffects;
     private SerializedProperty compatibleBehaviors;
 
     private int index = 0;
@@ -37,6 +38,7 @@ public class BehaviorMasterDataEditor : Editor
         className = serializedObject.FindProperty("className");
         lifespan = serializedObject.FindProperty("lifespan");
         classParams = serializedObject.FindProperty("classParams");
+        statusEffects = serializedObject.FindProperty("statusEffects");
         compatibleBehaviors = serializedObject.FindProperty("compatibleBehaviors");
 
         index = 0;
@@ -61,6 +63,7 @@ public class BehaviorMasterDataEditor : Editor
 
         EditorGUILayout.PropertyField(lifespan);
         EditorGUILayout.PropertyField(classParams);
+        EditorGUILayout.PropertyField(statusEffects);
         EditorGUILayout.PropertyField(compatibleBehaviors);
 
         serializedObject.ApplyModifiedProperties();
