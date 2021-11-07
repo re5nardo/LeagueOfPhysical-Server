@@ -12,34 +12,28 @@ namespace Entity
 			gameItemBuilder.Clear();
 			return gameItemBuilder;
 		}
-		#endregion
+        #endregion
 
-        private GameItemBasicData gameItemBasicData = null;
-
-        private BehaviorController behaviorController = null;
-        private StateController stateController = null;
+        public GameItemBasicData GameItemBasicData { get; private set; }
 
         private MasterData.GameItem masterData = null;
-        public MasterData.GameItem MasterData => masterData ?? (masterData = MasterDataManager.Instance.GetMasterData<MasterData.GameItem>(gameItemBasicData.MasterDataId));
+        public MasterData.GameItem MasterData => masterData ?? (masterData = MasterDataManager.Instance.GetMasterData<MasterData.GameItem>(GameItemBasicData.MasterDataId));
 
         #region LOPEntityBase
         protected override void InitEntityComponents()
 		{
 			base.InitEntityComponents();
 
-            gameItemBasicData = AttachEntityComponent(gameObject.AddComponent<GameItemBasicData>());
+            GameItemBasicData = AttachEntityComponent(gameObject.AddComponent<GameItemBasicData>());
 
-            entityBasicView = AttachEntityComponent(gameObject.AddComponent<GameItemView>());
-
-            behaviorController = AttachEntityComponent(gameObject.AddComponent<BehaviorController>());
-            stateController = AttachEntityComponent(gameObject.AddComponent<StateController>());
+            EntityBasicView = AttachEntityComponent(gameObject.AddComponent<GameItemView>());
         }
 
 		protected override void OnInitialize(EntityCreationData entityCreationData)
 		{
             base.OnInitialize(entityCreationData);
 
-            gameItemBasicData.Initialize(entityCreationData);
+            GameItemBasicData.Initialize(entityCreationData);
 		}
 
         public override EntitySnap GetEntitySnap()
@@ -49,14 +43,14 @@ namespace Entity
             entitySnap.entityId = EntityID;
             entitySnap.entityType = EntityType;
             entitySnap.entityRole = EntityRole;
-            entitySnap.masterDataId = gameItemBasicData.MasterDataId;
+            entitySnap.masterDataId = GameItemBasicData.MasterDataId;
             entitySnap.position = Position;
             entitySnap.rotation = Rotation;
             entitySnap.velocity = Velocity;
             entitySnap.angularVelocity = AngularVelocity;
-            entitySnap.modelId = gameItemBasicData.ModelId;
-            entitySnap.HP = gameItemBasicData.HP;
-            entitySnap.maximumHP = gameItemBasicData.MaximumHP;
+            entitySnap.modelId = GameItemBasicData.ModelId;
+            entitySnap.HP = GameItemBasicData.HP;
+            entitySnap.maximumHP = GameItemBasicData.MaximumHP;
             entitySnap.ownerId = OwnerId;
 
             return entitySnap;
@@ -64,15 +58,15 @@ namespace Entity
         #endregion
 
         #region Interface For Convenience
-        public bool IsAlive => gameItemBasicData.HP > 0;
+        public bool IsAlive => GameItemBasicData.HP > 0;
 
-        public override float MovementSpeed => gameItemBasicData.MovementSpeed;
+        public override float MovementSpeed => GameItemBasicData.MovementSpeed;
         public override float FactoredMovementSpeed => MovementSpeed * LOP.Game.Current.GameManager.MapData.mapEnvironment.MoveSpeedFactor;
 
 		public int HP
 		{
-            get => gameItemBasicData.HP;
-            set => gameItemBasicData.HP = value;
+            get => GameItemBasicData.HP;
+            set => GameItemBasicData.HP = value;
 		}
 		#endregion
 	}

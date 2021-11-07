@@ -36,8 +36,7 @@ namespace Behavior
 
                 Vector3 destination = projectile.Position + projectile.Forward * projectile.FactoredMovementSpeed * m_fProjectileLifespan;
 
-                var behaviorController = projectile.GetEntityComponent<BehaviorController>();
-                behaviorController.Move(destination);
+                projectile.BehaviorController.Move(destination);
             }
 
             return CurrentUpdateTime < m_fLifespan;

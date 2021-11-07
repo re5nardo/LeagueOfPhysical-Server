@@ -55,12 +55,11 @@ public class EntityInfoSender : MonoSingleton<EntityInfoSender>
         {
             if (IDMap.TryGetEntityIdByConnectionId(connectionId, out var entityId))
             {
-                IEntity entity = Entities.Get(entityId);
+                var character = Entities.Get<Character>(entityId);
 
                 var entitySkillInfo = new SC_EntitySkillInfo();
-                entitySkillInfo.entityId = entity.EntityID;
-                SkillController controller = entity.GetEntityComponent<SkillController>();
-                entitySkillInfo.dicSkillInfo = controller.GetEntitySkillInfo();
+                entitySkillInfo.entityId = character.EntityID;
+                entitySkillInfo.dicSkillInfo = character.SkillController.GetEntitySkillInfo();
 
                 RoomNetwork.Instance.Send(entitySkillInfo, connectionId);
             }

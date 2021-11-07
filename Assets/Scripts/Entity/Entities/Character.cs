@@ -15,18 +15,16 @@ namespace Entity
 		}
 		#endregion
 
-        private CharacterBasicData characterBasicData = null;
-		private CharacterStatusData characterStatusData = null;
-		private CharacterAbilityData characterAbilityData = null;
+        public CharacterBasicData CharacterBasicData { get; private set; }
+        public CharacterStatusData CharacterStatusData { get; private set; }
+        public CharacterAbilityData CharacterAbilityData { get; private set; }
 
-        private BehaviorController behaviorController = null;
-        private StateController stateController = null;
-        private SkillController skillController = null;
-		private CharacterStatusController characterStatusController = null;
-		private CharacterAbilityController characterAbilityController = null;
+        public SkillController SkillController { get; private set; }
+        public CharacterStatusController CharacterStatusController { get; private set; }
+        public CharacterAbilityController CharacterAbilityController { get; private set; }
 
         private MasterData.Character masterData = null;
-        public MasterData.Character MasterData => masterData ?? (masterData = MasterDataManager.Instance.GetMasterData<MasterData.Character>(characterBasicData.MasterDataId));
+        public MasterData.Character MasterData => masterData ?? (masterData = MasterDataManager.Instance.GetMasterData<MasterData.Character>(CharacterBasicData.MasterDataId));
 
         #region LOPEntityBase
         protected override void InitEntity()
@@ -40,25 +38,23 @@ namespace Entity
 		{
 			base.InitEntityComponents();
 
-            characterBasicData = AttachEntityComponent(gameObject.AddComponent<CharacterBasicData>());
-            characterStatusData = AttachEntityComponent(gameObject.AddComponent<CharacterStatusData>());
-            characterAbilityData = AttachEntityComponent(gameObject.AddComponent<CharacterAbilityData>());
+            CharacterBasicData = AttachEntityComponent(gameObject.AddComponent<CharacterBasicData>());
+            CharacterStatusData = AttachEntityComponent(gameObject.AddComponent<CharacterStatusData>());
+            CharacterAbilityData = AttachEntityComponent(gameObject.AddComponent<CharacterAbilityData>());
 
-            entityBasicView = AttachEntityComponent(gameObject.AddComponent<CharacterView>());
+            EntityBasicView = AttachEntityComponent(gameObject.AddComponent<CharacterView>());
 
-            behaviorController = AttachEntityComponent(gameObject.AddComponent<BehaviorController>());
-            stateController = AttachEntityComponent(gameObject.AddComponent<StateController>());
-            skillController = AttachEntityComponent(gameObject.AddComponent<SkillController>());
-            characterStatusController = AttachEntityComponent(gameObject.AddComponent<CharacterStatusController>());
-            characterAbilityController = AttachEntityComponent(gameObject.AddComponent<CharacterAbilityController>());
+            SkillController = AttachEntityComponent(gameObject.AddComponent<SkillController>());
+            CharacterStatusController = AttachEntityComponent(gameObject.AddComponent<CharacterStatusController>());
+            CharacterAbilityController = AttachEntityComponent(gameObject.AddComponent<CharacterAbilityController>());
 		}
 
         protected override void OnInitialize(EntityCreationData entityCreationData)
 		{
             base.OnInitialize(entityCreationData);
 
-            characterBasicData.Initialize(entityCreationData);
-            characterStatusData.Initialize(entityCreationData);
+            CharacterBasicData.Initialize(entityCreationData);
+            CharacterStatusData.Initialize(entityCreationData);
 		}
 
         public override EntitySnap GetEntitySnap()
@@ -68,14 +64,14 @@ namespace Entity
             entitySnap.entityId = EntityID;
             entitySnap.entityType = EntityType;
             entitySnap.entityRole = EntityRole;
-            entitySnap.masterDataId = characterBasicData.MasterDataId;
+            entitySnap.masterDataId = CharacterBasicData.MasterDataId;
             entitySnap.position = Position;
             entitySnap.rotation = Rotation;
             entitySnap.velocity = Velocity;
             entitySnap.angularVelocity = AngularVelocity;
-            entitySnap.modelId = characterBasicData.ModelId;
-            entitySnap.firstStatus = characterStatusData.firstStatus;
-            entitySnap.secondStatus = characterStatusData.secondStatus;
+            entitySnap.modelId = CharacterBasicData.ModelId;
+            entitySnap.firstStatus = CharacterStatusData.firstStatus;
+            entitySnap.secondStatus = CharacterStatusData.secondStatus;
             entitySnap.ownerId = OwnerId;
 
             return entitySnap;
@@ -85,17 +81,19 @@ namespace Entity
         #region Interface For Convenience
         public int HP
         {
-			get => characterStatusData.HP;
-            set => characterStatusData.HP = value;
+			get => CharacterStatusData.HP;
+            set => CharacterStatusData.HP = value;
         }
 
-		public bool IsAlive => characterStatusData.HP > 0;
+        public int MaximumHP => CharacterStatusData.MaximumHP;
 
-        public override float MovementSpeed => characterStatusData.MovementSpeed;
+        public bool IsAlive => CharacterStatusData.HP > 0;
+
+        public override float MovementSpeed => CharacterStatusData.MovementSpeed;
         public override float FactoredMovementSpeed => MovementSpeed * LOP.Game.Current.GameManager.MapData.mapEnvironment.MoveSpeedFactor;
 
-		public FirstStatus FirstStatus => characterStatusData.firstStatus;
-        public SecondStatus SecondStatus => characterStatusData.secondStatus;
+		public FirstStatus FirstStatus => CharacterStatusData.firstStatus;
+        public SecondStatus SecondStatus => CharacterStatusData.secondStatus;
 		#endregion
 	}
 }

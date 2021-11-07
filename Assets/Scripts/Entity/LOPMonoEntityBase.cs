@@ -35,7 +35,12 @@ namespace Entity
 
         public bool HasAuthority => OwnerId == "server" || OwnerId == "local";
 
-        protected EntityBasicView entityBasicView;
+        public EntityBasicView EntityBasicView { get; protected set; }
+
+        public BehaviorController BehaviorController { get; private set; }
+        public StateController StateController { get; private set; }
+
+        public Blackboard Blackboard { get; private set; }
 
         public Transform Transform { get; private set; }
         public Rigidbody Rigidbody { get; private set; }
@@ -65,6 +70,10 @@ namespace Entity
 
         protected virtual void InitEntityComponents()
         {
+            BehaviorController = AttachEntityComponent(gameObject.AddComponent<BehaviorController>());
+            StateController = AttachEntityComponent(gameObject.AddComponent<StateController>());
+
+            Blackboard = AttachEntityComponent(gameObject.AddComponent<Blackboard>());
         }
 
         public void Initialize(EntityCreationData entityCreationData)
@@ -176,8 +185,8 @@ namespace Entity
         public abstract float MovementSpeed { get; }
         public abstract float FactoredMovementSpeed { get; }
 
-        public Collider ModelCollider => entityBasicView.ModelCollider;
-        public Animator ModelAnimator => entityBasicView.ModelAnimator;
+        public Collider ModelCollider => EntityBasicView.ModelCollider;
+        public Animator ModelAnimator => EntityBasicView.ModelAnimator;
 
         public Vector3 Forward => (Quaternion.Euler(Rotation) * Vector3.forward).normalized;
         public Vector3 Up => (Quaternion.Euler(Rotation) * Vector3.up).normalized;

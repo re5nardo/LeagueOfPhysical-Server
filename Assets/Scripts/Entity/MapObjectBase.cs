@@ -39,14 +39,14 @@ namespace Entity
         {
             base.InitEntityComponents();
 
-            entityBasicView = AttachEntityComponent(gameObject.AddComponent<EntityBasicView>());
+            EntityBasicView = AttachEntityComponent(gameObject.AddComponent<EntityBasicView>());
         }
 
         protected override void OnInitialize(EntityCreationData entityCreationData)
         {
             base.OnInitialize(entityCreationData);
 
-            entityBasicView.SetModel(model);
+            EntityBasicView.SetModel(model);
         }
     }
 }

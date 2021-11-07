@@ -74,8 +74,7 @@ namespace Skill
 
                     Vector3 destination = projectile.Position + projectile.Forward * projectile.FactoredMovementSpeed * m_fTargetProjectileLifespan;
 
-                    var behaviorController = projectile.GetEntityComponent<BehaviorController>();
-                    behaviorController.Move(destination);
+                    projectile.BehaviorController.Move(destination);
 
                     m_State = State.WaitReuse;
 
@@ -122,8 +121,7 @@ namespace Skill
             Vector3 newDir = Quaternion.Euler(0, -90f, 0) * projectile_left.Forward;
             Vector3 destination = projectile_left.Position + newDir.normalized * projectile_left.FactoredMovementSpeed * m_fTargetProjectileLifespan;
 
-            var behaviorController = projectile_left.GetEntityComponent<BehaviorController>();
-            behaviorController.Move(destination);
+            projectile_left.BehaviorController.Move(destination);
 
             //  Right
             Projectile projectile_right = CreateProjectile(true);
@@ -131,8 +129,7 @@ namespace Skill
             newDir = Quaternion.Euler(0, 90f, 0) * projectile_right.Forward;
             destination = projectile_right.Position + newDir.normalized * projectile_right.FactoredMovementSpeed * m_fTargetProjectileLifespan;
 
-            behaviorController = projectile_right.GetEntityComponent<BehaviorController>();
-            behaviorController.Move(destination);
+            projectile_right.BehaviorController.Move(destination);
         }
 
         private Entity.Projectile CreateProjectile(bool split = false)

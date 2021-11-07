@@ -20,6 +20,8 @@ public class CharacterStatusData : LOPMonoEntityComponentBase
         set => secondStatus.MP = Mathf.Min(value, secondStatus.MaximumMP);
     }
 
+    public int MaximumHP => secondStatus.MaximumHP;
+
     public float MovementSpeed => secondStatus.MovementSpeed;
 
     protected override void OnInitialize(EntityCreationData entityCreationData)
