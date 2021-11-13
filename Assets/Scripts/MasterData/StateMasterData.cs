@@ -7,8 +7,8 @@ public class StateMasterData : MasterDataBase
 {
     public string className;
     public float lifespan = -1;
-    public string[] classParams;
     public OverlapResolveType overlapResolveType;
+    public StateAttribute[] stateAttributes;
     public StatusEffect[] statusEffects;
 }
 

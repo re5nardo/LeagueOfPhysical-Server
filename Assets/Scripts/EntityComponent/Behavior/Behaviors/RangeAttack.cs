@@ -49,10 +49,10 @@ namespace Behavior
             var attackBehaviorParam = behaviorParam as AttackBehaviorParam;
 
             m_fLifespan = MasterData.lifespan;
-            m_fAttackTime = float.Parse(MasterData.classParams.First(x => x.Contains("AttackTime")).Split(':')[1]);
-            m_nProjectileID = int.Parse(MasterData.classParams.First(x => x.Contains("ProjectileID")).Split(':')[1]);
-            m_fProjectileHeight = float.Parse(MasterData.classParams.First(x => x.Contains("ProjectileHeight")).Split(':')[1]);
-            m_fProjectileLifespan = float.Parse(MasterData.classParams.First(x => x.Contains("ProjectileLifespan")).Split(':')[1]);
+            //m_fAttackTime = float.Parse(MasterData.classParams.First(x => x.Contains("AttackTime")).Split(':')[1]);
+            //m_nProjectileID = int.Parse(MasterData.classParams.First(x => x.Contains("ProjectileID")).Split(':')[1]);
+            //m_fProjectileHeight = float.Parse(MasterData.classParams.First(x => x.Contains("ProjectileHeight")).Split(':')[1]);
+            //m_fProjectileLifespan = float.Parse(MasterData.classParams.First(x => x.Contains("ProjectileLifespan")).Split(':')[1]);
 
             if (attackBehaviorParam.skillInputData == null)
             {

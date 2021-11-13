@@ -85,7 +85,7 @@ namespace Behavior
             var attackBehaviorParam = behaviorParam as AttackBehaviorParam;
 
             m_fLifespan = MasterData.lifespan;
-            m_fAttackTime = float.Parse(MasterData.classParams.First(x => x.Contains("AttackTime")).Split(':')[1]);
+            //m_fAttackTime = float.Parse(MasterData.classParams.First(x => x.Contains("AttackTime")).Split(':')[1]);
 
             if (attackBehaviorParam.skillInputData == null)
             {

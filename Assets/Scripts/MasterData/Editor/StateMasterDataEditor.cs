@@ -9,8 +9,8 @@ public class StateMasterDataEditor : Editor
     private SerializedProperty id;
     private SerializedProperty className;
     private SerializedProperty lifespan;
-    private SerializedProperty classParams;
     private SerializedProperty overlapResolveType;
+    private SerializedProperty stateAttributes;
     private SerializedProperty statusEffects;
 
     private int index = 0;
@@ -37,8 +37,8 @@ public class StateMasterDataEditor : Editor
         id = serializedObject.FindProperty("id");
         className = serializedObject.FindProperty("className");
         lifespan = serializedObject.FindProperty("lifespan");
-        classParams = serializedObject.FindProperty("classParams");
         overlapResolveType = serializedObject.FindProperty("overlapResolveType");
+        stateAttributes = serializedObject.FindProperty("stateAttributes");
         statusEffects = serializedObject.FindProperty("statusEffects");
 
         index = 0;
@@ -62,8 +62,8 @@ public class StateMasterDataEditor : Editor
         className.stringValue = classNames[index];
 
         EditorGUILayout.PropertyField(lifespan);
-        EditorGUILayout.PropertyField(classParams);
         EditorGUILayout.PropertyField(overlapResolveType);
+        EditorGUILayout.PropertyField(stateAttributes);
         EditorGUILayout.PropertyField(statusEffects);
 
         serializedObject.ApplyModifiedProperties();
