@@ -8,6 +8,8 @@ public class StateMasterData : MasterDataBase
     public string className;
     public float lifespan = -1;
     public OverlapResolveType overlapResolveType;
+    [SerializeReference]
+    [TypeSelect(typeof(StateAttribute))]
     public StateAttribute[] stateAttributes;
     public StatusEffect[] statusEffects;
 }
