@@ -5,12 +5,12 @@ using System;
 
 public class BehaviorAttributeDispatcher
 {
-    private Dictionary<Type, BehaviorAttributeHandler> handlerMap = new Dictionary<Type, BehaviorAttributeHandler>
+    private static Dictionary<Type, BehaviorAttributeHandler> handlerMap = new Dictionary<Type, BehaviorAttributeHandler>
     {
         {typeof(BehaviorAttribute), new BehaviorAttributeHandler()},
     };
 
-    public void Dispatch(Behavior.BehaviorBase behavior, BehaviorAttribute behaviorAttribute)
+    public static void Dispatch(Behavior.BehaviorBase behavior, BehaviorAttribute behaviorAttribute)
     {
         handlerMap[behaviorAttribute.GetType()].HandleAttribute(behavior, behaviorAttribute);
     }
