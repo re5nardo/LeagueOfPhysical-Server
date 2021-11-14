@@ -8,10 +8,8 @@ namespace Behavior
         private Vector3 direction;
 
         #region BehaviorBase
-        public override void Initialize(BehaviorParam behaviorParam)
+        protected override void OnInitialize(BehaviorParam behaviorParam)
         {
-            base.Initialize(behaviorParam);
-
             var continuousMoveBehaviorParam = behaviorParam as ContinuousMoveBehaviorParam;
 
             direction = continuousMoveBehaviorParam.direction;

@@ -19,33 +19,8 @@ namespace Behavior
 		#endregion
 
         #region BehaviorBase
-        protected override void OnBehaviorStart()
+        protected override void OnInitialize(BehaviorParam behaviorParam)
         {
-            base.OnBehaviorStart();
-
-			Entity.MessageBroker.Publish(new AnimatorSetTrigger("Attack"));
-
-            LOP.Game.Current.GameEventManager.SendToNear(new EntityBehaviorStart(Entity.EntityID, MasterData.id), Entity.Position);
-        }
-
-        protected override bool OnBehaviorUpdate()
-        {
-            if (LastUpdateTime < m_fAttackTime && m_fAttackTime <= CurrentUpdateTime)
-            {
-                Projectile projectile = CreateProjectile();
-
-                Vector3 destination = projectile.Position + projectile.Forward * projectile.FactoredMovementSpeed * m_fProjectileLifespan;
-
-                projectile.BehaviorController.Move(destination);
-            }
-
-            return CurrentUpdateTime < m_fLifespan;
-        }
-
-        public override void Initialize(BehaviorParam behaviorParam)
-        {
-            base.Initialize(behaviorParam);
-
             var attackBehaviorParam = behaviorParam as AttackBehaviorParam;
 
             m_fLifespan = MasterData.lifespan;
@@ -100,6 +75,29 @@ namespace Behavior
             {
                 Entity.Rotation = Quaternion.LookRotation(attackBehaviorParam.skillInputData.inputData).eulerAngles;
             }
+        }
+
+        protected override void OnBehaviorStart()
+        {
+            base.OnBehaviorStart();
+
+			Entity.MessageBroker.Publish(new AnimatorSetTrigger("Attack"));
+
+            LOP.Game.Current.GameEventManager.SendToNear(new EntityBehaviorStart(Entity.EntityID, MasterData.id), Entity.Position);
+        }
+
+        protected override bool OnBehaviorUpdate()
+        {
+            if (LastUpdateTime < m_fAttackTime && m_fAttackTime <= CurrentUpdateTime)
+            {
+                Projectile projectile = CreateProjectile();
+
+                Vector3 destination = projectile.Position + projectile.Forward * projectile.FactoredMovementSpeed * m_fProjectileLifespan;
+
+                projectile.BehaviorController.Move(destination);
+            }
+
+            return CurrentUpdateTime < m_fLifespan;
         }
         #endregion
 

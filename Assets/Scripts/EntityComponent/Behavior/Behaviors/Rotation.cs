@@ -12,6 +12,13 @@ namespace Behavior
 		private float m_fAngularSpeed = 360 * 2;
 
         #region BehaviorBase
+        protected override void OnInitialize(BehaviorParam behaviorParam)
+        {
+            var rotationBehaviorParam = behaviorParam as RotationBehaviorParam;
+
+            Direction = rotationBehaviorParam.direction;
+        }
+
         protected override void OnBehaviorStart()
         {
             base.OnBehaviorStart();
@@ -42,16 +49,6 @@ namespace Behavior
                 return true;
             }
 		}
-
-		public override void Initialize(BehaviorParam behaviorParam)
-        {
-            base.Initialize(behaviorParam);
-
-            var rotationBehaviorParam = behaviorParam as RotationBehaviorParam;
-
-            Direction = rotationBehaviorParam.direction;
-
-        }
         #endregion
     }
 }

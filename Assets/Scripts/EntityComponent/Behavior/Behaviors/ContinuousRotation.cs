@@ -9,19 +9,17 @@ namespace Behavior
         private float timeOffset;
 
         #region BehaviorBase
-        protected override bool OnBehaviorUpdate()
+        protected override void OnInitialize(BehaviorParam behaviorParam)
         {
-            return true;
-        }
-
-        public override void Initialize(BehaviorParam behaviorParam)
-        {
-            base.Initialize(behaviorParam);
-
             var continuousRotationBehaviorParam = behaviorParam as ContinuousRotationBehaviorParam;
 
             startRotation = continuousRotationBehaviorParam.startRotation;
             timeOffset = continuousRotationBehaviorParam.timeOffset;
+        }
+
+        protected override bool OnBehaviorUpdate()
+        {
+            return true;
         }
         #endregion
 

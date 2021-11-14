@@ -55,7 +55,7 @@ public class StateController : LOPMonoEntityComponentBase
                 }
 
             case OverlapResolveType.Accumulate:
-                oldState.OnAccumulate(stateParam);
+                oldState.Accumulate(stateParam);
                 break;
         }
     }

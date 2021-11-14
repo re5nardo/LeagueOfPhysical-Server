@@ -11,6 +11,14 @@ namespace Behavior
         private Vector3 startPosition;
 
         #region BehaviorBase
+        protected override void OnInitialize(BehaviorParam behaviorParam)
+        {
+            var moveBehaviorParam = behaviorParam as MoveBehaviorParam;
+
+            Destination = moveBehaviorParam.destination;
+            startPosition = Entity.Position;
+        }
+
         protected override void OnBehaviorStart()
         {
             base.OnBehaviorStart();
@@ -65,16 +73,6 @@ namespace Behavior
             base.OnBehaviorEnd();
 
             Entity.MessageBroker.Publish(new AnimatorSetBool("Move", false));
-        }
-
-        public override void Initialize(BehaviorParam behaviorParam)
-        {
-            base.Initialize(behaviorParam);
-
-            var moveBehaviorParam = behaviorParam as MoveBehaviorParam;
-
-            Destination = moveBehaviorParam.destination;
-            startPosition = Entity.Position;
         }
         #endregion
 

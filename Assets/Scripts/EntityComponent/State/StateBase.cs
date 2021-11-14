@@ -8,12 +8,8 @@ namespace State
     {
         public event Action<StateBase> onStateEnd = null;
 
-        protected virtual void OnStateStart() { }
-        protected abstract bool OnStateUpdate();         //  False : Finish
-        protected virtual void OnStateEnd() { }
-
         public int MasterDataId { get; protected set; } = -1;
-        public bool IsPlaying { get; private set; } = false;
+        public bool IsPlaying { get; private set; }
         public float Lifespan { get; protected set; }
 
         protected int startTick = -1;
@@ -26,13 +22,22 @@ namespace State
         private StateMasterData masterData = null;
         public StateMasterData MasterData => masterData ?? (masterData = MasterDataUtil.Get<StateMasterData>(MasterDataId));
 
-        public virtual void Initialize(StateParam stateParam)
+        protected virtual void OnInitialize(StateParam stateParam) { }
+        protected virtual void OnAccumulate(StateParam stateParam) { }
+        protected virtual void OnStateStart() { }
+        protected abstract bool OnStateUpdate();
+        protected virtual void OnStateEnd() { }
+
+        public void Initialize(StateParam stateParam)
         {
             this.MasterDataId = stateParam.masterDataId;
+
+            OnInitialize(stateParam);
         }
 
-        public virtual void OnAccumulate(StateParam stateParam)
+        public void Accumulate(StateParam stateParam)
         {
+            OnAccumulate(stateParam);
         }
 
         public void StartState()
@@ -84,7 +89,6 @@ namespace State
             OnStateEnd();
 
             onStateEnd?.Invoke(this);
-
             onStateEnd = null;
         }
 

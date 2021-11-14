@@ -10,20 +10,18 @@ namespace Behavior
         private float timeOffset;
 
         #region BehaviorBase
-        protected override bool OnBehaviorUpdate()
+        protected override void OnInitialize(BehaviorParam behaviorParam)
         {
-            return true;
-        }
-
-        public override void Initialize(BehaviorParam behaviorParam)
-        {
-            base.Initialize(behaviorParam);
-
             var continuousPatrolBehaviorParam = behaviorParam as ContinuousPatrolBehaviorParam;
 
             startPoint = continuousPatrolBehaviorParam.startPoint;
             halfwayPoint = continuousPatrolBehaviorParam.halfwayPoint;
             timeOffset = continuousPatrolBehaviorParam.timeOffset;
+        }
+
+        protected override bool OnBehaviorUpdate()
+        {
+            return true;
         }
         #endregion
 

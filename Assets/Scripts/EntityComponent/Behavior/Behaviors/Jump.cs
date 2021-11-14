@@ -14,10 +14,8 @@ namespace Behavior
         private JumpBehaviorParam param;
 
         #region BehaviorBase
-        public override void Initialize(BehaviorParam behaviorParam)
+        protected override void OnInitialize(BehaviorParam behaviorParam)
         {
-            base.Initialize(behaviorParam);
-
             param = behaviorParam as JumpBehaviorParam;
         }
 

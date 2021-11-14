@@ -10,12 +10,8 @@ namespace Behavior
     {
         public event Action<BehaviorBase> onBehaviorEnd = null;
 
-        protected virtual void OnBehaviorStart() { }
-        protected abstract bool OnBehaviorUpdate();			//  False : Finish
-        protected virtual void OnBehaviorEnd() { }
-
         public int MasterDataId { get; protected set; } = -1;
-        public bool IsPlaying { get; private set; } = false;
+        public bool IsPlaying { get; private set; }
 
         protected int startTick = -1;
         protected int lastTick = -1;
@@ -27,9 +23,16 @@ namespace Behavior
         private BehaviorMasterData masterData = null;
         public BehaviorMasterData MasterData => masterData ?? (masterData = MasterDataUtil.Get<BehaviorMasterData>(MasterDataId));
 
-        public virtual void Initialize(BehaviorParam behaviorParam)
+        protected virtual void OnInitialize(BehaviorParam behaviorParam) { }
+        protected virtual void OnBehaviorStart() { }
+        protected abstract bool OnBehaviorUpdate();
+        protected virtual void OnBehaviorEnd() { }
+
+        public void Initialize(BehaviorParam behaviorParam)
         {
             this.MasterDataId = behaviorParam.masterDataId;
+
+            OnInitialize(behaviorParam);
         }
 
         public void StartBehavior()
@@ -91,7 +94,6 @@ namespace Behavior
             OnBehaviorEnd();
 
             onBehaviorEnd?.Invoke(this);
-
             onBehaviorEnd = null;
         }
 

@@ -18,6 +18,52 @@ namespace Behavior
         #endregion
 
         #region BehaviorBase
+        protected override void OnInitialize(BehaviorParam behaviorParam)
+        {
+            var attackBehaviorParam = behaviorParam as AttackBehaviorParam;
+            m_fLifespan = MasterData.lifespan;
+            if (attackBehaviorParam.skillInputData == null)
+            {
+                return;
+            }
+            if (attackBehaviorParam.skillInputData.inputData == Vector3.zero)
+            {
+                List<IEntity> targets = Entities.Get(Entity.Position, 20, EntityRole.All, new HashSet<int> { Entity.EntityID });
+                List<IEntity> candidates = new List<IEntity>();
+                foreach (IEntity target in targets)
+                {
+                    if (target is Character)
+                    {
+                        if (!(target as Character).IsAlive)
+                        {
+                            continue;
+                        }
+                    }
+                    else if (target is GameItem)
+                    {
+                        if (!(target as GameItem).IsAlive)
+                        {
+                            continue;
+                        }
+                    }
+                    else
+                    {
+                        continue;
+                    }
+                    candidates.Add(target);
+                }
+                if (candidates.Count > 0)
+                {
+                    candidates.Sort((x, y) => (x.Position - Entity.Position).sqrMagnitude.CompareTo((y.Position - Entity.Position).sqrMagnitude));
+                    Entity.Rotation = Quaternion.LookRotation(candidates[0].Position - Entity.Position).eulerAngles;
+                }
+            }
+            else
+            {
+                Entity.Rotation = Quaternion.LookRotation(attackBehaviorParam.skillInputData.inputData).eulerAngles;
+            }
+        }
+
         protected override void OnBehaviorStart()
         {
             base.OnBehaviorStart();
@@ -76,63 +122,6 @@ namespace Behavior
             }
 
             return CurrentUpdateTime < m_fLifespan;
-        }
-
-        public override void Initialize(BehaviorParam behaviorParam)
-        {
-            base.Initialize(behaviorParam);
-
-            var attackBehaviorParam = behaviorParam as AttackBehaviorParam;
-
-            m_fLifespan = MasterData.lifespan;
-            //m_fAttackTime = float.Parse(MasterData.classParams.First(x => x.Contains("AttackTime")).Split(':')[1]);
-
-            if (attackBehaviorParam.skillInputData == null)
-            {
-                return;
-            }
-
-            if (attackBehaviorParam.skillInputData.inputData == Vector3.zero)
-            {
-                //  Auto aiming
-                List<IEntity> targets = Entities.Get(Entity.Position, 20, EntityRole.All, new HashSet<int> { Entity.EntityID });
-                List<IEntity> candidates = new List<IEntity>();
-                foreach (IEntity target in targets)
-                {
-                    if (target is Character)
-                    {
-                        if (!(target as Character).IsAlive)
-                        {
-                            continue;
-                        }
-                    }
-                    else if (target is GameItem)
-                    {
-                        if (!(target as GameItem).IsAlive)
-                        {
-                            continue;
-                        }
-                    }
-                    else
-                    {
-                        continue;
-                    }
-
-                    candidates.Add(target);
-                }
-
-                //  Find best suitable one
-                if (candidates.Count > 0)
-                {
-                    candidates.Sort((x, y) => (x.Position - Entity.Position).sqrMagnitude.CompareTo((y.Position - Entity.Position).sqrMagnitude));
-
-                    Entity.Rotation = Quaternion.LookRotation(candidates[0].Position - Entity.Position).eulerAngles;
-                }
-            }
-            else
-            {
-                Entity.Rotation = Quaternion.LookRotation(attackBehaviorParam.skillInputData.inputData).eulerAngles;
-            }
         }
         #endregion
     }
