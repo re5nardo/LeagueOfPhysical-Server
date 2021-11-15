@@ -9,6 +9,7 @@ namespace Behavior
     public abstract class BehaviorBase : LOPMonoEntityComponentBase
     {
         public event Action<BehaviorBase> onBehaviorEnd = null;
+        public event Action<BehaviorBase> onLateBehaviorEnd = null;
 
         public int MasterDataId { get; protected set; } = -1;
         public bool IsPlaying { get; private set; }
@@ -31,6 +32,11 @@ namespace Behavior
         public void Initialize(BehaviorParam behaviorParam)
         {
             this.MasterDataId = behaviorParam.masterDataId;
+
+            MasterData.behaviorAttributes?.ForEach(behaviorAttribute =>
+            {
+                BehaviorAttributeDispatcher.Dispatch(this, behaviorAttribute);
+            });
 
             OnInitialize(behaviorParam);
         }
@@ -95,6 +101,9 @@ namespace Behavior
 
             onBehaviorEnd?.Invoke(this);
             onBehaviorEnd = null;
+
+            onLateBehaviorEnd?.Invoke(this);
+            onLateBehaviorEnd = null;
         }
 
         public void StopBehavior()

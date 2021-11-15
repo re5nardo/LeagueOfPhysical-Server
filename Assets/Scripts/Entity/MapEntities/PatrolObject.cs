@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Behavior;
 
 namespace Entity
 {
@@ -19,12 +18,7 @@ namespace Entity
         {
             base.OnInitialize(entityCreationData);
             
-            ContinuousPatrol continuousPatrol = BehaviorFactory.Instance.CreateBehavior(gameObject, Define.MasterData.BehaviorId.ContinuousPatrol) as ContinuousPatrol;
-            AttachEntityComponent(continuousPatrol);
-            continuousPatrol.Initialize(new ContinuousPatrolBehaviorParam(Define.MasterData.BehaviorId.ContinuousPatrol, startPoint, halfwayPoint, timeOffset));
-            continuousPatrol.onBehaviorEnd += BehaviorHelper.BehaviorDestroyer;
-
-            continuousPatrol.StartBehavior();
+            BehaviorController.StartBehavior(new ContinuousPatrolBehaviorParam(Define.MasterData.BehaviorId.ContinuousPatrol, startPoint, halfwayPoint, timeOffset));
         }
     }
 }

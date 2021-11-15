@@ -13,7 +13,7 @@ public class StateController : LOPMonoEntityComponentBase
             Entity.AttachEntityComponent(state);
 
             state.onStateEnd += onStateEnd;
-            state.onStateEnd += StateHelper.StateDestroyer;
+            state.onLateStateEnd += StateHelper.StateDestroyer;
 
             state.Initialize(stateParam);
             state.StartState();
@@ -29,7 +29,7 @@ public class StateController : LOPMonoEntityComponentBase
                     Entity.AttachEntityComponent(state);
 
                     state.onStateEnd += onStateEnd;
-                    state.onStateEnd += StateHelper.StateDestroyer;
+                    state.onLateStateEnd += StateHelper.StateDestroyer;
 
                     state.Initialize(stateParam);
                     state.StartState();
@@ -47,7 +47,7 @@ public class StateController : LOPMonoEntityComponentBase
                     Entity.AttachEntityComponent(state);
 
                     state.onStateEnd += onStateEnd;
-                    state.onStateEnd += StateHelper.StateDestroyer;
+                    state.onLateStateEnd += StateHelper.StateDestroyer;
 
                     state.Initialize(stateParam);
                     state.StartState();

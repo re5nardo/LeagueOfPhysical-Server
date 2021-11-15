@@ -19,7 +19,7 @@ public class BehaviorController : LOPMonoEntityComponentBase
             Move move = BehaviorFactory.Instance.CreateBehavior(gameObject, Define.MasterData.BehaviorId.Move) as Move;
             Entity.AttachEntityComponent(move);
             move.Initialize(new MoveBehaviorParam(Define.MasterData.BehaviorId.Move, vec3Destination));
-            move.onBehaviorEnd += BehaviorHelper.BehaviorDestroyer;
+            move.onLateBehaviorEnd += BehaviorHelper.BehaviorDestroyer;
 
             move.StartBehavior();
         }
@@ -34,7 +34,7 @@ public class BehaviorController : LOPMonoEntityComponentBase
             Rotation rotation = BehaviorFactory.Instance.CreateBehavior(gameObject, Define.MasterData.BehaviorId.Rotation) as Rotation;
             Entity.AttachEntityComponent(rotation);
             rotation.Initialize(new RotationBehaviorParam(Define.MasterData.BehaviorId.Rotation, vec3Direction));
-            rotation.onBehaviorEnd += BehaviorHelper.BehaviorDestroyer;
+            rotation.onLateBehaviorEnd += BehaviorHelper.BehaviorDestroyer;
 
             rotation.StartBehavior();
         }
@@ -45,7 +45,7 @@ public class BehaviorController : LOPMonoEntityComponentBase
         Jump jump = BehaviorFactory.Instance.CreateBehavior(gameObject, Define.MasterData.BehaviorId.Jump) as Jump;
         Entity.AttachEntityComponent(jump);
         jump.Initialize(new JumpBehaviorParam(Define.MasterData.BehaviorId.Jump, normalizedPower, direction, jumpType));
-        jump.onBehaviorEnd += BehaviorHelper.BehaviorDestroyer;
+        jump.onLateBehaviorEnd += BehaviorHelper.BehaviorDestroyer;
 
         jump.StartBehavior();
     }
@@ -73,7 +73,7 @@ public class BehaviorController : LOPMonoEntityComponentBase
         Entity.AttachEntityComponent(behavior);
 
         behavior.onBehaviorEnd += onBehaviorEnd;
-        behavior.onBehaviorEnd += BehaviorHelper.BehaviorDestroyer;
+        behavior.onLateBehaviorEnd += BehaviorHelper.BehaviorDestroyer;
 
         behavior.Initialize(behaviorParam);
         behavior.StartBehavior();

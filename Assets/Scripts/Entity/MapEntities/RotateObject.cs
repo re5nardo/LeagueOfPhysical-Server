@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Behavior;
 
 namespace Entity
 {
@@ -27,12 +26,7 @@ namespace Entity
 
             AngularVelocity = angularVelocity;
 
-            var continuousRotation = BehaviorFactory.Instance.CreateBehavior(gameObject, Define.MasterData.BehaviorId.ContinuousRotation) as ContinuousRotation;
-            AttachEntityComponent(continuousRotation);
-            continuousRotation.Initialize(new ContinuousRotationBehaviorParam(Define.MasterData.BehaviorId.ContinuousRotation, startRotation, timeOffset));
-            continuousRotation.onBehaviorEnd += BehaviorHelper.BehaviorDestroyer;
-
-            continuousRotation.StartBehavior();
+            BehaviorController.StartBehavior(new ContinuousRotationBehaviorParam(Define.MasterData.BehaviorId.ContinuousRotation, startRotation, timeOffset));
         }
     }
 }
