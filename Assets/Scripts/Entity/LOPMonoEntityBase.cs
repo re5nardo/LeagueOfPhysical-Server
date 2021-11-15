@@ -70,10 +70,10 @@ namespace Entity
 
         protected virtual void InitEntityComponents()
         {
-            BehaviorController = AttachEntityComponent(gameObject.AddComponent<BehaviorController>());
-            StateController = AttachEntityComponent(gameObject.AddComponent<StateController>());
+            BehaviorController = AttachEntityComponent<BehaviorController>();
+            StateController = AttachEntityComponent<StateController>();
 
-            Blackboard = AttachEntityComponent(gameObject.AddComponent<Blackboard>());
+            Blackboard = AttachEntityComponent<Blackboard>();
         }
 
         public void Initialize(EntityCreationData entityCreationData)

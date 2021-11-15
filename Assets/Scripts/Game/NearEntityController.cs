@@ -29,10 +29,8 @@ public class NearEntityController : LOPMonoEntityComponentBase
 	private HashSet<int> m_hashNearEntityID = new HashSet<int>();
 	private HashSet<int> m_hashNearPlayerEntityID = new HashSet<int>();
 
-    public override void OnAttached(IEntity entity)
+	protected override void OnAttached(IEntity entity)
 	{
-		base.OnAttached(entity);
-
         Vector2Int vec2CellPosition = EntityManager.Instance.GetEntityCellPosition(Entity.EntityID);
 		//var interestingCells = EntityManager.Instance.GetCells(vec2CellPosition, m_fSight + DEAD_BAND_WIDTH, true);
 		//foreach (Cell cell in interestingCells)
@@ -51,10 +49,8 @@ public class NearEntityController : LOPMonoEntityComponentBase
 		UpdateMyEntityCellPosition(vec2CellPosition);
 	}
 
-    public override void OnDetached()
+	protected override void OnDetached()
     {
-        base.OnDetached();
-
         SceneMessageBroker.RemoveSubscriber<GameMessage.EntityAddedToGrid>(OnEntityAddedToGrid);
         SceneMessageBroker.RemoveSubscriber<GameMessage.EntityRemovedFromGrid>(OnEntityRemovedFromGrid);
         SceneMessageBroker.RemoveSubscriber<GameMessage.EntityMoveCell>(OnEntityMoveCell);

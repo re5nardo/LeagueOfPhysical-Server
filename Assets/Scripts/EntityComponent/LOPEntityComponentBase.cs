@@ -6,23 +6,9 @@ using Entity;
 
 public class LOPEntityComponentBase : EntityComponentBase
 {
-    public new LOPMonoEntityBase Entity { get; private set; }
+    public new LOPMonoEntityBase Entity => base.Entity as LOPMonoEntityBase;
     public bool IsValid => Entity != null;
     public bool Initialized { get; private set; }
-
-    public override void OnAttached(IEntity entity)
-    {
-        base.OnAttached(entity);
-
-        Entity = entity as LOPMonoEntityBase;
-    }
-
-    public override void OnDetached()
-    {
-        base.OnDetached();
-
-        Entity = null;
-    }
 
     public void Initialize(EntityCreationData entityCreationData)
     {

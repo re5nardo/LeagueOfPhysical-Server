@@ -24,9 +24,9 @@ namespace Entity
 		{
 			base.InitEntityComponents();
 
-            ProjectileBasicData = AttachEntityComponent(gameObject.AddComponent<ProjectileBasicData>());
+            ProjectileBasicData = AttachEntityComponent<ProjectileBasicData>();
 
-            EntityBasicView = AttachEntityComponent(gameObject.AddComponent<ProjectileView>());
+            EntityBasicView = AttachEntityComponent<ProjectileView>();
         }
 
 		protected override void OnInitialize(EntityCreationData entityCreationData)

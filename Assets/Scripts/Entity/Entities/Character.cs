@@ -38,15 +38,15 @@ namespace Entity
 		{
 			base.InitEntityComponents();
 
-            CharacterBasicData = AttachEntityComponent(gameObject.AddComponent<CharacterBasicData>());
-            CharacterStatusData = AttachEntityComponent(gameObject.AddComponent<CharacterStatusData>());
-            CharacterAbilityData = AttachEntityComponent(gameObject.AddComponent<CharacterAbilityData>());
+            CharacterBasicData = AttachEntityComponent<CharacterBasicData>();
+            CharacterStatusData = AttachEntityComponent<CharacterStatusData>();
+            CharacterAbilityData = AttachEntityComponent<CharacterAbilityData>();
 
-            EntityBasicView = AttachEntityComponent(gameObject.AddComponent<CharacterView>());
+            EntityBasicView = AttachEntityComponent<CharacterView>();
 
-            SkillController = AttachEntityComponent(gameObject.AddComponent<SkillController>());
-            CharacterStatusController = AttachEntityComponent(gameObject.AddComponent<CharacterStatusController>());
-            CharacterAbilityController = AttachEntityComponent(gameObject.AddComponent<CharacterAbilityController>());
+            SkillController = AttachEntityComponent<SkillController>();
+            CharacterStatusController = AttachEntityComponent<CharacterStatusController>();
+            CharacterAbilityController = AttachEntityComponent<CharacterAbilityController>();
 		}
 
         protected override void OnInitialize(EntityCreationData entityCreationData)

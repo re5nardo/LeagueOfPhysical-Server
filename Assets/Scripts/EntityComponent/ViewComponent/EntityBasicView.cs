@@ -13,10 +13,8 @@ public class EntityBasicView : LOPMonoEntityComponentBase
 
     private Vector3 positionBeforePhysics;
 
-    public override void OnAttached(IEntity entity)
+    protected override void OnAttached(IEntity entity)
     {
-        base.OnAttached(entity);
-
         Entity.MessageBroker.AddSubscriber<EntityMessage.ModelChanged>(OnModelChanged);
         Entity.MessageBroker.AddSubscriber<EntityMessage.AnimatorSetTrigger>(OnAnimatorSetTrigger);
         Entity.MessageBroker.AddSubscriber<EntityMessage.AnimatorSetFloat>(OnAnimatorSetFloat);
@@ -27,10 +25,8 @@ public class EntityBasicView : LOPMonoEntityComponentBase
         SceneMessageBroker.AddSubscriber<TickMessage.AfterPhysicsSimulation>(OnAfterPhysicsSimulation);
     }
 
-    public override void OnDetached()
+    protected override void OnDetached()
     {
-        base.OnDetached();
-
         Entity.MessageBroker.RemoveSubscriber<EntityMessage.ModelChanged>(OnModelChanged);
         Entity.MessageBroker.RemoveSubscriber<EntityMessage.AnimatorSetTrigger>(OnAnimatorSetTrigger);
         Entity.MessageBroker.RemoveSubscriber<EntityMessage.AnimatorSetFloat>(OnAnimatorSetFloat);

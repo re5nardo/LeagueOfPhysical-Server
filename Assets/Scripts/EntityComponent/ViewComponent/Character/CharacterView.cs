@@ -3,29 +3,15 @@ using GameFramework;
 
 public class CharacterView : EntityBasicView
 {
-	private Character character = null;
-
-	public override void OnAttached(IEntity entity)
-	{
-		base.OnAttached(entity);
-
-		character = entity as Character;
-	}
-
-	public override void OnDetached()
-	{
-		base.OnDetached();
-
-		character = null;
-	}
+	private Character Character => base.Entity as Character;
 
 	#region MonoBehaviour
 	private void LateUpdate()
 	{
-		if (character != null)
+		if (Character != null)
 		{
-			Animator_SetFloat("Speed", character.Velocity.magnitude);
-			Animator_SetBool("Alive", character.IsAlive);
+			Animator_SetFloat("Speed", Character.Velocity.magnitude);
+			Animator_SetBool("Alive", Character.IsAlive);
 		}
 	}
 	#endregion

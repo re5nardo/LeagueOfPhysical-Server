@@ -32,7 +32,7 @@ namespace LOP
                 RoomNetwork.Instance.Send(enterRoom, conn.connectionId);
 
                 //  NearEntityController
-                userEntity.AttachEntityComponent(userEntity.gameObject.AddComponent<NearEntityController>());
+                userEntity.AttachEntityComponent<NearEntityController>();
 
                 //  Entity Skill Info
                 SkillController controller = userEntity.GetComponent<SkillController>();
@@ -67,14 +67,14 @@ namespace LOP
                 EntityInventory entityInventory = EntityAdditionalDataInitializer.Instance.Initialize(new EntityInventory(), character.EntityID);
                 character.AttachEntityComponent(entityInventory);
 
-                character.AttachEntityComponent(character.gameObject.AddComponent<NearEntityController>());
+                character.AttachEntityComponent<NearEntityController>();
 
-                character.AttachEntityComponent(character.gameObject.AddComponent<PlayerView>());
+                character.AttachEntityComponent<PlayerView>();
 
-                character.AttachEntityComponent(character.gameObject.AddComponent<EntityTransformController>());
+                character.AttachEntityComponent<EntityTransformController>();
                 if (character.ModelAnimator != null)
                 {
-                    character.AttachEntityComponent(character.gameObject.AddComponent<EntityAnimatorController>());
+                    character.AttachEntityComponent<EntityAnimatorController>();
                 }
 
                 //  Entity Skill Info

@@ -10,18 +10,14 @@ public class EntityTransformController : LOPMonoEntityComponentBase
     private List<EntityTransformSnap> entityTransformSnaps = new List<EntityTransformSnap>();
     private AverageQueue latencies = new AverageQueue();
 
-    public override void OnAttached(IEntity entity)
+    protected override void OnAttached(IEntity entity)
     {
-        base.OnAttached(entity);
-
         SceneMessageBroker.AddSubscriber<EntityTransformSnap>(OnEntityTransformSnap).Where(snap => snap.entityId == Entity.EntityID);
         SceneMessageBroker.AddSubscriber<TickMessage.LateTickEnd>(OnLateTickEnd);
     }
 
-    public override void OnDetached()
+    protected override void OnDetached()
     {
-        base.OnDetached();
-
         SceneMessageBroker.RemoveSubscriber<EntityTransformSnap>(OnEntityTransformSnap);
         SceneMessageBroker.RemoveSubscriber<TickMessage.LateTickEnd>(OnLateTickEnd);
     }
