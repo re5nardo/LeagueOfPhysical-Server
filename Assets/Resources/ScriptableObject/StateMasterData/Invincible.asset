@@ -15,6 +15,15 @@ MonoBehaviour:
   id: 0
   className: State.BasicState
   lifespan: 5
-  classParams: []
   overlapResolveType: 0
+  stateAttributes:
+  - id: 0
   statusEffects: 00000000
+  references:
+    version: 1
+    00000000:
+      type: {class: SubClassStateAttribute, ns: , asm: Assembly-CSharp}
+      data:
+        name: Effect
+        classNames:
+        - InvincibleEffect

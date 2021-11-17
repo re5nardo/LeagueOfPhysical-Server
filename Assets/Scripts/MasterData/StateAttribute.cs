@@ -8,3 +8,9 @@ public class StateAttribute
 {
     public string name;
 }
+
+[Serializable]
+public class SubClassStateAttribute : StateAttribute
+{
+    public string[] classNames;
+}

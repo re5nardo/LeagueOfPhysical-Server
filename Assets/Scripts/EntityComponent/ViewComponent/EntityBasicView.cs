@@ -6,12 +6,10 @@ public class EntityBasicView : LOPMonoEntityComponentBase
 {
 	private GameObject modelGameObject = null;
 	private AnimationEventListener modelAnimationEventListener = null;
-	private List<Renderer> modelRenderers = new List<Renderer>();
 
+    public Renderer[] ModelRenderers { get; private set; }
     public Collider ModelCollider { get; private set; }
     public Animator ModelAnimator { get; private set; }
-
-    private Vector3 positionBeforePhysics;
 
     protected override void OnAttached(IEntity entity)
     {
@@ -105,7 +103,7 @@ public class EntityBasicView : LOPMonoEntityComponentBase
         Entity.CollisionReporter.onTriggerEnter += OnModelTriggerEnterHandler;
         Entity.CollisionReporter.onTriggerStay += OnModelTriggerStayHandler;
 
-        modelGameObject.GetComponentsInChildren(true, modelRenderers);
+        ModelRenderers = modelGameObject.GetComponentsInChildren<Renderer>(true);
     }
 
 	private void ClearModel()
@@ -134,8 +132,8 @@ public class EntityBasicView : LOPMonoEntityComponentBase
         Entity.CollisionReporter.onTriggerEnter -= OnModelTriggerEnterHandler;
         Entity.CollisionReporter.onTriggerStay -= OnModelTriggerStayHandler;
 
-        modelRenderers.Clear();
-	}
+        ModelRenderers = null;
+    }
 
 	private void OnAnimationEnd(string strAnimationName)
 	{
@@ -189,12 +187,12 @@ public class EntityBasicView : LOPMonoEntityComponentBase
     #region Physics Simulation
     protected virtual void OnBeforePhysicsSimulation(TickMessage.BeforePhysicsSimulation message)
     {
-        positionBeforePhysics = Entity.Position;
+        Entity.Blackboard.Set("positionBeforePhysics", Entity.Position);
     }
 
     protected virtual void OnAfterPhysicsSimulation(TickMessage.AfterPhysicsSimulation message)
     {
-        if (positionBeforePhysics != Entity.Position)
+        if (Entity.Blackboard.Get<Vector3>("positionBeforePhysics", true) != Entity.Position)
         {
             SceneMessageBroker.Publish(new GameMessage.EntityMove(Entity.EntityID));
         }

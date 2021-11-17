@@ -8,6 +8,7 @@ public class StateAttributeDispatcher
     private static Dictionary<Type, StateAttributeHandler> handlerMap = new Dictionary<Type, StateAttributeHandler>
     {
         {typeof(StateAttribute), new StateAttributeHandler()},
+        {typeof(SubClassStateAttribute), new SubClassStateAttributeHandler()},
     };
 
     public static void Dispatch(State.StateBase state, StateAttribute stateAttribute)
