@@ -4,10 +4,11 @@ public enum GameStateInput
     StateDone = 0,
 
     //  States
-    WaitForPlayersState = 100,
-    SubGameSelectionState = 101,
-    SubGamePrepareState = 102,
-    SubGameProgressState = 103,
-    SubGameEndState = 104,
-    GameEndState = 105,
+    GameEntryState = 100,
+    GamePrepareState = 101,
+    SubGameSelectionState = 102,
+    SubGamePrepareState = 103,
+    SubGameProgressState = 104,
+    SubGameEndState = 105,
+    GameEndState = 106,
 }

@@ -5,48 +5,51 @@ using UnityEngine.SceneManagement;
 using GameFramework.FSM;
 using System;
 
-public class SubGamePrepareState : MonoStateBase
+namespace GameState
 {
-    public override void Enter()
+    public class SubGamePrepareState : MonoStateBase
     {
-        base.Enter();
-
-        StopCoroutine("Procedure");
-        StartCoroutine("Procedure");
-    }
-
-    public override void Exit()
-    {
-        base.Exit();
-
-        StopCoroutine("Procedure");
-    }
-
-    public override IState GetNext<I>(I input)
-    {
-        if (!Enum.TryParse(input.ToString(), out GameStateInput gameStateInput))
+        public override void Enter()
         {
-            Debug.LogError($"Invalid input! input : {input}");
-            return default;
+            base.Enter();
+
+            StopCoroutine("Procedure");
+            StartCoroutine("Procedure");
         }
 
-        switch (gameStateInput)
+        public override void Exit()
         {
-            case GameStateInput.StateDone:
-                return gameObject.GetOrAddComponent<SubGameProgressState>();
+            base.Exit();
+
+            StopCoroutine("Procedure");
         }
 
-        throw new Exception($"Invalid transition: {GetType().Name} with {gameStateInput}");
+        public override IState GetNext<I>(I input)
+        {
+            if (!Enum.TryParse(input.ToString(), out GameStateInput gameStateInput))
+            {
+                Debug.LogError($"Invalid input! input : {input}");
+                return default;
+            }
+
+            switch (gameStateInput)
+            {
+                case GameStateInput.StateDone:
+                    return gameObject.GetOrAddComponent<GameState.SubGameProgressState>();
+            }
+
+            throw new Exception($"Invalid transition: {GetType().Name} with {gameStateInput}");
+        }
+
+        private IEnumerator Procedure()
+        {
+            yield return SceneManager.LoadSceneAsync(LOP.Game.Current.GameManager.SubGameData.sceneName, LoadSceneMode.Additive);
+
+            yield return SubGameBase.Current.Initialize();
+
+            FSM.MoveNext(GameStateInput.StateDone);
+        }
     }
 
-    private IEnumerator Procedure()
-    {
-        yield return SceneManager.LoadSceneAsync(LOP.Game.Current.GameManager.SubGameData.sceneName, LoadSceneMode.Additive);
-
-        yield return SubGameBase.Current.Initialize();
-
-        FSM.MoveNext(GameStateInput.StateDone);
-    }
+    //- ready(맵 로딩, 캐릭터 로딩 등등) 체크
 }
-
-//- ready(맵 로딩, 캐릭터 로딩 등등) 체크

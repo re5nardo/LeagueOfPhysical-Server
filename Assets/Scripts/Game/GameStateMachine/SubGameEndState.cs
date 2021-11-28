@@ -4,22 +4,26 @@ using UnityEngine;
 using GameFramework.FSM;
 using System;
 
-public class SubGameEndState : MonoStateBase
+namespace GameState
 {
-    public override IState GetNext<I>(I input)
+    public class SubGameEndState : MonoStateBase
     {
-        if (!Enum.TryParse(input.ToString(), out GameStateInput gameStateInput))
+        public override IState GetNext<I>(I input)
         {
-            Debug.LogError($"Invalid input! input : {input}");
-            return default;
-        }
+            if (!Enum.TryParse(input.ToString(), out GameStateInput gameStateInput))
+            {
+                Debug.LogError($"Invalid input! input : {input}");
+                return default;
+            }
 
-        switch (gameStateInput)
-        {
-            case GameStateInput.StateDone:
-                return gameObject.GetOrAddComponent<GameEndState>();
-        }
+            switch (gameStateInput)
+            {
+                case GameStateInput.StateDone:
+                    return gameObject.GetOrAddComponent<GameState.GameEndState>();
+            }
 
-        throw new Exception($"Invalid transition: {GetType().Name} with {gameStateInput}");
+            throw new Exception($"Invalid transition: {GetType().Name} with {gameStateInput}");
+        }
     }
+
 }

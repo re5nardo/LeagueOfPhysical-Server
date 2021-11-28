@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using GameFramework.FSM;
@@ -6,25 +6,8 @@ using System;
 
 namespace GameState
 {
-    public class SubGameProgressState : MonoStateBase
+    public class GameEntryState : MonoStateBase
     {
-        public override void Enter()
-        {
-            base.Enter();
-
-            SubGameBase.Current.StartGame();
-        }
-
-        public override void Execute()
-        {
-            base.Execute();
-
-            if (SubGameBase.Current.IsGameEnd)
-            {
-                FSM.MoveNext(GameStateInput.StateDone);
-            }
-        }
-
         public override IState GetNext<I>(I input)
         {
             if (!Enum.TryParse(input.ToString(), out GameStateInput gameStateInput))
@@ -35,8 +18,8 @@ namespace GameState
 
             switch (gameStateInput)
             {
-                case GameStateInput.StateDone:
-                    return gameObject.GetOrAddComponent<GameState.SubGameClearState>();
+                case GameStateInput.GamePrepareState:
+                    return gameObject.GetOrAddComponent<GameState.GamePrepareState>();
             }
 
             throw new Exception($"Invalid transition: {GetType().Name} with {gameStateInput}");
