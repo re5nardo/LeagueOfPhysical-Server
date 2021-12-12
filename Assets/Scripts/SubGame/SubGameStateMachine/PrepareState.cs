@@ -6,7 +6,7 @@ using System;
 
 namespace SubGameState
 {
-    public class SubGameEntryState : MonoStateBase
+    public class PrepareState : MonoStateBase
     {
         public override IState GetNext<I>(I input)
         {
@@ -16,13 +16,14 @@ namespace SubGameState
                 return default;
             }
 
-            switch (subGameStateInput)
-            {
-                case SubGameStateInput.SubGamePrepareState:
-                    return gameObject.GetOrAddComponent<SubGameState.SubGamePrepareState>();
-            }
-
             throw new Exception($"Invalid transition: {GetType().Name} with {subGameStateInput}");
+        }
+
+        private IEnumerator Procedure()
+        {
+            //  Load SubGameSelection resource
+
+            yield break;
         }
     }
 }

@@ -5,7 +5,7 @@ using GameFramework.FSM;
 
 public class SubGameStateMachine : MonoStateMachineBase
 {
-    public override IState InitState => gameObject.GetOrAddComponent<SubGameState.SubGameEntryState>();
+    public override IState InitState => gameObject.GetOrAddComponent<SubGameState.EntryState>();
 
     private void Awake()
     {
