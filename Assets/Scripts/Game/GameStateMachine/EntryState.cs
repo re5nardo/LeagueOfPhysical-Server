@@ -6,7 +6,7 @@ using System;
 
 namespace GameState
 {
-    public class GameEntryState : MonoStateBase
+    public class EntryState : MonoStateBase
     {
         public override IState GetNext<I>(I input)
         {
@@ -18,8 +18,8 @@ namespace GameState
 
             switch (gameStateInput)
             {
-                case GameStateInput.GamePrepareState:
-                    return gameObject.GetOrAddComponent<GameState.GamePrepareState>();
+                case GameStateInput.PrepareState:
+                    return gameObject.GetOrAddComponent<GameState.PrepareState>();
             }
 
             throw new Exception($"Invalid transition: {GetType().Name} with {gameStateInput}");

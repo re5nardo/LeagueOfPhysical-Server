@@ -13,7 +13,7 @@ namespace LOP
         public SubGameData SubGameData => SubGameData.Get(subGameId);
         public MapData MapData => MapData.Get(mapId);
 
-        public bool IsGameEnd => gameStateMachine.CurrentState is GameState.GameEndState;
+        public bool IsGameEnd => gameStateMachine.CurrentState is GameState.EndState;
 
         private void Awake()
         {
@@ -31,7 +31,7 @@ namespace LOP
 
         public void StartGame()
         {
-            gameStateMachine.MoveNext(GameStateInput.GamePrepareState);
+            gameStateMachine.MoveNext(GameStateInput.PrepareState);
         }
     }
 }

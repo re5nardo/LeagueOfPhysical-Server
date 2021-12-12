@@ -8,7 +8,7 @@ using NetworkModel.Mirror;
 
 namespace GameState
 {
-    public class GameEndState : MonoStateBase
+    public class EndState : MonoStateBase
     {
         public override void Enter()
         {
@@ -62,7 +62,7 @@ namespace GameState
             switch (gameStateInput)
             {
                 case GameStateInput.StateDone:
-                    return gameObject.GetOrAddComponent<GameEndState>();
+                    return gameObject.GetOrAddComponent<EndState>();
             }
 
             throw new Exception($"Invalid transition: {GetType().Name} with {gameStateInput}");

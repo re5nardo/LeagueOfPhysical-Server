@@ -8,7 +8,7 @@ using NetworkModel.Mirror;
 
 namespace GameState
 {
-    public class GamePrepareState : MonoStateBase
+    public class PrepareState : MonoStateBase
     {
         private Dictionary<string, float> playerPrepareStates = new Dictionary<string, float>();
         private bool resourceLoaded = false;
