@@ -35,7 +35,7 @@ namespace GameState
             switch (gameStateInput)
             {
                 case GameStateInput.StateDone:
-                    return gameObject.GetOrAddComponent<GameState.SubGameEndState>();
+                    return gameObject.GetOrAddComponent<GameState.EndState>();
             }
 
             throw new Exception($"Invalid transition: {GetType().Name} with {gameStateInput}");
@@ -43,8 +43,6 @@ namespace GameState
 
         private IEnumerator Procedure()
         {
-            yield return SubGameBase.Current.Finalize();
-
             yield return SceneManager.UnloadSceneAsync(LOP.Game.Current.GameManager.SubGameData.sceneName, UnloadSceneOptions.UnloadAllEmbeddedSceneObjects);
 
             LOP.Game.Current.GameManager.subGameId = null;
@@ -53,5 +51,4 @@ namespace GameState
             FSM.MoveNext(GameStateInput.StateDone);
         }
     }
-
 }

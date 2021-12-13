@@ -8,18 +8,11 @@ namespace GameState
 {
     public class SubGameProgressState : MonoStateBase
     {
-        public override void Enter()
-        {
-            base.Enter();
-
-            SubGameBase.Current.StartGame();
-        }
-
         public override void Execute()
         {
             base.Execute();
-
-            if (SubGameBase.Current.IsGameEnd)
+            
+            if (SubGameBase.Current.SubGameStateMachine.CurrentState.GetType() == typeof(SubGameState.EndState))
             {
                 FSM.MoveNext(GameStateInput.StateDone);
             }

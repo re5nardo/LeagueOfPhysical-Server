@@ -34,19 +34,19 @@ public class JumpWang : SubGameBase
 
     protected override IEnumerator OnInitialize()
     {
-        yield return SceneManager.LoadSceneAsync(LOP.Game.Current.GameManager.MapData.sceneName, LoadSceneMode.Additive);
-
         foreach (var entity in Entities.GetAll<LOPMonoEntityBase>())
         {
             entity.Rigidbody.constraints = RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation;
         }
 
         Physics.gravity *= LOP.Game.Current.GameManager.MapData.mapEnvironment.GravityFactor;
+
+        yield break;
     }
 
     protected override IEnumerator OnFinalize()
     {
-        yield return SceneManager.UnloadSceneAsync(LOP.Game.Current.GameManager.MapData.sceneName, UnloadSceneOptions.UnloadAllEmbeddedSceneObjects);
+        yield break;
     }
 
     protected override void OnGameStart()

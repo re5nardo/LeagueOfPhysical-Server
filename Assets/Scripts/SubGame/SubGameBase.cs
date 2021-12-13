@@ -15,14 +15,14 @@ public abstract class SubGameBase : MonoBehaviour
     protected int startTick;
     protected float ElapsedTime => (Game.Current.CurrentTick - startTick) * Game.Current.TickInterval;
 
-    private SubGameStateMachine subGameStateMachine = null;
+    public SubGameStateMachine SubGameStateMachine { get; private set; }
 
     private void Awake()
     {
         Current = this;
 
-        subGameStateMachine = new GameObject("SubGameStateMachine").AddComponent<SubGameStateMachine>();
-        subGameStateMachine.StartStateMachine();
+        SubGameStateMachine = new GameObject("SubGameStateMachine").AddComponent<SubGameStateMachine>();
+        SubGameStateMachine.StartStateMachine();
     }
 
     private void OnDestroy()
@@ -32,9 +32,9 @@ public abstract class SubGameBase : MonoBehaviour
             Current = null;
         }
 
-        if (subGameStateMachine != null)
+        if (SubGameStateMachine != null)
         {
-            Destroy(subGameStateMachine.gameObject);
+            Destroy(SubGameStateMachine.gameObject);
         }
     }
 
@@ -60,8 +60,6 @@ public abstract class SubGameBase : MonoBehaviour
 
         SceneMessageBroker.AddSubscriber<TickMessage.Tick>(OnTickMessage);
         SceneMessageBroker.AddSubscriber<TickMessage.EarlyTickEnd>(OnEarlyTickEndMessage);
-
-        subGameStateMachine.MoveNext(SubGameStateInput.PrepareState);
 
         OnGameStart();
 

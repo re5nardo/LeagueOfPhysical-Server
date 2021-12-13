@@ -6,21 +6,23 @@ using System;
 
 namespace SubGameState
 {
-    public class EntryState : MonoStateBase
+    public class ProgressState : MonoStateBase
     {
         public override void Enter()
         {
             base.Enter();
 
-            StopCoroutine("Procedure");
-            StartCoroutine("Procedure");
+            SubGameBase.Current.StartGame();
         }
 
-        public override void Exit()
+        public override void Execute()
         {
-            base.Exit();
+            base.Execute();
 
-            StopCoroutine("Procedure");
+            if (SubGameBase.Current.IsGameEnd)
+            {
+                FSM.MoveNext(GameStateInput.StateDone);
+            }
         }
 
         public override IState GetNext<I>(I input)
@@ -34,17 +36,10 @@ namespace SubGameState
             switch (subGameStateInput)
             {
                 case SubGameStateInput.StateDone:
-                    return gameObject.GetOrAddComponent<SubGameState.PrepareState>();
+                    return gameObject.GetOrAddComponent<SubGameState.ClearState>();
             }
 
             throw new Exception($"Invalid transition: {GetType().Name} with {subGameStateInput}");
-        }
-
-        private IEnumerator Procedure()
-        {
-            yield return SubGameBase.Current.Initialize();
-
-            FSM.MoveNext(GameStateInput.StateDone);
         }
     }
 }

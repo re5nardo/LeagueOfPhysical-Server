@@ -25,5 +25,4 @@ namespace GameState
             throw new Exception($"Invalid transition: {GetType().Name} with {gameStateInput}");
         }
     }
-
 }

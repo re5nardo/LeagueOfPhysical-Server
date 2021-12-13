@@ -5,9 +5,9 @@ using GameFramework.FSM;
 using System;
 using UnityEngine.SceneManagement;
 
-namespace GameState
+namespace SubGameState
 {
-    public class SubGamePrepareState : MonoStateBase
+    public class ClearState : MonoStateBase
     {
         public override void Enter()
         {
@@ -26,24 +26,26 @@ namespace GameState
 
         public override IState GetNext<I>(I input)
         {
-            if (!Enum.TryParse(input.ToString(), out GameStateInput gameStateInput))
+            if (!Enum.TryParse(input.ToString(), out SubGameStateInput subGameStateInput))
             {
                 Debug.LogError($"Invalid input! input : {input}");
                 return default;
             }
 
-            switch (gameStateInput)
+            switch (subGameStateInput)
             {
-                case GameStateInput.StateDone:
-                    return gameObject.GetOrAddComponent<GameState.SubGameProgressState>();
+                case SubGameStateInput.StateDone:
+                    return gameObject.GetOrAddComponent<SubGameState.EndState>();
             }
 
-            throw new Exception($"Invalid transition: {GetType().Name} with {gameStateInput}");
+            throw new Exception($"Invalid transition: {GetType().Name} with {subGameStateInput}");
         }
 
         private IEnumerator Procedure()
         {
-            yield return SceneManager.LoadSceneAsync(LOP.Game.Current.GameManager.SubGameData.sceneName, LoadSceneMode.Additive);
+            yield return SceneManager.UnloadSceneAsync(LOP.Game.Current.GameManager.MapData.sceneName, UnloadSceneOptions.UnloadAllEmbeddedSceneObjects);
+
+            yield return SubGameBase.Current.Finalize();
 
             FSM.MoveNext(GameStateInput.StateDone);
         }
