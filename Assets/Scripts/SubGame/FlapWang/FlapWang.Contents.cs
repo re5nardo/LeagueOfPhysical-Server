@@ -61,7 +61,7 @@ public partial class FlapWang
 
         if (entity.EntityRole == EntityRole.Player)
         {
-            var spawnPoint = LOP.Game.Current.GameManager.MapData.spawnPoints[Random.Range(0, LOP.Game.Current.GameManager.MapData.spawnPoints.Length)];
+            var spawnPoint = LOP.Game.Current.MapData.spawnPoints[Random.Range(0, LOP.Game.Current.MapData.spawnPoints.Length)];
             entity.Position = spawnPoint.position;
             entity.Rotation = spawnPoint.rotation;
         }
@@ -121,7 +121,7 @@ public partial class FlapWang
                 LOP.Room.Instance.ExpectedPlayerList?.ForEach(expectedPlayer =>
                 {
                     var character = LOP.Game.Current.CreatePlayerCharacter(expectedPlayer, Define.MasterData.CharacterID.GAREN);
-                    var spawnPoint = LOP.Game.Current.GameManager.MapData.spawnPoints[Random.Range(0, LOP.Game.Current.GameManager.MapData.spawnPoints.Length)];
+                    var spawnPoint = LOP.Game.Current.MapData.spawnPoints[Random.Range(0, LOP.Game.Current.MapData.spawnPoints.Length)];
                     character.Position = spawnPoint.position;
                     character.Rotation = spawnPoint.rotation;
                     character.Rigidbody.detectCollisions = false;

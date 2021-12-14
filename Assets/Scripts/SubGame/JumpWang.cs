@@ -26,7 +26,7 @@ public class JumpWang : SubGameBase
 
         if (entity.EntityRole == EntityRole.Player)
         {
-            var spawnPoint = LOP.Game.Current.GameManager.MapData.spawnPoints[Random.Range(0, LOP.Game.Current.GameManager.MapData.spawnPoints.Length)];
+            var spawnPoint = LOP.Game.Current.MapData.spawnPoints[Random.Range(0, LOP.Game.Current.MapData.spawnPoints.Length)];
             entity.Position = spawnPoint.position;
             entity.Rotation = spawnPoint.rotation;
         }
@@ -39,7 +39,7 @@ public class JumpWang : SubGameBase
             entity.Rigidbody.constraints = RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation;
         }
 
-        Physics.gravity *= LOP.Game.Current.GameManager.MapData.mapEnvironment.GravityFactor;
+        Physics.gravity *= LOP.Game.Current.MapData.mapEnvironment.GravityFactor;
 
         yield break;
     }
@@ -55,7 +55,7 @@ public class JumpWang : SubGameBase
 
         foreach (var playerCharacter in playerCharacters)
         {
-            var spawnPoint = LOP.Game.Current.GameManager.MapData.spawnPoints[Random.Range(0, LOP.Game.Current.GameManager.MapData.spawnPoints.Length)];
+            var spawnPoint = LOP.Game.Current.MapData.spawnPoints[Random.Range(0, LOP.Game.Current.MapData.spawnPoints.Length)];
             playerCharacter.Position = spawnPoint.position;
             playerCharacter.Rotation = spawnPoint.rotation;
         }

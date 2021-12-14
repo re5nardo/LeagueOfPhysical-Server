@@ -43,7 +43,7 @@ namespace SubGameState
 
         private IEnumerator Procedure()
         {
-            yield return SceneManager.UnloadSceneAsync(LOP.Game.Current.GameManager.MapData.sceneName, UnloadSceneOptions.UnloadAllEmbeddedSceneObjects);
+            yield return SceneManager.UnloadSceneAsync(LOP.Game.Current.MapData.sceneName, UnloadSceneOptions.UnloadAllEmbeddedSceneObjects);
 
             yield return SubGameBase.Current.Finalize();
 

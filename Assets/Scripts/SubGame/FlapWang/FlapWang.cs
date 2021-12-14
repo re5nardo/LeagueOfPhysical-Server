@@ -6,14 +6,14 @@ public partial class FlapWang : SubGameBase
 {
     protected override IEnumerator OnInitialize()
     {
-        Physics.gravity *= LOP.Game.Current.GameManager.MapData.mapEnvironment.GravityFactor;
+        Physics.gravity *= LOP.Game.Current.MapData.mapEnvironment.GravityFactor;
 
         yield break;
     }
 
     protected override IEnumerator OnFinalize()
     {
-        Physics.gravity /= LOP.Game.Current.GameManager.MapData.mapEnvironment.GravityFactor;
+        Physics.gravity /= LOP.Game.Current.MapData.mapEnvironment.GravityFactor;
 
         yield break;
     }

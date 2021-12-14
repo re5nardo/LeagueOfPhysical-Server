@@ -22,11 +22,13 @@ namespace LOP
         public ReadOnlyDictionary<int, string> EntityIDPlayerUserID { get; private set; }
         public ReadOnlyDictionary<string, WeakReference> PlayerUserIDPhotonPlayer { get; private set; }
 
-        public GameEventManager GameEventManager => gameEventManager;
-        public GameManager GameManager => gameManager;
+        public GameEventManager GameEventManager { get; private set; }
+        public GameStateMachine GameStateMachine { get; private set; }
 
-        private GameEventManager gameEventManager = null;
-        private GameManager gameManager = null;
+        public SubGameData SubGameData => SubGameData.Get(AppDataContainer.Get<MatchSettingData>().matchSetting.subGameId);
+        public MapData MapData => MapData.Get(AppDataContainer.Get<MatchSettingData>().matchSetting.mapId);
+
+        public bool IsGameEnd => GameStateMachine.CurrentState is GameState.EndState;
 
         public override IEnumerator Initialize()
         {
@@ -37,8 +39,8 @@ namespace LOP
             PlayerUserIDPhotonPlayer = new ReadOnlyDictionary<string, WeakReference>(playerUserIDPhotonPlayer);
 
             tickUpdater = gameObject.AddComponent<LOPTickUpdater>();
-            gameEventManager = gameObject.AddComponent<GameEventManager>();
-            gameManager = gameObject.AddComponent<GameManager>();
+            GameEventManager = gameObject.AddComponent<GameEventManager>();
+            GameStateMachine = new GameObject("GameStateMachine").AddComponent<GameStateMachine>();
 
             SceneMessageBroker.AddSubscriber<CS_RequestEmotionExpression>(CS_RequestEmotionExpressionHandler.Handle);
             SceneMessageBroker.AddSubscriber<CS_Synchronization>(CS_SynchronizationHandler.Handle);
@@ -66,6 +68,11 @@ namespace LOP
             entityIDPlayerUserID = null;
             playerUserIDPhotonPlayer = null;
 
+            if (GameStateMachine != null)
+            {
+                Destroy(GameStateMachine.gameObject);
+            }
+
             SceneMessageBroker.RemoveSubscriber<CS_RequestEmotionExpression>(CS_RequestEmotionExpressionHandler.Handle);
             SceneMessageBroker.RemoveSubscriber<CS_Synchronization>(CS_SynchronizationHandler.Handle);
             SceneMessageBroker.RemoveSubscriber<RoomMessage.PlayerEnter>(OnPlayerEnter);
@@ -74,7 +81,7 @@ namespace LOP
 
         protected override void OnBeforeRun()
         {
-            GameManager.StartGame();
+            GameStateMachine.MoveNext(GameStateInput.PrepareState);
         }
 
         private void OnTick(int tick)
@@ -90,7 +97,7 @@ namespace LOP
             SceneMessageBroker.Publish(new TickMessage.TickEnd(tick));
             SceneMessageBroker.Publish(new TickMessage.LateTickEnd(tick));
 
-            if (gameManager.IsGameEnd)
+            if (IsGameEnd)
             {
             }
         }

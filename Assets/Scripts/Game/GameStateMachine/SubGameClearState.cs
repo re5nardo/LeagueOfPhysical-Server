@@ -43,10 +43,7 @@ namespace GameState
 
         private IEnumerator Procedure()
         {
-            yield return SceneManager.UnloadSceneAsync(LOP.Game.Current.GameManager.SubGameData.sceneName, UnloadSceneOptions.UnloadAllEmbeddedSceneObjects);
-
-            LOP.Game.Current.GameManager.subGameId = null;
-            LOP.Game.Current.GameManager.mapId = null;
+            yield return SceneManager.UnloadSceneAsync(LOP.Game.Current.SubGameData.sceneName, UnloadSceneOptions.UnloadAllEmbeddedSceneObjects);
 
             FSM.MoveNext(GameStateInput.StateDone);
         }

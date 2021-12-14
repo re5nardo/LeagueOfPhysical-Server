@@ -44,7 +44,7 @@ public class FallingGame : SubGameBase
             entity.Rigidbody.constraints = RigidbodyConstraints.FreezeRotation;
         }
 
-        Physics.gravity *= LOP.Game.Current.GameManager.MapData.mapEnvironment.GravityFactor;
+        Physics.gravity *= LOP.Game.Current.MapData.mapEnvironment.GravityFactor;
 
         yield break;
     }

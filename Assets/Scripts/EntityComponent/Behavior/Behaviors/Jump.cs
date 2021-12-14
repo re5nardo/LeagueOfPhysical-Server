@@ -32,11 +32,11 @@ namespace Behavior
         {
             if (param.jumpType == JumpType.AddForce)
             {
-                Entity.Rigidbody.AddForce(param.normalizedPower * param.direction.normalized * LOP.Game.Current.GameManager.MapData.mapEnvironment.JumpPowerFactor, ForceMode.VelocityChange);
+                Entity.Rigidbody.AddForce(param.normalizedPower * param.direction.normalized * LOP.Game.Current.MapData.mapEnvironment.JumpPowerFactor, ForceMode.VelocityChange);
             }
             else if (param.jumpType == JumpType.FlapJump)
             {
-                Entity.Velocity = new Vector3(Entity.Velocity.x, LOP.Game.Current.GameManager.MapData.mapEnvironment.JumpPowerFactor, Entity.Velocity.z);
+                Entity.Velocity = new Vector3(Entity.Velocity.x, LOP.Game.Current.MapData.mapEnvironment.JumpPowerFactor, Entity.Velocity.z);
             }
 
             return false;

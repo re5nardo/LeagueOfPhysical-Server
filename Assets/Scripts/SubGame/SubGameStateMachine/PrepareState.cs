@@ -43,7 +43,7 @@ namespace SubGameState
 
         private IEnumerator Procedure()
         {
-            yield return SceneManager.LoadSceneAsync(LOP.Game.Current.GameManager.MapData.sceneName, LoadSceneMode.Additive);
+            yield return SceneManager.LoadSceneAsync(LOP.Game.Current.MapData.sceneName, LoadSceneMode.Additive);
 
             FSM.MoveNext(GameStateInput.StateDone);
         }
