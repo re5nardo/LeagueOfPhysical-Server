@@ -10,5 +10,7 @@ public class SubGameStateMachine : MonoStateMachineBase
     private void Awake()
     {
         gameObject.AddComponent<SubGameStateMachineViewer>();
+
+        StartStateMachine();
     }
 }
