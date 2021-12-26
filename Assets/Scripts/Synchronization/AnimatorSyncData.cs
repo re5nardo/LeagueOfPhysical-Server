@@ -5,31 +5,11 @@ using GameFramework;
 using System;
 
 [Serializable]
-public class EntityAnimatorSnap : ISnap
+public class AnimatorSyncData : ISyncData
 {
-    public int Tick { get; set; }
-    public int entityId;
     public float animatorSpeed;
     public AnimationParametersData animationParametersData = new AnimationParametersData();
     public List<AnimStateData> animStateDataList = new List<AnimStateData>();
-
-    public EntityAnimatorSnap() { }
-
-    public ISnap Clone()
-    {
-        EntityAnimatorSnap clone = new EntityAnimatorSnap();
-
-        clone.Tick = Tick;
-        clone.entityId = entityId;
-        clone.animatorSpeed = animatorSpeed;
-        clone.animationParametersData = animationParametersData.Clone();
-        animStateDataList?.ForEach(animStateData =>
-        {
-            clone.animStateDataList.Add(animStateData.Clone());
-        });
-
-        return clone;
-    }
 }
 
 [Serializable]

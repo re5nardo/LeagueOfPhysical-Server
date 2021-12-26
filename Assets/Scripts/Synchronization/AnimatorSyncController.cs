@@ -1,13 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System.Linq;
-using NetworkModel.Mirror;
 using GameFramework;
+using System.Linq;
 
-public class EntityAnimatorController : LOPMonoEntityComponentBase
+public class AnimatorSyncController : LOPMonoSyncControllerBase<AnimatorSyncData>
 {
-    private EntityAnimatorSnap entityAnimatorSnap = new EntityAnimatorSnap();
+    private AnimatorSyncData animatorSyncData = new AnimatorSyncData();
+    private AnimatorSyncData lastSyncData = new AnimatorSyncData();
 
     // Note: not an object[] array because otherwise initialization is real annoying
     private int[] lastIntParameters;
@@ -22,6 +22,8 @@ public class EntityAnimatorController : LOPMonoEntityComponentBase
 
     protected override void OnAttached(IEntity entity)
     {
+        base.OnAttached(entity);
+
         // store the animator parameters in a variable - the "Animator.parameters" getter allocates
         // a new parameter array every time it is accessed so we should avoid doing it in a loop
         parameters = Entity.ModelAnimator.parameters.Where(par => !Entity.ModelAnimator.IsParameterControlledByCurve(par.nameHash)).ToArray();
@@ -33,68 +35,72 @@ public class EntityAnimatorController : LOPMonoEntityComponentBase
         transitionHash = new int[Entity.ModelAnimator.layerCount];
         layerWeight = new float[Entity.ModelAnimator.layerCount];
 
-        SceneMessageBroker.AddSubscriber<EntityAnimatorSnap>(OnEntityAnimatorSnap).Where(snap => snap.entityId == Entity.EntityID);
         SceneMessageBroker.AddSubscriber<TickMessage.LateTickEnd>(OnLateTickEnd);
     }
 
     protected override void OnDetached()
     {
-        SceneMessageBroker.RemoveSubscriber<EntityAnimatorSnap>(OnEntityAnimatorSnap);
+        base.OnDetached();
+
         SceneMessageBroker.RemoveSubscriber<TickMessage.LateTickEnd>(OnLateTickEnd);
-    }
-
-    private void OnEntityAnimatorSnap(EntityAnimatorSnap entityAnimatorSnap)
-    {
-        if (Entity.HasAuthority)
-        {
-            return;
-        }
-
-        var synchronization = ObjectPool.Instance.GetObject<SC_Synchronization>();
-        synchronization.listSnap.Add(entityAnimatorSnap);
-
-        RoomNetwork.Instance.SendToNear(synchronization, Entity.Position, LOP.Game.BROADCAST_SCOPE_RADIUS, instant: true);
-
-        SyncAnimator(entityAnimatorSnap);
     }
 
     private void OnLateTickEnd(TickMessage.LateTickEnd message)
     {
-        if (Entity.HasAuthority)
+        if (HasAuthority)
         {
-            var synchronization = ObjectPool.Instance.GetObject<SC_Synchronization>();
-            SetEntityAnimatorSnap(entityAnimatorSnap);
-            synchronization.listSnap.Add(entityAnimatorSnap);
+            if (lastSyncData == null || lastSyncData.ObjectToHash() != GetSyncData().ObjectToHash())
+            {
+                var syncData = GetSyncData();
+                Sync(syncData);
 
-            RoomNetwork.Instance.SendToNear(synchronization, Entity.Position, LOP.Game.BROADCAST_SCOPE_RADIUS, instant: true);
+                lastSyncData = syncData;
+            }
         }
     }
 
-    private void SyncAnimator(EntityAnimatorSnap entityAnimatorSnap)
+    public override AnimatorSyncData GetSyncData()
     {
-        Entity.ModelAnimator.speed = entityAnimatorSnap.animatorSpeed;
+        return SetAnimatorSyncData(animatorSyncData);
+    }
+
+    public override void OnSync(SyncDataEntry value)
+    {
+        if (HasAuthority)
+        {
+            return;
+        }
+
+        SyncAnimator(value.data as AnimatorSyncData);
+
+        lastSyncData = value.data as AnimatorSyncData;
+    }
+
+    private void SyncAnimator(AnimatorSyncData animatorSyncData)
+    {
+        Entity.ModelAnimator.speed = animatorSyncData.animatorSpeed;
 
         for (int i = 0; i < parameters.Length; i++)
         {
             AnimatorControllerParameter par = parameters[i];
             if (par.type == AnimatorControllerParameterType.Int)
             {
-                int newIntValue = (int)entityAnimatorSnap.animationParametersData.values[i];
+                int newIntValue = (int)animatorSyncData.animationParametersData.values[i];
                 Entity.ModelAnimator.SetInteger(par.nameHash, newIntValue);
             }
             else if (par.type == AnimatorControllerParameterType.Float)
             {
-                float newFloatValue = (float)entityAnimatorSnap.animationParametersData.values[i];
+                float newFloatValue = (float)animatorSyncData.animationParametersData.values[i];
                 Entity.ModelAnimator.SetFloat(par.nameHash, newFloatValue);
             }
             else if (par.type == AnimatorControllerParameterType.Bool)
             {
-                bool newBoolValue = (bool)entityAnimatorSnap.animationParametersData.values[i];
+                bool newBoolValue = (bool)animatorSyncData.animationParametersData.values[i];
                 Entity.ModelAnimator.SetBool(par.nameHash, newBoolValue);
             }
         }
 
-        entityAnimatorSnap.animStateDataList?.ForEach(animStateData =>
+        animatorSyncData.animStateDataList?.ForEach(animStateData =>
         {
             if (animStateData.stateHash != 0 && Entity.ModelAnimator.enabled)
             {
@@ -149,34 +155,32 @@ public class EntityAnimatorController : LOPMonoEntityComponentBase
         return change;
     }
 
-    private void SetEntityAnimatorSnap(EntityAnimatorSnap entityAnimatorSnap)
+    private AnimatorSyncData SetAnimatorSyncData(AnimatorSyncData animatorSyncData)
     {
-        entityAnimatorSnap.Tick = Game.Current.CurrentTick;
-        entityAnimatorSnap.entityId = Entity.EntityID;
-        entityAnimatorSnap.animatorSpeed = Entity.ModelAnimator.speed;
+        animatorSyncData.animatorSpeed = Entity.ModelAnimator.speed;
 
-        entityAnimatorSnap.animationParametersData.values.Clear();
+        animatorSyncData.animationParametersData.values.Clear();
         for (int i = 0; i < Entity.ModelAnimator.parameters.Length; i++)
         {
             AnimatorControllerParameter par = Entity.ModelAnimator.parameters[i];
             if (par.type == AnimatorControllerParameterType.Int)
             {
                 int value = Entity.ModelAnimator.GetInteger(par.nameHash);
-                entityAnimatorSnap.animationParametersData.values.Add(value);
+                animatorSyncData.animationParametersData.values.Add(value);
             }
             else if (par.type == AnimatorControllerParameterType.Float)
             {
                 float value = Entity.ModelAnimator.GetFloat(par.nameHash);
-                entityAnimatorSnap.animationParametersData.values.Add(value);
+                animatorSyncData.animationParametersData.values.Add(value);
             }
             else if (par.type == AnimatorControllerParameterType.Bool)
             {
                 bool value = Entity.ModelAnimator.GetBool(par.nameHash);
-                entityAnimatorSnap.animationParametersData.values.Add(value);
+                animatorSyncData.animationParametersData.values.Add(value);
             }
         }
 
-        entityAnimatorSnap.animStateDataList.Clear();
+        animatorSyncData.animStateDataList.Clear();
         for (int i = 0; i < Entity.ModelAnimator.layerCount; i++)
         {
             if (!CheckAnimStateChanged(out var stateHash, out var normalizedTime, i))
@@ -190,7 +194,9 @@ public class EntityAnimatorController : LOPMonoEntityComponentBase
             animStateData.layerId = i;
             animStateData.weight = layerWeight[i];
 
-            entityAnimatorSnap.animStateDataList.Add(animStateData);
+            animatorSyncData.animStateDataList.Add(animStateData);
         }
+
+        return animatorSyncData;
     }
 }

@@ -74,7 +74,7 @@ namespace LOP
                 character.AttachEntityComponent<TransformSyncController>();
                 if (character.ModelAnimator != null)
                 {
-                    character.AttachEntityComponent<EntityAnimatorController>();
+                    character.AttachEntityComponent<AnimatorSyncController>();
                 }
 
                 //  Entity Skill Info
@@ -117,7 +117,7 @@ namespace LOP
             character.AttachEntityComponent<TransformSyncController>();
             if (character.ModelAnimator != null)
             {
-                character.AttachEntityComponent<EntityAnimatorController>();
+                character.AttachEntityComponent<AnimatorSyncController>();
             }
 
             //  Entity Skill Info

@@ -5,6 +5,7 @@ using GameFramework;
 
 public class TransformSyncController : LOPMonoSyncControllerBase<TransformSyncData>
 {
+    private TransformSyncData transformSyncData = new TransformSyncData();
     private List<SyncDataEntry> syncDataEntries = new List<SyncDataEntry>();
     private AverageQueue latencies = new AverageQueue();
     private TransformSyncData lastSyncData;
@@ -39,7 +40,7 @@ public class TransformSyncController : LOPMonoSyncControllerBase<TransformSyncDa
 
     public override TransformSyncData GetSyncData()
     {
-        return new TransformSyncData(Entity);
+        return transformSyncData.Set(Entity);
     }
 
     public override void OnSync(SyncDataEntry value)

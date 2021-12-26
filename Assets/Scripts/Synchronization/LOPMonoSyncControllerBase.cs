@@ -13,6 +13,8 @@ public abstract class LOPMonoSyncControllerBase<T> : LOPMonoEntityComponentBase,
 
     protected override void OnAttached(IEntity entity)
     {
+        base.OnAttached(entity);
+
         OwnerId = Entity.OwnerId;
 
         SceneMessageBroker.AddSubscriber<CS_SyncController>(OnSyncController).Where(syncController => syncController.syncControllerData.type == GetType().Name && syncController.syncControllerData.entityId == Entity.EntityID);
@@ -21,6 +23,8 @@ public abstract class LOPMonoSyncControllerBase<T> : LOPMonoEntityComponentBase,
 
     protected override void OnDetached()
     {
+        base.OnDetached();
+
         SceneMessageBroker.RemoveSubscriber<CS_SyncController>(OnSyncController);
         SceneMessageBroker.RemoveSubscriber<CS_Synchronization>(OnSynchronization);
     }

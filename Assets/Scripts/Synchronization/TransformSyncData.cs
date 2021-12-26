@@ -12,6 +12,8 @@ public class TransformSyncData : ISyncData
     public Vector3 velocity;
     public Vector3 angularVelocity;
 
+    public TransformSyncData() { }
+
     public TransformSyncData(IEntity entity)
     {
         Set(entity);
