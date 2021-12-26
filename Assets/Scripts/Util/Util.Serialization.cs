@@ -9,7 +9,7 @@ using System.Runtime.Serialization;
 public partial class Util
 {
     private static BinaryFormatter formatter;
-    private static BinaryFormatter Formatter
+    public static BinaryFormatter Formatter
     {
         get
         {

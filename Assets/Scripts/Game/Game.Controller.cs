@@ -71,7 +71,7 @@ namespace LOP
 
                 character.AttachEntityComponent<PlayerView>();
 
-                character.AttachEntityComponent<EntityTransformController>();
+                character.AttachEntityComponent<TransformSyncController>();
                 if (character.ModelAnimator != null)
                 {
                     character.AttachEntityComponent<EntityAnimatorController>();
@@ -93,6 +93,48 @@ namespace LOP
             }
         }
 
+        public Character CreatePlayerCharacter(string userId, int characterId)
+        {
+            //  Create character(Player)
+            Character character = EntityHelper.CreatePlayerCharacter(userId, characterId);
+
+            IDMap.UserIdEntityId.Set(userId, character.EntityID);
+
+            //  EntityAdditionalDatas
+            CharacterGrowthData characterGrowthData = EntityAdditionalDataInitializer.Instance.Initialize(new CharacterGrowthData());
+            character.AttachEntityComponent(characterGrowthData);
+
+            EmotionExpressionData emotionExpressionData = EntityAdditionalDataInitializer.Instance.Initialize(new EmotionExpressionData(), character.EntityID);
+            character.AttachEntityComponent(emotionExpressionData);
+
+            EntityInventory entityInventory = EntityAdditionalDataInitializer.Instance.Initialize(new EntityInventory(), character.EntityID);
+            character.AttachEntityComponent(entityInventory);
+
+            character.AttachEntityComponent<NearEntityController>();
+
+            character.AttachEntityComponent<PlayerView>();
+
+            character.AttachEntityComponent<TransformSyncController>();
+            if (character.ModelAnimator != null)
+            {
+                character.AttachEntityComponent<EntityAnimatorController>();
+            }
+
+            //  Entity Skill Info
+            //  (should receive data from server db?)
+            SkillController controller = character.GetComponent<SkillController>();
+            foreach (int nSkillID in character.MasterData.SkillIDs)
+            {
+                controller.AddSkill(nSkillID);
+            }
+
+            var entitySkillInfo = new SC_EntitySkillInfo();
+            entitySkillInfo.entityId = character.EntityID;
+            entitySkillInfo.dicSkillInfo = controller.GetEntitySkillInfo();
+
+            return character;
+        }
+
         private void OnPlayerLeave(RoomMessage.PlayerLeave message)
         {
             var conn = message.networkConnection;
@@ -102,7 +144,7 @@ namespace LOP
 
             var entity = Entities.Get<LOPMonoEntityBase>(entityId);
 
-            entity.OwnerId = "server";
+            entity.OwnerId = LOP.Application.UserId;
 
             NearEntityController nearEntityController = entity.GetEntityComponent<NearEntityController>();
             entity.DetachEntityComponent(nearEntityController);
@@ -281,7 +323,7 @@ namespace LOP
                     .SetLifespan(masterData.Lifespan)
                     .SetEntityType(EntityType.GameItem)
                     .SetEntityRole(EntityRole.NPC)
-                    .SetOwnerId("server")
+                    .SetOwnerId(LOP.Application.UserId)
                     .Build();
 
                 StateController stateController = item.GetComponent<StateController>();

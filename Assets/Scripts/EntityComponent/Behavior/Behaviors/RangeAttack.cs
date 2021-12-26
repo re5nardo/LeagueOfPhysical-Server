@@ -124,7 +124,7 @@ namespace Behavior
 				.SetMovementSpeed(fMovementSpeed)
                 .SetEntityType(EntityType.Projectile)
                 .SetEntityRole(EntityRole.NPC)
-                .SetOwnerId("server")
+                .SetOwnerId(LOP.Application.UserId)
                 .Build();
 
             StateController stateController = projectile.GetComponent<StateController>();

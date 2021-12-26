@@ -15,7 +15,7 @@ namespace Entity
         public bool IsLocalEntity => EntityID < 0;
         public bool Initialized { get; private set; }
 
-        private string ownerId = "server";
+        private string ownerId = LOP.Application.UserId;
         public string OwnerId
         {
             get => ownerId;
@@ -33,7 +33,7 @@ namespace Entity
             }
         }
 
-        public bool HasAuthority => OwnerId == "server" || OwnerId == "local";
+        public bool HasAuthority => OwnerId == LOP.Application.UserId || OwnerId == "local";
 
         public EntityBasicView EntityBasicView { get; protected set; }
 

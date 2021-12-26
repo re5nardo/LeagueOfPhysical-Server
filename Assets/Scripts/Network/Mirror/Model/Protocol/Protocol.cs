@@ -20,6 +20,7 @@ namespace NetworkModel.Mirror
         public const byte SC_GameState = 10;
         public const byte SC_GameEnd = 11;
         public const byte SC_OwnerChanged = 12;
+        public const byte SC_SyncController = 13;
 
         public const byte CS_NotifyMoveInputData = 112;
         public const byte CS_NotifySkillInputData = 113;
@@ -28,6 +29,7 @@ namespace NetworkModel.Mirror
         public const byte CS_GamePreparation = 116;
         public const byte CS_SubGamePreparation = 117;
         public const byte CS_Synchronization = 118;
+        public const byte CS_SyncController = 119;
     }
 
     #region Protocols (Server to Client)
@@ -204,9 +206,8 @@ namespace NetworkModel.Mirror
     [Serializable]
     public class SC_Synchronization : IMirrorMessage
     {
+        public SyncDataEntry syncDataEntry;
         public List<ISnap> listSnap = new List<ISnap>();
-
-        public SC_Synchronization() { }
 
         public byte GetMessageId()
         {
@@ -215,6 +216,7 @@ namespace NetworkModel.Mirror
 
         public void Clear()
         {
+            syncDataEntry = default;
             listSnap.Clear();
         }
     }
@@ -278,6 +280,22 @@ namespace NetworkModel.Mirror
         {
             entityId = default;
             ownerId = default;
+        }
+    }
+
+    [Serializable]
+    public class SC_SyncController : IMirrorMessage
+    {
+        public SyncControllerData syncControllerData;
+
+        public byte GetMessageId()
+        {
+            return MessageIds.SC_SyncController;
+        }
+
+        public void Clear()
+        {
+            syncControllerData = default;
         }
     }
     #endregion
@@ -418,6 +436,7 @@ namespace NetworkModel.Mirror
     [Serializable]
     public class CS_Synchronization : IMirrorMessage
     {
+        public SyncDataEntry syncDataEntry;
         public List<ISnap> listSnap = new List<ISnap>();
 
         public byte GetMessageId()
@@ -427,7 +446,24 @@ namespace NetworkModel.Mirror
 
         public void Clear()
         {
+            syncDataEntry = default;
             listSnap.Clear();
+        }
+    }
+
+    [Serializable]
+    public class CS_SyncController : IMirrorMessage
+    {
+        public SyncControllerData syncControllerData;
+
+        public byte GetMessageId()
+        {
+            return MessageIds.CS_SyncController;
+        }
+
+        public void Clear()
+        {
+            syncControllerData = default;
         }
     }
     #endregion
