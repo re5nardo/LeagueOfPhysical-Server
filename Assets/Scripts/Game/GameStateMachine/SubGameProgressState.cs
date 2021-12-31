@@ -8,14 +8,11 @@ namespace GameState
 {
     public class SubGameProgressState : MonoStateBase
     {
-        public override void Execute()
+        public override IEnumerator OnExecute()
         {
-            base.Execute();
-            
-            if (SubGameBase.Current.SubGameStateMachine.CurrentState.GetType() == typeof(SubGameState.EndState))
-            {
-                FSM.MoveNext(GameStateInput.StateDone);
-            }
+            yield return new WaitUntil(() => SubGameBase.Current.SubGameStateMachine.CurrentState.GetType() == typeof(SubGameState.EndState));
+
+            FSM.MoveNext(GameStateInput.StateDone);
         }
 
         public override IState GetNext<I>(I input)
@@ -28,8 +25,7 @@ namespace GameState
 
             switch (gameStateInput)
             {
-                case GameStateInput.StateDone:
-                    return gameObject.GetOrAddComponent<GameState.SubGameClearState>();
+                case GameStateInput.StateDone: return gameObject.GetOrAddComponent<GameState.SubGameClearState>();
             }
 
             throw new Exception($"Invalid transition: {GetType().Name} with {gameStateInput}");

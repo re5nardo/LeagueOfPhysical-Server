@@ -9,19 +9,11 @@ namespace GameState
 {
     public class SubGamePrepareState : MonoStateBase
     {
-        public override void Enter()
+        public override IEnumerator OnExecute()
         {
-            base.Enter();
+            yield return SceneManager.LoadSceneAsync(LOP.Game.Current.SubGameData.sceneName, LoadSceneMode.Additive);
 
-            StopCoroutine("Procedure");
-            StartCoroutine("Procedure");
-        }
-
-        public override void Exit()
-        {
-            base.Exit();
-
-            StopCoroutine("Procedure");
+            FSM.MoveNext(GameStateInput.StateDone);
         }
 
         public override IState GetNext<I>(I input)
@@ -34,18 +26,10 @@ namespace GameState
 
             switch (gameStateInput)
             {
-                case GameStateInput.StateDone:
-                    return gameObject.GetOrAddComponent<GameState.SubGameProgressState>();
+                case GameStateInput.StateDone: return gameObject.GetOrAddComponent<GameState.SubGameProgressState>();
             }
 
             throw new Exception($"Invalid transition: {GetType().Name} with {gameStateInput}");
-        }
-
-        private IEnumerator Procedure()
-        {
-            yield return SceneManager.LoadSceneAsync(LOP.Game.Current.SubGameData.sceneName, LoadSceneMode.Additive);
-
-            FSM.MoveNext(GameStateInput.StateDone);
         }
     }
 }

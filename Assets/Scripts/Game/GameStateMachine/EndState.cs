@@ -10,10 +10,8 @@ namespace GameState
 {
     public class EndState : MonoStateBase
     {
-        public override void Enter()
+        public override void OnEnter()
         {
-            base.Enter();
-
             //  send result to players
             //  ...
             var gameEnd = new SC_GameEnd();
@@ -40,6 +38,8 @@ namespace GameState
             LOPWebAPI.MatchEnd(request,
                 result =>
                 {
+                    if (!IsCurrent) return;
+
                     if (result.code == 200)
                     {
                         LOP.Application.Quit();
@@ -61,8 +61,7 @@ namespace GameState
 
             switch (gameStateInput)
             {
-                case GameStateInput.StateDone:
-                    return gameObject.GetOrAddComponent<GameState.EndState>();
+                case GameStateInput.StateDone: return gameObject.GetOrAddComponent<GameState.EndState>();
             }
 
             throw new Exception($"Invalid transition: {GetType().Name} with {gameStateInput}");

@@ -13,35 +13,33 @@ namespace GameState
         private Dictionary<string, float> playerPrepareStates = new Dictionary<string, float>();
         private bool resourceLoaded = false;
 
-        public override void Enter()
+        public override void OnEnter()
         {
-            base.Enter();
-
             SceneMessageBroker.AddSubscriber<CS_GamePreparation>(OnGamePreparation);
 
             //playerPrepareStates.Add(expectedUser, 0);
-
-            StopCoroutine("Procedure");
-            StartCoroutine("Procedure");
         }
 
-        public override void Execute()
+        public override IEnumerator OnExecute()
         {
-            base.Execute();
+            //  Load SubGameSelection resource
 
-            if (playerPrepareStates.All(x => x.Value > 1) && resourceLoaded)
+            resourceLoaded = true;
+
+            while (true)
             {
-                FSM.MoveNext(GameStateInput.StateDone);
+                if (playerPrepareStates.All(x => x.Value > 1) && resourceLoaded)
+                {
+                    FSM.MoveNext(GameStateInput.StateDone);
+                }
+
+                yield return null;
             }
         }
 
-        public override void Exit()
+        public override void OnExit()
         {
-            base.Exit();
-
             SceneMessageBroker.RemoveSubscriber<CS_GamePreparation>(OnGamePreparation);
-
-            StopCoroutine("Procedure");
         }
 
         public override IState GetNext<I>(I input)
@@ -54,20 +52,10 @@ namespace GameState
 
             switch (gameStateInput)
             {
-                case GameStateInput.StateDone:
-                    return gameObject.GetOrAddComponent<GameState.SubGameSelectionState>();
+                case GameStateInput.StateDone: return gameObject.GetOrAddComponent<GameState.SubGameSelectionState>();
             }
 
             throw new Exception($"Invalid transition: {GetType().Name} with {gameStateInput}");
-        }
-
-        private IEnumerator Procedure()
-        {
-            //  Load SubGameSelection resource
-
-            resourceLoaded = true;
-
-            yield break;
         }
 
         private void OnGamePreparation(CS_GamePreparation gamePreparation)

@@ -8,6 +8,11 @@ namespace GameState
 {
     public class SubGameEndState : MonoStateBase
     {
+        public override void OnEnter()
+        {
+            FSM.MoveNext(GameStateInput.StateDone);
+        }
+
         public override IState GetNext<I>(I input)
         {
             if (!Enum.TryParse(input.ToString(), out GameStateInput gameStateInput))
@@ -18,8 +23,7 @@ namespace GameState
 
             switch (gameStateInput)
             {
-                case GameStateInput.StateDone:
-                    return gameObject.GetOrAddComponent<GameState.EndState>();
+                case GameStateInput.StateDone: return gameObject.GetOrAddComponent<GameState.EndState>();
             }
 
             throw new Exception($"Invalid transition: {GetType().Name} with {gameStateInput}");

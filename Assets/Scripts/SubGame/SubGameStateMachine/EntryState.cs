@@ -8,19 +8,11 @@ namespace SubGameState
 {
     public class EntryState : MonoStateBase
     {
-        public override void Enter()
+        public override IEnumerator OnExecute()
         {
-            base.Enter();
+            yield return SubGameBase.Current.Initialize();
 
-            StopCoroutine("Procedure");
-            StartCoroutine("Procedure");
-        }
-
-        public override void Exit()
-        {
-            base.Exit();
-
-            StopCoroutine("Procedure");
+            FSM.MoveNext(SubGameStateInput.StateDone);
         }
 
         public override IState GetNext<I>(I input)
@@ -33,18 +25,10 @@ namespace SubGameState
 
             switch (subGameStateInput)
             {
-                case SubGameStateInput.StateDone:
-                    return gameObject.GetOrAddComponent<SubGameState.PrepareState>();
+                case SubGameStateInput.StateDone: return gameObject.GetOrAddComponent<SubGameState.PrepareState>();
             }
 
             throw new Exception($"Invalid transition: {GetType().Name} with {subGameStateInput}");
-        }
-
-        private IEnumerator Procedure()
-        {
-            yield return SubGameBase.Current.Initialize();
-
-            FSM.MoveNext(GameStateInput.StateDone);
         }
     }
 }

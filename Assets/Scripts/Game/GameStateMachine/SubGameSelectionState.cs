@@ -8,10 +8,8 @@ namespace GameState
 {
     public class SubGameSelectionState : MonoStateBase
     {
-        public override void Enter()
+        public override void OnEnter()
         {
-            base.Enter();
-
             var subGameDatas = SubGameData.GetAll();
 
             //var subGameIndex = UnityEngine.Random.Range(0, subGameDatas.Length);
@@ -39,8 +37,7 @@ namespace GameState
 
             switch (gameStateInput)
             {
-                case GameStateInput.StateDone:
-                    return gameObject.GetOrAddComponent<GameState.SubGamePrepareState>();
+                case GameStateInput.StateDone: return gameObject.GetOrAddComponent<GameState.SubGamePrepareState>();
             }
 
             throw new Exception($"Invalid transition: {GetType().Name} with {gameStateInput}");

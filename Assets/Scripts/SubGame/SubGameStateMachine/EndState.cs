@@ -18,8 +18,7 @@ namespace SubGameState
 
             switch (subGameStateInput)
             {
-                case SubGameStateInput.StateDone:
-                    return gameObject.GetOrAddComponent<SubGameState.EndState>();
+                case SubGameStateInput.StateDone: return gameObject.GetOrAddComponent<SubGameState.EndState>();
             }
 
             throw new Exception($"Invalid transition: {GetType().Name} with {subGameStateInput}");

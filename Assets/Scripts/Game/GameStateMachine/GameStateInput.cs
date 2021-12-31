@@ -1,7 +1,8 @@
 ﻿
 public enum GameStateInput
 {
-    StateDone = 0,
+    None = 0,
+    StateDone = 1,
 
     //  States
     EntryState = 100,
@@ -9,6 +10,7 @@ public enum GameStateInput
     SubGameSelectionState = 102,
     SubGamePrepareState = 103,
     SubGameProgressState = 104,
-    SubGameEndState = 105,
-    EndState = 106,
+    SubGameClearState = 105,
+    SubGameEndState = 106,
+    EndState = 107,
 }
