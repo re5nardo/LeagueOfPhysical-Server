@@ -3,23 +3,23 @@ using System.Collections.Generic;
 using UnityEngine;
 using GameFramework;
 
-public class TransformSyncController : LOPMonoSyncControllerBase<TransformSyncData>
+public class TransformSyncController : LOPMonoEntitySyncControllerBase<TransformSyncData>
 {
     private TransformSyncData transformSyncData = new TransformSyncData();
     private List<SyncDataEntry> syncDataEntries = new List<SyncDataEntry>();
     private AverageQueue latencies = new AverageQueue();
     private TransformSyncData lastSyncData;
 
-    protected override void OnAttached(IEntity entity)
+    public override void OnInitialize()
     {
-        base.OnAttached(entity);
+        base.OnInitialize();
 
         SceneMessageBroker.AddSubscriber<TickMessage.LateTickEnd>(OnLateTickEnd);
     }
 
-    protected override void OnDetached()
+    public override void OnFinalize()
     {
-        base.OnDetached();
+        base.OnFinalize();
 
         SceneMessageBroker.RemoveSubscriber<TickMessage.LateTickEnd>(OnLateTickEnd);
     }

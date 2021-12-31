@@ -4,7 +4,7 @@ using UnityEngine;
 using GameFramework;
 using System.Linq;
 
-public class AnimatorSyncController : LOPMonoSyncControllerBase<AnimatorSyncData>
+public class AnimatorSyncController : LOPMonoEntitySyncControllerBase<AnimatorSyncData>
 {
     private AnimatorSyncData animatorSyncData = new AnimatorSyncData();
     private AnimatorSyncData lastSyncData = new AnimatorSyncData();
@@ -20,9 +20,9 @@ public class AnimatorSyncController : LOPMonoSyncControllerBase<AnimatorSyncData
     private int[] transitionHash;
     private float[] layerWeight;
 
-    protected override void OnAttached(IEntity entity)
+    public override void OnInitialize()
     {
-        base.OnAttached(entity);
+        base.OnInitialize();
 
         // store the animator parameters in a variable - the "Animator.parameters" getter allocates
         // a new parameter array every time it is accessed so we should avoid doing it in a loop
@@ -38,9 +38,9 @@ public class AnimatorSyncController : LOPMonoSyncControllerBase<AnimatorSyncData
         SceneMessageBroker.AddSubscriber<TickMessage.LateTickEnd>(OnLateTickEnd);
     }
 
-    protected override void OnDetached()
+    public override void OnFinalize()
     {
-        base.OnDetached();
+        base.OnFinalize();
 
         SceneMessageBroker.RemoveSubscriber<TickMessage.LateTickEnd>(OnLateTickEnd);
     }
