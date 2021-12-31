@@ -40,6 +40,8 @@ namespace NetworkModel.Mirror
         public int entityId;
         public Vector3 position;
         public Vector3 rotation;
+        public List<SyncControllerData> syncControllerDataList = new List<SyncControllerData>();
+        public List<SyncDataEntry> syncDataEntries = new List<SyncDataEntry>();
 
         public SC_EnterRoom() { }
 
@@ -54,6 +56,8 @@ namespace NetworkModel.Mirror
             entityId = default;
             position = default;
             rotation = default;
+            syncControllerDataList.Clear();
+            syncDataEntries.Clear();
         }
     }
 

@@ -1,12 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using Entity;
-using GameEvent;
+﻿using Entity;
 using EntityMessage;
+using GameEvent;
 using GameFramework;
 using NetworkModel.Mirror;
-using Mirror;
+using System.Linq;
+using UnityEngine;
 
 namespace LOP
 {
@@ -28,6 +26,12 @@ namespace LOP
                 enterRoom.entityId = userEntity.EntityID;
                 enterRoom.position = userEntity.Position;
                 enterRoom.rotation = userEntity.Rotation;
+
+                SyncControllerManager.Instance.syncControllers.Where(x => x.SyncScope == SyncScope.Global).ToArray()?.ForEach(syncController =>
+                {
+                    enterRoom.syncControllerDataList.Add(syncController.GetSyncControllerData());
+                    enterRoom.syncDataEntries.Add(syncController.GetSyncDataEntry());
+                });
 
                 RoomNetwork.Instance.Send(enterRoom, conn.connectionId);
 
@@ -54,6 +58,12 @@ namespace LOP
                 enterRoom.entityId = character.EntityID;
                 enterRoom.position = character.Position;
                 enterRoom.rotation = character.Rotation;
+
+                SyncControllerManager.Instance.syncControllers.Where(x => x.SyncScope == SyncScope.Global).ToArray()?.ForEach(syncController =>
+                {
+                    enterRoom.syncControllerDataList.Add(syncController.GetSyncControllerData());
+                    enterRoom.syncDataEntries.Add(syncController.GetSyncDataEntry());
+                });
 
                 RoomNetwork.Instance.Send(enterRoom, conn.connectionId);
 
