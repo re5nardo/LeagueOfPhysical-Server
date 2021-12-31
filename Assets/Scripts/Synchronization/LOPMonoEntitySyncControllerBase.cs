@@ -4,7 +4,7 @@ using UnityEngine;
 using GameFramework;
 using NetworkModel.Mirror;
 
-public abstract class LOPMonoSyncControllerBase<T> : MonoBehaviour, ISyncController<T> where T : ISyncData
+public abstract class LOPMonoEntitySyncControllerBase<T> : LOPMonoEntityComponentBase, ISyncController<T> where T : ISyncData
 {
     public string ControllerId { get; private set; }
     public string OwnerId { get; private set; }
@@ -12,20 +12,24 @@ public abstract class LOPMonoSyncControllerBase<T> : MonoBehaviour, ISyncControl
     public bool IsDirty { get; private set; }
     public virtual SyncScope SyncScope { get; protected set; } = SyncScope.Local;
 
-    private void Awake()
+    protected override void OnAttached(IEntity entity)
     {
+        base.OnAttached(entity);
+
         OnInitialize();
     }
 
-    private void OnDestroy()
+    protected override void OnDetached()
     {
+        base.OnDetached();
+
         OnFinalize();
     }
 
     public virtual void OnInitialize()
     {
-        ControllerId = $"{GetType().Name}";
-        OwnerId = LOP.Application.UserId;
+        ControllerId = $"{Entity.EntityID}_{GetType().Name}";
+        OwnerId = Entity.OwnerId;
 
         SyncControllerManager.Instance.Register(this);
 
@@ -54,6 +58,7 @@ public abstract class LOPMonoSyncControllerBase<T> : MonoBehaviour, ISyncControl
 
         switch (SyncScope)
         {
+            case SyncScope.Local: RoomNetwork.Instance.SendToNear(sc_syncController, Entity.Position, LOP.Game.BROADCAST_SCOPE_RADIUS, instant: true); break;
             case SyncScope.Global: RoomNetwork.Instance.SendToAll(sc_syncController, instant: true); break;
         }
     }
@@ -80,6 +85,7 @@ public abstract class LOPMonoSyncControllerBase<T> : MonoBehaviour, ISyncControl
 
         switch (SyncScope)
         {
+            case SyncScope.Local: RoomNetwork.Instance.SendToNear(sc_synchronization, Entity.Position, LOP.Game.BROADCAST_SCOPE_RADIUS, instant: true); break;
             case SyncScope.Global: RoomNetwork.Instance.SendToAll(sc_synchronization, instant: true); break;
         }
     }
@@ -129,10 +135,11 @@ public abstract class LOPMonoSyncControllerBase<T> : MonoBehaviour, ISyncControl
 
         switch (SyncScope)
         {
+            case SyncScope.Local: RoomNetwork.Instance.SendToNear(synchronization, Entity.Position, LOP.Game.BROADCAST_SCOPE_RADIUS, instant: true); break;
             case SyncScope.Global: RoomNetwork.Instance.SendToAll(synchronization, instant: true); break;
         }
     }
-
+    
     public virtual void OnSync(T value) { }
     public virtual void OnSync(SyncDataEntry value) { }
 }
