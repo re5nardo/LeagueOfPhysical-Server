@@ -13,8 +13,6 @@ public class GameStateMachine : MonoStateMachineBase
     {
         gameObject.AddComponent<GameStateMachineViewer>();
         gameStateSyncController = gameObject.AddComponent<GameStateSyncController>();
-
-        StartStateMachine();
     }
 
     public override void OnStateChange()

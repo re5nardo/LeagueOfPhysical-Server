@@ -22,6 +22,7 @@ public abstract class SubGameBase : MonoBehaviour
         Current = this;
 
         SubGameStateMachine = new GameObject("SubGameStateMachine").AddComponent<SubGameStateMachine>();
+        SubGameStateMachine.StartStateMachine();
     }
 
     private void OnDestroy()

@@ -13,8 +13,6 @@ public class SubGameStateMachine : MonoStateMachineBase
     {
         gameObject.AddComponent<SubGameStateMachineViewer>();
         subGameStateSyncController = gameObject.AddComponent<SubGameStateSyncController>();
-
-        StartStateMachine();
     }
 
     public override void OnStateChange()

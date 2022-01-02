@@ -41,6 +41,7 @@ namespace LOP
             tickUpdater = gameObject.AddComponent<LOPTickUpdater>();
             GameEventManager = gameObject.AddComponent<GameEventManager>();
             GameStateMachine = new GameObject("GameStateMachine").AddComponent<GameStateMachine>();
+            GameStateMachine.StartStateMachine();
 
             SceneMessageBroker.AddSubscriber<CS_RequestEmotionExpression>(CS_RequestEmotionExpressionHandler.Handle);
             SceneMessageBroker.AddSubscriber<CS_Synchronization>(CS_SynchronizationHandler.Handle);
