@@ -8,7 +8,7 @@ namespace LOP
 {
     public class Application
     {
-        public static bool IsApplicationQuitting => GlobalMonoBehavior.Instance.IsApplicationQuitting;
+        public static bool IsApplicationQuitting;
         public static bool IsInitialized { get; private set; }
 
         public static string IP { get; private set; }
