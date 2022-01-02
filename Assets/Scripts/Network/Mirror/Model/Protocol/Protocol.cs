@@ -17,7 +17,6 @@ namespace NetworkModel.Mirror
         public const byte SC_GameEvents = 7;
         public const byte SC_SyncTick = 8;
         public const byte SC_Synchronization = 9;
-        public const byte SC_GameState = 10;
         public const byte SC_GameEnd = 11;
         public const byte SC_OwnerChanged = 12;
         public const byte SC_SyncController = 13;
@@ -220,26 +219,6 @@ namespace NetworkModel.Mirror
         public void Clear()
         {
             syncDataEntry = default;
-        }
-    }
-
-    [Serializable]
-    public class SC_GameState : IMirrorMessage
-    {
-        public string gameState;
-        public GameStateData gameStateData;
-
-        public SC_GameState() { }
-
-        public byte GetMessageId()
-        {
-            return MessageIds.SC_GameState;
-        }
-
-        public void Clear()
-        {
-            gameState = default;
-            gameStateData = default;
         }
     }
 
