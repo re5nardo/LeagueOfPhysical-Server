@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 using System.Text.RegularExpressions;
+using GameFramework;
 
 namespace LOP
 {
@@ -29,6 +30,8 @@ namespace LOP
             var behaviorManager = new GameObject("BehaviorManager").AddComponent<BehaviorDesigner.Runtime.BehaviorManager>();
             behaviorManager.UpdateInterval = BehaviorDesigner.Runtime.UpdateIntervalType.Manual;
             UnityEngine.Object.DontDestroyOnLoad(behaviorManager);
+
+            MonoSingletonBase.condition = () => !IsApplicationQuitting;
 
             MasterDataManager.Instantiate();
 
