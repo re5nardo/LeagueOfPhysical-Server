@@ -5,36 +5,34 @@ using GameFramework.FSM;
 using System;
 using System.Linq;
 using NetworkModel.Mirror;
+using GameFramework;
 
 namespace GameState
 {
     public class PrepareState : MonoStateBase
     {
-        private Dictionary<string, float> playerPrepareStates = new Dictionary<string, float>();
-        private bool resourceLoaded = false;
+        private const int WAIT_TIMEOUT = 5;
+
+        private Dictionary<string, float> playerPrepares = new Dictionary<string, float>();
 
         public override void OnEnter()
         {
             SceneMessageBroker.AddSubscriber<CS_GamePreparation>(OnGamePreparation);
 
-            //playerPrepareStates.Add(expectedUser, 0);
+            LOP.Room.Instance.ExpectedPlayerList?.ForEach(expectedPlayer =>
+            {
+                playerPrepares[expectedPlayer] = 0;
+            });
         }
 
         public override IEnumerator OnExecute()
         {
-            //  Load SubGameSelection resource
+            //  Load game resource
+            //  ...
 
-            resourceLoaded = true;
+            yield return new WaitForDone(() => playerPrepares.All(x => x.Value >= 1), WAIT_TIMEOUT);
 
-            while (true)
-            {
-                if (playerPrepareStates.All(x => x.Value > 1) && resourceLoaded)
-                {
-                    FSM.MoveNext(GameStateInput.StateDone);
-                }
-
-                yield return null;
-            }
+            FSM.MoveNext(GameStateInput.StateDone);
         }
 
         public override void OnExit()
@@ -67,8 +65,7 @@ namespace GameState
 
             var playerUserID = LOP.Game.Current.EntityIDPlayerUserID[gamePreparation.entityId];
 
-            playerPrepareStates[playerUserID] = gamePreparation.preparation;
+            playerPrepares[playerUserID] = gamePreparation.preparation;
         }
     }
-
 }

@@ -11,7 +11,12 @@ namespace GameState
     {
         public override IEnumerator OnExecute()
         {
-            yield return SceneManager.UnloadSceneAsync(LOP.Game.Current.SubGameData.sceneName, UnloadSceneOptions.UnloadAllEmbeddedSceneObjects);
+            yield return SubGameBase.Current.Finalize();
+
+            var subGameUnloader = SceneManager.UnloadSceneAsync(LOP.Game.Current.SubGameData.sceneName, UnloadSceneOptions.UnloadAllEmbeddedSceneObjects);
+            var mapUnloader = SceneManager.UnloadSceneAsync(LOP.Game.Current.MapData.sceneName, UnloadSceneOptions.UnloadAllEmbeddedSceneObjects);
+
+            yield return new WaitUntil(() => subGameUnloader.isDone && mapUnloader.isDone);
 
             FSM.MoveNext(GameStateInput.StateDone);
         }

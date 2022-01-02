@@ -8,9 +8,14 @@ namespace GameState
 {
     public class SubGameProgressState : MonoStateBase
     {
+        public override void OnEnter()
+        {
+            SubGameBase.Current.StartGame();
+        }
+
         public override IEnumerator OnExecute()
         {
-            yield return new WaitUntil(() => SubGameBase.Current.SubGameStateMachine.CurrentState.GetType() == typeof(SubGameState.EndState));
+            yield return new WaitUntil(() => SubGameBase.Current.IsGameEnd);
 
             FSM.MoveNext(GameStateInput.StateDone);
         }
