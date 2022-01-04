@@ -39,7 +39,7 @@ public abstract class LOPMonoEntitySyncControllerBase<T> : LOPMonoEntityComponen
 
     public virtual void OnFinalize()
     {
-        SyncControllerManager.Instance.Unregister(this);
+        SyncControllerManager.Instance?.Unregister(this);
 
         SceneMessageBroker.RemoveSubscriber<CS_SyncController>(OnSyncController);
         SceneMessageBroker.RemoveSubscriber<CS_Synchronization>(OnSynchronization);

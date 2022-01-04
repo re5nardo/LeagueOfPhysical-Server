@@ -10,6 +10,8 @@ public class SceneMessageBroker : MonoSingleton<SceneMessageBroker>
 
     protected override void OnDestroy()
     {
+        base.OnDestroy();
+
         DefaultMessageBroker.Clear();
     }
 
@@ -30,6 +32,6 @@ public class SceneMessageBroker : MonoSingleton<SceneMessageBroker>
 
     public static void RemoveSubscriber<T>(Action<T> subscriber)
     {
-        Instance.DefaultMessageBroker.RemoveSubscriber(subscriber);
+        Instance?.DefaultMessageBroker.RemoveSubscriber(subscriber);
     }
 }

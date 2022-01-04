@@ -15,6 +15,8 @@ public class AppMessageBroker : MonoSingleton<AppMessageBroker>
 
     protected override void OnDestroy()
     {
+        base.OnDestroy();
+
         DefaultMessageBroker.Clear();
     }
 
