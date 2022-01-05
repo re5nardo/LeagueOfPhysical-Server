@@ -36,7 +36,6 @@ namespace NetworkModel.Mirror
                 case MessageIds.SC_EntityAppear: return Util.CommonDataCompressionDeserialize(data) as SC_EntityAppear;
                 case MessageIds.SC_EntityDisAppear: return Util.CommonDataCompressionDeserialize(data) as SC_EntityDisAppear;
                 case MessageIds.SC_GameEvents: return Util.CommonDataCompressionDeserialize(data) as SC_GameEvents;
-                case MessageIds.SC_SyncTick: return Util.CommonDataCompressionDeserialize(data) as SC_SyncTick;
                 case MessageIds.SC_Synchronization: return Util.CommonDataCompressionDeserialize(data) as SC_Synchronization;
                 case MessageIds.SC_GameEnd: return Util.CommonDataCompressionDeserialize(data) as SC_GameEnd;
                 case MessageIds.SC_OwnerChanged: return Util.CommonDataCompressionDeserialize(data) as SC_OwnerChanged;

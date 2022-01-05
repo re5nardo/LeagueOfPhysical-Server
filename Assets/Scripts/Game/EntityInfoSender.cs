@@ -10,9 +10,6 @@ public class EntityInfoSender : MonoSingleton<EntityInfoSender>
 {
     private Dictionary<string, Vector3> m_dicPlayerUserIDLookAtPosition = new Dictionary<string, Vector3>();                    //  key : Player UserID, vlue : LookAtPosition
 
-    private const float SEND_SYNC_TICK_INTERVAL = 0.5f;
-    private float sendSyncTickTime = 0;
-
 #region MonoBehaviour
     protected override void Awake()
     {
@@ -39,14 +36,6 @@ public class EntityInfoSender : MonoSingleton<EntityInfoSender>
     public void SendInfo()
     {
         //SendPlayerSkillInfo();
-
-        sendSyncTickTime += Game.Current.TickInterval;
-        if (sendSyncTickTime >= SEND_SYNC_TICK_INTERVAL)
-        {
-            SendSyncTick();
-
-            sendSyncTickTime -= SEND_SYNC_TICK_INTERVAL;
-        }
     }
 
     private void SendPlayerSkillInfo()
@@ -64,11 +53,6 @@ public class EntityInfoSender : MonoSingleton<EntityInfoSender>
                 RoomNetwork.Instance.Send(entitySkillInfo, connectionId);
             }
         }
-    }
-
-    private void SendSyncTick()
-    {
-        RoomNetwork.Instance.SendToAll(new SC_SyncTick(Game.Current.CurrentTick));
     }
 
     public void SetPlayerLookAtPosition(string userId, Vector3 position)

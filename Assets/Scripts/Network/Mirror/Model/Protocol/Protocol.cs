@@ -15,7 +15,6 @@ namespace NetworkModel.Mirror
         public const byte SC_EntityAppear = 5;
         public const byte SC_EntityDisAppear = 6;
         public const byte SC_GameEvents = 7;
-        public const byte SC_SyncTick = 8;
         public const byte SC_Synchronization = 9;
         public const byte SC_GameEnd = 11;
         public const byte SC_OwnerChanged = 12;
@@ -180,29 +179,6 @@ namespace NetworkModel.Mirror
         public void Clear()
         {
             listGameEvent.Clear();
-        }
-    }
-
-    [Serializable]
-    public class SC_SyncTick : IMirrorMessage
-    {
-        public int tick;
-
-        public SC_SyncTick() { }
-
-        public SC_SyncTick(int tick)
-        {
-            this.tick = tick;
-        }
-
-        public byte GetMessageId()
-        {
-            return MessageIds.SC_SyncTick;
-        }
-
-        public void Clear()
-        {
-            tick = default;
         }
     }
 
