@@ -41,20 +41,4 @@ public class GameStateSyncController : LOPMonoSyncControllerBase<GameStateSyncDa
     {
         return new GameStateSyncData(LOP.Game.Current.GameStateMachine.CurrentState.GetType().Name);
     }
-
-    public override void OnSync(SyncDataEntry value)
-    {
-        if (HasAuthority)
-        {
-            return;
-        }
-
-        SyncGameState(value.data as GameStateSyncData);
-
-        lastSyncData = value.data as GameStateSyncData;
-    }
-
-    private void SyncGameState(GameStateSyncData gameStateSyncData)
-    {
-    }
 }

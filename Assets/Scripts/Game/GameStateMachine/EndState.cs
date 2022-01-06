@@ -5,6 +5,7 @@ using GameFramework.FSM;
 using System;
 using System.Linq;
 using NetworkModel.Mirror;
+using Mirror;
 
 namespace GameState
 {
@@ -40,6 +41,11 @@ namespace GameState
 
                     if (result.code == 200)
                     {
+                        if (NetworkServer.active)
+                        {
+                            NetworkManager.singleton.StopServer();
+                        }
+
                         LOP.Application.Quit();
                     }
                 },
