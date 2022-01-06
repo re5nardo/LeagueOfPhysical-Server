@@ -32,6 +32,9 @@ public class SceneMessageBroker : MonoSingleton<SceneMessageBroker>
 
     public static void RemoveSubscriber<T>(Action<T> subscriber)
     {
-        Instance?.DefaultMessageBroker.RemoveSubscriber(subscriber);
+        if (HasInstance())
+        {
+            Instance.DefaultMessageBroker.RemoveSubscriber(subscriber);
+        }
     }
 }
