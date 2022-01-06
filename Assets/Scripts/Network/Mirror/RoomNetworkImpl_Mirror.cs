@@ -21,6 +21,12 @@ public class RoomNetworkImpl_Mirror : MonoBehaviour, INetworkImpl
 
     public void Send(IMessage msg, int targetId, bool reliable = true, bool instant = false)
     {
+        if (!NetworkServer.connections.ContainsKey(targetId))
+        {
+            Debug.Log($"Target is not connected. targetId: {targetId}");
+            return;
+        }
+
         if (!NetworkServer.connections[targetId].isAuthenticated)
         {
             Debug.Log($"Target is not authenticated. targetId: {targetId}");
@@ -76,6 +82,6 @@ public class RoomNetworkImpl_Mirror : MonoBehaviour, INetworkImpl
 
     private void UnregisterMessage()
     {
-        NetworkClient.UnregisterHandler<CustomMirrorMessage>();
+        NetworkServer.UnregisterHandler<CustomMirrorMessage>();
     }
 }
