@@ -8,10 +8,8 @@ namespace LOP
     public class Room : MonoSingleton<Room>
     {
         public string RoomId { get; private set; }
-        public string MatchId { get; private set; }
         public ushort Port { get; private set; }
         public string[] ExpectedPlayerList { get; private set; }
-        public MatchSetting MatchSetting { get; private set; }
 
         [SerializeField] private Game game = null;
 
@@ -49,34 +47,37 @@ namespace LOP
 
 #if !UNITY_EDITOR
             var arguments = Environment.GetCommandLineArgs();
-            RoomId = arguments[1];
-            MatchId = arguments[2];
-            Port = ushort.Parse(arguments[3]);
-
-            var matchSetting = new MatchSetting();
-            matchSetting.matchType = Util.TryEnumParse(arguments[4], MatchType.Friendly);
-            matchSetting.subGameId = arguments[5];
-            matchSetting.mapId = arguments[6];
-
-            MatchSetting = matchSetting;
 
             string[] expectedUsers = new string[arguments.Length - 7];
             for (int i = 7; i < arguments.Length; ++i)
             {
                 expectedUsers[i - 7] = arguments[i];
             }
+
+            RoomId = arguments[1];
+            Port = ushort.Parse(arguments[3]);
             ExpectedPlayerList = expectedUsers;
+
+            SceneDataContainer.Get<MatchData>().matchId = arguments[2];
+            SceneDataContainer.Get<MatchData>().matchSetting = new MatchSetting
+            {
+                matchType = Util.TryEnumParse(arguments[4], MatchType.Friendly),
+                subGameId = arguments[5],
+                mapId = arguments[6],
+            };
 #else
+
             RoomId = "EditorTestRoom";
-            MatchId = "EditorTestMatch";
             Port = 7777;
+            ExpectedPlayerList = null;
 
-            var matchSetting = new MatchSetting();
-            matchSetting.matchType = MatchType.Friendly;
-            matchSetting.subGameId = "JumpWang";
-            matchSetting.mapId = "Space";
-
-            MatchSetting = matchSetting;
+            SceneDataContainer.Get<MatchData>().matchId = "EditorTestMatch";
+            SceneDataContainer.Get<MatchData>().matchSetting = new MatchSetting
+            {
+                matchType = MatchType.Friendly,
+                subGameId = "JumpWang",
+                mapId = "Space",
+            };
 #endif
 
             yield return game.Initialize();

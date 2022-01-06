@@ -22,20 +22,18 @@ namespace GameState
             RoomNetwork.Instance.SendToAll(gameEnd);
 
             //  send result to web server
-            var matchSettingData = AppDataContainer.Get<MatchSettingData>();
+            var matchEndRequest = new MatchEndRequest()
+            {
+                matchId = SceneDataContainer.Get<MatchData>().matchId,
+                matchSetting = SceneDataContainer.Get<MatchData>().matchSetting,
 
-            MatchEndRequest request = new MatchEndRequest();
-            request.matchId = PhotonNetwork.room.Name;
-            request.matchType = matchSettingData.matchSetting.matchType.ToString();
-            request.subGameId = matchSettingData.matchSetting.subGameId;
-            request.mapId = matchSettingData.matchSetting.mapId;
+                playerIds = LOP.Game.Current.EntityIDPlayerUserID.Values.ToList(),
+                winnerPlayerIds = null,
+                loserPlayerIds = null,
+                rankingDataList = null,
+            };
 
-            request.playerIds = LOP.Game.Current.EntityIDPlayerUserID.Values.ToList();
-            request.winnerPlayerIds = null;
-            request.loserPlayerIds = null;
-            request.rankingDataList = null;
-
-            LOPWebAPI.MatchEnd(request,
+            LOPWebAPI.MatchEnd(matchEndRequest,
                 result =>
                 {
                     if (!IsCurrent) return;

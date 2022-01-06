@@ -25,8 +25,8 @@ namespace LOP
         public GameEventManager GameEventManager { get; private set; }
         public GameStateMachine GameStateMachine { get; private set; }
 
-        public SubGameData SubGameData => SubGameData.Get(AppDataContainer.Get<MatchSettingData>().matchSetting.subGameId);
-        public MapData MapData => MapData.Get(AppDataContainer.Get<MatchSettingData>().matchSetting.mapId);
+        public SubGameData SubGameData => SubGameData.Get(SceneDataContainer.Get<MatchData>().matchSetting.subGameId);
+        public MapData MapData => MapData.Get(SceneDataContainer.Get<MatchData>().matchSetting.mapId);
 
         public bool IsGameEnd => GameStateMachine.CurrentState is GameState.EndState;
 

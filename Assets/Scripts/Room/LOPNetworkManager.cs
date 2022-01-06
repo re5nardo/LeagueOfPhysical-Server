@@ -233,9 +233,9 @@ public class LOPNetworkManager : NetworkManager
         NotifyStartServerRequest request = new NotifyStartServerRequest
         {
             roomId = LOP.Room.Instance.RoomId,
-            matchId = LOP.Room.Instance.MatchId,
+            matchId = SceneDataContainer.Get<MatchData>().matchId,
             expectedPlayerList = LOP.Room.Instance.ExpectedPlayerList,
-            matchSetting = LOP.Room.Instance.MatchSetting,
+            matchSetting = SceneDataContainer.Get<MatchData>().matchSetting,
             ip = LOP.Application.IP,
             port = LOP.Room.Instance.Port,
         };

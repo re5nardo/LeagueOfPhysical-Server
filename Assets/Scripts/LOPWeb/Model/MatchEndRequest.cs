@@ -5,13 +5,11 @@ using System;
 public class MatchEndRequest
 {
     public string matchId;
-    public string matchType;
-    public string subGameId;
-    public string mapId;
-    public List<string> playerIds = new List<string>();
-    public List<int> winnerPlayerIds = new List<int>();
-    public List<int> loserPlayerIds = new List<int>();
-    public List<RankingData> rankingDataList = new List<RankingData>();
+    public MatchSetting matchSetting;
+    public List<string> playerIds;
+    public List<int> winnerPlayerIds;
+    public List<int> loserPlayerIds;
+    public List<RankingData> rankingDataList;
 
     [Serializable]
     public struct RankingData

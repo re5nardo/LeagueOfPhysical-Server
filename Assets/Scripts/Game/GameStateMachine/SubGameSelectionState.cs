@@ -18,8 +18,8 @@ namespace GameState
             //LOP.Game.Current.GameManager.subGameId = subGameDatas[subGameIndex].subGameId;
             //LOP.Game.Current.GameManager.mapId = subGameDatas[subGameIndex].availableMapIds[mapIndex];
 
-            AppDataContainer.Get<MatchSettingData>().matchSetting.subGameId = "FlapWang";
-            AppDataContainer.Get<MatchSettingData>().matchSetting.mapId = "FlapWangMap";
+            SceneDataContainer.Get<MatchData>().matchSetting.subGameId = "FlapWang";
+            SceneDataContainer.Get<MatchData>().matchSetting.mapId = "FlapWangMap";
 
             //LOP.Game.Current.GameManager.subGameId = "FallingGame";
             //LOP.Game.Current.GameManager.mapId = "Falling";
