@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Networking;
 using System.Text.RegularExpressions;
 using GameFramework;
+using System.Threading.Tasks;
 
 namespace LOP
 {
@@ -18,10 +19,10 @@ namespace LOP
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         private static void OnBeforeSceneLoadRuntimeMethod()
         {
-            GlobalMonoBehavior.StartCoroutine(Initialize());
+            Initialize();
         }
 
-        private static IEnumerator Initialize()
+        private static async void Initialize()
         {
             //  Target FrameRate
             UnityEngine.Application.targetFrameRate = 60;
@@ -31,11 +32,9 @@ namespace LOP
             behaviorManager.UpdateInterval = BehaviorDesigner.Runtime.UpdateIntervalType.Manual;
             UnityEngine.Object.DontDestroyOnLoad(behaviorManager);
 
-            MonoSingletonBase.condition = () => !IsApplicationQuitting;
-
             MasterDataManager.Instantiate();
 
-            yield return GlobalMonoBehavior.StartCoroutine(GetPublicIP());
+            await GetPublicIP();
 
             IsInitialized = true;
         }
@@ -49,11 +48,11 @@ namespace LOP
 #endif
         }
 
-        private static IEnumerator GetPublicIP()
+        private static async Task GetPublicIP()
         {
             using (var www = UnityWebRequest.Get("http://ipinfo.io/ip"))
             {
-                yield return www.SendWebRequest();
+                await www.SendWebRequest();
 
                 IP = Regex.Replace(www.downloadHandler.text, @"[^0-9.]", "");
             }
