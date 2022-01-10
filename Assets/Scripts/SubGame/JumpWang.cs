@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Entity;
+using GameFramework;
 
 public class JumpWang : SubGameBase
 {

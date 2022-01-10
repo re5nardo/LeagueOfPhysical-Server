@@ -4,6 +4,7 @@ using UnityEngine;
 using System;
 using System.Collections.ObjectModel;
 using NetworkModel.Mirror;
+using GameFramework;
 
 namespace LOP
 {

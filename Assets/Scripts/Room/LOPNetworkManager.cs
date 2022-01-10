@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Mirror;
+using GameFramework;
 
 /*
 	Documentation: https://mirror-networking.gitbook.io/docs/components/network-manager
