@@ -66,13 +66,13 @@ public abstract class LOPMonoSyncControllerBase<T> : MonoBehaviour, ISyncControl
 
     private void OnSynchronization(CS_Synchronization synchronization)
     {
-        if (OwnerId != synchronization.syncDataEntry.meta.userId)
+        if (OwnerId != synchronization.syncDataEntry.meta.senderId)
         {
-            Debug.LogWarning($"User (not owner) request synchronization. It is ignored. userId: {synchronization.syncDataEntry.meta.userId}, ownerId: {OwnerId}");
+            Debug.LogWarning($"User (not owner) request synchronization. It is ignored. senderId: {synchronization.syncDataEntry.meta.senderId}, ownerId: {OwnerId}");
             return;
         }
 
-        if (synchronization.syncDataEntry.meta.userId == LOP.Application.UserId)
+        if (synchronization.syncDataEntry.meta.senderId == LOP.Application.UserId)
         {
             return;
         }
