@@ -64,16 +64,16 @@ public class AnimatorSyncController : LOPMonoEntitySyncControllerBase<AnimatorSy
         return SetAnimatorSyncData(animatorSyncData);
     }
 
-    public override void OnSync(SyncDataEntry value)
+    public override void OnSync(AnimatorSyncData value)
     {
         if (HasAuthority)
         {
             return;
         }
 
-        SyncAnimator(value.data as AnimatorSyncData);
+        SyncAnimator(value);
 
-        lastSyncData = value.data as AnimatorSyncData;
+        lastSyncData = value;
     }
 
     private void SyncAnimator(AnimatorSyncData animatorSyncData)
