@@ -7,7 +7,7 @@ public class ObjectPool : Singleton<ObjectPool>
 {
     private Dictionary<Type, InternalObjectPool> objectPools = new Dictionary<Type, InternalObjectPool>();
 
-    public T GetObject<T>() where T : class, IPoolable
+    public T GetObject<T>() where T : class, IPoolObject
     {
         if (!objectPools.ContainsKey(typeof(T)))
         {
@@ -17,7 +17,7 @@ public class ObjectPool : Singleton<ObjectPool>
         return objectPools[typeof(T)].GetObject<T>();
     }
 
-    public IPoolable GetObject(Type type)
+    public IPoolObject GetObject(Type type)
     {
         if (!objectPools.ContainsKey(type))
         {
@@ -27,7 +27,7 @@ public class ObjectPool : Singleton<ObjectPool>
         return objectPools[type].GetObject(type);
     }
 
-    public void ReturnObject(IPoolable obj)
+    public void ReturnObject(IPoolObject obj)
     {
         if (objectPools.TryGetValue(obj.GetType(), out var internalObjectPool))
         {
@@ -41,10 +41,10 @@ public class ObjectPool : Singleton<ObjectPool>
 
     class InternalObjectPool
     {
-        private Queue<IPoolable> pool = new Queue<IPoolable>();
-        private LinkedList<IPoolable> beingUsed = new LinkedList<IPoolable>();
+        private Queue<IPoolObject> pool = new Queue<IPoolObject>();
+        private LinkedList<IPoolObject> beingUsed = new LinkedList<IPoolObject>();
 
-        public T GetObject<T>() where T : IPoolable
+        public T GetObject<T>() where T : IPoolObject
         {
             T target = default;
             if (pool.Count > 0)
@@ -60,29 +60,29 @@ public class ObjectPool : Singleton<ObjectPool>
             return target;
         }
 
-        public IPoolable GetObject(Type type)
+        public IPoolObject GetObject(Type type)
         {
-            if (!typeof(IPoolable).IsAssignableFrom(type))
+            if (!typeof(IPoolObject).IsAssignableFrom(type))
             {
                 Debug.LogError($"The type is invalid! Type: {type}");
                 return null;
             }
 
-            IPoolable target = null;
+            IPoolObject target = null;
             if (pool.Count > 0)
             {
-                target = pool.Dequeue() as IPoolable;
+                target = pool.Dequeue() as IPoolObject;
             }
             else
             {
-                target = Activator.CreateInstance(type) as IPoolable;
+                target = Activator.CreateInstance(type) as IPoolObject;
             }
 
             beingUsed.AddLast(target);
             return target;
         }
 
-        public void ReturnObject(IPoolable obj)
+        public void ReturnObject(IPoolObject obj)
         {
             obj.Clear();
 
