@@ -23,13 +23,12 @@ namespace Entity
             {
                 ownerId = value;
 
-                SC_OwnerChanged message = ObjectPool.Instance.GetObject<SC_OwnerChanged>();
+                using var disposer = PoolObjectDisposer<SC_OwnerChanged>.Get();
+                var message = disposer.PoolObject;
                 message.entityId = EntityID;
                 message.ownerId = ownerId;
 
                 RoomNetwork.Instance.SendToAll(message);
-
-                ObjectPool.Instance.ReturnObject(message);
             }
         }
 

@@ -59,13 +59,14 @@ public abstract class LOPMonoEntitySyncControllerBase<T> : LOPMonoEntityComponen
         OwnerId = syncController.syncControllerData.ownerId;
 
         //  broadcast change of ownerId
-        var sc_syncController = ObjectPool.Instance.GetObject<SC_SyncController>();
-        sc_syncController.syncControllerData = syncController.syncControllerData;
+        using var disposer = PoolObjectDisposer<SC_SyncController>.Get();
+        var message = disposer.PoolObject;
+        message.syncControllerData = syncController.syncControllerData;
 
         switch (SyncScope)
         {
-            case SyncScope.Local: RoomNetwork.Instance.SendToNear(sc_syncController, Entity.Position, LOP.Game.BROADCAST_SCOPE_RADIUS, instant: true); break;
-            case SyncScope.Global: RoomNetwork.Instance.SendToAll(sc_syncController, instant: true); break;
+            case SyncScope.Local: RoomNetwork.Instance.SendToNear(message, Entity.Position, LOP.Game.BROADCAST_SCOPE_RADIUS, instant: true); break;
+            case SyncScope.Global: RoomNetwork.Instance.SendToAll(message, instant: true); break;
         }
     }
 
@@ -86,13 +87,14 @@ public abstract class LOPMonoEntitySyncControllerBase<T> : LOPMonoEntityComponen
         OnSync((T)synchronization.syncDataEntry.data);
 
         //  broadcast to clients
-        var sc_synchronization = ObjectPool.Instance.GetObject<SC_Synchronization>();
-        sc_synchronization.syncDataEntry = synchronization.syncDataEntry;
+        using var disposer = PoolObjectDisposer<SC_Synchronization>.Get();
+        var message = disposer.PoolObject;
+        message.syncDataEntry = synchronization.syncDataEntry;
 
         switch (SyncScope)
         {
-            case SyncScope.Local: RoomNetwork.Instance.SendToNear(sc_synchronization, Entity.Position, LOP.Game.BROADCAST_SCOPE_RADIUS, instant: true); break;
-            case SyncScope.Global: RoomNetwork.Instance.SendToAll(sc_synchronization, instant: true); break;
+            case SyncScope.Local: RoomNetwork.Instance.SendToNear(message, Entity.Position, LOP.Game.BROADCAST_SCOPE_RADIUS, instant: true); break;
+            case SyncScope.Global: RoomNetwork.Instance.SendToAll(message, instant: true); break;
         }
     }
 
@@ -132,8 +134,9 @@ public abstract class LOPMonoEntitySyncControllerBase<T> : LOPMonoEntityComponen
         }
 
         //  send syncData to clients
-        var synchronization = ObjectPool.Instance.GetObject<SC_Synchronization>();
-        synchronization.syncDataEntry = new SyncDataEntry
+        using var disposer = PoolObjectDisposer<SC_Synchronization>.Get();
+        var message = disposer.PoolObject;
+        message.syncDataEntry = new SyncDataEntry
         {
             meta = new SyncDataMeta(Game.Current.CurrentTick, LOP.Application.UserId, ControllerId, value.ObjectToHash()),
             data = value,
@@ -141,8 +144,8 @@ public abstract class LOPMonoEntitySyncControllerBase<T> : LOPMonoEntityComponen
 
         switch (SyncScope)
         {
-            case SyncScope.Local: RoomNetwork.Instance.SendToNear(synchronization, Entity.Position, LOP.Game.BROADCAST_SCOPE_RADIUS, instant: true); break;
-            case SyncScope.Global: RoomNetwork.Instance.SendToAll(synchronization, instant: true); break;
+            case SyncScope.Local: RoomNetwork.Instance.SendToNear(message, Entity.Position, LOP.Game.BROADCAST_SCOPE_RADIUS, instant: true); break;
+            case SyncScope.Global: RoomNetwork.Instance.SendToAll(message, instant: true); break;
         }
     }
     
