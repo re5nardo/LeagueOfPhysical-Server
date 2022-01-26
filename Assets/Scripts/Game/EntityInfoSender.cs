@@ -46,7 +46,8 @@ public class EntityInfoSender : MonoSingleton<EntityInfoSender>
             {
                 var character = Entities.Get<Character>(entityId);
 
-                var entitySkillInfo = new SC_EntitySkillInfo();
+                using var disposer = PoolObjectDisposer<SC_EntitySkillInfo>.Get();
+                var entitySkillInfo = disposer.PoolObject;
                 entitySkillInfo.entityId = character.EntityID;
                 entitySkillInfo.dicSkillInfo = character.SkillController.GetEntitySkillInfo();
 

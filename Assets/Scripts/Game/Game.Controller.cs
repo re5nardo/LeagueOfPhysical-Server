@@ -21,7 +21,8 @@ namespace LOP
 
                 userEntity.OwnerId = customProperties.userId;
 
-                var enterRoom = new SC_EnterRoom();
+                using var disposer = PoolObjectDisposer<SC_EnterRoom>.Get();
+                var enterRoom = disposer.PoolObject;
                 enterRoom.tick = Game.Current.CurrentTick;
                 enterRoom.entityId = userEntity.EntityID;
                 enterRoom.position = userEntity.Position;
@@ -40,7 +41,9 @@ namespace LOP
 
                 //  Entity Skill Info
                 SkillController controller = userEntity.GetComponent<SkillController>();
-                var entitySkillInfo = new SC_EntitySkillInfo();
+
+                using var entitySkillInfoDisposer = PoolObjectDisposer<SC_EntitySkillInfo>.Get();
+                var entitySkillInfo = entitySkillInfoDisposer.PoolObject;
                 entitySkillInfo.entityId = userEntity.EntityID;
                 entitySkillInfo.dicSkillInfo = controller.GetEntitySkillInfo();
 
@@ -53,7 +56,8 @@ namespace LOP
 
                 IDMap.UserIdEntityId.Set(customProperties.userId, character.EntityID);
 
-                var enterRoom = new SC_EnterRoom();
+                using var disposer = PoolObjectDisposer<SC_EnterRoom>.Get();
+                var enterRoom = disposer.PoolObject;
                 enterRoom.tick = Game.Current.CurrentTick;
                 enterRoom.entityId = character.EntityID;
                 enterRoom.position = character.Position;
@@ -95,7 +99,8 @@ namespace LOP
                     controller.AddSkill(nSkillID);
                 }
 
-                var entitySkillInfo = new SC_EntitySkillInfo();
+                using var entitySkillInfoDisposer = PoolObjectDisposer<SC_EntitySkillInfo>.Get();
+                var entitySkillInfo = entitySkillInfoDisposer.PoolObject;
                 entitySkillInfo.entityId = character.EntityID;
                 entitySkillInfo.dicSkillInfo = controller.GetEntitySkillInfo();
 
@@ -138,9 +143,12 @@ namespace LOP
                 controller.AddSkill(nSkillID);
             }
 
-            var entitySkillInfo = new SC_EntitySkillInfo();
-            entitySkillInfo.entityId = character.EntityID;
-            entitySkillInfo.dicSkillInfo = controller.GetEntitySkillInfo();
+            //using var entitySkillInfoDisposer = PoolObjectDisposer<SC_EntitySkillInfo>.Get();
+            //var entitySkillInfo = entitySkillInfoDisposer.PoolObject;
+            //entitySkillInfo.entityId = character.EntityID;
+            //entitySkillInfo.dicSkillInfo = controller.GetEntitySkillInfo();
+
+            //RoomNetwork.Instance.Send(entitySkillInfo, conn.connectionId);
 
             return character;
         }

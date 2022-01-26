@@ -41,8 +41,6 @@ namespace NetworkModel.Mirror
         public List<SyncControllerData> syncControllerDataList = new List<SyncControllerData>();
         public List<SyncDataEntry> syncDataEntries = new List<SyncDataEntry>();
 
-        public SC_EnterRoom() { }
-
         public byte GetMessageId()
         {
             return MessageIds.SC_EnterRoom;
@@ -66,8 +64,6 @@ namespace NetworkModel.Mirror
         public string type;
         public long sequence;
 
-        public SC_ProcessInputData() { }
-
         public byte GetMessageId()
         {
             return MessageIds.SC_ProcessInputData;
@@ -86,8 +82,6 @@ namespace NetworkModel.Mirror
     {
         public int entityId;
         public Dictionary<int, float> dicSkillInfo = new Dictionary<int, float>();
-
-        public SC_EntitySkillInfo() { }
 
         public byte GetMessageId()
         {
