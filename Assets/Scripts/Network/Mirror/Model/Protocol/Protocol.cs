@@ -101,8 +101,6 @@ namespace NetworkModel.Mirror
         public int entityId;
         public int emotionExpressionId;
 
-        public SC_EmotionExpression() { }
-
         public byte GetMessageId()
         {
             return MessageIds.SC_EmotionExpression;
@@ -121,8 +119,6 @@ namespace NetworkModel.Mirror
         public int tick;
         public List<EntitySnap> listEntitySnap = new List<EntitySnap>();
 
-        public SC_EntityAppear() { }
-
         public byte GetMessageId()
         {
             return MessageIds.SC_EntityAppear;
@@ -140,8 +136,6 @@ namespace NetworkModel.Mirror
     {
         public List<int> listEntityId = new List<int>();
 
-        public SC_EntityDisAppear() { }
-
         public byte GetMessageId()
         {
             return MessageIds.SC_EntityDisAppear;
@@ -157,13 +151,6 @@ namespace NetworkModel.Mirror
     public class SC_GameEvents : IMirrorMessage
     {
         public List<IGameEvent> listGameEvent = new List<IGameEvent>();
-
-        public SC_GameEvents() { }
-
-        public SC_GameEvents(List<IGameEvent> listGameEvent)
-        {
-            this.listGameEvent = listGameEvent;
-        }
 
         public byte GetMessageId()
         {
@@ -199,8 +186,6 @@ namespace NetworkModel.Mirror
         public List<int> listLoserEntityId = new List<int>();
         public List<RankingData> listRankingData = new List<RankingData>();
 
-        public SC_GameEnd() { }
-
         public byte GetMessageId()
         {
             return MessageIds.SC_GameEnd;
@@ -219,8 +204,6 @@ namespace NetworkModel.Mirror
     {
         public int entityId;
         public string ownerId;
-
-        public SC_OwnerChanged() { }
 
         public byte GetMessageId()
         {

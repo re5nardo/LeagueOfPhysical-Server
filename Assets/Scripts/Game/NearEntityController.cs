@@ -315,7 +315,8 @@ public class NearEntityController : LOPMonoEntityComponentBase
         //  Don't send Local Entities
         entityIDs.RemoveAll(entityID => Entities.Get<LOPMonoEntityBase>(entityID).IsLocalEntity);
 
-        var entityAppear = new SC_EntityAppear();
+		using var disposer = PoolObjectDisposer<SC_EntityAppear>.Get();
+		var entityAppear = disposer.PoolObject;
 		entityAppear.listEntitySnap = new List<EntitySnap>(entityIDs.Count);
 		foreach (int entityID in entityIDs)
 		{
@@ -338,7 +339,8 @@ public class NearEntityController : LOPMonoEntityComponentBase
         //  Don't send Local Entities
         entityIDs.RemoveAll(entityID => Entities.Get<LOPMonoEntityBase>(entityID).IsLocalEntity);
 
-        var entityDisAppear = new SC_EntityDisAppear();
+		using var disposer = PoolObjectDisposer<SC_EntityDisAppear>.Get();
+		var entityDisAppear = disposer.PoolObject;
 		entityDisAppear.listEntityId = entityIDs;
 
         if (IDMap.TryGetConnectionIdByEntityId(Entity.EntityID, out var connectionId))

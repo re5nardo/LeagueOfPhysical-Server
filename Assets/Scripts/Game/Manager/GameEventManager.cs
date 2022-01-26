@@ -25,7 +25,10 @@ public class GameEventManager : MonoBehaviour
             return;
         }
 
-        var gameEvents = new SC_GameEvents(new List<IGameEvent> { gameEvent });
+        using var disposer = PoolObjectDisposer<SC_GameEvents>.Get();
+        var gameEvents = disposer.PoolObject;
+        gameEvents.listGameEvent.Add(gameEvent);
+
         RoomNetwork.Instance.Send(gameEvents, nTargetID, bReliable, bInstant);
     }
 
@@ -36,7 +39,10 @@ public class GameEventManager : MonoBehaviour
             return;
         }
 
-        var gameEvents = new SC_GameEvents(new List<IGameEvent> { gameEvent });
+        using var disposer = PoolObjectDisposer<SC_GameEvents>.Get();
+        var gameEvents = disposer.PoolObject;
+        gameEvents.listGameEvent.Add(gameEvent);
+
         RoomNetwork.Instance.SendToAll(gameEvents, bReliable, bInstant);
     }
 
@@ -47,7 +53,10 @@ public class GameEventManager : MonoBehaviour
             return;
         }
 
-        var gameEvents = new SC_GameEvents(new List<IGameEvent> { gameEvent });
+        using var disposer = PoolObjectDisposer<SC_GameEvents>.Get();
+        var gameEvents = disposer.PoolObject;
+        gameEvents.listGameEvent.Add(gameEvent);
+
         RoomNetwork.Instance.SendToNear(gameEvents, center, fRadius, bReliable, bInstant);
     }
 }

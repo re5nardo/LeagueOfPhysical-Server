@@ -6,6 +6,7 @@ using System;
 using System.Linq;
 using NetworkModel.Mirror;
 using Mirror;
+using GameFramework;
 
 namespace GameState
 {
@@ -15,7 +16,8 @@ namespace GameState
         {
             //  send result to players
             //  ...
-            var gameEnd = new SC_GameEnd();
+            using var disposer = PoolObjectDisposer<SC_GameEnd>.Get();
+            var gameEnd = disposer.PoolObject;
             gameEnd.listWinnerEntityId = new List<int>();
             gameEnd.listLoserEntityId = new List<int>();
             gameEnd.listRankingData = new List<RankingData>();

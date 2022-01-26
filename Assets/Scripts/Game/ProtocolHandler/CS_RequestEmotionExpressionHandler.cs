@@ -17,7 +17,8 @@ public class CS_RequestEmotionExpressionHandler
             return;
         }
 
-        SC_EmotionExpression emotionExpression = new SC_EmotionExpression();
+        using var disposer = PoolObjectDisposer<SC_EmotionExpression>.Get();
+        var emotionExpression = disposer.PoolObject;
         emotionExpression.entityId = senderEntity.EntityID;
         emotionExpression.emotionExpressionId = requestEmotionExpression.emotionExpressionId;
 
