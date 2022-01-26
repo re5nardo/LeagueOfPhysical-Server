@@ -240,8 +240,6 @@ namespace NetworkModel.Mirror
     {
         public PlayerMoveInput playerMoveInput;
 
-        public CS_NotifyMoveInputData() { }
-
         public byte GetMessageId()
         {
             return MessageIds.CS_NotifyMoveInputData;
@@ -257,8 +255,6 @@ namespace NetworkModel.Mirror
     public class CS_NotifySkillInputData : IMirrorMessage
     {
         public SkillInputData skillInputData;
-
-        public CS_NotifySkillInputData() { }
 
         public byte GetMessageId()
         {
@@ -276,8 +272,6 @@ namespace NetworkModel.Mirror
     {
         public JumpInputData jumpInputData;
 
-        public CS_NotifyJumpInputData() { }
-
         public byte GetMessageId()
         {
             return MessageIds.CS_NotifyJumpInputData;
@@ -294,15 +288,7 @@ namespace NetworkModel.Mirror
     {
         public int entityId;
         public int emotionExpressionId;
-
-        public CS_RequestEmotionExpression() { }
-
-        public CS_RequestEmotionExpression(int entityId, int emotionExpressionId)
-        {
-            this.entityId = entityId;
-            this.emotionExpressionId = emotionExpressionId;
-        }
-
+     
         public byte GetMessageId()
         {
             return MessageIds.CS_RequestEmotionExpression;
@@ -320,15 +306,7 @@ namespace NetworkModel.Mirror
     {
         public int entityId;
         public float preparation;
-
-        public CS_GamePreparation() { }
-
-        public CS_GamePreparation(int entityId, int preparation)
-        {
-            this.entityId = entityId;
-            this.preparation = preparation;
-        }
-
+     
         public byte GetMessageId()
         {
             return MessageIds.CS_GamePreparation;
@@ -346,14 +324,6 @@ namespace NetworkModel.Mirror
     {
         public int entityId;
         public float preparation;
-
-        public CS_SubGamePreparation() { }
-
-        public CS_SubGamePreparation(int entityId, int preparation)
-        {
-            this.entityId = entityId;
-            this.preparation = preparation;
-        }
 
         public byte GetMessageId()
         {
