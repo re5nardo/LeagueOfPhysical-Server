@@ -46,7 +46,7 @@ namespace LOP
             roomProtocolDispatcher = gameObject.AddComponent<RoomProtocolDispatcher>();
 
 #if !UNITY_EDITOR
-            var arguments = Environment.GetCommandLineArgs();
+            var arguments = System.Environment.GetCommandLineArgs();
 
             string[] expectedUsers = new string[arguments.Length - 7];
             for (int i = 7; i < arguments.Length; ++i)
