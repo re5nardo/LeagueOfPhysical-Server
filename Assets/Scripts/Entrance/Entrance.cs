@@ -15,6 +15,9 @@ public class Entrance : MonoBehaviour
     {
         yield return new WaitUntil(() => LOP.Application.IsInitialized);
 
+#if !UNITY_EDITOR
+        autoCreateRoom = true;
+#endif
         if (autoCreateRoom)
         {
             SceneManager.LoadScene("Room");
