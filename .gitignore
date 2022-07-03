@@ -1,0 +1,16 @@
+Library/
+Temp/
+UniRx.Examples.csproj
+PlayFabSDKEditor.csproj
+PlayFabEditorExtensions.csproj
+Assembly-CSharp-firstpass.csproj
+Assembly-CSharp.csproj
+LeagueOfPhysical-Server.sln
+PlayFab.csproj
+UniRx.csproj
+Assembly-CSharp-Editor.csproj
+.vs/
+obj/
+.vsconfig
+Logs/
+*.csproj
