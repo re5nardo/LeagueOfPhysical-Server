@@ -8,7 +8,7 @@ public class LOPWebAPI
 {
     public static HttpRequestContainer<string> Heartbeat(string roomId, Action<string> onResult = null, Action<string> onError = null)
     {
-        return Http.Put($"healthcheck/heartbeat/{roomId}", onResult, onError, apiSettings: GameFramework.ServerSettings.Get("ServerSettings_Room"));
+        return Http.Put($"room/heartbeat/{roomId}", onResult, onError, apiSettings: GameFramework.ServerSettings.Get("ServerSettings_Room"));
     }
 
     public static HttpRequestContainer<string> NotifyStartServer(NotifyStartServerRequest request, Action<string> onResult = null, Action<string> onError = null)
@@ -24,5 +24,10 @@ public class LOPWebAPI
     public static HttpRequestContainer<HttpResultBase> MatchEnd(MatchEndRequest request, Action<HttpResultBase> onResult = null, Action<string> onError = null)
     {
         return Http.Put("matchEnd", JsonUtility.ToJson(request), onResult, onError, apiSettings: GameFramework.ServerSettings.Get("ServerSettings_Room"));
+    }
+
+    public static HttpRequestContainer<UpdateRoomStatusResult> UpdateRoomStatus(UpdateRoomStatusRequest request, Action<UpdateRoomStatusResult> onResult = null, Action<string> onError = null)
+    {
+        return Http.Put($"room/status", JsonUtility.ToJson(request), onResult, onError, apiSettings: GameFramework.ServerSettings.Get("ServerSettings_Room"));
     }
 }

@@ -28,6 +28,14 @@ namespace LOP
                 yield return null;
             }
 
+            UpdateRoomStatusRequest request = new UpdateRoomStatusRequest
+            {
+                roomId = LOP.Room.Instance.RoomId,
+                status = RoomStatus.Ready,
+            };
+
+            LOPWebAPI.UpdateRoomStatus(request);
+
             game.Run();
 
             InvokeRepeating("SendHeartbeat", 0, 7);
@@ -79,6 +87,14 @@ namespace LOP
                 mapId = "Space",
             };
 #endif
+
+            UpdateRoomStatusRequest request = new UpdateRoomStatusRequest
+            {
+                roomId = LOP.Room.Instance.RoomId,
+                status = RoomStatus.Spawned,
+            };
+
+            LOPWebAPI.UpdateRoomStatus(request);
 
             yield return game.Initialize();
         }
