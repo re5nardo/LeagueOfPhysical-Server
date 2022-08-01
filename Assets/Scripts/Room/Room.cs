@@ -39,6 +39,10 @@ namespace LOP
             game.Run();
 
             InvokeRepeating("SendHeartbeat", 0, 7);
+
+            yield return new WaitUntil(() => game.IsGameEnd);
+
+            Destroy(this);
         }
 
         protected override void OnDestroy()
@@ -46,6 +50,8 @@ namespace LOP
             base.OnDestroy();
 
             Clear();
+
+            LOP.Application.Quit();
         }
         #endregion
 
@@ -101,6 +107,10 @@ namespace LOP
 
         private void Clear()
         {
+            if (NetworkServer.active)
+            {
+                NetworkManager.singleton.StopServer();
+            }
         }
 
         private void SendHeartbeat()
