@@ -5,6 +5,7 @@ using System;
 using System.Collections.ObjectModel;
 using NetworkModel.Mirror;
 using GameFramework;
+using System.Threading.Tasks;
 
 namespace LOP
 {
@@ -31,7 +32,7 @@ namespace LOP
 
         public bool IsGameEnd => GameStateMachine.CurrentState is GameState.EndState;
 
-        public override IEnumerator Initialize()
+        public override async Task Initialize()
         {
             Physics.autoSimulation = false;
 
@@ -58,8 +59,6 @@ namespace LOP
             ResourcePool.Instantiate();
 
             Initialized = true;
-
-            yield break;
         }
 
         protected override void Clear()
