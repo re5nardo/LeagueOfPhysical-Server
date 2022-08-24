@@ -8,8 +8,6 @@ using System;
 //  https://api.playfab.com/docs/tutorials/landing-tournaments/photon-unity
 public class LoginComponent : MonoBehaviour
 {
-    public string customId = "Server1";
-
     public Action successCallback;
     public Action<PlayFabError> errorCallback;
 
@@ -43,7 +41,7 @@ public class LoginComponent : MonoBehaviour
     private void Login_Editor()
     {
 #if UNITY_EDITOR
-        var request = new LoginWithCustomIDRequest { CustomId = customId, CreateAccount = true };
+        var request = new LoginWithCustomIDRequest { CustomId = LOPSettings.Get().customId, CreateAccount = true };
         PlayFabClientAPI.LoginWithCustomID(request, RequestPhotonToken, errorCallback);
 #endif
     }

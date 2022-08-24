@@ -7,4 +7,5 @@ using GameFramework;
 public class LOPSettings : ScriptableObjectWrapper<LOPSettings>
 {
     public bool connectLocalServer;
+    public string customId;
 }
