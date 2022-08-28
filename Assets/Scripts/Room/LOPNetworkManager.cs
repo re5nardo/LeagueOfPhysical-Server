@@ -53,27 +53,6 @@ public class LOPNetworkManager : NetworkManager
 
     #endregion
 
-    #region Start & Stop
-
-    /// <summary>
-    /// Set the frame rate for a headless server.
-    /// <para>Override if you wish to disable the behavior or set your own tick rate.</para>
-    /// </summary>
-    public override void ConfigureServerFrameRate()
-    {
-        base.ConfigureServerFrameRate();
-    }
-
-    /// <summary>
-    /// called when quitting the application by closing the window / pressing stop in the editor
-    /// </summary>
-    public override void OnApplicationQuit()
-    {
-        base.OnApplicationQuit();
-    }
-
-    #endregion
-
     #region Scene Management
 
     /// <summary>
@@ -127,7 +106,7 @@ public class LOPNetworkManager : NetworkManager
     /// <para>Unity calls this on the Server when a Client connects to the Server. Use an override to tell the NetworkManager what to do when a client connects to the server.</para>
     /// </summary>
     /// <param name="conn">Connection from client.</param>
-    public override void OnServerConnect(NetworkConnection conn)
+    public override void OnServerConnect(NetworkConnectionToClient conn)
     {
         base.OnServerConnect(conn);
 
@@ -145,7 +124,7 @@ public class LOPNetworkManager : NetworkManager
     /// <para>The default implementation of this function calls NetworkServer.SetClientReady() to continue the network setup process.</para>
     /// </summary>
     /// <param name="conn">Connection from client.</param>
-    public override void OnServerReady(NetworkConnection conn)
+    public override void OnServerReady(NetworkConnectionToClient conn)
     {
         base.OnServerReady(conn);
     }
@@ -155,7 +134,7 @@ public class LOPNetworkManager : NetworkManager
     /// <para>The default implementation for this function creates a new player object from the playerPrefab.</para>
     /// </summary>
     /// <param name="conn">Connection from client.</param>
-    public override void OnServerAddPlayer(NetworkConnection conn)
+    public override void OnServerAddPlayer(NetworkConnectionToClient conn)
     {
         base.OnServerAddPlayer(conn);
     }
@@ -165,7 +144,7 @@ public class LOPNetworkManager : NetworkManager
     /// <para>This is called on the Server when a Client disconnects from the Server. Use an override to decide what should happen when a disconnection is detected.</para>
     /// </summary>
     /// <param name="conn">Connection from client.</param>
-    public override void OnServerDisconnect(NetworkConnection conn)
+    public override void OnServerDisconnect(NetworkConnectionToClient conn)
     {
         base.OnServerDisconnect(conn);
 
@@ -231,17 +210,17 @@ public class LOPNetworkManager : NetworkManager
     {
         Debug.Log($"[OnStartServer]");
 
-        NotifyStartServerRequest request = new NotifyStartServerRequest
-        {
-            roomId = LOP.Room.Instance.RoomId,
-            matchId = SceneDataContainer.Get<MatchData>().matchId,
-            expectedPlayerList = LOP.Room.Instance.ExpectedPlayerList,
-            matchSetting = SceneDataContainer.Get<MatchData>().matchSetting,
-            ip = LOP.Application.IP,
-            port = LOP.Room.Instance.Port,
-        };
+        //NotifyStartServerRequest request = new NotifyStartServerRequest
+        //{
+        //    roomId = LOP.Room.Instance.RoomId,
+        //    matchId = SceneDataContainer.Get<MatchData>().matchId,
+        //    expectedPlayerList = LOP.Room.Instance.ExpectedPlayerList,
+        //    matchSetting = SceneDataContainer.Get<MatchData>().matchSetting,
+        //    ip = LOP.Application.IP,
+        //    port = LOP.Room.Instance.Port,
+        //};
 
-        LOPWebAPI.NotifyStartServer(request);
+        //LOPWebAPI.UpdateStatus(request);
     }
 
     /// <summary>
@@ -261,7 +240,7 @@ public class LOPNetworkManager : NetworkManager
     {
         Debug.Log($"[OnStopServer]");
 
-        LOPWebAPI.NotifyStopServer(LOP.Room.Instance.RoomId);
+        //LOPWebAPI.NotifyStopServer(LOP.Room.Instance.RoomId);
     }
 
     /// <summary>

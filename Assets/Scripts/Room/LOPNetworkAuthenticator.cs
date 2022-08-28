@@ -39,14 +39,14 @@ public class LOPNetworkAuthenticator : NetworkAuthenticator
     /// Called on server from OnServerAuthenticateInternal when a client needs to authenticate
     /// </summary>
     /// <param name="conn">Connection to client.</param>
-    public override void OnServerAuthenticate(NetworkConnection conn) { }
+    public override void OnServerAuthenticate(NetworkConnectionToClient conn) { }
 
     /// <summary>
     /// Called on server when the client's AuthRequestMessage arrives
     /// </summary>
     /// <param name="conn">Connection to client.</param>
     /// <param name="msg">The message payload</param>
-    public void OnAuthRequestMessage(NetworkConnection conn, AuthRequestMessage msg)
+    public void OnAuthRequestMessage(NetworkConnectionToClient conn, AuthRequestMessage msg)
     {
         //  현재는 무조건 수락.. 추후에 게임에 예정된 플레이어인지 체크하는 로직 추가하기!
         //  ...
