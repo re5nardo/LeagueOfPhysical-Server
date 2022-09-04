@@ -30,31 +30,25 @@ namespace GameState
                 matchId = SceneDataContainer.Get<MatchData>().matchId,
                 matchSetting = SceneDataContainer.Get<MatchData>().matchSetting,
 
-                playerIds = LOP.Game.Current.EntityIDPlayerUserID.Values.ToList(),
+                playerIds = IDMap.UserIds.ToList(),
                 winnerPlayerIds = null,
                 loserPlayerIds = null,
                 rankingDataList = null,
             };
 
-            LOPWebAPI.MatchEnd(matchEndRequest,
-                result =>
-                {
-                    if (!IsCurrent) return;
+            //LOPWebAPI.MatchEnd(matchEndRequest,
+            //    result =>
+            //    {
+            //        if (!IsCurrent) return;
 
-                    if (result.code == 200)
-                    {
-                        if (NetworkServer.active)
-                        {
-                            NetworkManager.singleton.StopServer();
-                        }
-
-                        LOP.Application.Quit();
-                    }
-                },
-                error =>
-                {
-                }
-            );
+            //        if (result.code == 200)
+            //        {
+            //        }
+            //    },
+            //    error =>
+            //    {
+            //    }
+            //);
         }
 
         public override IState GetNext<I>(I input)

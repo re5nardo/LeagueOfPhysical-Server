@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class IDMap
 {
@@ -90,6 +91,11 @@ public class IDMap
 
             return true;
         }
+
+        public static string[] GetAllUserIds()
+        {
+            return userIdEntityId.Keys.ToArray();
+        }
     }
 
     #region Helper
@@ -116,5 +122,7 @@ public class IDMap
 
         return UserIdEntityId.TryGetEntityId(userId, out entityId);
     }
+
+    public static string[] UserIds => UserIdEntityId.GetAllUserIds();
     #endregion
 }
