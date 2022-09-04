@@ -11,7 +11,8 @@ namespace LOP
 {
     public partial class Game : GameFramework.Game
     {
-        public const float BROADCAST_SCOPE = 80f;
+        public const int GRID_SIZE = 100;
+        public const float BROADCAST_SCOPE = 1000;
         public const float BROADCAST_SCOPE_RADIUS = BROADCAST_SCOPE * 0.5f;
 
         public new static Game Current => GameFramework.Game.Current as Game;

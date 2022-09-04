@@ -42,7 +42,7 @@ public class EntityManager : GameFramework.EntityManager
     {
         positionGrid = new Grid();
 
-        positionGrid.SetGrid(10);
+        positionGrid.SetGrid(LOP.Game.GRID_SIZE);
 
         SceneMessageBroker.AddSubscriber<GameMessage.EntityMove>(OnEntityMove);
         SceneMessageBroker.AddSubscriber<TickMessage.Tick>(OnTick);
