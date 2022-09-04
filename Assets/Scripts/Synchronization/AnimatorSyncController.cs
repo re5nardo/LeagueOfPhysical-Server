@@ -49,7 +49,7 @@ public class AnimatorSyncController : LOPMonoEntitySyncControllerBase<AnimatorSy
     {
         if (HasAuthority)
         {
-            if (lastSyncData == null || lastSyncData.ObjectToHash() != GetSyncData().ObjectToHash())
+            if (lastSyncData == null || lastSyncData.ObjectToHash().SequenceEqual(GetSyncData().ObjectToHash()) == false)
             {
                 var syncData = GetSyncData();
                 Sync(syncData);

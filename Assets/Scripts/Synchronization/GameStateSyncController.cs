@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using GameFramework;
+using System.Linq;
 
 public class GameStateSyncController : LOPMonoSyncControllerBase<GameStateSyncData>
 {
@@ -27,7 +28,7 @@ public class GameStateSyncController : LOPMonoSyncControllerBase<GameStateSyncDa
     {
         if (HasAuthority)
         {
-            if (lastSyncData == null || lastSyncData.ObjectToHash() != GetSyncData().ObjectToHash())
+            if (lastSyncData == null || lastSyncData.ObjectToHash().SequenceEqual(GetSyncData().ObjectToHash()) == false)
             {
                 var syncData = GetSyncData();
                 Sync(syncData);

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using GameFramework;
+using System.Linq;
 
 public class TickSyncController : LOPMonoSyncControllerBase<TickSyncData>
 {
@@ -27,7 +28,7 @@ public class TickSyncController : LOPMonoSyncControllerBase<TickSyncData>
     {
         if (HasAuthority)
         {
-            if (lastSyncData == null || lastSyncData.ObjectToHash() != GetSyncData().ObjectToHash())
+            if (lastSyncData == null || lastSyncData.ObjectToHash().SequenceEqual(GetSyncData().ObjectToHash()) == false)
             {
                 var syncData = GetSyncData();
                 Sync(syncData);
