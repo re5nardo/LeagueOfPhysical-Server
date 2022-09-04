@@ -15,7 +15,7 @@ namespace LOP
             var conn = message.networkConnection;
             var customProperties = conn.authenticationData as CustomProperties;
 
-            if (IDMap.UserIdEntityId.TryGetEntityId(customProperties.userId, out var entityId))
+            if (gameIdMap.TryGetEntityId(customProperties.userId, out var entityId))
             {
                 var userEntity = Entities.Get<LOPMonoEntityBase>(entityId);
 
@@ -54,7 +54,7 @@ namespace LOP
                 //  Create character(Player)
                 Character character = EntityHelper.CreatePlayerCharacter(customProperties.userId, customProperties.characterId);
 
-                IDMap.UserIdEntityId.Set(customProperties.userId, character.EntityID);
+                gameIdMap.Add(customProperties.userId, character.EntityID);
 
                 using var disposer = PoolObjectDisposer<SC_EnterRoom>.Get();
                 var enterRoom = disposer.PoolObject;
@@ -108,66 +108,24 @@ namespace LOP
             }
         }
 
-        public Character CreatePlayerCharacter(string userId, int characterId)
-        {
-            //  Create character(Player)
-            Character character = EntityHelper.CreatePlayerCharacter(userId, characterId);
-
-            IDMap.UserIdEntityId.Set(userId, character.EntityID);
-
-            //  EntityAdditionalDatas
-            CharacterGrowthData characterGrowthData = EntityAdditionalDataInitializer.Instance.Initialize(new CharacterGrowthData());
-            character.AttachEntityComponent(characterGrowthData);
-
-            EmotionExpressionData emotionExpressionData = EntityAdditionalDataInitializer.Instance.Initialize(new EmotionExpressionData(), character.EntityID);
-            character.AttachEntityComponent(emotionExpressionData);
-
-            EntityInventory entityInventory = EntityAdditionalDataInitializer.Instance.Initialize(new EntityInventory(), character.EntityID);
-            character.AttachEntityComponent(entityInventory);
-
-            character.AttachEntityComponent<NearEntityController>();
-
-            character.AttachEntityComponent<PlayerView>();
-
-            character.AttachEntityComponent<TransformSyncController>();
-            if (character.ModelAnimator != null)
-            {
-                character.AttachEntityComponent<AnimatorSyncController>();
-            }
-
-            //  Entity Skill Info
-            //  (should receive data from server db?)
-            SkillController controller = character.GetComponent<SkillController>();
-            foreach (int nSkillID in character.MasterData.SkillIDs)
-            {
-                controller.AddSkill(nSkillID);
-            }
-
-            //using var entitySkillInfoDisposer = PoolObjectDisposer<SC_EntitySkillInfo>.Get();
-            //var entitySkillInfo = entitySkillInfoDisposer.PoolObject;
-            //entitySkillInfo.entityId = character.EntityID;
-            //entitySkillInfo.dicSkillInfo = controller.GetEntitySkillInfo();
-
-            //RoomNetwork.Instance.Send(entitySkillInfo, conn.connectionId);
-
-            return character;
-        }
-
         private void OnPlayerLeave(RoomMessage.PlayerLeave message)
         {
             var conn = message.networkConnection;
             var customProperties = conn.authenticationData as CustomProperties;
 
-            IDMap.UserIdEntityId.TryGetEntityId(customProperties.userId, out var entityId);
+            if (gameIdMap.TryGetEntityId(customProperties.userId, out var entityId))
+            {
+                var entity = Entities.Get<LOPMonoEntityBase>(entityId);
 
-            var entity = Entities.Get<LOPMonoEntityBase>(entityId);
+                entity.OwnerId = LOP.Application.UserId;
 
-            entity.OwnerId = LOP.Application.UserId;
+                NearEntityController nearEntityController = entity.GetEntityComponent<NearEntityController>();
+                entity.DetachEntityComponent(nearEntityController);
 
-            NearEntityController nearEntityController = entity.GetEntityComponent<NearEntityController>();
-            entity.DetachEntityComponent(nearEntityController);
+                Destroy(nearEntityController);
 
-            Destroy(nearEntityController);
+                //gameIdMap.Remove(customProperties.userId);
+            }
         }
 
         public Rect GetMapRect()
@@ -220,7 +178,7 @@ namespace LOP
 
             if (entity.EntityRole == EntityRole.Player)
             {
-                if (IDMap.TryGetConnectionIdByEntityId(entityID, out var connectionId))
+                if (GameIdMap.TryGetConnectionIdByEntityId(entityID, out var connectionId))
                 {
                     LOP.Game.Current.GameEventManager.Send(new EntityGetMoney(entityID, position, money, entityInventory.m_nMoney), connectionId);
                 }
@@ -244,7 +202,7 @@ namespace LOP
 
                 if (entity.EntityRole == EntityRole.Player)
                 {
-                    if (IDMap.TryGetConnectionIdByEntityId(entityID, out var connectionId))
+                    if (GameIdMap.TryGetConnectionIdByEntityId(entityID, out var connectionId))
                     {
                         LOP.Game.Current.GameEventManager.Send(new EntityGetExp(entityID, exp, characterGrowthData.Exp), connectionId);
                     }

@@ -17,6 +17,8 @@ namespace LOP
 
         public new static Game Current => GameFramework.Game.Current as Game;
 
+        public GameIdMap gameIdMap { get; private set; } = new GameIdMap();
+
         private Dictionary<string, int> playerUserIDEntityID = new Dictionary<string, int>();                                  //  key : Player UserID, vlue : EntityID
         private Dictionary<int, string> entityIDPlayerUserID = new Dictionary<int, string>();                                  //  key : EntityID, vlue : Player UserID
         private Dictionary<string, WeakReference> playerUserIDPhotonPlayer = new Dictionary<string, WeakReference>();          //  key : Player UserID, vlue : PhotonPlayer

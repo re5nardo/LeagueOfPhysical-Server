@@ -325,7 +325,7 @@ public class NearEntityController : LOPMonoEntityComponentBase
 		}
 		entityAppear.tick = Game.Current.CurrentTick;
 
-        if (IDMap.TryGetConnectionIdByEntityId(Entity.EntityID, out var connectionId))
+        if (GameIdMap.TryGetConnectionIdByEntityId(Entity.EntityID, out var connectionId))
         {
             RoomNetwork.Instance.Send(entityAppear, connectionId);
         }
@@ -343,7 +343,7 @@ public class NearEntityController : LOPMonoEntityComponentBase
 		var entityDisAppear = disposer.PoolObject;
 		entityDisAppear.listEntityId = entityIDs;
 
-        if (IDMap.TryGetConnectionIdByEntityId(Entity.EntityID, out var connectionId))
+        if (GameIdMap.TryGetConnectionIdByEntityId(Entity.EntityID, out var connectionId))
         {
             RoomNetwork.Instance.Send(entityDisAppear, connectionId);
         }

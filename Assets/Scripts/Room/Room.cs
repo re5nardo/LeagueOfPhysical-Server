@@ -11,9 +11,11 @@ namespace LOP
         public ushort Port { get; private set; }
         public string[] ExpectedPlayerList { get; private set; }
 
-        [SerializeField] private Game game = null;
+        [SerializeField] private Game game;
 
-        private RoomProtocolDispatcher roomProtocolDispatcher = null;
+        private RoomProtocolDispatcher roomProtocolDispatcher;
+
+        public RoomIdMap roomIdMap { get; private set; } = new RoomIdMap();
 
         #region MonoBehaviour
         private IEnumerator Start()
@@ -58,6 +60,9 @@ namespace LOP
         private IEnumerator Initialize()
         {
             roomProtocolDispatcher = gameObject.AddComponent<RoomProtocolDispatcher>();
+
+            SceneMessageBroker.AddSubscriber<RoomMessage.PlayerEnter>(OnPlayerEnter);
+            SceneMessageBroker.AddSubscriber<RoomMessage.PlayerLeave>(OnPlayerLeave);
 
 #if !UNITY_EDITOR
             var arguments = System.Environment.GetCommandLineArgs();
@@ -107,6 +112,9 @@ namespace LOP
 
         private void Clear()
         {
+            SceneMessageBroker.RemoveSubscriber<RoomMessage.PlayerEnter>(OnPlayerEnter);
+            SceneMessageBroker.RemoveSubscriber<RoomMessage.PlayerLeave>(OnPlayerLeave);
+
             if (NetworkServer.active)
             {
                 NetworkManager.singleton.StopServer();
@@ -116,6 +124,36 @@ namespace LOP
         private void SendHeartbeat()
         {
             LOPWebAPI.Heartbeat(RoomId);
+        }
+
+        private void OnPlayerEnter(RoomMessage.PlayerEnter message)
+        {
+            var conn = message.networkConnection;
+            var customProperties = conn.authenticationData as CustomProperties;
+
+            if (roomIdMap.TryGetConnectionId(customProperties.userId, out var connectionId))
+            {
+                Debug.LogWarning($"There is alreay connectionId. OnPlayerLeave was called?");
+            }
+
+            roomIdMap.Add(conn.connectionId, customProperties.userId);
+
+            Debug.Log($"[OnPlayerEnter] userId: {customProperties.userId}, connectionId: {conn.connectionId}");
+        }
+
+        private void OnPlayerLeave(RoomMessage.PlayerLeave message)
+        {
+            var conn = message.networkConnection;
+            var customProperties = conn.authenticationData as CustomProperties;
+
+            if (roomIdMap.TryGetConnectionId(customProperties.userId, out var connectionId) == false)
+            {
+                Debug.LogWarning($"There is no connectionId. OnPlayerEnter was called?");
+            }
+
+            roomIdMap.Remove(conn.connectionId);
+
+            Debug.Log($"[OnPlayerLeave] userId: {customProperties.userId}, connectionId: {conn.connectionId}");
         }
     }
 }

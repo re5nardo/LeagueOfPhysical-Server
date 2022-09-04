@@ -63,9 +63,10 @@ namespace GameState
                 return;
             }
 
-            var playerUserID = LOP.Game.Current.EntityIDPlayerUserID[gamePreparation.entityId];
-
-            playerPrepares[playerUserID] = gamePreparation.preparation;
+            if (LOP.Game.Current.EntityIDPlayerUserID.TryGetValue(gamePreparation.entityId, out var playerUserID))
+            {
+                playerPrepares[playerUserID] = gamePreparation.preparation;
+            }
         }
     }
 }

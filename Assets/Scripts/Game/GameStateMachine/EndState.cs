@@ -30,7 +30,7 @@ namespace GameState
                 matchId = SceneDataContainer.Get<MatchData>().matchId,
                 matchSetting = SceneDataContainer.Get<MatchData>().matchSetting,
 
-                playerIds = IDMap.UserIds.ToList(),
+                playerIds = GameIdMap.UserIds.ToList(),
                 winnerPlayerIds = null,
                 loserPlayerIds = null,
                 rankingDataList = null,

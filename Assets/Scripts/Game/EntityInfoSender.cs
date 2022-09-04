@@ -8,7 +8,7 @@ using Mirror;
 
 public class EntityInfoSender : MonoSingleton<EntityInfoSender>
 {
-    private Dictionary<string, Vector3> m_dicPlayerUserIDLookAtPosition = new Dictionary<string, Vector3>();                    //  key : Player UserID, vlue : LookAtPosition
+    //private Dictionary<string, Vector3> m_dicPlayerUserIDLookAtPosition = new Dictionary<string, Vector3>();                    //  key : Player UserID, vlue : LookAtPosition
 
 #region MonoBehaviour
     protected override void Awake()
@@ -42,7 +42,7 @@ public class EntityInfoSender : MonoSingleton<EntityInfoSender>
     {
         foreach (var connectionId in NetworkServer.connections.Keys)
         {
-            if (IDMap.TryGetEntityIdByConnectionId(connectionId, out var entityId))
+            if (GameIdMap.TryGetEntityIdByConnectionId(connectionId, out var entityId))
             {
                 var character = Entities.Get<Character>(entityId);
 
@@ -58,7 +58,7 @@ public class EntityInfoSender : MonoSingleton<EntityInfoSender>
 
     public void SetPlayerLookAtPosition(string userId, Vector3 position)
     {
-        m_dicPlayerUserIDLookAtPosition[userId] = position;
+        //m_dicPlayerUserIDLookAtPosition[userId] = position;
     }
 
 	#region Message Handler
@@ -69,9 +69,10 @@ public class EntityInfoSender : MonoSingleton<EntityInfoSender>
         //	Player's entity
         if (entity.EntityRole == EntityRole.Player)
         {
-            string playerUserID = LOP.Game.Current.EntityIDPlayerUserID[message.entityId];
-
-            m_dicPlayerUserIDLookAtPosition.Remove(playerUserID);
+            //if (LOP.Game.Current.EntityIDPlayerUserID.TryGetValue(message.entityId, out var playerUserID))
+            //{
+            //    m_dicPlayerUserIDLookAtPosition.Remove(playerUserID);
+            //}
         }
     }
 	#endregion

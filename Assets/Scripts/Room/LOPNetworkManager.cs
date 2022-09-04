@@ -110,13 +110,7 @@ public class LOPNetworkManager : NetworkManager
     {
         base.OnServerConnect(conn);
 
-        var customProperties = conn.authenticationData as CustomProperties;
-
-        IDMap.ConnectionIdUserId.Set(conn.connectionId, customProperties.userId);
-
         SceneMessageBroker.Publish(new RoomMessage.PlayerEnter(conn));
-
-        Debug.Log($"[OnServerConnect] userId: {customProperties.userId}, connectionId: {conn.connectionId}");
     }
 
     /// <summary>
@@ -148,13 +142,7 @@ public class LOPNetworkManager : NetworkManager
     {
         base.OnServerDisconnect(conn);
 
-        var customProperties = conn.authenticationData as CustomProperties;
-
-        IDMap.ConnectionIdUserId.Remove(conn.connectionId);
-
         SceneMessageBroker.Publish(new RoomMessage.PlayerLeave(conn));
-
-        Debug.Log($"[OnServerDisconnect] userId: {customProperties.userId}, connectionId: {conn.connectionId}");
     }
 
     #endregion
