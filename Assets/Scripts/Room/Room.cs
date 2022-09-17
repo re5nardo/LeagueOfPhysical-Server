@@ -8,6 +8,7 @@ namespace LOP
     public class Room : MonoSingleton<Room>
     {
         public string RoomId { get; private set; }
+        public string MatchId { get; private set; }
         public ushort Port { get; private set; }
         public string[] ExpectedPlayerList { get; private set; }
 
@@ -29,20 +30,30 @@ namespace LOP
             {
                 yield return null;
             }
-
-            UpdateRoomStatusRequest request = new UpdateRoomStatusRequest
+         
+            LOPWebAPI.UpdateRoomStatus(new UpdateRoomStatusRequest
             {
                 roomId = LOP.Room.Instance.RoomId,
                 status = NetworkModel.RoomStatus.Ready,
-            };
+            });
 
-            LOPWebAPI.UpdateRoomStatus(request);
+            LOPWebAPI.MatchStart(new MatchStartRequest
+            {
+                matchId = LOP.Room.Instance.MatchId,
+            });
 
             game.Run();
 
             InvokeRepeating("SendHeartbeat", 0, 7);
 
             yield return new WaitUntil(() => game.IsGameEnd);
+
+            LOPWebAPI.MatchEnd(new MatchEndRequest
+            {
+                matchId = LOP.Room.Instance.MatchId,
+            });
+
+            yield return new WaitForSeconds(2);
 
             Destroy(this);
         }
@@ -80,6 +91,7 @@ namespace LOP
             }
 
             RoomId = roomId;
+            MatchId = matchId;
             Port = port;
             ExpectedPlayerList = getMatch.response.match.playerList;
 
@@ -93,6 +105,7 @@ namespace LOP
 #else
 
             RoomId = "EditorTestRoom";
+            MatchId = "EditorTestMatch";
             Port = 7777;
             ExpectedPlayerList = null;
 
