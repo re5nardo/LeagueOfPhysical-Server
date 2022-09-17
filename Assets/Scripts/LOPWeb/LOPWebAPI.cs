@@ -34,12 +34,12 @@ public class LOPWebAPI
 
     public static HttpRequestContainer<MatchStartResult> MatchStart(MatchStartRequest request, Action<MatchStartResult> onResult = null, Action<string> onError = null)
     {
-        return Http.Put($"match-start", JsonUtility.ToJson(request), onResult, onError, apiSettings: GameFramework.ServerSettings.Get("ServerSettings_Room"));
+        return Http.Put($"match/match-start", JsonUtility.ToJson(request), onResult, onError, apiSettings: GameFramework.ServerSettings.Get("ServerSettings_Room"));
     }
 
     public static HttpRequestContainer<MatchEndResult> MatchEnd(MatchEndRequest request, Action<MatchEndResult> onResult = null, Action<string> onError = null)
     {
-        return Http.Put($"match-end", JsonUtility.ToJson(request), onResult, onError, apiSettings: GameFramework.ServerSettings.Get("ServerSettings_Room"));
+        return Http.Put($"match/match-end", JsonUtility.ToJson(request), onResult, onError, apiSettings: GameFramework.ServerSettings.Get("ServerSettings_Room"));
     }
     #endregion
 }
