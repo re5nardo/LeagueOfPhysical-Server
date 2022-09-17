@@ -10,19 +10,13 @@ namespace GameState
     {
         public override void OnEnter()
         {
-            var subGameDatas = SubGameData.GetAll();
+            //var subGameDatas = SubGameData.GetAll();
 
             //var subGameIndex = UnityEngine.Random.Range(0, subGameDatas.Length);
             //var mapIndex = UnityEngine.Random.Range(0, subGameDatas[subGameIndex].availableMapIds.Length);
 
-            //LOP.Game.Current.GameManager.subGameId = subGameDatas[subGameIndex].subGameId;
-            //LOP.Game.Current.GameManager.mapId = subGameDatas[subGameIndex].availableMapIds[mapIndex];
-
-            SceneDataContainer.Get<MatchData>().matchSetting.subGameId = "FlapWang";
-            SceneDataContainer.Get<MatchData>().matchSetting.mapId = "FlapWangMap";
-
-            //LOP.Game.Current.GameManager.subGameId = "FallingGame";
-            //LOP.Game.Current.GameManager.mapId = "Falling";
+            //SceneDataContainer.Get<MatchData>().matchSetting.subGameId = subGameDatas[subGameIndex].subGameId;
+            //SceneDataContainer.Get<MatchData>().matchSetting.mapId = subGameDatas[subGameIndex].availableMapIds[mapIndex];
 
             FSM.MoveNext(GameStateInput.StateDone);
         }
