@@ -21,13 +21,25 @@ public class LOPWebAPI
         return Http.Delete($"room/{roomId}", onResult, onError, apiSettings: GameFramework.ServerSettings.Get("ServerSettings_Room"));
     }
 
-    public static HttpRequestContainer<HttpResultBase> MatchEnd(MatchEndRequest request, Action<HttpResultBase> onResult = null, Action<string> onError = null)
-    {
-        return Http.Put("matchEnd", JsonUtility.ToJson(request), onResult, onError, apiSettings: GameFramework.ServerSettings.Get("ServerSettings_Room"));
-    }
-
     public static HttpRequestContainer<UpdateRoomStatusResult> UpdateRoomStatus(UpdateRoomStatusRequest request, Action<UpdateRoomStatusResult> onResult = null, Action<string> onError = null)
     {
         return Http.Put($"room/status", JsonUtility.ToJson(request), onResult, onError, apiSettings: GameFramework.ServerSettings.Get("ServerSettings_Room"));
     }
+
+    #region Match
+    public static HttpRequestContainer<GetMatchResult> GetMatch(string matchId, Action<GetMatchResult> onResult = null, Action<string> onError = null)
+    {
+        return Http.Get($"match/{matchId}", onResult, onError, apiSettings: GameFramework.ServerSettings.Get("ServerSettings_Room"));
+    }
+
+    public static HttpRequestContainer<MatchStartResult> MatchStart(MatchStartRequest request, Action<MatchStartResult> onResult = null, Action<string> onError = null)
+    {
+        return Http.Put($"match-start", JsonUtility.ToJson(request), onResult, onError, apiSettings: GameFramework.ServerSettings.Get("ServerSettings_Room"));
+    }
+
+    public static HttpRequestContainer<MatchEndResult> MatchEnd(MatchEndRequest request, Action<MatchEndResult> onResult = null, Action<string> onError = null)
+    {
+        return Http.Put($"match-end", JsonUtility.ToJson(request), onResult, onError, apiSettings: GameFramework.ServerSettings.Get("ServerSettings_Room"));
+    }
+    #endregion
 }

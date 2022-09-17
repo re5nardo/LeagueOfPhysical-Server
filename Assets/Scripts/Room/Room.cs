@@ -33,7 +33,7 @@ namespace LOP
             UpdateRoomStatusRequest request = new UpdateRoomStatusRequest
             {
                 roomId = LOP.Room.Instance.RoomId,
-                status = RoomStatus.Ready,
+                status = NetworkModel.RoomStatus.Ready,
             };
 
             LOPWebAPI.UpdateRoomStatus(request);
@@ -67,22 +67,28 @@ namespace LOP
 #if !UNITY_EDITOR
             var arguments = System.Environment.GetCommandLineArgs();
 
-            string[] expectedUsers = new string[arguments.Length - 7];
-            for (int i = 7; i < arguments.Length; ++i)
+            var roomId = arguments[1];
+            var matchId = arguments[2];
+            var port = ushort.Parse(arguments[3]);
+
+            var getMatch = LOPWebAPI.GetMatch(matchId);
+            yield return getMatch;
+
+            if (getMatch.isError)
             {
-                expectedUsers[i - 7] = arguments[i];
+                throw new System.Exception(getMatch.error);
             }
 
-            RoomId = arguments[1];
-            Port = ushort.Parse(arguments[3]);
-            ExpectedPlayerList = expectedUsers;
+            RoomId = roomId;
+            Port = port;
+            ExpectedPlayerList = getMatch.response.match.playerList;
 
-            SceneDataContainer.Get<MatchData>().matchId = arguments[2];
+            SceneDataContainer.Get<MatchData>().matchId = getMatch.response.match.id;
             SceneDataContainer.Get<MatchData>().matchSetting = new MatchSetting
             {
-                matchType = Util.TryEnumParse(arguments[4], MatchType.Friendly),
-                subGameId = arguments[5],
-                mapId = arguments[6],
+                matchType = getMatch.response.match.matchType,
+                subGameId = getMatch.response.match.subGameId,
+                mapId = getMatch.response.match.mapId,
             };
 #else
 
@@ -102,7 +108,7 @@ namespace LOP
             UpdateRoomStatusRequest request = new UpdateRoomStatusRequest
             {
                 roomId = LOP.Room.Instance.RoomId,
-                status = RoomStatus.Spawned,
+                status = NetworkModel.RoomStatus.Spawned,
             };
 
             LOPWebAPI.UpdateRoomStatus(request);

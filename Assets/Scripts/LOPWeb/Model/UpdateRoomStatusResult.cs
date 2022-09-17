@@ -16,11 +16,18 @@ namespace NetworkModel
     {
         public string id;
         public string matchId;
-        public MatchType matchType;
-        public string subGameId;
-        public string mapId;
         public RoomStatus status;
         public string ip;
         public int port;
+    }
+
+    public enum RoomStatus
+    {
+        None = 0,
+        Spawning = 1,
+        Spawned = 2,
+        Ready = 3,
+        Playing = 4,
+        Finished = 5,
     }
 }

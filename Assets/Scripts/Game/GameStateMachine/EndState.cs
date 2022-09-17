@@ -28,12 +28,12 @@ namespace GameState
             var matchEndRequest = new MatchEndRequest()
             {
                 matchId = SceneDataContainer.Get<MatchData>().matchId,
-                matchSetting = SceneDataContainer.Get<MatchData>().matchSetting,
+                //matchSetting = SceneDataContainer.Get<MatchData>().matchSetting,
 
-                playerIds = GameIdMap.UserIds.ToList(),
-                winnerPlayerIds = null,
-                loserPlayerIds = null,
-                rankingDataList = null,
+                //playerIds = GameIdMap.UserIds.ToList(),
+                //winnerPlayerIds = null,
+                //loserPlayerIds = null,
+                //rankingDataList = null,
             };
 
             //LOPWebAPI.MatchEnd(matchEndRequest,
