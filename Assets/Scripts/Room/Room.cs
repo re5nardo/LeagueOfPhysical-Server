@@ -58,11 +58,14 @@ namespace LOP
             Destroy(this);
         }
 
+        private void OnDisable()
+        {
+            Clear();
+        }
+
         protected override void OnDestroy()
         {
             base.OnDestroy();
-
-            Clear();
 
             LOP.Application.Quit();
         }
