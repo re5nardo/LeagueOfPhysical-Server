@@ -12,7 +12,7 @@ namespace GameState
 {
     public class SubGamePrepareState : MonoStateBase
     {
-        private const int WAIT_TIMEOUT = 5;
+        private const int WAIT_TIMEOUT = 7;
 
         private Dictionary<string, float> playerPrepares = new Dictionary<string, float>();
 
