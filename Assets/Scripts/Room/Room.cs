@@ -133,11 +133,6 @@ namespace LOP
         {
             SceneMessageBroker.RemoveSubscriber<RoomMessage.PlayerEnter>(OnPlayerEnter);
             SceneMessageBroker.RemoveSubscriber<RoomMessage.PlayerLeave>(OnPlayerLeave);
-
-            if (NetworkServer.active)
-            {
-                NetworkManager.singleton.StopServer();
-            }
         }
 
         private void SendHeartbeat()
