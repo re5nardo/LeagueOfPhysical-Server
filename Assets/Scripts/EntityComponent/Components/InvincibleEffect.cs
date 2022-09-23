@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class InvincibleEffect : LOPMonoEntityComponentBase
 {
-    private float startTime;
+    private double startTime;
 
     protected override void OnAttached(IEntity entity)
     {
@@ -22,9 +22,8 @@ public class InvincibleEffect : LOPMonoEntityComponentBase
 
     private void LateUpdate()
     {
-        float elapted = Game.Current.GameTime - startTime;
-
-        float alpha = (elapted * 5) % 1;
+        double elapted = Game.Current.GameTime - startTime;
+        float alpha = ((float)elapted * 5) % 1;
 
         Entity.ModelRenderers?.ForEach(renderer =>
         {

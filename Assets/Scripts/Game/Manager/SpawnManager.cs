@@ -9,7 +9,7 @@ public class SpawnManager : MonoBehaviour
     private const float SPAWN_INTERVAL = 0.3f;
     private const int MAX_ENTITY_COUNT = 500;
 
-    private float m_fSpawnElapsedTime = 0f;
+    private double m_fSpawnElapsedTime = 0f;
     private Dictionary<int, ControllerBase> m_dicEntityIDController = new Dictionary<int, ControllerBase>();
 
 	private void Awake()

@@ -10,15 +10,15 @@ namespace Skill
 
         public int MasterDataId { get; protected set; } = -1;
 
-        public float CoolTime { get; protected set; }
+        public double CoolTime { get; protected set; }
         public bool IsCoolTime => CoolTime > 0;
 
         protected int startTick = -1;
         protected int lastTick = -1;
 
-        protected float DeltaTime => Game.Current.CurrentTick == 0 ? 0 : Game.Current.TickInterval;
-        protected float CurrentUpdateTime => Game.Current.CurrentTick == 0 ? 0 : (Game.Current.CurrentTick - startTick + 1) * Game.Current.TickInterval;
-        protected float LastUpdateTime => lastTick == -1 ? -1 : (lastTick - startTick + 1) * Game.Current.TickInterval;
+        protected double DeltaTime => Game.Current.CurrentTick == 0 ? 0 : Game.Current.TickInterval;
+        protected double CurrentUpdateTime => Game.Current.CurrentTick == 0 ? 0 : (Game.Current.CurrentTick - startTick + 1) * Game.Current.TickInterval;
+        protected double LastUpdateTime => lastTick == -1 ? -1 : (lastTick - startTick + 1) * Game.Current.TickInterval;
 
         private MasterData.Skill masterData = null;
         public MasterData.Skill MasterData => masterData ?? (masterData = MasterDataManager.Instance.GetMasterData<MasterData.Skill>(MasterDataId));
@@ -49,7 +49,11 @@ namespace Skill
                 return;
             }
 
-            CoolTime = Mathf.Max(0, CoolTime - DeltaTime);
+            CoolTime -= DeltaTime;
+            if (CoolTime < 0)
+            {
+                CoolTime = 0;
+            }
 
             OnSkillUpdate();
 

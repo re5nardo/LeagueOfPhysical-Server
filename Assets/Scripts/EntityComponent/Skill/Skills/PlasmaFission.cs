@@ -17,8 +17,8 @@ namespace Skill
             WaitReuse,
         }
 
-        private float m_fReusableTime = 3f;
-        private float m_FireSkillElapsedTime = 0f;
+        private double m_fReusableTime = 3f;
+        private double m_FireSkillElapsedTime = 0f;
 
         private float m_fTargetProjectileHeight = 0.5f;
         private float m_fTargetProjectileLifespan = 3f;

@@ -81,7 +81,7 @@ namespace NetworkModel.Mirror
     public class SC_EntitySkillInfo : IMirrorMessage
     {
         public int entityId;
-        public Dictionary<int, float> dicSkillInfo = new Dictionary<int, float>();
+        public Dictionary<int, double> dicSkillInfo = new Dictionary<int, double>();
 
         public byte GetMessageId()
         {

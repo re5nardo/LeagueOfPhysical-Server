@@ -16,9 +16,9 @@ namespace State
         protected int startTick = -1;
         protected int lastTick = -1;
 
-        protected float DeltaTime => lastTick == -1 ? CurrentUpdateTime : CurrentUpdateTime - LastUpdateTime;
-        protected float CurrentUpdateTime => Game.Current.CurrentTick == 0 ? 0 : (Game.Current.CurrentTick - startTick + 1) * Game.Current.TickInterval;
-        protected float LastUpdateTime => lastTick == -1 ? -1 : (lastTick - startTick + 1) * Game.Current.TickInterval;
+        protected double DeltaTime => lastTick == -1 ? CurrentUpdateTime : CurrentUpdateTime - LastUpdateTime;
+        protected double CurrentUpdateTime => Game.Current.CurrentTick == 0 ? 0 : (Game.Current.CurrentTick - startTick + 1) * Game.Current.TickInterval;
+        protected double LastUpdateTime => lastTick == -1 ? -1 : (lastTick - startTick + 1) * Game.Current.TickInterval;
 
         private StateMasterData masterData = null;
         public StateMasterData MasterData => masterData ?? (masterData = MasterDataUtil.Get<StateMasterData>(MasterDataId));

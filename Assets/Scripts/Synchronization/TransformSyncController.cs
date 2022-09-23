@@ -79,7 +79,7 @@ public class TransformSyncController : LOPMonoEntitySyncControllerBase<Transform
             return;
         }
 
-        float syncTime = (float)Mirror.NetworkTime.time - latencies.Average - 0.01f;
+        double syncTime = Mirror.NetworkTime.time - latencies.Average - 0.01f;
 
         var beforeEntry = syncDataEntries.FindLast(x => x.GameTime() <= syncTime);
         var nextEntry = syncDataEntries.Find(x => x.GameTime() >= syncTime);
@@ -89,7 +89,7 @@ public class TransformSyncController : LOPMonoEntitySyncControllerBase<Transform
 
         if (before != null && next != null)
         {
-            float t = (beforeEntry.GameTime() == nextEntry.GameTime()) ? 0 : (syncTime - beforeEntry.GameTime()) / (nextEntry.GameTime() - beforeEntry.GameTime());
+            float t = (float)((beforeEntry.GameTime() == nextEntry.GameTime()) ? 0 : (syncTime - beforeEntry.GameTime()) / (nextEntry.GameTime() - beforeEntry.GameTime()));
 
             Entity.Position = Vector3.Lerp(before.position, next.position, t);
             Entity.Rotation = Quaternion.Lerp(Quaternion.Euler(before.rotation), Quaternion.Euler(next.rotation), t).eulerAngles;
@@ -98,7 +98,7 @@ public class TransformSyncController : LOPMonoEntitySyncControllerBase<Transform
         }
         else if (before != null)
         {
-            float elapsed = syncTime - beforeEntry.GameTime();
+            float elapsed = (float)(syncTime - beforeEntry.GameTime());
 
             Entity.Position = before.position + before.velocity * elapsed;
             Entity.Rotation = before.rotation;

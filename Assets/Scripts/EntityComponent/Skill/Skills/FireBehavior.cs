@@ -10,13 +10,13 @@ namespace Skill
     {
         #region MasterData
         private int targetBehaviorID = -1;
-        private float fireTime;
+        private double fireTime;
         #endregion
 
         private SkillInputData skillInputData;
         private int fireStartTick = -1;
 
-        public float FireTime => fireStartTick * Game.Current.TickInterval + fireTime;
+        public double FireTime => fireStartTick * Game.Current.TickInterval + fireTime;
 
         #region SkillBase
         public override void Initialize(SkillParam skillParam)

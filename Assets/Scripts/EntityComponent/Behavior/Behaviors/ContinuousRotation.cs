@@ -6,7 +6,7 @@ namespace Behavior
     public class ContinuousRotation : BehaviorBase
     {
         private Vector3 startRotation;
-        private float timeOffset;
+        private double timeOffset;
 
         #region BehaviorBase
         protected override void OnInitialize(BehaviorParam behaviorParam)
@@ -30,7 +30,7 @@ namespace Behavior
 
         private Vector3 GetRotationByTime()
         {
-            var value = startRotation + Entity.AngularVelocity * (Game.Current.GameTime + timeOffset);
+            var value = startRotation + Entity.AngularVelocity * (float)(Game.Current.GameTime + timeOffset);
 
             return new Vector3(value.x % 360, value.y % 360, value.z % 360);
         }

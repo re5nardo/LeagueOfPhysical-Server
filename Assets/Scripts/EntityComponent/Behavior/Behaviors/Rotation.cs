@@ -36,7 +36,7 @@ namespace Behavior
 
             var angularVelocity = new Vector3(0, (toRotate > 0 ? 1 : -1) * m_fAngularSpeed, 0);
 
-            float rotated = angularVelocity.y * DeltaTime;
+            float rotated = angularVelocity.y * (float)DeltaTime;
 
             if (Util.Approximately(toRotate, rotated) || Mathf.Abs(toRotate) <= Mathf.Abs(rotated))
             {

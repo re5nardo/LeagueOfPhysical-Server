@@ -4,9 +4,9 @@ using GameFramework;
 
 public class SkillController : LOPMonoEntityComponentBase
 {
-	public Dictionary<int, float> GetEntitySkillInfo()
+	public Dictionary<int, double> GetEntitySkillInfo()
 	{
-		Dictionary<int, float> dicSkillInfo = new Dictionary<int, float>();
+		Dictionary<int, double> dicSkillInfo = new Dictionary<int, double>();
 
 		foreach (Skill.SkillBase skill in GetComponents<Skill.SkillBase>())
 		{

@@ -7,7 +7,7 @@ namespace Behavior
     {
         private Vector3 startPoint;
         private Vector3 halfwayPoint;
-        private float timeOffset;
+        private double timeOffset;
 
         #region BehaviorBase
         protected override void OnInitialize(BehaviorParam behaviorParam)
@@ -37,11 +37,11 @@ namespace Behavior
 
             if ((int)(distance / halfMagnitude) % 2 == 0)
             {
-                return Vector3.Lerp(startPoint, halfwayPoint, (distance % halfMagnitude) / halfMagnitude);
+                return Vector3.Lerp(startPoint, halfwayPoint, (float)((distance % halfMagnitude) / halfMagnitude));
             }
             else
             {
-                return Vector3.Lerp(halfwayPoint, startPoint, (distance % halfMagnitude) / halfMagnitude);
+                return Vector3.Lerp(halfwayPoint, startPoint, (float)((distance % halfMagnitude) / halfMagnitude));
             }
         }
     }

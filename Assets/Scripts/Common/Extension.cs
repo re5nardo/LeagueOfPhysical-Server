@@ -52,7 +52,7 @@ public static class Extension
         }
     }
 
-    public static float GameTime(this SyncDataEntry value)
+    public static double GameTime(this SyncDataEntry value)
     {
         return value.meta.tick * Game.Current.TickInterval;
     }
