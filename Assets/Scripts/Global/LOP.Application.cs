@@ -5,7 +5,6 @@ using UnityEngine.Networking;
 using System.Text.RegularExpressions;
 using GameFramework;
 using System.Threading.Tasks;
-using System;
 
 namespace LOP
 {
@@ -25,18 +24,6 @@ namespace LOP
 
         private static async void Initialize()
         {
-            UnityEngine.Application.logMessageReceived += (condition, stackTrace, type) =>
-            {
-                switch (type)
-                {
-                    case LogType.Error:
-                    case LogType.Exception:
-                        var path = System.IO.Path.Combine(UnityEngine.Application.persistentDataPath, $"{DateTime.Now.ToLongTimeString()}.txt");
-                        System.IO.File.WriteAllText(path, stackTrace);
-                        break;
-                }
-            };
-
             //  Target FrameRate
             UnityEngine.Application.targetFrameRate = 60;
 
