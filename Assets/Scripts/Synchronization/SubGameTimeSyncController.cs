@@ -41,6 +41,6 @@ public class SubGameTimeSyncController : LOPMonoSyncControllerBase<SubGameTimeSy
 
     public override SubGameTimeSyncData GetSyncData()
     {
-        return new SubGameTimeSyncData(SubGameBase.Current.ElapsedTime);
+        return new SubGameTimeSyncData(SubGameBase.Current == null ? 0 : SubGameBase.Current.ElapsedTime);
     }
 }
