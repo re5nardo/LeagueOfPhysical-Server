@@ -113,8 +113,8 @@ namespace LOP
             SceneDataContainer.Get<MatchData>().matchSetting = new MatchSetting
             {
                 matchType = MatchType.Friendly,
-                subGameId = "JumpWang",
-                mapId = "Space",
+                subGameId = "FlapWang",
+                mapId = "FlapWangMap",
             };
 #endif
 
