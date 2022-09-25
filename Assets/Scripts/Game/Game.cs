@@ -49,6 +49,7 @@ namespace LOP
             GameStateMachine.StartStateMachine();
 
             gameObject.AddComponent<TickSyncController>();
+            gameObject.AddComponent<SubGameTimeSyncController>();
 
             SceneMessageBroker.AddSubscriber<CS_RequestEmotionExpression>(CS_RequestEmotionExpressionHandler.Handle);
             SceneMessageBroker.AddSubscriber<CS_Synchronization>(CS_SynchronizationHandler.Handle);

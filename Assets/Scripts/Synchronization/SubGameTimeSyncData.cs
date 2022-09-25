@@ -5,12 +5,12 @@ using GameFramework;
 using System;
 
 [Serializable]
-public class TickSyncData : ISyncData
+public class SubGameTimeSyncData : ISyncData
 {
-    public int tick;
+    public double time;
 
-    public TickSyncData(int tick)
+    public SubGameTimeSyncData(double time)
     {
-        this.tick = tick;
+        this.time = time;
     }
 }
