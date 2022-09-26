@@ -19,6 +19,7 @@ namespace NetworkModel.Mirror
         public const byte SC_GameEnd = 11;
         public const byte SC_OwnerChanged = 12;
         public const byte SC_SyncController = 13;
+        public const byte SC_SubGameReadyNotice = 14;
 
         public const byte CS_NotifyMoveInputData = 112;
         public const byte CS_NotifySkillInputData = 113;
@@ -230,6 +231,22 @@ namespace NetworkModel.Mirror
         public void Clear()
         {
             syncControllerData = default;
+        }
+    }
+
+    [Serializable]
+    public class SC_SubGameReadyNotice : IMirrorMessage
+    {
+        public double timeBeforeStart;
+
+        public byte GetMessageId()
+        {
+            return MessageIds.SC_SubGameReadyNotice;
+        }
+
+        public void Clear()
+        {
+            timeBeforeStart = default;
         }
     }
     #endregion

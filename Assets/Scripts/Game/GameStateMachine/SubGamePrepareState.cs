@@ -37,6 +37,29 @@ namespace GameState
 
             yield return new WaitForDone(() => playerPrepares.All(x => x.Value >= 1), WAIT_TIMEOUT);
 
+            using var disposer = PoolObjectDisposer<SC_SubGameReadyNotice>.Get();
+            var subGameReadyNotice = disposer.PoolObject;
+
+            subGameReadyNotice.timeBeforeStart = 4;
+            RoomNetwork.Instance.SendToAll(subGameReadyNotice);
+
+            yield return new WaitForSeconds(1);
+
+            subGameReadyNotice.timeBeforeStart = 3;
+            RoomNetwork.Instance.SendToAll(subGameReadyNotice);
+
+            yield return new WaitForSeconds(1);
+
+            subGameReadyNotice.timeBeforeStart = 2;
+            RoomNetwork.Instance.SendToAll(subGameReadyNotice);
+
+            yield return new WaitForSeconds(1);
+
+            subGameReadyNotice.timeBeforeStart = 1;
+            RoomNetwork.Instance.SendToAll(subGameReadyNotice);
+
+            yield return new WaitForSeconds(1);
+
             FSM.MoveNext(GameStateInput.StateDone);
         }
 
