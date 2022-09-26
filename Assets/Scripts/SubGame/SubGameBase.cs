@@ -12,8 +12,8 @@ public abstract class SubGameBase : MonoBehaviour
     public bool Finalized { get; private set; } = false;
     public bool IsGameEnd { get; protected set; } = false;
 
-    protected int startTick;
-    public double ElapsedTime => (Game.Current.CurrentTick - startTick) * Game.Current.TickInterval;
+    protected int startTick = -1;
+    public double ElapsedTime => startTick == -1 ? 0 : (Game.Current.CurrentTick - startTick) * Game.Current.TickInterval;
 
     private void Awake()
     {
@@ -60,7 +60,7 @@ public abstract class SubGameBase : MonoBehaviour
     {
         OnGameEnd();
 
-        startTick = 0;
+        startTick = -1;
 
         IsGameEnd = true;
 
