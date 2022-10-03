@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using GameFramework;
 using NetworkModel.Mirror;
+using System;
 
 public abstract class LOPMonoEntitySyncControllerBase<T> : LOPMonoEntityComponentBase, ISyncController<T> where T : ISyncData
 {
     public string ControllerId { get; private set; }
-    public string OwnerId { get; private set; }
-    public bool HasAuthority => OwnerId == LOP.Application.UserId || OwnerId == "local";
+    public string OwnerId => Entity.OwnerId;
+    public bool HasAuthority => Entity.HasAuthority;
     public bool IsDirty { get; private set; }
     public virtual SyncScope SyncScope { get; protected set; } = SyncScope.Local;
 
@@ -29,7 +30,6 @@ public abstract class LOPMonoEntitySyncControllerBase<T> : LOPMonoEntityComponen
     public virtual void OnInitialize()
     {
         ControllerId = $"{Entity.EntityID}_{GetType().Name}";
-        OwnerId = Entity.OwnerId;
 
         SyncControllerManager.Instance.Register(this);
 
@@ -53,21 +53,7 @@ public abstract class LOPMonoEntitySyncControllerBase<T> : LOPMonoEntityComponen
 
     private void OnSyncController(CS_SyncController syncController)
     {
-        //  accept change of ownerId from client
-        Debug.Log($"Accept change of ownerId from client. controllerId: {syncController.syncControllerData.controllerId}, ownerId: {syncController.syncControllerData.ownerId}");
-
-        OwnerId = syncController.syncControllerData.ownerId;
-
-        //  broadcast change of ownerId
-        using var disposer = PoolObjectDisposer<SC_SyncController>.Get();
-        var message = disposer.PoolObject;
-        message.syncControllerData = syncController.syncControllerData;
-
-        switch (SyncScope)
-        {
-            case SyncScope.Local: RoomNetwork.Instance.SendToNear(message, Entity.Position, LOP.Game.BROADCAST_SCOPE_RADIUS, instant: true); break;
-            case SyncScope.Global: RoomNetwork.Instance.SendToAll(message, instant: true); break;
-        }
+        throw new NotSupportedException($"[OnSyncController] controllerId: {syncController.syncControllerData.controllerId}, ownerId: {syncController.syncControllerData.ownerId}");
     }
 
     private void OnSynchronization(CS_Synchronization synchronization)
