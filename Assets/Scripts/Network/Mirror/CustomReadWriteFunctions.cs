@@ -41,6 +41,7 @@ namespace NetworkModel.Mirror
                 case MessageIds.SC_OwnerChanged: return Util.CommonDataCompressionDeserialize(data) as SC_OwnerChanged;
                 case MessageIds.SC_SyncController: return Util.CommonDataCompressionDeserialize(data) as SC_SyncController;
                 case MessageIds.SC_SubGameReadyNotice: return Util.CommonDataCompressionDeserialize(data) as SC_SubGameReadyNotice;
+                case MessageIds.SC_PlayerEntity: return Util.CommonDataCompressionDeserialize(data) as SC_PlayerEntity;
 
                 case MessageIds.CS_NotifyMoveInputData: return Util.CommonDataCompressionDeserialize(data) as CS_NotifyMoveInputData;
                 case MessageIds.CS_NotifySkillInputData: return Util.CommonDataCompressionDeserialize(data) as CS_NotifySkillInputData;

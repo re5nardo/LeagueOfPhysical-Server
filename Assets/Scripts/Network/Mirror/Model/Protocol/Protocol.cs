@@ -20,6 +20,7 @@ namespace NetworkModel.Mirror
         public const byte SC_OwnerChanged = 12;
         public const byte SC_SyncController = 13;
         public const byte SC_SubGameReadyNotice = 14;
+        public const byte SC_PlayerEntity = 15;
 
         public const byte CS_NotifyMoveInputData = 112;
         public const byte CS_NotifySkillInputData = 113;
@@ -247,6 +248,22 @@ namespace NetworkModel.Mirror
         public void Clear()
         {
             timeBeforeStart = default;
+        }
+    }
+
+    [Serializable]
+    public class SC_PlayerEntity : IMirrorMessage
+    {
+        public int playerEntityId;
+
+        public byte GetMessageId()
+        {
+            return MessageIds.SC_PlayerEntity;
+        }
+
+        public void Clear()
+        {
+            playerEntityId = default;
         }
     }
     #endregion
