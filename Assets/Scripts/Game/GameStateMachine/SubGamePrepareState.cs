@@ -12,7 +12,7 @@ namespace GameState
 {
     public class SubGamePrepareState : MonoStateBase
     {
-        private const int WAIT_TIMEOUT = 7;
+        private const int WAIT_TIMEOUT = 3;
 
         private Dictionary<string, float> playerPrepares = new Dictionary<string, float>();
 
@@ -35,15 +35,12 @@ namespace GameState
 
             yield return SubGameBase.Current.Initialize();
 
+            yield return new WaitForSeconds(1);
+
             yield return new WaitForDone(() => playerPrepares.All(x => x.Value >= 1), WAIT_TIMEOUT);
 
             using var disposer = PoolObjectDisposer<SC_SubGameReadyNotice>.Get();
             var subGameReadyNotice = disposer.PoolObject;
-
-            subGameReadyNotice.timeBeforeStart = 4;
-            RoomNetwork.Instance.SendToAll(subGameReadyNotice);
-
-            yield return new WaitForSeconds(1);
 
             subGameReadyNotice.timeBeforeStart = 3;
             RoomNetwork.Instance.SendToAll(subGameReadyNotice);

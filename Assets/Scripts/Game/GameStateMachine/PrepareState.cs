@@ -11,7 +11,7 @@ namespace GameState
 {
     public class PrepareState : MonoStateBase
     {
-        private const int WAIT_TIMEOUT = 5;
+        private const int WAIT_TIMEOUT = 3;
 
         private Dictionary<string, float> playerPrepares = new Dictionary<string, float>();
 
