@@ -14,7 +14,7 @@ namespace LOP
         public static bool IsInitialized { get; private set; }
 
         public static string IP { get; private set; }
-        public static string UserId => "server";
+        public static string UserId => LOPSettings.Get().customId;
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         private static void OnBeforeSceneLoadRuntimeMethod()

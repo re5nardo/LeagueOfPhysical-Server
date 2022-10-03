@@ -23,6 +23,7 @@ namespace LOP
 
                 using var disposer = PoolObjectDisposer<SC_EnterRoom>.Get();
                 var enterRoom = disposer.PoolObject;
+                enterRoom.serverId = LOP.Application.UserId;
                 enterRoom.tick = Game.Current.CurrentTick;
                 enterRoom.entityId = userEntity.EntityID;
                 enterRoom.position = userEntity.Position;
@@ -52,12 +53,13 @@ namespace LOP
             else
             {
                 //  Create character(Player)
-                Character character = EntityHelper.CreatePlayerCharacter(customProperties.userId, customProperties.characterId);
+                Character character = EntityHelper.CreatePlayerCharacter(customProperties.userId, customProperties.characterId, LOP.Application.UserId);
 
                 gameIdMap.Add(customProperties.userId, character.EntityID);
 
                 using var disposer = PoolObjectDisposer<SC_EnterRoom>.Get();
                 var enterRoom = disposer.PoolObject;
+                enterRoom.serverId = LOP.Application.UserId;
                 enterRoom.tick = Game.Current.CurrentTick;
                 enterRoom.entityId = character.EntityID;
                 enterRoom.position = character.Position;

@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: LOPSettings
   m_EditorClassIdentifier: 
   connectLocalServer: 1
+  customId: server

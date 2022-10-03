@@ -36,6 +36,7 @@ namespace NetworkModel.Mirror
     [Serializable]
     public class SC_EnterRoom : IMirrorMessage
     {
+        public string serverId;
         public int tick;
         public int entityId;
         public Vector3 position;
@@ -50,6 +51,7 @@ namespace NetworkModel.Mirror
 
         public void Clear()
         {
+            serverId = default;
             tick = default;
             entityId = default;
             position = default;

@@ -16,7 +16,7 @@ public class EntityHelper
 		return null;
 	}
 
-    public static Character CreatePlayerCharacter(string userId, int nCharacterID)
+    public static Character CreatePlayerCharacter(string userId, int nCharacterID, string ownerId)
     {
         MasterData.Character characterMasterData = MasterDataManager.Instance.GetMasterData<MasterData.Character>(nCharacterID);
         MasterData.FirstStatus firstStatusMasterData = MasterDataManager.Instance.GetMasterData<MasterData.FirstStatus>(characterMasterData.FirstStatusID);
@@ -40,7 +40,7 @@ public class EntityHelper
             .SetSecondStatus(new SecondStatus(firstStatus, secondStatusMasterData))
             .SetEntityType(EntityType.Character)
             .SetEntityRole(EntityRole.Player)
-            .SetOwnerId(userId)
+            .SetOwnerId(ownerId)
             .Build();
     }
 }
