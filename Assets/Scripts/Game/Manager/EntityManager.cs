@@ -41,7 +41,6 @@ public class EntityManager : GameFramework.EntityManager
     private void Awake()
     {
         positionGrid = new Grid();
-
         positionGrid.SetGrid(LOP.Game.GRID_SIZE);
 
         SceneMessageBroker.AddSubscriber<GameMessage.EntityMove>(OnEntityMove);
@@ -50,17 +49,11 @@ public class EntityManager : GameFramework.EntityManager
 
     private void OnDestroy()
     {
-        SceneMessageBroker.RemoveSubscriber<GameMessage.EntityMove>(OnEntityMove);
-        SceneMessageBroker.RemoveSubscriber<TickMessage.Tick>(OnTick);
-    }
-
-    public override void Clear()
-    {
-        base.Clear();
-
+        positionGrid.Clear();
         positionGrid = null;
 
         SceneMessageBroker.RemoveSubscriber<GameMessage.EntityMove>(OnEntityMove);
+        SceneMessageBroker.RemoveSubscriber<TickMessage.Tick>(OnTick);
     }
 
     public override void RegisterEntity(IEntity entity)
