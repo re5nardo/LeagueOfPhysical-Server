@@ -20,11 +20,11 @@ MonoBehaviour:
   maxPlayerCount: 4
   mapEnvironment: {fileID: 11400000, guid: fa821f1f536fb7d468c1766de2f789bd, type: 2}
   spawnPoints:
-  - position: {x: 0, y: 15, z: 0}
+  - position: {x: 0, y: 7, z: 0}
     rotation: {x: 0, y: 90, z: 0}
-  - position: {x: 0, y: 5, z: 0}
+  - position: {x: 0, y: 3, z: 0}
     rotation: {x: 0, y: 90, z: 0}
-  - position: {x: 0, y: -5, z: 0}
+  - position: {x: 0, y: -3, z: 0}
     rotation: {x: 0, y: 90, z: 0}
-  - position: {x: 0, y: -15, z: 0}
+  - position: {x: 0, y: -7, z: 0}
     rotation: {x: 0, y: 90, z: 0}
