@@ -22,6 +22,12 @@ public class GameIdMap
         userIdEntityId.Remove(userId);
     }
 
+    public void Clear()
+    {
+        entityIdUserId.Clear();
+        userIdEntityId.Clear();
+    }
+
     public bool TryGetUserId(int entityId, out string userId)
     {
         if (!entityIdUserId.TryGetValue(entityId, out userId))

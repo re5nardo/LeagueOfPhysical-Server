@@ -15,30 +15,34 @@ namespace LOP
             var conn = message.networkConnection;
             var customProperties = conn.authenticationData as CustomProperties;
 
+            using var disposer = PoolObjectDisposer<SC_EnterRoom>.Get();
+            var enterRoom = disposer.PoolObject;
+            enterRoom.serverId = LOP.Application.UserId;
+            enterRoom.tick = Game.Current.CurrentTick;
+
+            SyncControllerManager.Instance.syncControllers.Where(x => x.SyncScope == SyncScope.Global).ToArray()?.ForEach(syncController =>
+            {
+                enterRoom.syncControllerDataList.Add(syncController.GetSyncControllerData());
+                enterRoom.syncDataEntries.Add(syncController.GetSyncDataEntry());
+            });
+
+            RoomNetwork.Instance.Send(enterRoom, conn.connectionId);
+
             if (gameIdMap.TryGetEntityId(customProperties.userId, out var entityId))
             {
                 var userEntity = Entities.Get<LOPMonoEntityBase>(entityId);
 
-                userEntity.OwnerId = customProperties.userId;
-
-                using var disposer = PoolObjectDisposer<SC_EnterRoom>.Get();
-                var enterRoom = disposer.PoolObject;
-                enterRoom.serverId = LOP.Application.UserId;
-                enterRoom.tick = Game.Current.CurrentTick;
-                enterRoom.entityId = userEntity.EntityID;
-                enterRoom.position = userEntity.Position;
-                enterRoom.rotation = userEntity.Rotation;
-
-                SyncControllerManager.Instance.syncControllers.Where(x => x.SyncScope == SyncScope.Global).ToArray()?.ForEach(syncController =>
+                //  OwnerId
+                if (LOP.Game.Current.GameStateMachine.CurrentState is GameState.SubGameProgressState)
                 {
-                    enterRoom.syncControllerDataList.Add(syncController.GetSyncControllerData());
-                    enterRoom.syncDataEntries.Add(syncController.GetSyncDataEntry());
-                });
-
-                RoomNetwork.Instance.Send(enterRoom, conn.connectionId);
+                    userEntity.OwnerId = customProperties.userId;
+                }
 
                 //  NearEntityController
-                userEntity.AttachEntityComponent<NearEntityController>();
+                if (userEntity.GetEntityComponent<NearEntityController>() == null)
+                {
+                    userEntity.AttachEntityComponent<NearEntityController>();
+                }
 
                 //  Entity Skill Info
                 SkillController controller = userEntity.GetComponent<SkillController>();
@@ -49,64 +53,13 @@ namespace LOP
                 entitySkillInfo.dicSkillInfo = controller.GetEntitySkillInfo();
 
                 RoomNetwork.Instance.Send(entitySkillInfo, conn.connectionId);
-            }
-            else
-            {
-                //  Create character(Player)
-                Character character = EntityHelper.CreatePlayerCharacter(customProperties.userId, customProperties.characterId, LOP.Application.UserId);
 
-                gameIdMap.Add(customProperties.userId, character.EntityID);
+                //  SC_PlayerEntity
+                using var playerEntityDisposer = PoolObjectDisposer<SC_PlayerEntity>.Get();
+                var playerEntity = playerEntityDisposer.PoolObject;
+                playerEntity.playerEntityId = entityId;
 
-                using var disposer = PoolObjectDisposer<SC_EnterRoom>.Get();
-                var enterRoom = disposer.PoolObject;
-                enterRoom.serverId = LOP.Application.UserId;
-                enterRoom.tick = Game.Current.CurrentTick;
-                enterRoom.entityId = character.EntityID;
-                enterRoom.position = character.Position;
-                enterRoom.rotation = character.Rotation;
-
-                SyncControllerManager.Instance.syncControllers.Where(x => x.SyncScope == SyncScope.Global).ToArray()?.ForEach(syncController =>
-                {
-                    enterRoom.syncControllerDataList.Add(syncController.GetSyncControllerData());
-                    enterRoom.syncDataEntries.Add(syncController.GetSyncDataEntry());
-                });
-
-                RoomNetwork.Instance.Send(enterRoom, conn.connectionId);
-
-                //  EntityAdditionalDatas
-                CharacterGrowthData characterGrowthData = EntityAdditionalDataInitializer.Instance.Initialize(new CharacterGrowthData());
-                character.AttachEntityComponent(characterGrowthData);
-
-                EmotionExpressionData emotionExpressionData = EntityAdditionalDataInitializer.Instance.Initialize(new EmotionExpressionData(), character.EntityID);
-                character.AttachEntityComponent(emotionExpressionData);
-
-                EntityInventory entityInventory = EntityAdditionalDataInitializer.Instance.Initialize(new EntityInventory(), character.EntityID);
-                character.AttachEntityComponent(entityInventory);
-
-                character.AttachEntityComponent<NearEntityController>();
-
-                character.AttachEntityComponent<PlayerView>();
-
-                character.AttachEntityComponent<TransformSyncController>();
-                if (character.ModelAnimator != null)
-                {
-                    character.AttachEntityComponent<AnimatorSyncController>();
-                }
-
-                //  Entity Skill Info
-                //  (should receive data from server db?)
-                SkillController controller = character.GetComponent<SkillController>();
-                foreach (int nSkillID in character.MasterData.SkillIDs)
-                {
-                    controller.AddSkill(nSkillID);
-                }
-
-                using var entitySkillInfoDisposer = PoolObjectDisposer<SC_EntitySkillInfo>.Get();
-                var entitySkillInfo = entitySkillInfoDisposer.PoolObject;
-                entitySkillInfo.entityId = character.EntityID;
-                entitySkillInfo.dicSkillInfo = controller.GetEntitySkillInfo();
-
-                RoomNetwork.Instance.Send(entitySkillInfo, conn.connectionId);
+                RoomNetwork.Instance.Send(playerEntity, conn.connectionId);
             }
         }
 
@@ -125,8 +78,6 @@ namespace LOP
                 entity.DetachEntityComponent(nearEntityController);
 
                 Destroy(nearEntityController);
-
-                //gameIdMap.Remove(customProperties.userId);
             }
         }
 

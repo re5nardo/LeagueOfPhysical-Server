@@ -38,9 +38,6 @@ namespace NetworkModel.Mirror
     {
         public string serverId;
         public int tick;
-        public int entityId;
-        public Vector3 position;
-        public Vector3 rotation;
         public List<SyncControllerData> syncControllerDataList = new List<SyncControllerData>();
         public List<SyncDataEntry> syncDataEntries = new List<SyncDataEntry>();
 
@@ -53,9 +50,6 @@ namespace NetworkModel.Mirror
         {
             serverId = default;
             tick = default;
-            entityId = default;
-            position = default;
-            rotation = default;
             syncControllerDataList.Clear();
             syncDataEntries.Clear();
         }
