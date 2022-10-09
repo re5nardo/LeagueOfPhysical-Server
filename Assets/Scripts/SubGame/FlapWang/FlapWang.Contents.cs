@@ -25,6 +25,7 @@ public partial class FlapWang
         var entity = Entities.Get<LOPMonoEntityBase>(message.entityId);
 
         if (entity.EntityRole != EntityRole.Player
+            || !entity.HasAuthority
             || !(entity is Character character)
             || !character.IsAlive
             || character.HasStatusEffect(StatusEffect.Invincible)
