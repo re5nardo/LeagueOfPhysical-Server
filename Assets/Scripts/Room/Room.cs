@@ -107,7 +107,10 @@ namespace LOP
             RoomId = "EditorTestRoom";
             MatchId = "EditorTestMatch";
             Port = 7777;
-            ExpectedPlayerList = null;
+            ExpectedPlayerList = new string[]
+            {
+                "375f9694a1e5c3af13ff9c75e11e1cb158f65521",
+            };
 
             SceneDataContainer.Get<MatchData>().matchId = "EditorTestMatch";
             SceneDataContainer.Get<MatchData>().matchSetting = new MatchSetting
