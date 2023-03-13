@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: ServerSettings_Room
   m_EditorClassIdentifier: 
   scheme: http
-  host: 175.197.227.154
+  host: 3.35.229.193
   port: 2000
