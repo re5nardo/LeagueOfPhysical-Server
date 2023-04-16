@@ -8,7 +8,7 @@ public class LOPWebAPI
     public static WebRequest<string> Heartbeat(string roomId)
     {
         return new WebRequestBuilder<string>()
-            .SetUri(GameFramework.ServerSettings.Get("ServerSettings_Room").GetFullUri($"room/heartbeat/{roomId}"))
+            .SetUri(GameFramework.ServerSettings.Get("ServerSettings_Room").GetUri($"room/heartbeat/{roomId}"))
             .SetMethod(HttpMethod.PUT)
             .Build();
     }
@@ -16,7 +16,7 @@ public class LOPWebAPI
     public static WebRequest<string> NotifyStartServer(NotifyStartServerRequest request)
     {
         return new WebRequestBuilder<string>()
-            .SetUri(GameFramework.ServerSettings.Get("ServerSettings_Room").GetFullUri($"room"))
+            .SetUri(GameFramework.ServerSettings.Get("ServerSettings_Room").GetUri($"room"))
             .SetMethod(HttpMethod.PUT)
             .SetRequestBody(request)
             .Build();
@@ -25,7 +25,7 @@ public class LOPWebAPI
     public static WebRequest<string> NotifyStopServer(string roomId)
     {
         return new WebRequestBuilder<string>()
-            .SetUri(GameFramework.ServerSettings.Get("ServerSettings_Room").GetFullUri($"room/{roomId}"))
+            .SetUri(GameFramework.ServerSettings.Get("ServerSettings_Room").GetUri($"room/{roomId}"))
             .SetMethod(HttpMethod.DELETE)
             .Build();
     }
@@ -33,7 +33,7 @@ public class LOPWebAPI
     public static WebRequest<UpdateRoomStatusResult> UpdateRoomStatus(UpdateRoomStatusRequest request)
     {
         return new WebRequestBuilder<UpdateRoomStatusResult>()
-            .SetUri(GameFramework.ServerSettings.Get("ServerSettings_Room").GetFullUri($"room/status"))
+            .SetUri(GameFramework.ServerSettings.Get("ServerSettings_Room").GetUri($"room/status"))
             .SetMethod(HttpMethod.PUT)
             .SetRequestBody(request)
             .Build();
@@ -43,7 +43,7 @@ public class LOPWebAPI
     public static WebRequest<GetMatchResult> GetMatch(string matchId)
     {
         return new WebRequestBuilder<GetMatchResult>()
-            .SetUri(GameFramework.ServerSettings.Get("ServerSettings_Room").GetFullUri($"match/{matchId}"))
+            .SetUri(GameFramework.ServerSettings.Get("ServerSettings_Room").GetUri($"match/{matchId}"))
             .SetMethod(HttpMethod.GET)
             .Build();
     }
@@ -51,7 +51,7 @@ public class LOPWebAPI
     public static WebRequest<MatchStartResult> MatchStart(MatchStartRequest request)
     {
         return new WebRequestBuilder<MatchStartResult>()
-            .SetUri(GameFramework.ServerSettings.Get("ServerSettings_Room").GetFullUri($"match/match-start"))
+            .SetUri(GameFramework.ServerSettings.Get("ServerSettings_Room").GetUri($"match/match-start"))
             .SetMethod(HttpMethod.PUT)
             .SetRequestBody(request)
             .Build();
@@ -60,7 +60,7 @@ public class LOPWebAPI
     public static WebRequest<MatchEndResult> MatchEnd(MatchEndRequest request)
     {
         return new WebRequestBuilder<MatchEndResult>()
-            .SetUri(GameFramework.ServerSettings.Get("ServerSettings_Room").GetFullUri($"match/match-end"))
+            .SetUri(GameFramework.ServerSettings.Get("ServerSettings_Room").GetUri($"match/match-end"))
             .SetMethod(HttpMethod.PUT)
             .SetRequestBody(request)
             .Build();
