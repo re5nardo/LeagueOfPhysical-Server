@@ -12,14 +12,14 @@ public class Grid : GameFramework.Grid
 
         Vector2Int vec2CellPosition = GetCellPosition(entity.Position);
 
-        if (!m_Cells.ContainsKey(vec2CellPosition))
+        if (!cells.ContainsKey(vec2CellPosition))
         {
-            m_Cells.Add(vec2CellPosition, new Cell(vec2CellPosition));
+            cells.Add(vec2CellPosition, new Cell(vec2CellPosition));
         }
 
-        if (m_Cells[vec2CellPosition].Add(nEntityID))
+        if (cells[vec2CellPosition].Add(nEntityID))
         {
-            m_EntityIDCellPosition[nEntityID] = vec2CellPosition;
+            entityIDCellPosition[nEntityID] = vec2CellPosition;
 
             if (bPublish)
             {
@@ -30,11 +30,11 @@ public class Grid : GameFramework.Grid
 
     public override void Remove(int nEntityID, bool bPublish = true)
     {
-        if (m_Cells[m_EntityIDCellPosition[nEntityID]].Remove(nEntityID))
+        if (cells[entityIDCellPosition[nEntityID]].Remove(nEntityID))
         {
-            Vector2Int vec2CellPosition = m_EntityIDCellPosition[nEntityID];
+            Vector2Int vec2CellPosition = entityIDCellPosition[nEntityID];
 
-            m_EntityIDCellPosition.Remove(nEntityID);
+            entityIDCellPosition.Remove(nEntityID);
 
             if (bPublish)
             {
@@ -45,12 +45,12 @@ public class Grid : GameFramework.Grid
 
     public override void Move(int nEntityID)
     {
-        if (!m_EntityIDCellPosition.ContainsKey(nEntityID))
+        if (!entityIDCellPosition.ContainsKey(nEntityID))
         {
             return;
         }
 
-        Vector2Int pre = m_EntityIDCellPosition[nEntityID];
+        Vector2Int pre = entityIDCellPosition[nEntityID];
 
         IEntity entity = Entities.Get(nEntityID);
 
@@ -74,7 +74,7 @@ public class Grid : GameFramework.Grid
 
         foreach (Cell cell in GetCells(GetCellPosition(vec3Position), fRadius))
         {
-            foreach (int nEntityID in cell.m_hashEntityID)
+            foreach (int nEntityID in cell.hashEntityId)
             {
                 IEntity entity = Entities.Get(nEntityID);
 
@@ -99,7 +99,7 @@ public class Grid : GameFramework.Grid
 
         foreach (Cell cell in GetCells(GetCellPosition(trTarget.position), fRadius))
         {
-            foreach (int nEntityID in cell.m_hashEntityID)
+            foreach (int nEntityID in cell.hashEntityId)
             {
                 IEntity entity = Entities.Get(nEntityID);
 
@@ -123,9 +123,9 @@ public class Grid : GameFramework.Grid
     {
         List<IEntity> entities = new List<IEntity>();
 
-        if (m_Cells.ContainsKey(vec2CellPos))
+        if (cells.ContainsKey(vec2CellPos))
         {
-            foreach (int nEntityID in m_Cells[vec2CellPos].m_hashEntityID)
+            foreach (int nEntityID in cells[vec2CellPos].hashEntityId)
             {
                 IEntity entity = Entities.Get(nEntityID);
 

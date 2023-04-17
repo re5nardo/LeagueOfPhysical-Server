@@ -124,14 +124,14 @@ public class NearEntityController : LOPMonoEntityComponentBase
 		m_dicSeenCell.Clear();
 		foreach (Cell cell in EntityManager.Instance.GetCells(vec2CellPosition, m_fSight, true))
 		{
-			m_dicSeenCell[cell.m_vec2Position] = cell;
+			m_dicSeenCell[cell.position] = cell;
 		}
 		m_dicDeadBandCell.Clear();
 		foreach (Cell cell in hashSeenNDeadBandCell)
 		{
-			if (!m_dicSeenCell.ContainsKey(cell.m_vec2Position))
+			if (!m_dicSeenCell.ContainsKey(cell.position))
 			{
-				m_dicDeadBandCell[cell.m_vec2Position] = cell;
+				m_dicDeadBandCell[cell.position] = cell;
 			}
 		}
 
@@ -145,29 +145,29 @@ public class NearEntityController : LOPMonoEntityComponentBase
 		m_dicCellSeenState.Clear();
 		foreach (Cell seenCell in m_dicSeenCell.Values)
 		{
-			m_dicCellSeenState[seenCell.m_vec2Position] = CellSeenState.Seen;
+			m_dicCellSeenState[seenCell.position] = CellSeenState.Seen;
 		}
 
 		foreach (Cell deadBandCell in m_dicDeadBandCell.Values)
 		{
-			if (dicLastCellSeenState.ContainsKey(deadBandCell.m_vec2Position))
+			if (dicLastCellSeenState.ContainsKey(deadBandCell.position))
 			{
-				if (dicLastCellSeenState[deadBandCell.m_vec2Position] == CellSeenState.Seen)
+				if (dicLastCellSeenState[deadBandCell.position] == CellSeenState.Seen)
 				{
-					m_dicCellSeenState[deadBandCell.m_vec2Position] = CellSeenState.DeadBand_Seen;
+					m_dicCellSeenState[deadBandCell.position] = CellSeenState.DeadBand_Seen;
 				}
-				else if (dicLastCellSeenState[deadBandCell.m_vec2Position] == CellSeenState.DeadBand_Seen)
+				else if (dicLastCellSeenState[deadBandCell.position] == CellSeenState.DeadBand_Seen)
 				{
-					m_dicCellSeenState[deadBandCell.m_vec2Position] = CellSeenState.DeadBand_Seen;   //	keep state
+					m_dicCellSeenState[deadBandCell.position] = CellSeenState.DeadBand_Seen;   //	keep state
 				}
-				else if (dicLastCellSeenState[deadBandCell.m_vec2Position] == CellSeenState.DeadBand_UnSeen)
+				else if (dicLastCellSeenState[deadBandCell.position] == CellSeenState.DeadBand_UnSeen)
 				{
-					m_dicCellSeenState[deadBandCell.m_vec2Position] = CellSeenState.DeadBand_UnSeen; //	keep state
+					m_dicCellSeenState[deadBandCell.position] = CellSeenState.DeadBand_UnSeen; //	keep state
 				}
 			}
 			else
 			{
-				m_dicCellSeenState[deadBandCell.m_vec2Position] = CellSeenState.DeadBand_UnSeen;
+				m_dicCellSeenState[deadBandCell.position] = CellSeenState.DeadBand_UnSeen;
 			}
 		}
 
@@ -182,17 +182,17 @@ public class NearEntityController : LOPMonoEntityComponentBase
         //  현재 Seen 상태의 Entity 순회
         foreach (Cell seenCell in m_dicSeenCell.Values)
 		{
-			if (dicLastCellSeenState.ContainsKey(seenCell.m_vec2Position))
+			if (dicLastCellSeenState.ContainsKey(seenCell.position))
 			{
                 //  이전 Seen 상태가 Seen 이었으면 (이미 보여지고 있던 상태면) 무시
-                if (dicLastCellSeenState[seenCell.m_vec2Position] == CellSeenState.Seen || dicLastCellSeenState[seenCell.m_vec2Position] == CellSeenState.DeadBand_Seen)
+                if (dicLastCellSeenState[seenCell.position] == CellSeenState.Seen || dicLastCellSeenState[seenCell.position] == CellSeenState.DeadBand_Seen)
 				{
 					continue;
 				}
 			}
 
             //  새롭게 Seen 상태가 된 Entity들
-			foreach (int nEntityID in seenCell.m_hashEntityID)
+			foreach (int nEntityID in seenCell.hashEntityId)
 			{
                 appearEntityIDs.Add(nEntityID);
             }
@@ -212,7 +212,7 @@ public class NearEntityController : LOPMonoEntityComponentBase
                 //  현재 보여지고 있는 상태가 아니면 (이전에 보여지다 현재 보여지지 않는 경우)
 				if (!m_dicCellSeenState.ContainsKey(lastCellPosition))
 				{
-					foreach (int nEntityID in EntityManager.Instance.GetCell(lastCellPosition).m_hashEntityID)
+					foreach (int nEntityID in EntityManager.Instance.GetCell(lastCellPosition).hashEntityId)
 					{
                         disAppearEntityIDs.Add(nEntityID);
                     }
