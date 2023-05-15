@@ -38,6 +38,7 @@ namespace LOP
         public override async Task Initialize()
         {
             Physics.autoSimulation = false;
+            Physics.autoSyncTransforms = false;
 
             PlayerUserIDEntityID = new ReadOnlyDictionary<string, int>(playerUserIDEntityID);
             EntityIDPlayerUserID = new ReadOnlyDictionary<int, string>(entityIDPlayerUserID);
@@ -70,6 +71,7 @@ namespace LOP
             base.Clear();
 
             Physics.autoSimulation = true;
+            Physics.autoSyncTransforms = true;
 
             playerUserIDEntityID = null;
             entityIDPlayerUserID = null;
