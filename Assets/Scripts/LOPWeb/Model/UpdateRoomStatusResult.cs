@@ -1,10 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using GameFramework;
 using System;
 
-public class UpdateRoomStatusResult : HttpResultBase
+public class UpdateRoomStatusResult : HttpResponseBase
 {
     public NetworkModel.Room room;
 }

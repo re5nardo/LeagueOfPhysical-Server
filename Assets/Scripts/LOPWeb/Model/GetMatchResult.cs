@@ -1,10 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using GameFramework;
 using System;
 
-public class GetMatchResult : HttpResultBase
+public class GetMatchResult : HttpResponseBase
 {
     public NetworkModel.Match match;
 }
