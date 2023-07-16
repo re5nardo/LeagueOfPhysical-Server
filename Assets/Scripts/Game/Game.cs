@@ -57,7 +57,7 @@ namespace LOP
             SceneMessageBroker.AddSubscriber<RoomMessage.PlayerEnter>(OnPlayerEnter);
             SceneMessageBroker.AddSubscriber<RoomMessage.PlayerLeave>(OnPlayerLeave);
 
-            tickUpdater.Initialize(1 / 30f, false, 0, OnTick, OnTickEnd, OnUpdateElapsedTime);
+            tickUpdater.Initialize(1 / 30f, false, 0, OnTick, OnTickEnd, OnFrameUpdate);
 
             EntityInfoSender.Instantiate();
             EntityManager.Instantiate();
@@ -111,11 +111,11 @@ namespace LOP
             }
         }
 
-        private void OnUpdateElapsedTime(double time)
+        private void OnFrameUpdate()
         {
             SceneMessageBroker.Publish(new TickMessage.BeforePhysicsSimulation(CurrentTick));
 
-            Physics.Simulate((float)time);
+            Physics.Simulate((float)Game.Current.deltaTime);
 
             SceneMessageBroker.Publish(new TickMessage.AfterPhysicsSimulation(CurrentTick));
         }
