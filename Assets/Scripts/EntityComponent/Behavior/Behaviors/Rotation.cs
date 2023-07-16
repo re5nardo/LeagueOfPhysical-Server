@@ -23,7 +23,7 @@ namespace Behavior
         {
             base.OnBehaviorStart();
 
-            LOP.Game.Current.GameEventManager.SendToNear(new EntityBehaviorStart(Entity.EntityID, MasterData.id, Direction), Entity.Position);
+            LOP.Game.Current.GameEventManager.SendToNear(new EntityBehaviorStart(Entity.EntityId, MasterData.id, Direction), Entity.Position);
         }
 
         protected override bool OnBehaviorUpdate()

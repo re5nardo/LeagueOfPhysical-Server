@@ -32,7 +32,7 @@ public class WithinSight : Conditional
 
 	public override TaskStatus OnUpdate()
     {
-		List<IEntity> listEntity = Entities.Get(Entity.Transform, fieldOfViewAngle, viewMagnitude, EntityRole.Player, new HashSet<int> { Entity.EntityID });
+		List<IEntity> listEntity = Entities.Get(Entity.Transform, fieldOfViewAngle, viewMagnitude, EntityRole.Player, new HashSet<int> { Entity.EntityId });
 		listEntity.RemoveAll(x => !(x is Character));
 
 		if (listEntity.Count > 0)

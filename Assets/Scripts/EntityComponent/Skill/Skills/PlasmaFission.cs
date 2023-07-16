@@ -27,7 +27,7 @@ namespace Skill
 
         private State m_State = State.None;
 
-        private int m_nFirstProjectileEntityID = -1;
+        private int m_nFirstProjectileEntityId = -1;
 
 		private void Awake()
         {
@@ -70,7 +70,7 @@ namespace Skill
                 {
                     Projectile projectile = CreateProjectile();
 
-					m_nFirstProjectileEntityID = projectile.EntityID;
+					m_nFirstProjectileEntityId = projectile.EntityId;
 
                     Vector3 destination = projectile.Position + projectile.Forward * projectile.FactoredMovementSpeed * m_fTargetProjectileLifespan;
 
@@ -85,13 +85,13 @@ namespace Skill
             {
                 if (m_SkillInputData != null)
                 {
-                    LOP.Game.Current.DestroyEntity(m_nFirstProjectileEntityID);
+                    LOP.Game.Current.DestroyEntity(m_nFirstProjectileEntityId);
 
                     m_SkillInputData = null;
                 }
                 else if (m_FireSkillElapsedTime >= m_fReusableTime)
                 {
-                    LOP.Game.Current.DestroyEntity(m_nFirstProjectileEntityID);
+                    LOP.Game.Current.DestroyEntity(m_nFirstProjectileEntityId);
                 }
             }
         }
@@ -136,7 +136,7 @@ namespace Skill
         {
             MasterData.Projectile masterData = MasterDataManager.Instance.GetMasterData<MasterData.Projectile>(Define.MasterData.ProjectileID.PLASMA_1);
 
-            IEntity firstProjectile = Entities.Get(m_nFirstProjectileEntityID);
+            IEntity firstProjectile = Entities.Get(m_nFirstProjectileEntityId);
 
             Vector3 vec3StartPosition = split ? firstProjectile.Position : Entity.Position;
             vec3StartPosition.y = m_fTargetProjectileHeight;
@@ -145,14 +145,14 @@ namespace Skill
 			Vector3 vec3Velocity = Entity.Forward * fMovementSpeed;
 
             var projectile = Projectile.Builder()
-                .SetEntityId(EntityManager.Instance.GenerateEntityID())
+                .SetEntityId(EntityManager.Instance.GenerateEntityId())
                 .SetMasterDataId(Define.MasterData.ProjectileID.PLASMA_1)
                 .SetPosition(vec3StartPosition)
                 .SetRotation(vec3StartRotation)
                 .SetVelocity(vec3Velocity)
 				.SetAngularVelocity(Vector3.zero)
 				.SetModelId(masterData.ModelResID)
-                .SetProjectorId(Entity.EntityID)
+                .SetProjectorId(Entity.EntityId)
                 .SetLifespan(m_fTargetProjectileLifespan)
 				.SetMovementSpeed(fMovementSpeed)
                 .SetEntityType(EntityType.Projectile)
@@ -169,7 +169,7 @@ namespace Skill
 		#region Message Handler
 		private void OnEntityDestroy(GameMessage.EntityDestroy message)
         {
-			if (m_nFirstProjectileEntityID == message.entityId)
+			if (m_nFirstProjectileEntityId == message.entityId)
             {
                 Splitting();
 

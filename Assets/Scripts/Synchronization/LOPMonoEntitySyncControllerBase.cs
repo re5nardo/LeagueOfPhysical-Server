@@ -29,7 +29,7 @@ public abstract class LOPMonoEntitySyncControllerBase<T> : LOPMonoEntityComponen
 
     public virtual void OnInitialize()
     {
-        ControllerId = $"{Entity.EntityID}_{GetType().Name}";
+        ControllerId = $"{Entity.EntityId}_{GetType().Name}";
 
         SyncControllerManager.Instance.Register(this);
 

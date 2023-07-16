@@ -88,7 +88,7 @@ public class EntityBasicView : LOPMonoEntityComponentBase
         modelGameObject.transform.localRotation = Quaternion.identity;
         modelGameObject.transform.localScale = Vector3.one;
 
-        modelGameObject.AddComponent<EntityIDTag>().SetEntityID(Entity.EntityID);
+        modelGameObject.AddComponent<EntityIDTag>().SetEntityID(Entity.EntityId);
 
         ModelCollider = modelGameObject.GetComponent<Collider>();
         ModelAnimator = modelGameObject.GetComponent<Animator>();
@@ -139,7 +139,7 @@ public class EntityBasicView : LOPMonoEntityComponentBase
 	{
 		if (strAnimationName == "Die")
 		{
-            LOP.Game.Current.DestroyEntity(Entity.EntityID);
+            LOP.Game.Current.DestroyEntity(Entity.EntityId);
 		}
 	}
 
@@ -176,7 +176,7 @@ public class EntityBasicView : LOPMonoEntityComponentBase
 
 	protected virtual void OnModelTriggerEnterHandler(Collider me, Collider other)
 	{
-        SceneMessageBroker.Publish(new EntityMessage.ModelTriggerEnter(Entity.EntityID, me, other));
+        SceneMessageBroker.Publish(new EntityMessage.ModelTriggerEnter(Entity.EntityId, me, other));
     }
 
 	protected virtual void OnModelTriggerStayHandler(Collider me, Collider other)
@@ -194,7 +194,7 @@ public class EntityBasicView : LOPMonoEntityComponentBase
     {
         if (Entity.Blackboard.Get<Vector3>("positionBeforePhysics", true) != Entity.Position)
         {
-            SceneMessageBroker.Publish(new GameMessage.EntityMove(Entity.EntityID));
+            SceneMessageBroker.Publish(new GameMessage.EntityMove(Entity.EntityId));
         }
     }
     #endregion

@@ -11,8 +11,8 @@ namespace Entity
         public EntityType EntityType { get; protected set; } = EntityType.None;
         public EntityRole EntityRole { get; protected set; } = EntityRole.None;
 
-        public bool IsValid => EntityManager.Instance.IsRegistered(EntityID);
-        public bool IsLocalEntity => EntityID < 0;
+        public bool IsValid => EntityManager.Instance.IsRegistered(EntityId);
+        public bool IsLocalEntity => EntityId < 0;
         public bool Initialized { get; private set; }
 
         private string ownerId = LOP.Application.UserId;
@@ -25,7 +25,7 @@ namespace Entity
 
                 using var disposer = PoolObjectDisposer<SC_OwnerChanged>.Get();
                 var message = disposer.PoolObject;
-                message.entityId = EntityID;
+                message.entityId = EntityId;
                 message.ownerId = ownerId;
 
                 RoomNetwork.Instance.SendToAll(message);
@@ -84,7 +84,7 @@ namespace Entity
 
         protected virtual void OnInitialize(EntityCreationData entityCreationData)
         {
-            EntityID = entityCreationData.entityId;
+            EntityId = entityCreationData.entityId;
             Position = entityCreationData.position;
             Rotation = entityCreationData.rotation;
             Velocity = entityCreationData.velocity;
@@ -132,7 +132,7 @@ namespace Entity
         {
             var entitySnap = new EntitySnap();
 
-            entitySnap.entityId = EntityID;
+            entitySnap.entityId = EntityId;
             entitySnap.entityType = EntityType;
             entitySnap.entityRole = EntityRole;
             entitySnap.ownerId = OwnerId;
@@ -152,7 +152,7 @@ namespace Entity
             {
                 Transform.position = value;
 
-                SceneMessageBroker.Publish(new GameMessage.EntityMove(EntityID));
+                SceneMessageBroker.Publish(new GameMessage.EntityMove(EntityId));
             }
         }
 

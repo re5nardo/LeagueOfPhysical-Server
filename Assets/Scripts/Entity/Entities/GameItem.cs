@@ -40,7 +40,7 @@ namespace Entity
         {
             var entitySnap = new GameItemSnap();
 
-            entitySnap.entityId = EntityID;
+            entitySnap.entityId = EntityId;
             entitySnap.entityType = EntityType;
             entitySnap.entityRole = EntityRole;
             entitySnap.masterDataId = GameItemBasicData.MasterDataId;

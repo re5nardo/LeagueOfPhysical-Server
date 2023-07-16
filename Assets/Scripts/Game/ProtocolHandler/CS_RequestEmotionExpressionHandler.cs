@@ -19,7 +19,7 @@ public class CS_RequestEmotionExpressionHandler
 
         using var disposer = PoolObjectDisposer<SC_EmotionExpression>.Get();
         var emotionExpression = disposer.PoolObject;
-        emotionExpression.entityId = senderEntity.EntityID;
+        emotionExpression.entityId = senderEntity.EntityId;
         emotionExpression.emotionExpressionId = requestEmotionExpression.emotionExpressionId;
 
         RoomNetwork.Instance.SendToNear(emotionExpression, senderEntity.Position, LOP.Game.BROADCAST_SCOPE_RADIUS);

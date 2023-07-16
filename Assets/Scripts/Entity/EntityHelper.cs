@@ -29,7 +29,7 @@ public class EntityHelper
         FirstStatus firstStatus = new FirstStatus(firstStatusMasterData);
 
         return Character.Builder()
-            .SetEntityId(EntityManager.Instance.GenerateEntityID())
+            .SetEntityId(EntityManager.Instance.GenerateEntityId())
             .SetMasterDataId(nCharacterID)
             .SetPosition(vec3StartPosition)
             .SetRotation(vec3StartRotation)

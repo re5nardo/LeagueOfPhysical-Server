@@ -48,7 +48,7 @@ public class EntityInfoSender : MonoSingleton<EntityInfoSender>
 
                 using var disposer = PoolObjectDisposer<SC_EntitySkillInfo>.Get();
                 var entitySkillInfo = disposer.PoolObject;
-                entitySkillInfo.entityId = character.EntityID;
+                entitySkillInfo.entityId = character.EntityId;
                 entitySkillInfo.dicSkillInfo = character.SkillController.GetEntitySkillInfo();
 
                 RoomNetwork.Instance.Send(entitySkillInfo, connectionId);

@@ -6,9 +6,9 @@ using System;
 
 public class Grid : GameFramework.Grid
 {
-    public override void Add(int nEntityID, bool bPublish = true)
+    public override void Add(int entityId, bool bPublish = true)
     {
-        IEntity entity = Entities.Get(nEntityID);
+        IEntity entity = Entities.Get(entityId);
 
         Vector2Int vec2CellPosition = GetCellPosition(entity.Position);
 
@@ -17,52 +17,52 @@ public class Grid : GameFramework.Grid
             cells.Add(vec2CellPosition, new Cell(vec2CellPosition));
         }
 
-        if (cells[vec2CellPosition].Add(nEntityID))
+        if (cells[vec2CellPosition].Add(entityId))
         {
-            entityIDCellPosition[nEntityID] = vec2CellPosition;
+            entityIdCellPosition[entityId] = vec2CellPosition;
 
             if (bPublish)
             {
-                SceneMessageBroker.Publish(new GameMessage.EntityAddedToGrid(nEntityID, vec2CellPosition));
+                SceneMessageBroker.Publish(new GameMessage.EntityAddedToGrid(entityId, vec2CellPosition));
             }
         }
     }
 
-    public override void Remove(int nEntityID, bool bPublish = true)
+    public override void Remove(int entityId, bool bPublish = true)
     {
-        if (cells[entityIDCellPosition[nEntityID]].Remove(nEntityID))
+        if (cells[entityIdCellPosition[entityId]].Remove(entityId))
         {
-            Vector2Int vec2CellPosition = entityIDCellPosition[nEntityID];
+            Vector2Int vec2CellPosition = entityIdCellPosition[entityId];
 
-            entityIDCellPosition.Remove(nEntityID);
+            entityIdCellPosition.Remove(entityId);
 
             if (bPublish)
             {
-                SceneMessageBroker.Publish(new GameMessage.EntityRemovedFromGrid(nEntityID, vec2CellPosition));
+                SceneMessageBroker.Publish(new GameMessage.EntityRemovedFromGrid(entityId, vec2CellPosition));
             }
         }
     }
 
-    public override void Move(int nEntityID)
+    public override void Move(int entityId)
     {
-        if (!entityIDCellPosition.ContainsKey(nEntityID))
+        if (!entityIdCellPosition.ContainsKey(entityId))
         {
             return;
         }
 
-        Vector2Int pre = entityIDCellPosition[nEntityID];
+        Vector2Int pre = entityIdCellPosition[entityId];
 
-        IEntity entity = Entities.Get(nEntityID);
+        IEntity entity = Entities.Get(entityId);
 
         Vector2Int cur = GetCellPosition(entity.Position);
 
         if (pre != cur)
         {
-            Remove(nEntityID, false);
+            Remove(entityId, false);
 
-            Add(nEntityID, false);
+            Add(entityId, false);
 
-            SceneMessageBroker.Publish(new GameMessage.EntityMoveCell(nEntityID, pre, cur));
+            SceneMessageBroker.Publish(new GameMessage.EntityMoveCell(entityId, pre, cur));
         }
     }
 
@@ -74,9 +74,9 @@ public class Grid : GameFramework.Grid
 
         foreach (Cell cell in GetCells(GetCellPosition(vec3Position), fRadius))
         {
-            foreach (int nEntityID in cell.hashEntityId)
+            foreach (int entityId in cell.hashEntityId)
             {
-                IEntity entity = Entities.Get(nEntityID);
+                IEntity entity = Entities.Get(entityId);
 
                 if (!GameFramework.Util.IsSatisfy(entity, conditions))
                     continue;
@@ -99,9 +99,9 @@ public class Grid : GameFramework.Grid
 
         foreach (Cell cell in GetCells(GetCellPosition(trTarget.position), fRadius))
         {
-            foreach (int nEntityID in cell.hashEntityId)
+            foreach (int entityId in cell.hashEntityId)
             {
-                IEntity entity = Entities.Get(nEntityID);
+                IEntity entity = Entities.Get(entityId);
 
                 if (!GameFramework.Util.IsSatisfy(entity, conditions))
                     continue;
@@ -125,9 +125,9 @@ public class Grid : GameFramework.Grid
 
         if (cells.ContainsKey(vec2CellPos))
         {
-            foreach (int nEntityID in cells[vec2CellPos].hashEntityId)
+            foreach (int entityId in cells[vec2CellPos].hashEntityId)
             {
-                IEntity entity = Entities.Get(nEntityID);
+                IEntity entity = Entities.Get(entityId);
 
                 if (!GameFramework.Util.IsSatisfy(entity, conditions))
                     continue;

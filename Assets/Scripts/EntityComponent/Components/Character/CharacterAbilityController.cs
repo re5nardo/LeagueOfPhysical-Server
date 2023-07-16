@@ -7,10 +7,10 @@ public class CharacterAbilityController : LOPMonoEntityComponentBase
 	#region Message Handler
 	private void OnLevelUp(object[] param)
 	{
-		int nEntityID = (int)param[0];
+		int entityId = (int)param[0];
 		int nLevel = (int)param[1];
 
-		if (Entity.EntityID == nEntityID && (nLevel % 3) == 0)
+		if (Entity.EntityId == entityId && (nLevel % 3) == 0)
 		{
             CharacterAbilityData characterAbilityData = Entity.GetEntityComponent<CharacterAbilityData>();
             characterAbilityData.IncreaseSelectableAbilityCount();

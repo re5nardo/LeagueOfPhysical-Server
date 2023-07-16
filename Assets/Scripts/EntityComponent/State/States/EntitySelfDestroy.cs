@@ -20,7 +20,7 @@ namespace State
 
             if (CurrentUpdateTime >= Lifespan)
             {
-                LOP.Game.Current.DestroyEntity(Entity.EntityID);
+                LOP.Game.Current.DestroyEntity(Entity.EntityId);
             }
 
             return CurrentUpdateTime < Lifespan;

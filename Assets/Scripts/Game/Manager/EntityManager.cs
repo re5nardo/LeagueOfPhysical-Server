@@ -60,14 +60,14 @@ public class EntityManager : GameFramework.EntityManager
     {
         base.RegisterEntity(entity);
 
-        SceneMessageBroker.Publish(new GameMessage.EntityRegister(entity.EntityID));
+        SceneMessageBroker.Publish(new GameMessage.EntityRegister(entity.EntityId));
     }
 
-    public override void UnregisterEntity(int nEntityID)
+    public override void UnregisterEntity(int entityId)
     {
-        base.UnregisterEntity(nEntityID);
+        base.UnregisterEntity(entityId);
 
-        SceneMessageBroker.Publish(new GameMessage.EntityUnregister(nEntityID));
+        SceneMessageBroker.Publish(new GameMessage.EntityUnregister(entityId));
     }
 
     #region Message Handler
@@ -87,7 +87,7 @@ public class EntityManager : GameFramework.EntityManager
             },
             entity =>
             {
-                return !(hashExceptID != null && hashExceptID.Contains(entity.EntityID));
+                return !(hashExceptID != null && hashExceptID.Contains(entity.EntityId));
             }
         });
     }
@@ -102,7 +102,7 @@ public class EntityManager : GameFramework.EntityManager
             },
             entity =>
             {
-                return !(hashExceptID != null && hashExceptID.Contains(entity.EntityID));
+                return !(hashExceptID != null && hashExceptID.Contains(entity.EntityId));
             }
         });
     }

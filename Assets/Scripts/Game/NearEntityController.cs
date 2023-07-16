@@ -26,12 +26,12 @@ public class NearEntityController : LOPMonoEntityComponentBase
 	private Dictionary<Vector2Int, Cell> m_dicSeenCell = new Dictionary<Vector2Int, Cell>();
 	private Dictionary<Vector2Int, Cell> m_dicDeadBandCell = new Dictionary<Vector2Int, Cell>();
 
-	private HashSet<int> m_hashNearEntityID = new HashSet<int>();
-	private HashSet<int> m_hashNearPlayerEntityID = new HashSet<int>();
+	private HashSet<int> m_hashNearEntityId = new HashSet<int>();
+	private HashSet<int> m_hashNearPlayerEntityId = new HashSet<int>();
 
 	protected override void OnAttached(IEntity entity)
 	{
-        Vector2Int vec2CellPosition = EntityManager.Instance.GetEntityCellPosition(Entity.EntityID);
+        Vector2Int vec2CellPosition = EntityManager.Instance.GetEntityCellPosition(Entity.EntityId);
 		//var interestingCells = EntityManager.Instance.GetCells(vec2CellPosition, m_fSight + DEAD_BAND_WIDTH, true);
 		//foreach (Cell cell in interestingCells)
 		//{
@@ -59,7 +59,7 @@ public class NearEntityController : LOPMonoEntityComponentBase
 	#region Message Handler
 	private void OnEntityAddedToGrid(GameMessage.EntityAddedToGrid message)
 	{
-		if (message.entityId == Entity.EntityID)
+		if (message.entityId == Entity.EntityId)
 		{
 			OnMyEntityAddedToGrid(message.cellPosition);
 		}
@@ -71,7 +71,7 @@ public class NearEntityController : LOPMonoEntityComponentBase
 
 	private void OnEntityRemovedFromGrid(GameMessage.EntityRemovedFromGrid message)
 	{
-		if (message.entityId == Entity.EntityID)
+		if (message.entityId == Entity.EntityId)
 		{
 			OnMyEntityRemovedFromGrid(message.entityId, message.cellPosition);
 		}
@@ -83,7 +83,7 @@ public class NearEntityController : LOPMonoEntityComponentBase
 
 	private void OnEntityMoveCell(GameMessage.EntityMoveCell message)
 	{
-		if (message.entityId == Entity.EntityID)
+		if (message.entityId == Entity.EntityId)
 		{
 			OnMyEntityMoveCell(message.cur);
 		}
@@ -176,8 +176,8 @@ public class NearEntityController : LOPMonoEntityComponentBase
 
 	private void CheckAppearNDisAppearEntity(Dictionary<Vector2Int, CellSeenState> dicLastCellSeenState)
 	{
-        HashSet<int> appearEntityIDs = new HashSet<int>();
-        HashSet<int> disAppearEntityIDs = new HashSet<int>();
+        HashSet<int> appearEntityIds = new HashSet<int>();
+        HashSet<int> disAppearEntityIds = new HashSet<int>();
 
         //  현재 Seen 상태의 Entity 순회
         foreach (Cell seenCell in m_dicSeenCell.Values)
@@ -192,13 +192,13 @@ public class NearEntityController : LOPMonoEntityComponentBase
 			}
 
             //  새롭게 Seen 상태가 된 Entity들
-			foreach (int nEntityID in seenCell.hashEntityId)
+			foreach (int entityId in seenCell.hashEntityId)
 			{
-                appearEntityIDs.Add(nEntityID);
+                appearEntityIds.Add(entityId);
             }
 		}
 
-        EntityAppear(appearEntityIDs.ToList());
+        EntityAppear(appearEntityIds.ToList());
 
 
         foreach (var lastCell in dicLastCellSeenState)
@@ -212,39 +212,36 @@ public class NearEntityController : LOPMonoEntityComponentBase
                 //  현재 보여지고 있는 상태가 아니면 (이전에 보여지다 현재 보여지지 않는 경우)
 				if (!m_dicCellSeenState.ContainsKey(lastCellPosition))
 				{
-					foreach (int nEntityID in EntityManager.Instance.GetCell(lastCellPosition).hashEntityId)
+					foreach (int entityId in EntityManager.Instance.GetCell(lastCellPosition).hashEntityId)
 					{
-                        disAppearEntityIDs.Add(nEntityID);
+                        disAppearEntityIds.Add(entityId);
                     }
 				}
 			}
 		}
 
-        EntityDisAppear(disAppearEntityIDs.ToList());
+        EntityDisAppear(disAppearEntityIds.ToList());
     }
 
     //  List로 주변 Entity 관리하면서 추가 삭제 시 전송..??
-    private void OnOtherEntityAddedToGrid(int nEntityID, Vector2Int pos)
+    private void OnOtherEntityAddedToGrid(int entityId, Vector2Int pos)
 	{
 		if (m_dicSeenCell.ContainsKey(pos))
 		{
-            EntityAppear(new List<int> { nEntityID });
+            EntityAppear(new List<int> { entityId });
 		}
 	}
 
-	private void OnMyEntityRemovedFromGrid(int nEntityID, Vector2Int pos)
-	{
-		
-	}
+	private void OnMyEntityRemovedFromGrid(int entityId, Vector2Int pos) { }
 
-	private void OnOtherEntityRemovedFromGrid(int nEntityID, Vector2Int pos)
+	private void OnOtherEntityRemovedFromGrid(int entityId, Vector2Int pos)
 	{
 		//	Disappear 여기서 전송하는게 맞나? remove 되게 만든 루틴에서 해야 하나..? 아니면 여기서 일괄로 처리?
 		if (m_dicCellSeenState.ContainsKey(pos))
 		{
 			if (m_dicCellSeenState[pos] == CellSeenState.Seen || m_dicCellSeenState[pos] == CellSeenState.DeadBand_Seen)
 			{
-                EntityDisAppear(new List<int> { nEntityID });
+                EntityDisAppear(new List<int> { entityId });
             }
 		}
 	}
@@ -254,14 +251,14 @@ public class NearEntityController : LOPMonoEntityComponentBase
 		UpdateMyEntityCellPosition(pos);
 	}
 
-	private void OnOtherEntityMoveCell(int nEntityID, Vector2Int from, Vector2Int to)
+	private void OnOtherEntityMoveCell(int entityId, Vector2Int from, Vector2Int to)
 	{
 		//	Check DisAppear
 		if (m_dicCellSeenState.ContainsKey(from) && !m_dicCellSeenState.ContainsKey(to))
 		{
 			if (m_dicCellSeenState[from] == CellSeenState.Seen || m_dicCellSeenState[from] == CellSeenState.DeadBand_Seen)
 			{
-                EntityDisAppear(new List<int> { nEntityID });
+                EntityDisAppear(new List<int> { entityId });
             }
 		}
 
@@ -270,80 +267,80 @@ public class NearEntityController : LOPMonoEntityComponentBase
 		{
 			if (!m_dicCellSeenState.ContainsKey(from) || m_dicCellSeenState[from] == CellSeenState.DeadBand_UnSeen)
 			{
-                EntityAppear(new List<int> { nEntityID });
+                EntityAppear(new List<int> { entityId });
             }
 		}
 	}
 
-    private void EntityAppear(List<int> entityIDs)
+    private void EntityAppear(List<int> entityIds)
     {
-        foreach (var entityID in entityIDs)
+        foreach (var entityId in entityIds)
         {
-            m_hashNearEntityID.Add(entityID);
+            m_hashNearEntityId.Add(entityId);
 
-            var entity = Entities.Get<LOPMonoEntityBase>(entityID);
+            var entity = Entities.Get<LOPMonoEntityBase>(entityId);
             if (entity.EntityRole == EntityRole.Player)
             {
-                m_hashNearPlayerEntityID.Add(entityID);
+                m_hashNearPlayerEntityId.Add(entityId);
             }
         }
 
-        SendEntityAppear(entityIDs);
+        SendEntityAppear(entityIds);
     }
 
-    private void EntityDisAppear(List<int> entityIDs)
+    private void EntityDisAppear(List<int> entityIds)
     {
-        foreach (var entityID in entityIDs)
+        foreach (var entityId in entityIds)
         {
-            m_hashNearEntityID.Remove(entityID);
-            m_hashNearPlayerEntityID.Remove(entityID);
+            m_hashNearEntityId.Remove(entityId);
+            m_hashNearPlayerEntityId.Remove(entityId);
         }
 
-        SendEntityDisAppear(entityIDs);
+        SendEntityDisAppear(entityIds);
     }
 
-    public HashSet<int> GetNearEntityIDs()
+    public HashSet<int> GetNearEntityIds()
 	{
-		return new HashSet<int>(m_hashNearEntityID);
+		return new HashSet<int>(m_hashNearEntityId);
 	}
 
-	private void SendEntityAppear(List<int> entityIDs)
+	private void SendEntityAppear(List<int> entityIds)
 	{
 		if (LOP.Application.IsApplicationQuitting)
 			return;
 
-        //  Don't send Local Entities
-        entityIDs.RemoveAll(entityID => Entities.Get<LOPMonoEntityBase>(entityID).IsLocalEntity);
+		//  Don't send Local Entities
+		entityIds.RemoveAll(entityId => Entities.Get<LOPMonoEntityBase>(entityId).IsLocalEntity);
 
 		using var disposer = PoolObjectDisposer<SC_EntityAppear>.Get();
 		var entityAppear = disposer.PoolObject;
-		entityAppear.listEntitySnap = new List<EntitySnap>(entityIDs.Count);
-		foreach (int entityID in entityIDs)
+		entityAppear.listEntitySnap = new List<EntitySnap>(entityIds.Count);
+		foreach (int entityId in entityIds)
 		{
-			IEntity entity = Entities.Get(entityID);
+			IEntity entity = Entities.Get(entityId);
 			entityAppear.listEntitySnap.Add(EntityHelper.GetEntitySnap(entity));
 		}
 		entityAppear.tick = Game.Current.CurrentTick;
 
-        if (GameIdMap.TryGetConnectionIdByEntityId(Entity.EntityID, out var connectionId))
+        if (GameIdMap.TryGetConnectionIdByEntityId(Entity.EntityId, out var connectionId))
         {
             RoomNetwork.Instance.Send(entityAppear, connectionId);
         }
     }
 
-	private void SendEntityDisAppear(List<int> entityIDs)
+	private void SendEntityDisAppear(List<int> entityIds)
 	{
 		if (LOP.Application.IsApplicationQuitting)
 			return;
 
-        //  Don't send Local Entities
-        entityIDs.RemoveAll(entityID => Entities.Get<LOPMonoEntityBase>(entityID).IsLocalEntity);
+		//  Don't send Local Entities
+		entityIds.RemoveAll(entityId => Entities.Get<LOPMonoEntityBase>(entityId).IsLocalEntity);
 
 		using var disposer = PoolObjectDisposer<SC_EntityDisAppear>.Get();
 		var entityDisAppear = disposer.PoolObject;
-		entityDisAppear.listEntityId = entityIDs;
+		entityDisAppear.listEntityId = entityIds;
 
-        if (GameIdMap.TryGetConnectionIdByEntityId(Entity.EntityID, out var connectionId))
+        if (GameIdMap.TryGetConnectionIdByEntityId(Entity.EntityId, out var connectionId))
         {
             RoomNetwork.Instance.Send(entityDisAppear, connectionId);
         }

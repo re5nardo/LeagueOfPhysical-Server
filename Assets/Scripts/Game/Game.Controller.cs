@@ -49,7 +49,7 @@ namespace LOP
 
                 using var entitySkillInfoDisposer = PoolObjectDisposer<SC_EntitySkillInfo>.Get();
                 var entitySkillInfo = entitySkillInfoDisposer.PoolObject;
-                entitySkillInfo.entityId = userEntity.EntityID;
+                entitySkillInfo.entityId = userEntity.EntityId;
                 entitySkillInfo.dicSkillInfo = controller.GetEntitySkillInfo();
 
                 RoomNetwork.Instance.Send(entitySkillInfo, conn.connectionId);
@@ -86,13 +86,13 @@ namespace LOP
             return new Rect(new Vector2(-200, -200), new Vector2(400, 400));
         }
 
-        public void EntityGetGameItem(int nEntityID, int nGameItemID)
+        public void EntityGetGameItem(int entityId, int nGameItemID)
         {
             GameItem gameItem = Entities.Get<GameItem>(nGameItemID);
 
             DestroyEntity(nGameItemID);
 
-            Character character = Entities.Get<Character>(nEntityID);
+            Character character = Entities.Get<Character>(entityId);
             if (character == null || !character.IsAlive)
             {
                 return;
@@ -102,7 +102,7 @@ namespace LOP
             {
                 int heal = UnityEngine.Random.Range(50, 150);
 
-                HealEntity(nGameItemID, nEntityID, heal);
+                HealEntity(nGameItemID, entityId, heal);
             }
         }
 
@@ -119,9 +119,9 @@ namespace LOP
             LOP.Game.Current.GameEventManager.SendToNear(new EntityHeal(healingEntityID, healedEntityID, heal, character.HP), character.Position);
         }
 
-        public void EntityGetMoney(int entityID, int money, Vector3 position)
+        public void EntityGetMoney(int entityId, int money, Vector3 position)
         {
-            var entity = Entities.Get<LOPMonoEntityBase>(entityID);
+            var entity = Entities.Get<LOPMonoEntityBase>(entityId);
 
             EntityInventory entityInventory = entity.GetComponent<EntityInventory>();
             if (entityInventory != null)
@@ -131,16 +131,16 @@ namespace LOP
 
             if (entity.EntityRole == EntityRole.Player)
             {
-                if (GameIdMap.TryGetConnectionIdByEntityId(entityID, out var connectionId))
+                if (GameIdMap.TryGetConnectionIdByEntityId(entityId, out var connectionId))
                 {
-                    LOP.Game.Current.GameEventManager.Send(new EntityGetMoney(entityID, position, money, entityInventory.m_nMoney), connectionId);
+                    LOP.Game.Current.GameEventManager.Send(new EntityGetMoney(entityId, position, money, entityInventory.m_nMoney), connectionId);
                 }
             }
         }
 
-        public void EntityGetExp(int entityID, int exp)
+        public void EntityGetExp(int entityId, int exp)
         {
-            var entity = Entities.Get<LOPMonoEntityBase>(entityID);
+            var entity = Entities.Get<LOPMonoEntityBase>(entityId);
 
             CharacterGrowthData characterGrowthData = entity.GetComponent<CharacterGrowthData>();
             if (characterGrowthData != null)
@@ -155,9 +155,9 @@ namespace LOP
 
                 if (entity.EntityRole == EntityRole.Player)
                 {
-                    if (GameIdMap.TryGetConnectionIdByEntityId(entityID, out var connectionId))
+                    if (GameIdMap.TryGetConnectionIdByEntityId(entityId, out var connectionId))
                     {
-                        LOP.Game.Current.GameEventManager.Send(new EntityGetExp(entityID, exp, characterGrowthData.Exp), connectionId);
+                        LOP.Game.Current.GameEventManager.Send(new EntityGetExp(entityId, exp, characterGrowthData.Exp), connectionId);
                     }
                 }
             }
@@ -242,7 +242,7 @@ namespace LOP
                 MasterData.GameItem masterData = MasterDataManager.Instance.GetMasterData<MasterData.GameItem>(Define.MasterData.GameItemID.RED_POTION);
 
                 var item = GameItem.Builder()
-                    .SetEntityId(EntityManager.Instance.GenerateEntityID())
+                    .SetEntityId(EntityManager.Instance.GenerateEntityId())
                     .SetMasterDataId(Define.MasterData.GameItemID.RED_POTION)
                     .SetPosition(gameItem.Position)
                     .SetRotation(Vector3.zero)
@@ -296,24 +296,24 @@ namespace LOP
             }
         }
 
-        public void DestroyEntity(int nEntityID)
+        public void DestroyEntity(int entityId)
         {
-            var entity = Entities.Get<LOPMonoEntityBase>(nEntityID);
+            var entity = Entities.Get<LOPMonoEntityBase>(entityId);
 
             entity.MessageBroker.Publish(new Destroying());
 
-            SceneMessageBroker.Publish(new GameMessage.EntityDestroy(nEntityID));
+            SceneMessageBroker.Publish(new GameMessage.EntityDestroy(entityId));
 
             if (entity.EntityRole == EntityRole.Player)
             {
-                string strPlayerUserID = entityIDPlayerUserID[entity.EntityID];
+                string strPlayerUserID = entityIDPlayerUserID[entity.EntityId];
 
                 playerUserIDEntityID.Remove(strPlayerUserID);
-                entityIDPlayerUserID.Remove(entity.EntityID);
+                entityIDPlayerUserID.Remove(entity.EntityId);
                 playerUserIDPhotonPlayer.Remove(strPlayerUserID);
             }
 
-            EntityManager.Instance.UnregisterEntity(nEntityID);
+            EntityManager.Instance.UnregisterEntity(entityId);
 
             Destroy(entity.gameObject);
         }

@@ -37,7 +37,7 @@ namespace Behavior
             if (attackBehaviorParam.skillInputData.inputData == Vector3.zero)
             {
                 //  Auto aiming
-                List<IEntity> targets = Entities.Get(Entity.Position, 20, EntityRole.All, new HashSet<int> { Entity.EntityID });
+                List<IEntity> targets = Entities.Get(Entity.Position, 20, EntityRole.All, new HashSet<int> { Entity.EntityId });
                 List<IEntity> candidates = new List<IEntity>();
                 foreach (IEntity target in targets)
                 {
@@ -83,7 +83,7 @@ namespace Behavior
 
 			Entity.MessageBroker.Publish(new AnimatorSetTrigger("Attack"));
 
-            LOP.Game.Current.GameEventManager.SendToNear(new EntityBehaviorStart(Entity.EntityID, MasterData.id), Entity.Position);
+            LOP.Game.Current.GameEventManager.SendToNear(new EntityBehaviorStart(Entity.EntityId, MasterData.id), Entity.Position);
         }
 
         protected override bool OnBehaviorUpdate()
@@ -112,14 +112,14 @@ namespace Behavior
 			Vector3 vec3Velocity = Entity.Forward * fMovementSpeed;
 
 			var projectile =  Projectile.Builder()
-                .SetEntityId(EntityManager.Instance.GenerateEntityID())
+                .SetEntityId(EntityManager.Instance.GenerateEntityId())
                 .SetMasterDataId(m_nProjectileID)
                 .SetPosition(vec3StartPosition)
                 .SetRotation(vec3StartRotation)
                 .SetVelocity(vec3Velocity)
 				.SetAngularVelocity(Vector3.zero)
 				.SetModelId(masterData.ModelResID)
-                .SetProjectorId(Entity.EntityID)
+                .SetProjectorId(Entity.EntityId)
                 .SetLifespan(m_fProjectileLifespan)
 				.SetMovementSpeed(fMovementSpeed)
                 .SetEntityType(EntityType.Projectile)

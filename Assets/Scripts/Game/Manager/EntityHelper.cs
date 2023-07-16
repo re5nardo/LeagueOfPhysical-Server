@@ -69,6 +69,6 @@ public class Entities
         return targets;
     }
 
-    public static HashSet<int> AllIDs => EntityManager.Instance.GetAllEntityIDs();
+    public static HashSet<int> AllIDs => EntityManager.Instance.GetAllEntityIds();
     #endregion
 }

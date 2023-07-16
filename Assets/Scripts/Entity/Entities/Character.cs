@@ -61,7 +61,7 @@ namespace Entity
         {
             var entitySnap = new CharacterSnap();
 
-            entitySnap.entityId = EntityID;
+            entitySnap.entityId = EntityId;
             entitySnap.entityType = EntityType;
             entitySnap.entityRole = EntityRole;
             entitySnap.masterDataId = CharacterBasicData.MasterDataId;

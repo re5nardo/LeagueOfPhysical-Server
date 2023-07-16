@@ -15,7 +15,7 @@ public partial class FlapWang : SubGameBase
         {
             var character = EntityHelper.CreatePlayerCharacter(expectedPlayer, Define.MasterData.CharacterID.GAREN, LOP.Application.UserId);
 
-            LOP.Game.Current.gameIdMap.Add(expectedPlayer, character.EntityID);
+            LOP.Game.Current.gameIdMap.Add(expectedPlayer, character.EntityId);
 
             var spawnPoint = LOP.Game.Current.MapData.spawnPoints[UnityEngine.Random.Range(0, LOP.Game.Current.MapData.spawnPoints.Length)];
             character.Position = spawnPoint.position;
@@ -27,10 +27,10 @@ public partial class FlapWang : SubGameBase
             CharacterGrowthData characterGrowthData = EntityAdditionalDataInitializer.Instance.Initialize(new CharacterGrowthData());
             character.AttachEntityComponent(characterGrowthData);
 
-            EmotionExpressionData emotionExpressionData = EntityAdditionalDataInitializer.Instance.Initialize(new EmotionExpressionData(), character.EntityID);
+            EmotionExpressionData emotionExpressionData = EntityAdditionalDataInitializer.Instance.Initialize(new EmotionExpressionData(), character.EntityId);
             character.AttachEntityComponent(emotionExpressionData);
 
-            EntityInventory entityInventory = EntityAdditionalDataInitializer.Instance.Initialize(new EntityInventory(), character.EntityID);
+            EntityInventory entityInventory = EntityAdditionalDataInitializer.Instance.Initialize(new EntityInventory(), character.EntityId);
             character.AttachEntityComponent(entityInventory);
 
             character.AttachEntityComponent<NearEntityController>();
@@ -53,9 +53,9 @@ public partial class FlapWang : SubGameBase
 
             using var disposer = PoolObjectDisposer<NetworkModel.Mirror.SC_PlayerEntity>.Get();
             var playerEntity = disposer.PoolObject;
-            playerEntity.playerEntityId = character.EntityID;
+            playerEntity.playerEntityId = character.EntityId;
 
-            if (GameIdMap.TryGetConnectionIdByEntityId(character.EntityID, out var connectionId))
+            if (GameIdMap.TryGetConnectionIdByEntityId(character.EntityId, out var connectionId))
             {
                 RoomNetwork.Instance.Send(playerEntity, connectionId);
             }

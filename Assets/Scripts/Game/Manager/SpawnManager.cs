@@ -34,7 +34,7 @@ public class SpawnManager : MonoBehaviour
 
 			ai.Possess(monster);
 
-			m_dicEntityIDController.Add(monster.EntityID, ai);
+			m_dicEntityIDController.Add(monster.EntityId, ai);
 		}
 
 		for (int i = 0; i < 100; ++i)
@@ -54,7 +54,7 @@ public class SpawnManager : MonoBehaviour
 
             ai.Possess(monster);
 
-            m_dicEntityIDController.Add(monster.EntityID, ai);
+            m_dicEntityIDController.Add(monster.EntityId, ai);
 
             m_fSpawnElapsedTime = 0f;
         }
@@ -78,7 +78,7 @@ public class SpawnManager : MonoBehaviour
 		FirstStatus firstStatus = new FirstStatus(firstStatusMasterData);
 
 		var monster = Character.Builder()
-            .SetEntityId(EntityManager.Instance.GenerateEntityID())
+            .SetEntityId(EntityManager.Instance.GenerateEntityId())
             .SetMasterDataId(characterID)
             .SetPosition(vec3StartPosition)
             .SetRotation(vec3StartRotation)
@@ -104,7 +104,7 @@ public class SpawnManager : MonoBehaviour
 		Vector3 vec3StartRotation = new Vector3(0, UnityEngine.Random.Range(0, 360), 0);
 
 		var treasureBox = GameItem.Builder()
-            .SetEntityId(EntityManager.Instance.GenerateEntityID())
+            .SetEntityId(EntityManager.Instance.GenerateEntityId())
             .SetMasterDataId(Define.MasterData.GameItemID.TREASURE_BOX)
 			.SetPosition(vec3StartPosition)
 			.SetRotation(vec3StartRotation)

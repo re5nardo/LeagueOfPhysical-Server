@@ -13,7 +13,7 @@ namespace Entity
             base.Awake();
 
             EntityCreationData entityCreationData = new EntityCreationData();
-            entityCreationData.entityId = EntityManager.Instance.GenerateLocalEntityID();
+            entityCreationData.entityId = EntityManager.Instance.GenerateLocalEntityId();
             entityCreationData.position = model.transform.position;
             entityCreationData.rotation = model.transform.rotation.eulerAngles;
             entityCreationData.velocity = Vector3.zero;

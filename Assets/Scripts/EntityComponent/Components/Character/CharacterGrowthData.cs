@@ -18,9 +18,9 @@ public class CharacterGrowthData : LOPEntityComponentBase
             {
                 if (Entity.EntityRole == EntityRole.Player)
                 {
-                    if (GameIdMap.TryGetConnectionIdByEntityId(Entity.EntityID, out var connectionId))
+                    if (GameIdMap.TryGetConnectionIdByEntityId(Entity.EntityId, out var connectionId))
                     {
-                        LOP.Game.Current.GameEventManager.Send(new EntityLevelUp(Entity.EntityID, value), connectionId);
+                        LOP.Game.Current.GameEventManager.Send(new EntityLevelUp(Entity.EntityId, value), connectionId);
                     }
                 }
             }

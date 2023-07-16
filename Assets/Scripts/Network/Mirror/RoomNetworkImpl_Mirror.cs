@@ -61,7 +61,7 @@ public class RoomNetworkImpl_Mirror : MonoBehaviour, INetworkImpl
     {
         foreach (IEntity entity in Entities.Get(center, radius, EntityRole.Player))
         {
-            if (GameIdMap.TryGetConnectionIdByEntityId(entity.EntityID, out var connectionId))
+            if (GameIdMap.TryGetConnectionIdByEntityId(entity.EntityId, out var connectionId))
             {
                 Send(msg, connectionId, reliable, instant);
             }
